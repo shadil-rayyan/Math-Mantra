@@ -3,77 +3,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
+    android:layoutDirection="locale"
     tools:context=".MainActivity"
-    android:background="?attr/colorSecondary">
+     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:padding="16dp"
         android:gravity="center_horizontal"
-        android:padding="70dp">
+        android:layout_marginTop="16dp">
 
-        <!-- Logo -->
-        <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/landing_app_icon"
-            android:contentDescription="@string/logo_description"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp" />
-
-        <!-- App Title -->
-        <TextView
+        <!-- Language Selection Title -->
+        <Button
+            android:id="@+id/language_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_title"
-            android:textAppearance="?attr/textAppearanceHeadlineMedium"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold"
+            android:text="@string/choose_language"
+            android:textAppearance="?attr/colorOnSurface"
+            android:labelFor="@id/language_radio_group"
+            android:importantForAccessibility="yes"
+
+            android:accessibilityHeading="true"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Language Options: Horizontal -->
+        <RadioGroup
+            android:id="@+id/language_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="?attr/colorOnSurface"
+            android:orientation="horizontal"
+            android:contentDescription="@string/choose_language"
+            android:layout_marginBottom="24dp">
+
+            <RadioButton
+                android:id="@+id/radio_language_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/languge_default" />
+
+            <RadioButton
+                android:id="@+id/radio_language_en"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/languge_en"
+                android:buttonTintMode="?attr/colorPrimary"
+                android:layout_marginStart="16dp" />
+
+            <RadioButton
+                android:id="@+id/radio_language_ml"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/languge_ml"
+                android:layout_marginStart="16dp" />
+        </RadioGroup>
+
+        <!-- Contrast Mode Label -->
+        <TextView
+            android:id="@+id/contrast_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_contrast"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="?attr/colorOnSurface"
+            android:labelFor="@id/contrast_radio_group"
             android:importantForAccessibility="yes"
             android:accessibilityHeading="true"
             android:layout_marginBottom="8dp" />
 
-        <!-- Subtitle -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/subtitle"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textColor="?attr/colorOnBackground"
-            android:gravity="center"
-            android:layout_marginBottom="24dp" />
-
-        <!-- Buttons -->
-        <Button
+        <!-- Contrast Options: Vertical -->
+        <RadioGroup
+            android:id="@+id/contrast_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/quick_play"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="?attr/colorOnPrimary"
-            android:drawableEnd="@drawable/landing_quickplay_icon"
-            android:contentDescription="@string/quick_play_desc"
-            android:layout_marginBottom="12dp" />
+            android:orientation="vertical"
+            android:contentDescription="@string/choose_contrast"
+            android:layout_marginBottom="24dp">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/learning_mode"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="?attr/colorOnPrimary"
-            android:drawableEnd="@drawable/landing_learning_icon"
-            android:contentDescription="@string/learning_mode_desc"
-            android:layout_marginBottom="12dp" />
+            <RadioButton
+                android:id="@+id/radio_contrast_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorTertiary"
+                android:text="@string/contrast_default" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/game_mode"
-            android:backgroundTint="?attr/colorPrimary"
-            android:textColor="?attr/colorOnPrimary"
-            android:drawableEnd="@drawable/landing_game_icon"
-            android:contentDescription="@string/game_mode_desc"
-            android:layout_marginBottom="24dp" />
+            <RadioButton
+                android:id="@+id/radio_contrast_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contrast_light" />
 
+            <RadioButton
+                android:id="@+id/radio_contrast_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contrast_dark" />
+        </RadioGroup>
     </LinearLayout>
 </ScrollView>

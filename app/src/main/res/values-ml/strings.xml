@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">മത്സ് മന്ത്ര</string>
+    <string name="app_title">മത്സ് മന്ത്ര</string>
+    <string name="subtitle">ഒരു പ്രശ്നം അടി സമയം നിങ്ങളുടെ ഗണിത കഴിവുകൾ മെച്ചപ്പെടുത്തുക.</string>
+
+    <string name="quick_play">ത്വരിത പ്ലേ</string>
+    <string name="learning_mode">പഠന മോഡ്</string>
+    <string name="game_mode">ഗെയിം മോഡ്</string>
+    <string name="userguide">ഉപയോക്തൃ മാർഗ്ഗരേഖ</string>
+    <string name="settings">ക്രമീകരണങ്ങൾ</string>
+    <string name="quit">പുറത്താക്കുക</string>
+    <string name="footer">2025 മാത്സ് മന്ത്ര എല്ലാ അവകാശങ്ങളും സംരക്ഷിച്ചിരിക്കുന്നു</string>
+
+    <!-- Accessibility content descriptions -->
+    <string name="logo_description">ആപ്പ് ലോഗോ</string>
+    <string name="quick_play_desc">ത്വരിത ഗണിത ചലഞ്ച് ആരംഭിക്കുക</string>
+    <string name="learning_mode_desc">പഠന മോഡിലേക്ക് പ്രവേശിക്കുക</string>
+    <string name="game_mode_desc">ഗെയിം മോഡിലേക്ക് പ്രവേശിക്കുക</string>
+    <string name="userguide_desc">ഉപയോക്തൃ മാർഗ്ഗരേഖ തുറക്കുക</string>
+    <string name="settings_desc">ക്രമീകരണങ്ങൾ തുറക്കുക</string>
+    <string name="quit_desc">ആപ്പ് ഉപേക്ഷിക്കുക</string>
+
+    <string name="choose_language">നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക</string>
+    <string name="languge_default">ഡിഫോൾട്ട്</string>
+    <string name="languge_en">ഇംഗ്ലീഷ്</string>
+    <string name="languge_ml">മലയാളം</string>
+
+    <string name="choose_contrast">നിങ്ങളുടെ കോൺട്രാസ്റ്റ് തിരഞ്ഞെടുക്കുക</string>
+    <string name="contrast_default">ഡിഫോൾട്ട്</string>
+    <string name="contrast_light">ലഘു മോഡ്</string>
+    <string name="contrast_dark">ഇരുണ്ട മോഡ്</string>
+
+</resources>
