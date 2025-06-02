@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="?attr/colorSurface"
+        android:background="?attr/colorSecondary"
         app:title="MathMantra"
         app:titleTextColor="?attr/colorOnSurface"
 

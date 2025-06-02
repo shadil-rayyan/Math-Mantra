@@ -11,13 +11,20 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmathra.R
 import com.zendalona.mathsmathra.databinding.FragmentSettingsBinding
+import com.zendalona.mathsmathra.utility.settings.BackgroundMusicPlayer
 import com.zendalona.mathsmathra.utility.settings.LocaleHelper
+import com.zendalona.mathsmathra.utility.settings.DifficultyPreferences
+import com.zendalona.mathsmathra.Enum.Difficulty;
+
 import java.util.Locale
+
+
 
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var backgroundMusicPlayer: BackgroundMusicPlayer
 
     private val prefs by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
 
@@ -40,10 +47,14 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setupLanguageSpinner()
         setupContrastRadioButtons()
         setupSpeechVolumeControls()
         setupSpeechRateControls()
+        setupDifficultyRadioButtons()
+
+
     }
 
     private fun setupLanguageSpinner() {
@@ -150,8 +161,32 @@ class SettingFragment : Fragment() {
             binding.speechRateValue.text = String.format("%.1f", newSpeed)
         }
     }
+
+
+    private fun setupDifficultyRadioButtons() {
+        // Set initial checked button based on stored preference
+        val savedDifficulty = DifficultyPreferences.getDifficulty(requireContext())
+        when (savedDifficulty) {
+            Difficulty.EASY -> binding.difficultyEasy.isChecked = true
+            Difficulty.MEDIUM -> binding.difficultyMedium.isChecked = true
+            Difficulty.HARD -> binding.difficultyHard.isChecked = true
+        }
+
+        binding.difficultyRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            val selectedDifficulty = when (checkedId) {
+                R.id.difficulty_easy -> Difficulty.EASY
+                R.id.difficulty_medium -> Difficulty.MEDIUM
+                R.id.difficulty_hard -> Difficulty.HARD
+                else -> Difficulty.MEDIUM
+            }
+            DifficultyPreferences.setDifficulty(requireContext(), selectedDifficulty)
+        }
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 }
