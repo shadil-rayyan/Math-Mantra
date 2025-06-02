@@ -42,6 +42,8 @@ class SettingFragment : Fragment() {
 
         setupLanguageSpinner()
         setupContrastRadioButtons()
+        setupSpeechVolumeControls()
+        setupSpeechRateControls()
     }
 
     private fun setupLanguageSpinner() {
@@ -110,8 +112,44 @@ class SettingFragment : Fragment() {
         }
     }
 
+    private fun setupSpeechVolumeControls() {
+        val currentVolume = prefs.getFloat("tts_volume", 1.0f)
+        val currentSpeed = prefs.getFloat("tts_speed", 1.0f)
 
+        // Set UI text values
+        binding.speechVolumeValue.text = String.format("%.1f", currentVolume)
 
+        binding.speechVolumeDecrease.setOnClickListener {
+            val newVolume = (prefs.getFloat("tts_volume", 1.0f) - 0.1f).coerceAtLeast(0.1f)
+            prefs.edit().putFloat("tts_volume", newVolume).apply()
+            binding.speechVolumeValue.text = String.format("%.1f", newVolume)
+        }
+
+        binding.speechVolumeIncrease.setOnClickListener {
+            val newVolume = (prefs.getFloat("tts_volume", 1.0f) + 0.1f).coerceAtMost(1.0f)
+            prefs.edit().putFloat("tts_volume", newVolume).apply()
+            binding.speechVolumeValue.text = String.format("%.1f", newVolume)
+        }
+    }
+
+    private fun setupSpeechRateControls() {
+        val currentSpeed = prefs.getFloat("tts_speed", 1.0f)
+
+        // Initialize UI text with current speed
+        binding.speechRateValue.text = String.format("%.1f", currentSpeed)
+
+        binding.speechRateDecrease.setOnClickListener {
+            val newSpeed = (prefs.getFloat("tts_speed", 1.0f) - 0.1f).coerceAtLeast(0.1f)
+            prefs.edit().putFloat("tts_speed", newSpeed).apply()
+            binding.speechRateValue.text = String.format("%.1f", newSpeed)
+        }
+
+        binding.speechRateIncrease.setOnClickListener {
+            val newSpeed = (prefs.getFloat("tts_speed", 1.0f) + 0.1f).coerceAtMost(2.0f)  // 2.0f max speed
+            prefs.edit().putFloat("tts_speed", newSpeed).apply()
+            binding.speechRateValue.text = String.format("%.1f", newSpeed)
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

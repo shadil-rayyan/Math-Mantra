@@ -36,12 +36,13 @@
         <string name="background_music_toggle_label">പശ്ചാത്തല സംഗീതം</string>
         <string name="background_music_toggle_desc">പശ്ചാത്തല സംഗീതം ഓണോ ഓഫ് ആക്കുക</string>
 
-        <string name="font_size_label">ഫോണ്ട് വലിപ്പം</string>
-        <string name="font_size_decrease_desc">ഫോണ്ട് വലിപ്പം കുറയ്ക്കുക</string>
-        <string name="font_size_increase_desc">ഫോണ്ട് വലിപ്പം കൂട്ടുക</string>
-        <string name="font_size_value_desc">ഇപ്പോൾ ഉള്ള ഫോണ്ട് വലിപ്പം</string>
+    <string name="speech_rate_label">വാചക പ്രവാഹം</string>
+    <string name="speech_rate_decrease_desc">വാചക പ്രവാഹം കുറയ്ക്കുക</string>
+    <string name="speech_rate_increase_desc">വാചക പ്രവാഹം വർദ്ധിപ്പിക്കുക</string>
+    <string name="speech_rate_value_desc">ഇപ്പോൾ ഉള്ള വാചക പ്രവാഹ നിരക്ക്</string>
 
-        <string name="choose_contrast">വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
+
+    <string name="choose_contrast">വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
         <string name="choose_contrast_desc">സ്ക്രീൻ വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
         <string name="contrast_default">സാധാരണ വിരുദ്ധം</string>
         <string name="contrast_default_desc">സാധാരണ വർണ വിരുദ്ധം ഉപയോഗിക്കുക</string>

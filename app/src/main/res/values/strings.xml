@@ -33,13 +33,14 @@
     <string name="speech_volume_increase_desc">Increase speech volume</string>
     <string name="speech_volume_value_desc">Current speech volume level</string>
 
+    <string name="speech_rate_label">Speech Rate</string>
+    <string name="speech_rate_decrease_desc">Decrease speech volume</string>
+    <string name="speech_rate_increase_desc">Increase speech volume</string>
+    <string name="speech_rate_value_desc">Current speech volume level</string>
+
     <string name="background_music_toggle_label">Background Music</string>
     <string name="background_music_toggle_desc">Toggle background music on or off</string>
 
-    <string name="font_size_label">Font Size</string>
-    <string name="font_size_decrease_desc">Decrease font size</string>
-    <string name="font_size_increase_desc">Increase font size</string>
-    <string name="font_size_value_desc">Current font size</string>
 
     <string name="choose_contrast">Choose Contrast</string>
     <string name="choose_contrast_desc">Select the screen contrast option</string>
