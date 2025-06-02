@@ -1,106 +1,303 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondary"
-    android:layoutDirection="locale"
-    tools:context=".MainActivity"
-     >
+    android:fillViewport="true"
+    android:background="?android:colorBackground">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="16dp">
+        android:padding="16dp">
 
-        <!-- Language Selection Title -->
-        <Button
-            android:id="@+id/language_label"
-            android:layout_width="wrap_content"
+        <!-- Settings Title -->
+        <TextView
+            android:id="@+id/settings_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/choose_language"
-            android:textAppearance="?attr/colorOnSurface"
-            android:labelFor="@id/language_radio_group"
+            android:text="@string/settings_title"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorPrimary"
             android:importantForAccessibility="yes"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            android:accessibilityHeading="true"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Language Options: Horizontal -->
-        <RadioGroup
-            android:id="@+id/language_radio_group"
+        <!-- Music Volume Label -->
+        <TextView
+            android:id="@+id/music_volume_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="?attr/colorOnSurface"
-            android:orientation="horizontal"
-            android:contentDescription="@string/choose_language"
-            android:layout_marginBottom="24dp">
+            android:text="@string/music_volume_label"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:labelFor="@id/music_volume_value"
+            app:layout_constraintTop_toBottomOf="@id/settings_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"/>
 
-            <RadioButton
-                android:id="@+id/radio_language_default"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/languge_default" />
+        <!-- Music Volume Controls -->
+        <Button
+            android:id="@+id/music_volume_decrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/music_volume_decrease_desc"
+            app:layout_constraintTop_toBottomOf="@id/music_volume_label"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"/>
 
-            <RadioButton
-                android:id="@+id/radio_language_en"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/languge_en"
-                android:buttonTintMode="?attr/colorPrimary"
-                android:layout_marginStart="16dp" />
+        <TextView
+            android:id="@+id/music_volume_value"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
+            android:background="?attr/colorPrimary"
+            android:text="24"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:importantForAccessibility="yes"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:contentDescription="@string/music_volume_value_desc"
+            app:layout_constraintTop_toBottomOf="@id/music_volume_label"
+            app:layout_constraintStart_toEndOf="@id/music_volume_decrease"
+            app:layout_constraintEnd_toStartOf="@id/music_volume_increase"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"/>
 
-            <RadioButton
-                android:id="@+id/radio_language_ml"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/languge_ml"
-                android:layout_marginStart="16dp" />
-        </RadioGroup>
+        <Button
+            android:id="@+id/music_volume_increase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/music_volume_increase_desc"
+            app:layout_constraintTop_toBottomOf="@id/music_volume_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
 
-        <!-- Contrast Mode Label -->
+        <!-- Speech Volume Label -->
+        <TextView
+            android:id="@+id/speech_volume_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/speech_volume_label"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            android:labelFor="@id/speech_volume_value"
+            app:layout_constraintTop_toBottomOf="@id/music_volume_increase"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"/>
+
+        <!-- Speech Volume Controls -->
+        <Button
+            android:id="@+id/speech_volume_decrease"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/speech_volume_decrease_desc"
+            app:layout_constraintTop_toBottomOf="@id/speech_volume_label"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/speech_volume_value"
+            android:layout_width="64dp"
+            android:layout_height="40dp"
+            android:background="?attr/colorPrimary"
+            android:text="24"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:importantForAccessibility="yes"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:contentDescription="@string/speech_volume_value_desc"
+            app:layout_constraintTop_toBottomOf="@id/speech_volume_label"
+            app:layout_constraintStart_toEndOf="@id/speech_volume_decrease"
+            app:layout_constraintEnd_toStartOf="@id/speech_volume_increase"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"/>
+
+        <Button
+            android:id="@+id/speech_volume_increase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/speech_volume_increase_desc"
+            app:layout_constraintTop_toBottomOf="@id/speech_volume_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Background Music Toggle -->
+        <Switch
+            android:id="@+id/background_music_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/background_music_toggle_label"
+            android:textColor="?attr/colorOnSurface"
+            android:contentDescription="@string/background_music_toggle_desc"
+            app:layout_constraintTop_toBottomOf="@id/speech_volume_increase"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"
+            android:minHeight="48dp"/>
+
+        <!-- Contrast Label -->
         <TextView
             android:id="@+id/contrast_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/choose_contrast"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="?attr/colorOnSurface"
-            android:labelFor="@id/contrast_radio_group"
-            android:importantForAccessibility="yes"
-            android:accessibilityHeading="true"
-            android:layout_marginBottom="8dp" />
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/background_music_toggle"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"/>
 
-        <!-- Contrast Options: Vertical -->
+        <!-- Contrast Options -->
         <RadioGroup
             android:id="@+id/contrast_radio_group"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:contentDescription="@string/choose_contrast"
-            android:layout_marginBottom="24dp">
+            android:contentDescription="@string/choose_contrast_desc"
+            app:layout_constraintTop_toBottomOf="@id/contrast_label"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp">
 
             <RadioButton
-                android:id="@+id/radio_contrast_default"
+                android:id="@+id/contrast_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="?attr/colorTertiary"
-                android:text="@string/contrast_default" />
+                android:text="@string/contrast_default"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:checked="true"
+                android:contentDescription="@string/contrast_default_desc"/>
 
             <RadioButton
-                android:id="@+id/radio_contrast_light"
+                android:id="@+id/contrast_white_on_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/contrast_light" />
+                android:text="@string/contrast_white_on_black"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/contrast_white_on_black_desc"/>
 
             <RadioButton
-                android:id="@+id/radio_contrast_dark"
+                android:id="@+id/contrast_black_on_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/contrast_dark" />
+                android:text="@string/contrast_black_on_white"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/contrast_black_on_white_desc"/>
         </RadioGroup>
-    </LinearLayout>
+
+        <!-- Difficulty Label -->
+        <TextView
+            android:id="@+id/difficulty_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/difficulty_label"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/contrast_radio_group"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"/>
+
+        <!-- Difficulty Options -->
+        <RadioGroup
+            android:id="@+id/difficulty_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:contentDescription="@string/difficulty_options_desc"
+            app:layout_constraintTop_toBottomOf="@id/difficulty_label"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/difficulty_easy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/difficulty_easy"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/difficulty_easy_desc"/>
+
+            <RadioButton
+                android:id="@+id/difficulty_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/difficulty_medium"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:checked="true"
+                android:contentDescription="@string/difficulty_medium_desc"/>
+
+            <RadioButton
+                android:id="@+id/difficulty_hard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/difficulty_hard"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/difficulty_hard_desc"/>
+        </RadioGroup>
+
+        <!-- Language Label -->
+        <TextView
+            android:id="@+id/language_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/choose_language"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/difficulty_radio_group"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="24dp"/>
+
+        <!-- Language Spinner -->
+        <Spinner
+            android:id="@+id/language_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:entries="@array/language_levels"
+            android:background="?attr/colorPrimary"
+            android:minHeight="48dp"
+            android:contentDescription="@string/choose_language_desc"
+            app:layout_constraintTop_toBottomOf="@id/language_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Reset Settings Button -->
+        <Button
+            android:id="@+id/reset_settings_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_settings"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/reset_settings_desc"
+            app:layout_constraintTop_toBottomOf="@id/language_spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

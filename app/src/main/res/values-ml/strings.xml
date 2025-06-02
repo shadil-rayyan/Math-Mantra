@@ -1,33 +1,71 @@
 <resources>
-    <string name="app_name">മത്സ് മന്ത്ര</string>
-    <string name="app_title">മത്സ് മന്ത്ര</string>
-    <string name="subtitle">ഒരു പ്രശ്നം അടി സമയം നിങ്ങളുടെ ഗണിത കഴിവുകൾ മെച്ചപ്പെടുത്തുക.</string>
+    <string name="app_name">മാത്സ് മന്ത്ര</string>
+    <string name="app_title">മാത്സ് മന്ത്ര</string>
+    <string name="subtitle">ഒരു പ്രശ്നം ഒറ്റയ്ക്ക്, നിങ്ങളുടെ ഗണിതക്ഷമത വളർത്തൂ.</string>
 
-    <string name="quick_play">ത്വരിത പ്ലേ</string>
+    <string name="quick_play">വേഗത്തിലുള്ള കളി</string>
     <string name="learning_mode">പഠന മോഡ്</string>
     <string name="game_mode">ഗെയിം മോഡ്</string>
-    <string name="userguide">ഉപയോക്തൃ മാർഗ്ഗരേഖ</string>
+    <string name="userguide">ഉപയോക്തൃ ഗൈഡ്</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>
-    <string name="quit">പുറത്താക്കുക</string>
+    <string name="quit">പുറത്തുകടക്കുക</string>
     <string name="footer">2025 മാത്സ് മന്ത്ര എല്ലാ അവകാശങ്ങളും സംരക്ഷിച്ചിരിക്കുന്നു</string>
 
     <!-- Accessibility content descriptions -->
     <string name="logo_description">ആപ്പ് ലോഗോ</string>
-    <string name="quick_play_desc">ത്വരിത ഗണിത ചലഞ്ച് ആരംഭിക്കുക</string>
+    <string name="quick_play_desc">ഒരു വേഗത്തിലുള്ള ഗണിത വെല്ലുവിളി ആരംഭിക്കുക</string>
     <string name="learning_mode_desc">പഠന മോഡിലേക്ക് പ്രവേശിക്കുക</string>
     <string name="game_mode_desc">ഗെയിം മോഡിലേക്ക് പ്രവേശിക്കുക</string>
-    <string name="userguide_desc">ഉപയോക്തൃ മാർഗ്ഗരേഖ തുറക്കുക</string>
+    <string name="userguide_desc">ഉപയോക്തൃ ഗൈഡ് തുറക്കുക</string>
     <string name="settings_desc">ക്രമീകരണങ്ങൾ തുറക്കുക</string>
-    <string name="quit_desc">ആപ്പ് ഉപേക്ഷിക്കുക</string>
+    <string name="quit_desc">ആപ്പ് ബഹിഷ്‌കരിക്കുക</string>
 
-    <string name="choose_language">നിങ്ങളുടെ ഭാഷ തിരഞ്ഞെടുക്കുക</string>
-    <string name="languge_default">ഡിഫോൾട്ട്</string>
-    <string name="languge_en">ഇംഗ്ലീഷ്</string>
-    <string name="languge_ml">മലയാളം</string>
+        <!-- Titles and Labels -->
+        <string name="settings_title">ക്രമീകരണങ്ങൾ</string>
 
-    <string name="choose_contrast">നിങ്ങളുടെ കോൺട്രാസ്റ്റ് തിരഞ്ഞെടുക്കുക</string>
-    <string name="contrast_default">ഡിഫോൾട്ട്</string>
-    <string name="contrast_light">ലഘു മോഡ്</string>
-    <string name="contrast_dark">ഇരുണ്ട മോഡ്</string>
+        <string name="music_volume_label">സംഗീതത്തിന്റെ ശബ്ദം</string>
+        <string name="music_volume_decrease_desc">സംഗീത ശബ്ദം കുറയ്ക്കുക</string>
+        <string name="music_volume_increase_desc">സംഗീത ശബ്ദം വർദ്ധിപ്പിക്കുക</string>
+        <string name="music_volume_value_desc">ഇപ്പോൾ ഉള്ള സംഗീത ശബ്ദ നില</string>
 
+        <string name="speech_volume_label">സ്പീച്ച് ശബ്ദം</string>
+        <string name="speech_volume_decrease_desc">സ്പീച്ച് ശബ്ദം കുറയ്ക്കുക</string>
+        <string name="speech_volume_increase_desc">സ്പീച്ച് ശബ്ദം വർദ്ധിപ്പിക്കുക</string>
+        <string name="speech_volume_value_desc">ഇപ്പോൾ ഉള്ള സ്പീച്ച് ശബ്ദ നില</string>
+
+        <string name="background_music_toggle_label">പശ്ചാത്തല സംഗീതം</string>
+        <string name="background_music_toggle_desc">പശ്ചാത്തല സംഗീതം ഓണോ ഓഫ് ആക്കുക</string>
+
+        <string name="font_size_label">ഫോണ്ട് വലിപ്പം</string>
+        <string name="font_size_decrease_desc">ഫോണ്ട് വലിപ്പം കുറയ്ക്കുക</string>
+        <string name="font_size_increase_desc">ഫോണ്ട് വലിപ്പം കൂട്ടുക</string>
+        <string name="font_size_value_desc">ഇപ്പോൾ ഉള്ള ഫോണ്ട് വലിപ്പം</string>
+
+        <string name="choose_contrast">വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
+        <string name="choose_contrast_desc">സ്ക്രീൻ വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
+        <string name="contrast_default">സാധാരണ വിരുദ്ധം</string>
+        <string name="contrast_default_desc">സാധാരണ വർണ വിരുദ്ധം ഉപയോഗിക്കുക</string>
+        <string name="contrast_white_on_black">കറുപ്പിൽ വെളുപ്പ്</string>
+        <string name="contrast_white_on_black_desc">കറുപ്പ് പശ്ചാത്തലത്തിൽ വെളുത്ത വാക്കുകൾ ഉപയോഗിക്കുക</string>
+        <string name="contrast_black_on_white">വെള്ളയിൽ കറുപ്പ്</string>
+        <string name="contrast_black_on_white_desc">വെളുത്ത പശ്ചാത്തലത്തിൽ കറുത്ത വാക്കുകൾ ഉപയോഗിക്കുക</string>
+
+        <string name="difficulty_label">പ്രശ്നത്തിന്റെ ബുദ്ധിമുട്ട്</string>
+        <string name="difficulty_options_desc">ഗെയിം ബുദ്ധിമുട്ട് നില തിരഞ്ഞെടുക്കുക</string>
+        <string name="difficulty_easy">ലളിതം</string>
+        <string name="difficulty_easy_desc">ലളിത ബുദ്ധിമുട്ട്</string>
+        <string name="difficulty_medium">മധ്യം</string>
+        <string name="difficulty_medium_desc">മധ്യമ ബുദ്ധിമുട്ട്</string>
+        <string name="difficulty_hard">കഠിനം</string>
+        <string name="difficulty_hard_desc">കഠിന ബുദ്ധിമുട്ട്</string>
+
+        <string name="choose_language">ഭാഷ തിരഞ്ഞെടുക്കുക</string>
+        <string name="choose_language_desc">നിങ്ങളുടെ ഇഷ്ടഭാഷ തിരഞ്ഞെടുക്കുക</string>
+
+        <string name="reset_settings">ക്രമീകരണങ്ങൾ പുനഃസജ്ജമാക്കുക</string>
+        <string name="reset_settings_desc">എല്ലാ ക്രമീകരണങ്ങളും ഡിഫോൾട്ട് വല്യുക്കളിലേക്ക് പുനഃസജ്ജമാക്കുക</string>
+
+    <string name="language_default">ഡിഫോൾട്ട്</string>
+    <string name="language_english">ഇംഗ്ലീഷ്</string>
+    <string name="language_malayalam">മലയാളം</string>
 </resources>

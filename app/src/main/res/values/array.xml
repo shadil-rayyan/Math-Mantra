@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="language_levels">
+        <item>@string/language_default</item>
+        <item>@string/language_english</item>
+        <item>@string/language_malayalam</item>
+
+        <!-- Add more languages as needed -->
+    </string-array>
+</resources>
