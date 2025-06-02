@@ -1,0 +1,37 @@
+<!-- res/values/colors.xml -->
+<resources>
+
+    <!-- primary Colors  learning gaem mode quick play-->
+    <color name="light_purple_button">#6C5DD3</color> <!-- Used in Quick Play, Learning, Game Mode buttons -->
+    <color name="light_purple_button_text">#FFFFFF</color>
+
+    <!-- secondary colour  activity bar top and text for question insdie the surface -->
+    <color name="light_activity_bar">#FFFFFF</color>
+    <color name="light_activity_bar_text">#FFFFFF</color>
+    <color name="dark_activity_bar">#212121</color>
+    <color name="dark_activity_bar_text">#212121</color>
+
+    <!-- teritary Button (User Guide, Settings) -->
+    <color name="light_dark_landing_button">#424242</color>
+    <color name="light_dark_landing_text">#FFFFFF</color>
+
+    <!--  colour errror Quit Button  -->
+    <color name="light_red_button">#D14D42</color>
+    <color name="light_red_button_text">#FFFFFF</color>
+
+    <!-- surface colour  card colour -->
+    <color name="light_surface">#E53935</color>
+    <color name="dark_surface">#FFFFFF</color>
+
+
+    <!-- colour on background and subittle text  -->
+    <color name="light_screen_background">#F2F2F2</color> <!-- Whole screen -->
+    <color name="dark_screen_background">#1A1A1A</color> <!-- Whole screen -->
+
+    <color name="light_subtitle_text">#666666</color>
+    <color name="dark_subtitle_text">#666666</color>     <!-- Small subtitle under title -->
+    <!-- Small subtitle under title -->
+
+
+
+</resources>
