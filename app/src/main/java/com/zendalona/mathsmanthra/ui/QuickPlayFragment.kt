@@ -1,5 +1,6 @@
 package com.zendalona.mathsmanthra.ui
 
+import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
@@ -9,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.zendalona.mathsmanthra.R
+import com.zendalona.mathsmanthra.databinding.DialogResultBinding
 import com.zendalona.mathsmanthra.databinding.FragmentQuickPlayBinding
 import com.zendalona.mathsmanthra.utility.settings.DifficultyPreferences
 import java.io.IOException
@@ -23,12 +26,28 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
 
     private lateinit var tts: TextToSpeech
     private var questionList = mutableListOf<Pair<String, Int>>() // (displayed question, answer)
-    private var rawQuestions = mutableListOf<String>() // Raw question strings to parse dynamically
+    private var rawQuestions = mutableListOf<String>()
+    private val wrongQuestionsSet = mutableSetOf<Int>()  // track wrong questions by index
+    private var currentQuestionAttempts = 0  // attempts for current question
+    // Raw question strings to parse dynamically
     private var currentIndex = -1
-    private var score = 0
+    private var totalScore = 0
+    private var totalQuestions = 0
     private lateinit var difficulty: String
     private var startTime: Long = 0
+    private var currentQuestionTimeLimit = 60 // default seconds
     private var mediaPlayer: MediaPlayer? = null
+
+
+    // Grading points map
+    private val gradePoints = mapOf(
+        "Excellent" to 50,
+        "Very Good" to 40,
+        "Good" to 30,
+        "Fair" to 20,
+        "Okay" to 10,
+        "Wrong Answer" to -10
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +70,7 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
 
     private fun loadRawQuestionsFromAssets() {
         val filename = "quickplay/landingpage/quickplay_${difficulty.lowercase(Locale.ROOT)}.txt"
-        Log.d("QuickPlay", "Trying to open asset file: $filename")
+        Log.d("QuickPlay", "Loading questions from asset file: $filename")
 
         try {
             val inputStream = requireContext().assets.open(filename)
@@ -64,7 +83,7 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
 
                 val parts = line.split("===")
                 if (parts.size < 3) {
-                    Log.w("QuickPlay", "Skipping line $index: Invalid format")
+                    Log.w("QuickPlay", "Skipping invalid line $index")
                     continue
                 }
 
@@ -180,12 +199,13 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
 
     private fun loadNextQuestion() {
         currentIndex++
+        currentQuestionAttempts = 0  // reset attempts for new question
+
         if (currentIndex >= rawQuestions.size) {
             endGame()
             return
         }
 
-        // Parse the raw question line: expression === time === bellFlag
         val parts = rawQuestions[currentIndex].split("===")
         if (parts.size < 3) {
             Toast.makeText(requireContext(), "Invalid question format", Toast.LENGTH_SHORT).show()
@@ -197,41 +217,82 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
         val timeLimit = parts[1].trim().toIntOrNull() ?: 20
         val soundFlag = parts[2].trim().toIntOrNull() ?: 0
 
-        // Parse expression, generate actual question and correct answer
         val (questionText, correctAnswer) = parseExpression(rawExpression)
 
-        // Store this generated question and answer for checking later
         if (questionList.size > currentIndex) {
             questionList[currentIndex] = questionText to correctAnswer
         } else {
             questionList.add(questionText to correctAnswer)
         }
 
-        // Show question and start timer
         binding.questionTv.text = questionText
         speakQuestion(questionText)
         binding.answerEt.text?.clear()
         startTime = System.currentTimeMillis()
+        currentQuestionTimeLimit = timeLimit
+        totalQuestions = rawQuestions.size
 
         Log.d("QuickPlay", "Question #$currentIndex: $questionText = $correctAnswer (Time limit: $timeLimit s, Sound flag: $soundFlag)")
     }
+
 
     private fun checkAnswer() {
         if (currentIndex >= questionList.size) return
 
         val userInput = binding.answerEt.text.toString().toIntOrNull()
         val correctAnswer = questionList[currentIndex].second
+        val elapsedTimeMs = System.currentTimeMillis() - startTime
+        val elapsedSeconds = elapsedTimeMs / 1000.0
 
         if (userInput == correctAnswer) {
-            score++
+            val grade = getGrade(elapsedSeconds, currentQuestionTimeLimit.toDouble(), true)
+            val points = gradePoints[grade] ?: 0
+            totalScore += points
             playSound("correct")
-            Toast.makeText(requireContext(), "Correct!", Toast.LENGTH_SHORT).show()
+
+            showResultDialog(grade, true) {
+                loadNextQuestion()
+            }
+
         } else {
             playSound("wrong")
-            Toast.makeText(requireContext(), "Wrong! Correct answer: $correctAnswer", Toast.LENGTH_SHORT).show()
-        }
+            currentQuestionAttempts++
 
-        loadNextQuestion()
+            if (currentQuestionAttempts < 3) {
+                val message = "Wrong! Try again. Attempt $currentQuestionAttempts of 3."
+                showCustomRetryDialog(message) {
+                    binding.answerEt.text?.clear()
+                }
+            } else {
+                // 3 wrong attempts
+                val points = gradePoints["Wrong Answer"] ?: 0
+                totalScore += points
+                wrongQuestionsSet.add(currentIndex)
+
+                val message = "Wrong! The correct answer is $correctAnswer"
+
+                showCustomRetryDialog(message) {
+                    if (wrongQuestionsSet.size >= 4) {
+                        endGame()
+                    } else {
+                        loadNextQuestion()
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun getGrade(elapsedTime: Double, allottedTime: Double, isCorrect: Boolean): String {
+        if (!isCorrect) return "Wrong Answer"
+
+        return when {
+            elapsedTime <= allottedTime * 0.5 -> "Excellent"
+            elapsedTime <= allottedTime * 0.75 -> "Very Good"
+            elapsedTime <= allottedTime -> "Good"
+            elapsedTime <= allottedTime * 1.25 -> "Fair"
+            else -> "Okay"
+        }
     }
 
     private fun playSound(name: String) {
@@ -259,15 +320,101 @@ class QuickPlayFragment : Fragment(), TextToSpeech.OnInitListener {
         tts.speak(spokenText, TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
+    private fun showResultDialog(grade: String, isCorrect: Boolean, onContinue: () -> Unit) {
+        val message = when (grade) {
+            "Excellent", "Very Good", "Good", "Fair", "Okay" -> "$grade Answer"
+            else -> "Wrong Answer"
+        }
+        val gifResource = when (grade) {
+            "Excellent" -> R.drawable.right
+            "Very Good" -> R.drawable.right
+            "Good" -> R.drawable.right
+            "Fair" -> R.drawable.right
+            "Okay" -> R.drawable.right
+            else -> R.drawable.wrong
+        }
+
+        tts.speak(message, TextToSpeech.QUEUE_FLUSH, null, null)
+
+        val inflater = layoutInflater
+        val dialogBinding = DialogResultBinding.inflate(inflater)
+        val dialogView = dialogBinding.root
+
+        Glide.with(this)
+            .asGif()
+            .load(gifResource)
+            .into(dialogBinding.gifImageView)
+
+        dialogBinding.messageTextView.text = message
+
+        AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("Continue") { dialog, _ ->
+                dialog.dismiss()
+                onContinue()
+            }
+            .create()
+            .show()
+    }
+
+    private fun showCustomRetryDialog(message: String, onContinue: () -> Unit) {
+        val inflater = layoutInflater
+        val dialogBinding = DialogResultBinding.inflate(inflater)
+        val dialogView = dialogBinding.root
+
+        val gifResource = if (message.startsWith("Wrong! The correct answer")) {
+            R.drawable.wrong // show wrong answer gif
+        } else {
+            R.drawable.wrong // Add a new GIF for retry feedback
+        }
+
+        tts.speak(message, TextToSpeech.QUEUE_FLUSH, null, null)
+
+        Glide.with(this)
+            .asGif()
+            .load(gifResource)
+            .into(dialogBinding.gifImageView)
+
+        dialogBinding.messageTextView.text = message
+
+        AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .setPositiveButton("Continue") { dialog, _ ->
+                dialog.dismiss()
+                onContinue()
+            }
+            .create()
+            .show()
+    }
+
     private fun endGame() {
-        Toast.makeText(requireContext(), "Quiz Over! Your score: $score", Toast.LENGTH_LONG).show()
-        speakQuestion("Quiz over! Your score is $score")
+        val maxPossibleScore = 50 * totalQuestions
+        val finalPercentage = if (maxPossibleScore > 0) {
+            (totalScore.toDouble() * 100) / maxPossibleScore
+        } else 0.0
+
+        Toast.makeText(requireContext(), "Quiz Over! Score: $totalScore, Grade: ${"%.2f".format(finalPercentage)}%", Toast.LENGTH_LONG).show()
+        speakQuestion("Quiz over! Your final score is $totalScore")
+
+        // Pass data to ResultFragment
+        val bundle = Bundle().apply {
+            putInt("score", totalScore)
+            putInt("totalQuestions", totalQuestions)
+            putDouble("percentage", finalPercentage)
+        }
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, EndScoreFragment::class.java, bundle)
+            .commit()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         mediaPlayer?.release()
+        mediaPlayer = null
         tts.shutdown()
     }
 
