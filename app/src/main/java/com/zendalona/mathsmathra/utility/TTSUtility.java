@@ -1,75 +1,77 @@
 package com.zendalona.mathsmathra.utility;
 
-
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.preference.PreferenceManager;
+import android.util.Log;
 
+import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Queue;
 
 public class TTSUtility {
 
     private TextToSpeech tts;
     private boolean isInitialized = false;
-    private final SharedPreferences prefs;
+    private float speechRate = 1.0f; // default
+    private final Queue<String> speechQueue = new LinkedList<>();
 
     public TTSUtility(Context context) {
-        prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-        tts = new TextToSpeech(context, status -> {
+        Log.d("TTSUtility", "Initializing TTS");
+        tts = new TextToSpeech(context.getApplicationContext(), status -> {
             if (status == TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(Locale.forLanguageTag("en-IN"));
-                isInitialized = result != TextToSpeech.LANG_MISSING_DATA &&
-                        result != TextToSpeech.LANG_NOT_SUPPORTED;
-
+                isInitialized = (result != TextToSpeech.LANG_MISSING_DATA &&
+                        result != TextToSpeech.LANG_NOT_SUPPORTED);
                 if (isInitialized) {
-                    // Apply initial settings
-                    applyTTSPreferences();
+                    tts.setSpeechRate(speechRate);
+                    Log.d("TTSUtility", "TTS initialized successfully with speech rate " + speechRate);
+
+                    // Speak queued texts
+                    while (!speechQueue.isEmpty()) {
+                        speakInternal(speechQueue.poll());
+                    }
+                } else {
+                    Log.e("TTSUtility", "TTS language not supported");
                 }
+            } else {
+                Log.e("TTSUtility", "TTS initialization failed");
             }
         });
     }
 
-    private void applyTTSPreferences() {
-        float speed = prefs.getFloat("tts_speed", 1.0f);
-        float volume = prefs.getFloat("tts_volume", 1.0f); // 0.0 to 1.0
+    public void setSpeechRate(float rate) {
+        speechRate = Math.max(0.5f, Math.min(rate, 3.0f)); // clamp between 0.5 and 3.0
+        if (isInitialized) {
+            tts.setSpeechRate(speechRate);
+            Log.d("TTSUtility", "Speech rate set to " + speechRate);
+        } else {
+            Log.d("TTSUtility", "Speech rate will be set after initialization: " + speechRate);
+        }
+    }
 
-        tts.setSpeechRate(speed);
-        // Volume is set during speak, not here
+    public float getSpeechRate() {
+        return speechRate;
     }
 
     public void speak(String text) {
         if (isInitialized) {
-            float volume = prefs.getFloat("tts_volume", 1.0f);
-            Bundle params = new Bundle();
-            params.putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, volume);
-            tts.speak(text, TextToSpeech.QUEUE_FLUSH, params, null);
+            speakInternal(text);
+        } else {
+            Log.w("TTSUtility", "TTS not initialized yet, queuing text: " + text);
+            speechQueue.add(text);
         }
     }
 
-    public void stopSpeaking() {
-        if (tts != null && tts.isSpeaking()) {
-            tts.stop();
-        }
-    }
-
-    public void setSpeechRate(float rate) {
-        if (tts != null) {
-            tts.setSpeechRate(rate);
-            prefs.edit().putFloat("tts_speed", rate).apply();
-        }
-    }
-
-    public void setVolume(float volume) {
-        // Note: TTS volume is not persistent across `speak()` calls unless set during speak
-        prefs.edit().putFloat("tts_volume", volume).apply();
+    private void speakInternal(String text) {
+        tts.setSpeechRate(speechRate);
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "utteranceId");
+        Log.d("TTSUtility", "Speaking: " + text + " at rate " + speechRate);
     }
 
     public void stop() {
-        if (tts != null) {
+        if (tts != null && tts.isSpeaking()) {
             tts.stop();
+            Log.d("TTSUtility", "Stopped speaking");
         }
     }
 
@@ -77,6 +79,7 @@ public class TTSUtility {
         if (tts != null) {
             tts.stop();
             tts.shutdown();
+            Log.d("TTSUtility", "TTS shut down");
         }
     }
 }

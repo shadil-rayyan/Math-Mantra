@@ -3,7 +3,7 @@ package com.zendalona.mathsmathra.ui
 import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,22 +12,23 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmathra.R
 import com.zendalona.mathsmathra.databinding.FragmentLandingPageBinding
+import com.zendalona.mathsmathra.utility.TTSUtility
 import com.zendalona.mathsmathra.utility.settings.BackgroundMusicPlayer
-import java.util.Locale
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
 }
 
-class LandingPageFragment : Fragment(), TextToSpeech.OnInitListener {
+class LandingPageFragment : Fragment() {
 
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!
 
     private var navigationListener: FragmentNavigation? = null
 
-    private lateinit var backgroundMusicPlayer: BackgroundMusicPlayer
-    private var tts: TextToSpeech? = null
+    private lateinit var ttsUtility: TTSUtility
+
+    private val prefs by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,50 +46,43 @@ class LandingPageFragment : Fragment(), TextToSpeech.OnInitListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.GONE
 
-        // Initialize BackgroundMusicPlayer
-        backgroundMusicPlayer = BackgroundMusicPlayer(requireContext())
+        BackgroundMusicPlayer.initialize(requireContext())
 
-        // Initialize TextToSpeech
-        tts = TextToSpeech(requireContext(), this)
+        ttsUtility = TTSUtility(requireContext())
 
-        // Start music if enabled in preferences
-        val prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val speechRate = prefs.getFloat("tts_speed", 1.0f)
+        ttsUtility.setSpeechRate(speechRate)
+
+        Log.d("LandingPageFragment", "music_enabled: ${prefs.getBoolean("music_enabled", false)}")
+
         if (prefs.getBoolean("music_enabled", false)) {
-            backgroundMusicPlayer.startMusic()
-        }
-    }
-
-    override fun onInit(status: Int) {
-        if (status == TextToSpeech.SUCCESS) {
-            tts?.language = Locale.getDefault()
-
-            // Speak a welcome message as a test
-            tts?.speak("Welcome to the landing page", TextToSpeech.QUEUE_FLUSH, null, "welcome_msg")
+            BackgroundMusicPlayer.startMusic()
         } else {
-            // Handle initialization failure if needed
+            BackgroundMusicPlayer.pauseMusic()
         }
+
+        ttsUtility.speak("Welcome to the landing page")
     }
 
     override fun onPause() {
         super.onPause()
-        // Pause music and stop TTS when fragment is paused
-        backgroundMusicPlayer.pauseMusic()
-        tts?.stop()
+        BackgroundMusicPlayer.pauseMusic()
+        ttsUtility.stop()
+        Log.d("LandingPageFragment", "onPause: music paused, TTS stopped")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.VISIBLE
 
-        // Stop music and shutdown TTS when fragment destroyed
-        backgroundMusicPlayer.stopMusic()
-
-        tts?.shutdown()
-        tts = null
-
+        BackgroundMusicPlayer.stopMusic()
+        ttsUtility.shutdown()
         _binding = null
+
+        Log.d("LandingPageFragment", "onDestroyView: music stopped, TTS shutdown")
     }
 
     override fun onAttach(context: Context) {
