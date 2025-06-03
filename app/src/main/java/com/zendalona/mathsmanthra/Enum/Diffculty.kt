@@ -1,4 +1,4 @@
-package com.zendalona.mathsmanthra.Enum;
+package com.zendalona.mathsmanthra.Enum
 
 object Difficulty {
     const val EASY = "easy"

@@ -41,6 +41,10 @@ class LandingPageFragment : Fragment() {
         binding.settings.setOnClickListener {
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+        binding.quickplay.setOnClickListener {
+            navigationListener?.loadFragment(QuickPlayFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        }
+
 
         return binding.root
     }

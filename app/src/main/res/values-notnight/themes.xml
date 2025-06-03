@@ -1,4 +1,4 @@
-<!-- res/values/themes.xml -->
+<!-- res/values-notnight/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.MathsManthra" parent="Theme.Material3.DayNight.NoActionBar">
 
@@ -8,7 +8,7 @@
 
         <!-- secondary screen colors -->
         <item name="colorSecondary">@color/light_activity_bar</item>
-        <item name="colorOnSecondary">@color/light_activity_bar_text</item>
+        <item name="colorOnSecondary">@color/dark_activity_bar_text</item>
 
         <!-- General screen colors -->
         <item name="colorTertiary">@color/light_dark_landing_button</item>

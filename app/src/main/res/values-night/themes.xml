@@ -8,7 +8,7 @@
 
         <!-- secondary screen colors -->
         <item name="colorSecondary">@color/dark_activity_bar</item>
-        <item name="colorOnSecondary">@color/dark_activity_bar_text</item>
+        <item name="colorOnSecondary">@color/light_activity_bar_text</item>
 
         <!-- General screen colors -->
         <item name="colorTertiary">@color/light_dark_landing_button</item>

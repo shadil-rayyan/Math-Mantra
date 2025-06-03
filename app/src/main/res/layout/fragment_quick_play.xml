@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorOnBackground"
+    android:background="?attr/colorSecondary"
     android:padding="24dp">
 
     <com.google.android.material.card.MaterialCardView
@@ -44,20 +44,23 @@
                 app:boxCornerRadiusTopStart="16dp"
                 app:boxCornerRadiusTopEnd="16dp"
                 app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp">
+                app:boxCornerRadiusBottomEnd="16dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/answer_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="enter the answer"
-                    android:textColor="?attr/colorSurface"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/answer_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:padding="16dp"
+                android:hint="Enter the answer"
+                android:inputType="number"
+                android:textColor="?attr/colorOnSecondary" />
+
 
             <!-- Submit Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/submit_answer_btn"
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="submit"
@@ -65,7 +68,8 @@
                 android:textColor="@android:color/white"
                 android:backgroundTint="?attr/colorPrimary"
                 android:textSize="18sp"
-                 />
+                />
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
