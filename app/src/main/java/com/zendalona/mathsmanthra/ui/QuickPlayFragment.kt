@@ -37,26 +37,38 @@ class QuickPlayFragment : Fragment() {
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var ttsUtility: TTSUtility
 
+    private var questionCategory: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Get category from arguments or default to "default"
+        questionCategory = arguments?.getString(ARG_CATEGORY) ?: "default"
+
         ttsUtility = TTSUtility(requireContext())
         difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        loadRawQuestionsFromAssets()
+
+        loadRawQuestionsFromAssets(questionCategory!!)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentQuickPlayBinding.inflate(inflater, container, false)
         binding.submitAnswerBtn.setOnClickListener { checkAnswer() }
         loadNextQuestion()
         return binding.root
     }
 
-    private fun loadRawQuestionsFromAssets() {
-        val filename = "quickplay/landingpage/quickplay_${difficulty.lowercase(Locale.ROOT)}.txt"
+    private fun loadRawQuestionsFromAssets(category: String) {
+        val filename = "quickplay/$category/quickplay_${difficulty.lowercase(Locale.ROOT)}.txt"
         try {
             val lines = requireContext().assets.open(filename).bufferedReader().readLines()
             rawQuestions.clear()
             for (line in lines) {
+                // Each line must have at least 3 parts separated by "==="
                 if (line.isNotBlank() && line.split("===").size >= 3) {
                     rawQuestions.add(line.trim())
                 }
@@ -82,6 +94,7 @@ class QuickPlayFragment : Fragment() {
         val rawExpression = parts[0].trim()
         val timeLimit = parts[1].trim().toIntOrNull() ?: 20
 
+        // Use your existing parser
         val (questionText, correctAnswer) = QuestionParser.parseExpression(rawExpression)
 
         if (questionList.size > currentIndex) {
@@ -92,7 +105,6 @@ class QuickPlayFragment : Fragment() {
 
         binding.questionTv.text = questionText
 
-        // Speak the question using your TTSUtility and helper formatting
         val spokenQuestion = TTSHelper.formatMathText(questionText)
         ttsUtility.speak(spokenQuestion)
 
@@ -196,5 +208,17 @@ class QuickPlayFragment : Fragment() {
         mediaPlayer?.release()
         mediaPlayer = null
         ttsUtility.shutdown()
+    }
+
+    companion object {
+        private const val ARG_CATEGORY = "question_category"
+
+        fun newInstance(category: String): QuickPlayFragment {
+            val fragment = QuickPlayFragment()
+            val args = Bundle()
+            args.putString(ARG_CATEGORY, category)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

@@ -7,8 +7,8 @@ object QuestionParser {
 
     fun parseExpression(expr: String): Pair<String, Int> {
         val strategy: ParserStrategy = when {
-//            expr.startsWith("mean:", true) -> MeanParser()
-//            expr.startsWith("mode:", true) -> ModeParser()
+            expr.startsWith("ratio:", true) -> RatioProportionParser()
+            expr.startsWith("convert:", true) -> UnitConversionParser()
 //            expr.startsWith("prob:", true) -> ProbabilityParser()
             else -> ArithmeticParser()
         }
