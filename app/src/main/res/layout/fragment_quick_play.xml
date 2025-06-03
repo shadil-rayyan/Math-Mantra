@@ -27,7 +27,7 @@
                 android:id="@+id/question_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Arjun has 5 apples and Mithra has 2 apples. How many apples do they have?"
+                android:text="@string/sample_story_question"
                 android:textSize="18sp"
                 android:textColor="?attr/colorOnSecondary"
                 android:gravity="center"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
                 android:padding="16dp"
-                android:hint="Enter the answer"
+                android:hint="@string/content_answer_field"
                 android:inputType="number"
                 android:textColor="?attr/colorOnSecondary" />
 
@@ -63,7 +63,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="submit"
+                android:text="@string/submit"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:backgroundTint="?attr/colorPrimary"
@@ -77,7 +77,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="© 2025 Maths Manthra. All rights reserved."
+        android:text="@string/footer"
         android:textColor="?attr/colorOutline"
         android:textSize="12sp"
         android:gravity="center"
