@@ -1,4 +1,4 @@
-package com.example.codecompass.mathsmathra
+package com.example.codecompass.mathsmanthra
 
 import org.junit.Test
 

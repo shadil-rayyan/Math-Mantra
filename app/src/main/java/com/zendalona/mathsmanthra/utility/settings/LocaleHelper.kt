@@ -1,11 +1,11 @@
-package com.zendalona.mathsmathra.utility.settings
+package com.zendalona.mathsmanthra.utility.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.preference.PreferenceManager
 import java.util.Locale
+
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
@@ -15,7 +15,11 @@ object LocaleHelper {
         return prefs.getString(SELECTED_LANGUAGE, Locale.getDefault().language) ?: Locale.getDefault().language
     }
 
-    fun setLocale(context: Context, language: String): Context {
+    fun setLocale(context: Context, language: String?): Context {
+        if (language == null || language == "default") {
+            clearLanguage(context)
+            return updateResources(context, Locale.getDefault().language)
+        }
         persistLanguage(context, language)
         return updateResources(context, language)
     }
@@ -30,6 +34,11 @@ object LocaleHelper {
         prefs.edit().putString(SELECTED_LANGUAGE, language).apply()
     }
 
+    private fun clearLanguage(context: Context) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        prefs.edit().remove(SELECTED_LANGUAGE).apply()
+    }
+
     private fun updateResources(context: Context, language: String): Context {
         val locale = Locale(language)
         Locale.setDefault(locale)
@@ -42,7 +51,9 @@ object LocaleHelper {
             config.setLayoutDirection(locale)
             return context.createConfigurationContext(config)
         } else {
+            @Suppress("DEPRECATION")
             config.locale = locale
+            @Suppress("DEPRECATION")
             res.updateConfiguration(config, res.displayMetrics)
             return context
         }

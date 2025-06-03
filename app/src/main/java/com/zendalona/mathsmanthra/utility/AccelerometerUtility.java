@@ -1,4 +1,4 @@
-package com.zendalona.mathsmathra.utility;
+package com.zendalona.mathsmanthra.utility;
 
 import android.content.Context;
 import android.hardware.Sensor;

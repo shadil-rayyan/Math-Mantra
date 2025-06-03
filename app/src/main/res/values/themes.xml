@@ -7,8 +7,8 @@
         <item name="colorOnPrimary">@color/light_purple_button_text</item>
 
         <!-- secondary screen colors -->
-        <item name="colorSecondary">@color/light_screen_background</item>
-        <item name="colorOnSecondary">@color/light_screen_background</item>
+        <item name="colorSecondary">@color/light_activity_bar</item>
+        <item name="colorOnSecondary">@color/light_activity_bar_text</item>
 
         <!-- General screen colors -->
         <item name="colorTertiary">@color/light_dark_landing_button</item>
@@ -25,6 +25,10 @@
 
         <!-- System status bar color -->
         <item name="android:statusBarColor">@color/light_activity_bar</item>
+        <item name="colorControlActivated">@color/light_purple_button</item>
+
+        <item name="colorError">@color/light_red_button</item>
+
 
     </style>
 </resources>

@@ -1,8 +1,8 @@
-package com.zendalona.mathsmathra.utility.settings;
+package com.zendalona.mathsmanthra.utility.settings;
 
 import android.content.Context
 import android.preference.PreferenceManager
-import com.zendalona.mathsmathra.Enum.Difficulty
+import com.zendalona.mathsmanthra.Enum.Difficulty
 object DifficultyPreferences {
 
     private const val KEY_DIFFICULTY = "pref_difficulty"

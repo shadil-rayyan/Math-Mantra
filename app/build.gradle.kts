@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zendalona.mathsmathra"
+    namespace = "com.zendalona.mathsmanthra"
     compileSdk = 35
 
     defaultConfig {

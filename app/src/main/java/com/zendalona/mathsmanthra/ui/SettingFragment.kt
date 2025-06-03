@@ -1,4 +1,4 @@
-package com.zendalona.mathsmathra.ui
+package com.zendalona.mathsmanthra.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -11,14 +11,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import com.zendalona.mathsmathra.Enum.Difficulty
-import com.zendalona.mathsmathra.R
-import com.zendalona.mathsmathra.databinding.FragmentSettingsBinding
-import com.zendalona.mathsmathra.utility.TTSUtility
-import com.zendalona.mathsmathra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.mathsmathra.utility.settings.DifficultyPreferences
-import com.zendalona.mathsmathra.utility.settings.LocaleHelper
-import java.util.Locale
+import com.zendalona.mathsmanthra.Enum.Difficulty
+import com.zendalona.mathsmanthra.utility.settings.BackgroundMusicPlayer
+import com.zendalona.mathsmanthra.utility.settings.DifficultyPreferences
+import com.zendalona.mathsmanthra.utility.settings.LocaleHelper
+import com.zendalona.mathsmanthra.utility.settings.TTSUtility
+import com.zendalona.mathsmanthra.R
+import com.zendalona.mathsmanthra.databinding.FragmentSettingsBinding
 
 class SettingFragment : Fragment() {
 
@@ -34,6 +33,8 @@ class SettingFragment : Fragment() {
         1 to "en",
         2 to "ml"
     )
+
+    private var languageSpinnerInitialized = false  // prevent initial callback
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -79,16 +80,21 @@ class SettingFragment : Fragment() {
 
         binding.languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                val selectedLangCode = languageCodeMap[position] ?: Locale.getDefault().language
+                if (!languageSpinnerInitialized) {
+                    languageSpinnerInitialized = true
+                    return
+                }
+
+                val selectedLangCode = languageCodeMap[position]
                 val currentLang = LocaleHelper.getLanguage(requireContext())
 
-                if (selectedLangCode != currentLang && selectedLangCode != "default") {
+                if (selectedLangCode == "default") {
+                    LocaleHelper.setLocale(requireContext(), null)
+                    prefsEditor.remove("Locale.Helper.Selected.Language").apply()
+                    requireActivity().recreate()
+                } else if (selectedLangCode != null && selectedLangCode != currentLang) {
                     LocaleHelper.setLocale(requireContext(), selectedLangCode)
                     prefsEditor.putString("Locale.Helper.Selected.Language", selectedLangCode).apply()
-                    requireActivity().recreate()
-                } else if (selectedLangCode == "default") {
-                    LocaleHelper.setLocale(requireContext(), Locale.getDefault().language)
-                    prefsEditor.remove("Locale.Helper.Selected.Language").apply()
                     requireActivity().recreate()
                 }
             }
@@ -150,7 +156,6 @@ class SettingFragment : Fragment() {
                 prefsEditor.putFloat("tts_speed", speechRate).apply()
                 binding.speechRateValue.text = String.format("%.1f", speechRate)
                 ttsUtility.setSpeechRate(speechRate)
-                ttsUtility.speak("Speech rate increased")
                 Log.d("SettingFragment", "Speech rate increased to $speechRate")
             }
         }
@@ -162,7 +167,6 @@ class SettingFragment : Fragment() {
                 prefsEditor.putFloat("tts_speed", speechRate).apply()
                 binding.speechRateValue.text = String.format("%.1f", speechRate)
                 ttsUtility.setSpeechRate(speechRate)
-                ttsUtility.speak("Speech rate decreased")
                 Log.d("SettingFragment", "Speech rate decreased to $speechRate")
             }
         }
@@ -202,7 +206,6 @@ class SettingFragment : Fragment() {
 
     private fun setupResetButton() {
         binding.resetSettingsButton.setOnClickListener {
-            // Reset all prefs
             prefsEditor.putBoolean("music_enabled", false)
             prefsEditor.putFloat("tts_speed", 1.0f)
             prefsEditor.putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_NO)
@@ -210,7 +213,6 @@ class SettingFragment : Fragment() {
             DifficultyPreferences.setDifficulty(requireContext(), Difficulty.EASY)
             prefsEditor.apply()
 
-            // Reset UI controls
             binding.backgroundMusicToggle.isChecked = false
             binding.speechRateValue.text = "1.0"
             ttsUtility.setSpeechRate(1.0f)
@@ -219,10 +221,10 @@ class SettingFragment : Fragment() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
             binding.languageSpinner.setSelection(0)
+            languageSpinnerInitialized = false
 
             binding.difficultyEasy.isChecked = true
 
-            ttsUtility.speak("Settings reset to default")
             BackgroundMusicPlayer.pauseMusic()
 
             Log.d("SettingFragment", "Settings reset to defaults")

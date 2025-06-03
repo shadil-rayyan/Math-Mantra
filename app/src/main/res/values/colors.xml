@@ -8,6 +8,7 @@
     <!-- secondary colour  activity bar top and text for question insdie the surface -->
     <color name="light_activity_bar">#FFFFFF</color>
     <color name="light_activity_bar_text">#FFFFFF</color>
+
     <color name="dark_activity_bar">#212121</color>
     <color name="dark_activity_bar_text">#212121</color>
 
@@ -20,8 +21,8 @@
     <color name="light_red_button_text">#FFFFFF</color>
 
     <!-- surface colour  card colour -->
-    <color name="light_surface">#E53935</color>
-    <color name="dark_surface">#FFFFFF</color>
+    <color name="light_surface">#FFFFFF</color>
+    <color name="dark_surface">#212121</color>
 
 
     <!-- colour on background and subittle text  -->

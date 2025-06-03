@@ -1,9 +1,10 @@
-package com.zendalona.mathsmathra.utility.settings
+package com.zendalona.mathsmanthra.utility.settings
 
 import android.content.Context
 import android.media.MediaPlayer
 import android.util.Log
-import com.zendalona.mathsmathra.R
+import com.zendalona.mathsmanthra.R
+
 
 object BackgroundMusicPlayer {
 

@@ -1,4 +1,4 @@
-package com.zendalona.mathsmathra.ui
+package com.zendalona.mathsmanthra.ui
 
 import android.content.Context
 import android.os.Bundle
@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.mathsmathra.R
-import com.zendalona.mathsmathra.databinding.FragmentLandingPageBinding
-import com.zendalona.mathsmathra.utility.TTSUtility
-import com.zendalona.mathsmathra.utility.settings.BackgroundMusicPlayer
+import com.zendalona.mathsmanthra.utility.settings.BackgroundMusicPlayer
+import com.zendalona.mathsmanthra.utility.settings.TTSUtility
+import com.zendalona.mathsmanthra.R
+import com.zendalona.mathsmanthra.databinding.FragmentLandingPageBinding
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
@@ -37,6 +37,7 @@ class LandingPageFragment : Fragment() {
     ): View {
         _binding = FragmentLandingPageBinding.inflate(inflater, container, false)
 
+        // Navigate to SettingFragment when clicking settings button
         binding.settings.setOnClickListener {
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
@@ -47,6 +48,7 @@ class LandingPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Hide toolbar on landing page
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.GONE
 
         BackgroundMusicPlayer.initialize(requireContext())
@@ -76,6 +78,7 @@ class LandingPageFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Show toolbar again when leaving landing page
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.VISIBLE
 
         BackgroundMusicPlayer.stopMusic()

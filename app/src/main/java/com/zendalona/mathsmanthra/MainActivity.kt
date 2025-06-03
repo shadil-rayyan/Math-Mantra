@@ -1,13 +1,14 @@
-package com.zendalona.mathsmathra
+package com.zendalona.mathsmanthra
 
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.mathsmathra.ui.FragmentNavigation
-import com.zendalona.mathsmathra.ui.LandingPageFragment
-import com.zendalona.mathsmathra.utility.settings.LocaleHelper
+import com.zendalona.mathsmanthra.ui.FragmentNavigation
+import com.zendalona.mathsmanthra.ui.LandingPageFragment
+import com.zendalona.mathsmanthra.utility.settings.LocaleHelper
+import com.zendalona.mathsmanthra.R
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 
@@ -23,6 +24,13 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
+        // Show/hide back button depending on back stack
+        supportFragmentManager.addOnBackStackChangedListener {
+            val canGoBack = supportFragmentManager.backStackEntryCount > 0
+            supportActionBar?.setDisplayHomeAsUpEnabled(canGoBack)
+        }
+
+        // Load landing page initially without backstack
         if (savedInstanceState == null) {
             val landingPageFragment = LandingPageFragment()
             supportFragmentManager.beginTransaction()
@@ -31,11 +39,22 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         }
     }
 
+    // Handle toolbar back button pressed
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     override fun loadFragment(fragment: Fragment, transit: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .setTransition(transit)
-            .addToBackStack(null)
+            .addToBackStack(null)  // important: add to back stack to enable back button
             .commit()
+    }
+
+    // Optional: function to update toolbar title from fragments
+    fun updateToolbarTitle(title: String) {
+        supportActionBar?.title = title
     }
 }

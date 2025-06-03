@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="?android:colorBackground">
+    android:background="?attr/colorOnBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/contrast_default"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:checked="true"
                 android:contentDescription="@string/contrast_default_desc"/>
 
@@ -254,7 +254,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/contrast_white_on_black"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:contentDescription="@string/contrast_white_on_black_desc"/>
 
             <RadioButton
@@ -263,7 +263,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/contrast_black_on_white"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:contentDescription="@string/contrast_black_on_white_desc"/>
         </RadioGroup>
 
@@ -296,7 +296,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/difficulty_easy"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:contentDescription="@string/difficulty_easy_desc"/>
 
             <RadioButton
@@ -305,7 +305,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/difficulty_medium"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:checked="true"
                 android:contentDescription="@string/difficulty_medium_desc"/>
 
@@ -315,7 +315,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/difficulty_hard"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorPrimary"
+                android:background="?attr/colorTertiary"
                 android:contentDescription="@string/difficulty_hard_desc"/>
         </RadioGroup>
 

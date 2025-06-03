@@ -1,4 +1,4 @@
-package com.example.codecompass.mathsmathra
+package com.example.codecompass.mathsmanthra
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
