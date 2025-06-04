@@ -14,7 +14,7 @@ import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
-import com.zendalona.mathsmantra.utility.settings.TTSUtility
+import com.zendalona.mathsmantra.utility.common.TTSUtility
 import java.io.IOException
 import java.util.*
 

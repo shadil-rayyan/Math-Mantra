@@ -15,7 +15,7 @@ import com.zendalona.mathsmantra.Enum.Difficulty
 import com.zendalona.mathsmantra.utility.settings.BackgroundMusicPlayer
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-import com.zendalona.mathsmantra.utility.settings.TTSUtility
+import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
 

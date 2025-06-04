@@ -4,7 +4,7 @@ import android.app.Application
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-class MathsManthra : Application() {
+class MathsMantra : Application() {
     override fun onCreate() {
         super.onCreate()
 

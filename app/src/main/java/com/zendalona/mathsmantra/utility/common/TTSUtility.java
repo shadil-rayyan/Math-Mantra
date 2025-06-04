@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.utility.settings;
+package com.zendalona.mathsmantra.utility.common;
 
 import android.content.Context;
 import android.speech.tts.TextToSpeech;

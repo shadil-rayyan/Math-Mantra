@@ -1,6 +1,6 @@
 <!-- res/values-notnight/themes.xml -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.MathsManthra" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.MathsMantra" parent="Theme.Material3.DayNight.NoActionBar">
 
         <!-- General screen colors -->
         <item name="colorPrimary">@color/light_purple_button</item>

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
-import com.zendalona.mathsmantra.utility.settings.TTSUtility
 
 object DialogUtils {
 

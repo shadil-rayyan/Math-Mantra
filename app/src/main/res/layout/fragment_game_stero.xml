@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/background"
+    android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true"
     >
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             app:boxBackgroundMode="outline"
             android:textColor="?attr/colorPrimary"
-            app:boxBackgroundColor="?attr/background"
+            app:boxBackgroundColor="?attr/colorSurface"
             android:importantForAccessibility="yes"
             android:contentDescription="Answer input field. Type your answer here."
             android:hint="Enter your answer"
@@ -70,7 +70,6 @@
                 android:backgroundTint="?attr/colorPrimary"
                 android:importantForAccessibility="yes"
                 android:inputType="number"
-                android:contentDescription="Enter your answer in numbers only. Example: 5 or 10."
                 android:accessibilityLiveRegion="polite"/>
         </com.google.android.material.textfield.TextInputLayout>
 

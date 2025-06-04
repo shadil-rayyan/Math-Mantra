@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmantra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.mathsmantra.utility.settings.TTSUtility
+import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentLandingPageBinding
 
@@ -44,6 +44,12 @@ class LandingPageFragment : Fragment() {
         binding.quickplay.setOnClickListener {
             val fragment = QuickPlayFragment.newInstance("landingpage")
             navigationListener?.loadFragment(fragment, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        }
+        binding.learningButton.setOnClickListener {
+            navigationListener?.loadFragment(UserGuideFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        }
+        binding.GameButton.setOnClickListener {
+            navigationListener?.loadFragment(GameFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
         binding.userGuide.setOnClickListener {
             navigationListener?.loadFragment(UserGuideFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

@@ -1,8 +1,11 @@
 package com.zendalona.mathsmantra.view;
 
+import android.accessibilityservice.AccessibilityService;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -11,9 +14,11 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
-import com.zendalona.mathmantra.MainActivity;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.utils.AccessibilityUtils;
+import com.zendalona.mathsmantra.MainActivity;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
+import com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService;
 
 public class NumberLineView extends View {
 
@@ -83,7 +88,7 @@ public class NumberLineView extends View {
 
         gap = (endX - startX) / (numberRangeEnd - numberRangeStart);
 
-        Log.d("Drawing number line range : ", numberRangeStart + " to " + numberRangeEnd);
+        int d = Log.d("Drawing number line range : ", numberRangeStart + " to " + numberRangeEnd);
         for (int number = numberRangeStart; number <= numberRangeEnd; number++) {
             float x = startX + (number - numberRangeStart) * gap;
             canvas.drawText(String.valueOf(number), x, centerY + 50f, numberPaint);
@@ -220,14 +225,30 @@ public class NumberLineView extends View {
     }
 
     public void onResume() {
-        if (talkBackEnabled && getContext() instanceof MainActivity) {
-            ((MainActivity) getContext()).disableExploreByTouch();
+        if (talkBackEnabled) {
+            // Get the context from the view and cast it to an Activity
+            Context context = getContext();
+            if (context instanceof Activity) {
+                // Access the system service for accessibility service
+                AccessibilityService accessibilityService = (AccessibilityService) ((Activity) context).getSystemService(AccessibilityService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    AccessibilityHelper.disableExploreByTouch((MathsManthraAccessibilityService) accessibilityService);
+                }
+            }
         }
     }
 
     public void onPause() {
-        if (talkBackEnabled && getContext() instanceof MainActivity) {
-            ((MainActivity) getContext()).resetExploreByTouch();
+        if (talkBackEnabled) {
+            // Get the context from the view and cast it to an Activity
+            Context context = getContext();
+            if (context instanceof Activity) {
+                // Access the system service for accessibility service
+                AccessibilityService accessibilityService = (AccessibilityService) ((Activity) context).getSystemService(AccessibilityService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    AccessibilityHelper.resetExploreByTouch((MathsManthraAccessibilityService) accessibilityService);
+                }
+            }
         }
     }
 }

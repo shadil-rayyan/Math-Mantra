@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/background"
-    tools:context=".ui.NumberLineFragment"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.game.NumberLineFragment"
     android:contentDescription="Number Line Activity. Use the buttons to move left or right on the number line to solve the math question.">
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_marginBottom="10dp" />
 
         <!-- Number Line View (Visual Only, Skipped for Accessibility) -->
-        <com.zendalona.mathmantra.ui.NumberLineView
+        <com.zendalona.mathsmantra.view.NumberLineView
             android:id="@+id/number_line_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"

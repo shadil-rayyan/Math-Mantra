@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    tools:context="com.zendalona.mathsmantra.MathsManthra"
+    tools:context="com.zendalona.mathsmantra.MathsMantra"
     >
 
 
@@ -84,6 +84,7 @@
             android:textColor="?attr/colorOnPrimary" />
 
         <Button
+            android:id="@+id/learningButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="12dp"
@@ -97,6 +98,7 @@
             android:textColor="?attr/colorOnPrimary" />
 
         <Button
+            android:id="@+id/GameButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="12dp"

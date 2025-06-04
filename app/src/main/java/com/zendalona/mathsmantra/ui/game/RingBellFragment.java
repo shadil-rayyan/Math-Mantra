@@ -13,17 +13,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentRingBellBinding;
-import com.zendalona.mathmantra.utils.AccelerometerUtility;
-import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.SoundEffectUtility;
-import com.zendalona.mathmantra.utils.TTSUtility;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameBellBinding;
+import com.zendalona.mathsmantra.utility.AccelerometerUtility;
+import com.zendalona.mathsmantra.utility.RandomValueGenerator;
+import com.zendalona.mathsmantra.utility.SoundEffectUtility;
+import com.zendalona.mathsmantra.utility.common.TTSUtility;
 
 public class RingBellFragment extends Fragment {
 
-    private FragmentRingBellBinding binding;
+    private FragmentGameBellBinding binding;
     private AccelerometerUtility accelerometerUtility;
     private SoundEffectUtility soundEffectUtility;
     private RandomValueGenerator randomValueGenerator;
@@ -49,7 +49,7 @@ public class RingBellFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentRingBellBinding.inflate(inflater, container, false);
+        binding = FragmentGameBellBinding.inflate(inflater, container, false);
         startGame();
         return binding.getRoot();
     }

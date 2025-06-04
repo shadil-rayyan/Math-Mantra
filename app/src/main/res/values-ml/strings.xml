@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">മാത്സ് മന്ത്ര</string>
     <string name="app_title">മാത്സ് മന്ത്ര</string>
+    <string name="accessibility_service_description">
+    മാത്ത്സ് മന്ത്ര ആക്സസിബിലിറ്റി സർവീസ് സ്ക്രീൻ ഉള്ളടക്കം നിരീക്ഷിച്ച് ഉച്ചത്തിൽ പ്രതികരണം നൽകുന്നതിനാൽ മികച്ച പഠന അനുഭവം നൽകാൻ സഹായിക്കുന്നു.
+</string>
+
     <string name="subtitle">ഒരു പ്രശ്നം ഒറ്റയ്ക്ക്, നിങ്ങളുടെ ഗണിതക്ഷമത വളർത്തൂ.</string>
 
     <string name="quick_play">വേഗത്തിലുള്ള കളി</string>
@@ -76,4 +80,21 @@
     <string name="submit">സമർപ്പിക്കുക</string>
     <string name="content_submit_button">നിങ്ങളുടെ ഉത്തരം സമർപ്പിക്കുക</string>
     <string name="content_answer_field">ഉത്തരം നൽകുന്ന പ്രദേശം</string>
+
+
+        <string name="bell_ring">ബെല്‍ റിംഗ്</string>
+        <string name="drum">ഡ്രം</string>
+        <string name="mcq">MCQ</string>
+        <string name="number_line">അണ്ണോ ലൈന</string>
+        <string name="mental_calculation">മാനസിക ഗണന</string>
+        <string name="angle">കോണം</string>
+        <string name="stereo_sound">സ്റ്റെറിയോ ശബ്ദം</string>
+        <string name="drawing">ചിതറല്‍</string>
+        <string name="direction">ദിശ</string>
+        <string name="touch_the_screen">സ്‌ക്രീനില്‍ തൊട്ട്</string>
+
+
+
+    <string name="use_to_move"><![CDATA[<< --/+ ഉപയോഗിച്ച് നീക്കാൻ ഉപയോഗിക്കുക >>]]></string>
+
 </resources>

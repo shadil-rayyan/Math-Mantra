@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Maths Manthra</string>
     <string name="app_title">Maths Manthra</string>
+    <string name="accessibility_service_description">
+        Maths Mantra Accessibility Service helps provide better learning experience by observing screen content and providing spoken feedback.
+    </string>
     <string name="subtitle">Sharpen your math skills, one problem at a time.</string>
 
     <string name="quick_play">Quick Play</string>
@@ -76,6 +79,22 @@
         <string name="submit">Submit</string>
         <string name="content_submit_button">Submit your answer</string>
         <string name="content_answer_field">Answer input field</string>
+
+
+    <string name="bell_ring">Bell Ring</string>
+    <string name="drum">Drum</string>
+    <string name="mcq">MCQ</string>
+    <string name="number_line">Number Line</string>
+    <string name="mental_calculation">Mental Calculation</string>
+    <string name="angle">Angle</string>
+    <string name="stereo_sound">Stereo Sound</string>
+    <string name="drawing">Drawing</string>
+    <string name="direction">Direction</string>
+    <string name="touch_the_screen">Touch the Screen</string>
+
+
+    <string name="use_to_move"><![CDATA[<< Use -/+ to move >>]]></string>
+
 
 
 </resources>

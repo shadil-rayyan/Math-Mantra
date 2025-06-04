@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/background">
+    android:background="?attr/colorSurface">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/ringBellCv"
+                android:id="@+id/bellButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -32,14 +32,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Bell Ring"
+                    android:text="@string/bell_ring"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/tapTablaCv"
+                android:id="@+id/drumButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Drum"
+                    android:text="@string/drum"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
@@ -68,7 +68,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mcqCv"
+                android:id="@+id/mcqButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -80,14 +80,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="MCQ"
+                    android:text="@string/mcq"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/numberLineCv"
+                android:id="@+id/numberlineButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Number Line"
+                    android:text="@string/number_line"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
@@ -116,7 +116,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/mental_calculation_colorPrimary"
+                android:id="@+id/mentalCalculationButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -128,14 +128,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Mental Calculation"
+                    android:text="@string/mental_calculation"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp"
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/angle_colorPrimary"
+                android:id="@+id/angleButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -147,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Angle"
+                    android:text="@string/angle"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
@@ -164,7 +164,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/stereo_sound_colorPrimary"
+                android:id="@+id/stereoSoundButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -176,14 +176,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Stereo Sound"
+                    android:text="@string/stereo_sound"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="18sp"
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/drawing_colorPrimary"
+                android:id="@+id/drawingButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -195,7 +195,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Drawing"
+                    android:text="@string/drawing"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
@@ -212,7 +212,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/direction_colorPrimary"
+                android:id="@+id/directionButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -225,7 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Direction"
+                    android:text="@string/direction"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp" />
 
@@ -245,14 +245,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Touch the Screen"
+                    android:text="@string/touch_the_screen"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="16sp" />
 
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

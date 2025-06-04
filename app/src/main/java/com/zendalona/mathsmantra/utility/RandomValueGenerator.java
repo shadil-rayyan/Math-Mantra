@@ -1,6 +1,9 @@
 package com.zendalona.mathsmantra.utility;
 
 import java.util.Random;
+import com.zendalona.mathsmantra.Enum.Difficulty;
+
+import org.jetbrains.annotations.NotNull;
 
 public class RandomValueGenerator {
     private Random random;
@@ -10,17 +13,17 @@ public class RandomValueGenerator {
         this.random = new Random();
     }
 
-//    public boolean generateNumberLineQuestion(){
-//        return random.nextBoolean();
-//    }
-//
-//    public int generateQuestionTopic(){
-//        return random.nextInt(NO_OF_TOPICS);
-//    }
-//
-//    public int generateNumberForCountGame() {
-//        return random.nextInt(16) + 2;
-//    }
+    public boolean generateNumberLineQuestion(){
+        return random.nextBoolean();
+    }
+
+    public int generateQuestionTopic(){
+        return random.nextInt(NO_OF_TOPICS);
+    }
+
+    public int generateNumberForCountGame() {
+        return random.nextInt(16) + 2;
+    }
 
     public int[] generateNumberRangeForCount(int upperBound){
         int start = random.nextInt(upperBound - 10);
@@ -48,86 +51,35 @@ public class RandomValueGenerator {
         return values;
     }
 
-//    public int[] generateSubtractionValues(Difficulty difficulty) {
-//        int[] values = new int[3];
-//        switch (difficulty) {
-//            case EASY:
-//                values[0] = random.nextInt(10) + 1;
-//                values[1] = random.nextInt(10) + 1;
-//                if (values[1] > values[0]) {
-//                    int temp = values[0];
-//                    values[0] = values[1];
-//                    values[1] = temp;
-//                }
-//                break;
-//            case MEDIUM:
-//                values[0] = random.nextInt(50) + 10;
-//                values[1] = random.nextInt(50) + 10;
-//                if (values[1] > values[0]) {
-//                    int temp = values[0];
-//                    values[0] = values[1];
-//                    values[1] = temp;
-//                }
-//                break;
-//            case HARD:
-//                values[0] = random.nextInt(500) + 17;
-//                values[1] = random.nextInt(500) + 17;
-//                if (values[1] > values[0]) {
-//                    int temp = values[0];
-//                    values[0] = values[1];
-//                    values[1] = temp;
-//                }
-//                break;
-//        }
-//        values[2] = values[0] - values[1];
-//        return values;
-//    }
-//
-//    public int[] generateMultiplicationValues(Difficulty difficulty) {
-//        int[] values = new int[3];
-//        switch (difficulty) {
-//            case EASY:
-//                values[0] = random.nextInt(10) + 1;
-//                values[1] = random.nextInt(10) + 1;
-//                break;
-//            case MEDIUM:
-//                values[0] = random.nextInt(20) + 1;
-//                values[1] = random.nextInt(20) + 1;
-//                break;
-//            case HARD:
-//                values[0] = random.nextInt(50) + 1;
-//                values[1] = random.nextInt(50) + 1;
-//                break;
-//        }
-//        values[2] = values[0] * values[1];
-//        return values;
-//    }
-//
-//    public int[] generateDivisionValues(Difficulty difficulty) {
-//        int[] values = new int[3];
-//        switch (difficulty) {
-//            case EASY:
-//                values[1] = random.nextInt(9) + 1; // Avoid division by zero
-//                values[0] = values[1] * (random.nextInt(10) + 1);
-//                break;
-//            case MEDIUM:
-//                values[1] = random.nextInt(19) + 1; // Avoid division by zero
-//                values[0] = values[1] * (random.nextInt(20) + 1);
-//                break;
-//            case HARD:
-//                values[1] = random.nextInt(49) + 1; // Avoid division by zero
-//                values[0] = values[1] * (random.nextInt(50) + 1); //TODO : Scope for decimal values?
-//                break;
-//        }
-//        values[2] = values[0] / values[1];
-//        return values;
-//    }
-//
-//    public float generateRandomDegree() {
-//        return random.nextInt(360); // Random number between 0 - 360
-//    }
-//    public int generateNumberBetween(int min, int max) {
-//        return random.nextInt((max - min) + 1) + min;
-//    }
+    public int[] generateSubtractionValues() {
+        int[] values = new int[3];
+        values[0] = random.nextInt(10) + 1;
+        values[1] = random.nextInt(10) + 1;
+        values[2] = values[0] - values[1];
+        return values;
+    }
+
+    public int[] generateMultiplicationValues(Difficulty difficulty) {
+        int[] values = new int[3];
+        values[0] = random.nextInt(10) + 1;
+        values[1] = random.nextInt(10) + 1;
+        values[2] = values[0] * values[1];
+        return values;
+    }
+
+    public int[] generateDivisionValues(Difficulty difficulty) {
+        int[] values = new int[3];
+        values[1] = random.nextInt(9) + 1; // Avoid division by zero
+        values[0] = values[1] * (random.nextInt(10) + 1);
+        values[2] = values[0] / values[1];
+        return values;
+    }
+
+    public float generateRandomDegree() {
+        return random.nextInt(360); // Random number between 0 - 360
+    }
+    public int generateNumberBetween(int min, int max) {
+        return random.nextInt((max - min) + 1) + min;
+    }
 
 }

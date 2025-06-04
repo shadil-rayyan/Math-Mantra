@@ -7,21 +7,21 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.zendalona.mathmantra.databinding.FragmentNarratorBinding;
-import com.zendalona.mathmantra.utils.TTSUtility;
+import com.zendalona.mathsmantra.databinding.FragmentHintBinding;
+import com.zendalona.mathsmantra.utility.common.TTSUtility;
 
 import java.util.ArrayList;
 
-public class NarratorFragment extends Fragment {
+public class HintFragment extends Fragment {
 
-    private FragmentNarratorBinding binding;
+    private FragmentHintBinding binding;
     private TTSUtility tts;
 
     private ArrayList<String> theoryContents;
 
     private int currentIndex = 0;
 
-    public NarratorFragment() {
+    public HintFragment() {
         // Required empty public constructor
     }
 
@@ -34,7 +34,7 @@ public class NarratorFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentNarratorBinding.inflate(inflater, container, false);
+        binding = FragmentHintBinding.inflate(inflater, container, false);
         Bundle args = getArguments();
         assert args != null;
         if(!args.isEmpty()){

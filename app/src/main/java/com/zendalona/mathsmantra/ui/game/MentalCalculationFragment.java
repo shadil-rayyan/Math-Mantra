@@ -16,9 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentMentalCalculationBinding;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameMentalCalculationBinding;
 
 import java.util.Locale;
 import java.util.Random;
@@ -26,7 +26,7 @@ import java.util.Stack;
 
 public class MentalCalculationFragment extends Fragment {
 
-    private FragmentMentalCalculationBinding binding;
+    private FragmentGameMentalCalculationBinding binding;
     private String currentExpression;
     private int correctAnswer;
     private TextToSpeech textToSpeech;
@@ -35,7 +35,7 @@ public class MentalCalculationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMentalCalculationBinding.inflate(inflater, container, false);
+        binding = FragmentGameMentalCalculationBinding.inflate(inflater, container, false);
         setupTextToSpeech();
         generateNewQuestion();
 

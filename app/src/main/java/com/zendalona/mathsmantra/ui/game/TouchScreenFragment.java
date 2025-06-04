@@ -14,15 +14,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentTouchScreenBinding;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameTouchScreenBinding;
 
 import java.util.Random;
 
 public class TouchScreenFragment extends Fragment {
 
-    private FragmentTouchScreenBinding binding;
+    private FragmentGameTouchScreenBinding binding;
     private Random random;
     private int correctAnswer;
     private boolean answeredCorrectly = false; // Track if the correct answer was already given
@@ -30,7 +30,7 @@ public class TouchScreenFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTouchScreenBinding.inflate(inflater, container, false);
+        binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false);
         random = new Random();
         generateNewQuestion();
         setupTouchListener();

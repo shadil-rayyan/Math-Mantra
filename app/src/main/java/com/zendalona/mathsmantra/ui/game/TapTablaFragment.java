@@ -1,6 +1,8 @@
 package com.zendalona.mathsmantra.ui.game;
 
+import android.accessibilityservice.AccessibilityService;
 import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,18 +13,21 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.MainActivity;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentTapTablaBinding;
-import com.zendalona.mathmantra.utils.AccessibilityUtils;
-import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.SoundEffectUtility;
-import com.zendalona.mathmantra.utils.TTSUtility;
+import com.zendalona.mathsmantra.MainActivity;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameDrumBinding;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
+import com.zendalona.mathsmantra.utility.RandomValueGenerator;
+import com.zendalona.mathsmantra.utility.SoundEffectUtility;
+import com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService;
+import com.zendalona.mathsmantra.utility.common.TTSUtility;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
+
 
 public class TapTablaFragment extends Fragment {
 
-    private FragmentTapTablaBinding binding;
+    private FragmentGameDrumBinding binding;
     private SoundEffectUtility soundEffectUtility;
     private RandomValueGenerator randomValueGenerator;
     private TTSUtility tts;
@@ -44,7 +49,7 @@ public class TapTablaFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentTapTablaBinding.inflate(inflater, container, false);
+        binding = FragmentGameDrumBinding.inflate(inflater, container, false);
         randomValueGenerator = new RandomValueGenerator();
         tts = new TTSUtility(requireContext());
 
@@ -63,7 +68,10 @@ public class TapTablaFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (talkBackEnabled) {
-            ((MainActivity) requireActivity()).disableExploreByTouch();
+            // Call static method directly from AccessibilityHelper
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                AccessibilityHelper.disableExploreByTouch((MathsManthraAccessibilityService) requireActivity().getSystemService(AccessibilityService.class));
+            }
         }
     }
 
@@ -71,7 +79,9 @@ public class TapTablaFragment extends Fragment {
     public void onPause() {
         super.onPause();
         if (talkBackEnabled) {
-            ((MainActivity) requireActivity()).resetExploreByTouch();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                AccessibilityHelper.resetExploreByTouch((MathsManthraAccessibilityService) getActivity().getSystemService(AccessibilityService.class));
+            }
         }
     }
 
@@ -95,7 +105,7 @@ public class TapTablaFragment extends Fragment {
         soundEffectUtility.playSound(R.raw.drums_sound);
 
         // Stop previous TTS and announce new count
-        tts.stopSpeaking();
+        tts.stop();  // Use stop() instead of stopSpeaking()
         tts.speak("Tap count: " + count);
 
         // Check for correct answer or exceeding target
@@ -106,6 +116,8 @@ public class TapTablaFragment extends Fragment {
             showResultDialog(false);
         }
     }
+
+
 
     private void appreciateUser() {
         showResultDialog(true);
@@ -157,7 +169,7 @@ public class TapTablaFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         handler.removeCallbacksAndMessages(null); // Stop any delayed tasks
-        tts.stopSpeaking(); // Stop TTS when exiting the screen
+        tts.stop(); // Use stop() instead of stopSpeaking()
         binding = null;
     }
 }

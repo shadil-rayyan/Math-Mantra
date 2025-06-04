@@ -2,15 +2,21 @@ package com.zendalona.mathsmantra
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmantra.ui.FragmentNavigation
 import com.zendalona.mathsmantra.ui.LandingPageFragment
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
+import com.zendalona.mathsmantra.utility.PermissionManager
+import com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-import com.zendalona.mathsmantra.R
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
+
+    private lateinit var permissionManager: PermissionManager
 
     override fun attachBaseContext(newBase: Context) {
         val context = LocaleHelper.onAttach(newBase)  // apply locale here
@@ -37,6 +43,21 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
                 .replace(R.id.fragment_container, landingPageFragment)
                 .commit()
         }
+
+        // Handle permissions
+        permissionManager = PermissionManager(this, object : PermissionManager.PermissionCallback {
+            override fun onPermissionGranted() {
+                Log.d("PermissionManager", "Granted!")
+            }
+
+            override fun onPermissionDenied() {
+                Log.w("PermissionManager", "Denied!")
+            }
+        })
+        permissionManager.requestMicrophonePermission()
+
+        // Check and show accessibility service dialog if needed
+        AccessibilityHelper.checkAndShowAccessibilityDialog(this)
     }
 
     // Handle toolbar back button pressed
@@ -57,4 +78,9 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
     fun updateToolbarTitle(title: String) {
         supportActionBar?.title = title
     }
+
+
+
+    // Handle touch events for two-finger swipe gestures (back navigation)
+
 }

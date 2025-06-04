@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="?attr/background"
-    tools:context=".ui.MathQuizFragment"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.game.MentalCalculationFragment"
     >
 
     <LinearLayout
@@ -47,13 +47,12 @@
             android:contentDescription="Enter your answer here"
             app:boxBackgroundMode="outline"
             android:textColor="?attr/colorOnSecondary"
-            app:boxBackgroundColor="?attr/background">
+            app:boxBackgroundColor="?attr/colorSurface">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/answer_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Answer input field. Enter your answer here."
                 android:hint="Your Answer Here"
                 android:textColor="?attr/colorSurface"
                 android:backgroundTint="?attr/colorOnSecondary"

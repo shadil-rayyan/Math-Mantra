@@ -12,22 +12,23 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentSoundBinding;
-import com.zendalona.mathmantra.enums.Difficulty;
-import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.TTSUtility;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameSteroBinding;
+import com.zendalona.mathsmantra.utility.RandomValueGenerator;
+import com.zendalona.mathsmantra.utility.common.TTSUtility;
 
-public class SoundFragment extends Fragment {
+import java.util.Objects;
 
-    private FragmentSoundBinding binding;
+public class SterioFragment extends Fragment {
+
+    private FragmentGameSteroBinding binding;
     private RandomValueGenerator random;
     private TTSUtility ttsUtility;
     private int correctAnswer;
     private int num1, num2;
 
-    public SoundFragment() {
+    public SterioFragment() {
         // Required empty public constructor
     }
 
@@ -39,7 +40,7 @@ public class SoundFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentSoundBinding.inflate(inflater, container, false);
+        binding = FragmentGameSteroBinding.inflate(inflater, container, false);
         random = new RandomValueGenerator();
         ttsUtility = new TTSUtility(requireContext());
 
@@ -69,7 +70,7 @@ public class SoundFragment extends Fragment {
     }
 
     private void generateNewQuestion() {
-        int[] numbers = random.generateSubtractionValues(Difficulty.EASY);
+        int[] numbers = random.generateSubtractionValues();
         num1 = numbers[0];
         num2 = numbers[1];
         correctAnswer = num1 - num2; // Fixing incorrect logic
@@ -87,7 +88,7 @@ public class SoundFragment extends Fragment {
     }
 
     private void submitAnswer() {
-        String userInput = binding.answerEt.getText().toString();
+        String userInput = Objects.requireNonNull(binding.answerEt.getText()).toString();
         if (!userInput.isEmpty()) {
             boolean isCorrect = Integer.parseInt(userInput) == correctAnswer;
             showResultDialog(isCorrect);

@@ -13,18 +13,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.zendalona.mathmantra.R;
-import com.zendalona.mathmantra.databinding.DialogResultBinding;
-import com.zendalona.mathmantra.databinding.FragmentNumberLineBinding;
-import com.zendalona.mathmantra.enums.Topic;
-import com.zendalona.mathmantra.utils.AccessibilityUtils;
-import com.zendalona.mathmantra.utils.RandomValueGenerator;
-import com.zendalona.mathmantra.utils.TTSUtility;
-import com.zendalona.mathmantra.viewModels.NumberLineViewModel;
+import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.databinding.DialogResultBinding;
+import com.zendalona.mathsmantra.databinding.FragmentGameNumberLineBinding;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
+import com.zendalona.mathsmantra.utility.RandomValueGenerator;
+import com.zendalona.mathsmantra.utility.common.TTSUtility;
+import com.zendalona.mathsmantra.viewModel.NumberLineViewModel;
+import com.zendalona.mathsmantra.Enum.Topic;
 
 public class NumberLineFragment extends Fragment {
 
-    private FragmentNumberLineBinding binding;
+    private FragmentGameNumberLineBinding binding;
     private NumberLineViewModel viewModel;
     private TTSUtility tts;
     private RandomValueGenerator random;
@@ -60,6 +60,7 @@ public class NumberLineFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -68,7 +69,7 @@ public class NumberLineFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentNumberLineBinding.inflate(inflater, container, false);
+        binding = FragmentGameNumberLineBinding.inflate(inflater, container, false);
         random = new RandomValueGenerator();
         setupObservers();
         correctAnswerDesc = askNewQuestion(0);
@@ -112,7 +113,7 @@ public class NumberLineFragment extends Fragment {
                             moveLeft();
                         }
                         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            tts.speak("You're standing on " + viewModel.currentPosition.getValue() + ". Swipe left or right.");
+                            tts.speak("You're standing on " + viewModel.getCurrentPosition().getValue() + ". Swipe left or right.");
                         }, 300);
                         isTwoFingerSwipe = false;
                     }
@@ -153,7 +154,7 @@ public class NumberLineFragment extends Fragment {
     }
 
     private void setupObservers() {
-        viewModel.currentPosition.observe(getViewLifecycleOwner(), position -> {
+        viewModel.getCurrentPosition().observe(getViewLifecycleOwner(), position -> {
             binding.currentPositionTv.setText(CURRENT_POSITION + position);
             if (position == answer) {
                 tts.speak("Correct Answer! " + correctAnswerDesc);

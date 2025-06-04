@@ -17,12 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.zendalona.mathmantra.databinding.FragmentDirectionBinding;
-import com.zendalona.mathmantra.utils.RandomValueGenerator;
+import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding;
+import com.zendalona.mathsmantra.utility.RandomValueGenerator;
 
-public class DirectionFragment extends Fragment implements SensorEventListener {
+public class CompassFragment extends Fragment implements SensorEventListener {
 
-    private FragmentDirectionBinding binding;
+    private FragmentGameCompassBinding binding;
     private SensorManager sensorManager;
     private Sensor magnetometer;
     private Sensor accelerometer;
@@ -60,7 +60,7 @@ public class DirectionFragment extends Fragment implements SensorEventListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentDirectionBinding.inflate(inflater, container, false);
+        binding = FragmentGameCompassBinding.inflate(inflater, container, false);
         generateNewQuestion();  // Initial question
         return binding.getRoot();
     }
