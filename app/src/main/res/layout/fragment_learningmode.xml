@@ -1,0 +1,107 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background"
+    android:contentDescription="You are on the Learning page  Please choose an activity to continue.">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Repeating rows with helper method -->
+        <!-- Row 1 -->
+        <LinearLayout
+            style="@style/RowStyle">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardTime"
+                android:contentDescription="Open Time mode">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Time"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardCurrency"
+                android:contentDescription="Open Currency Activities">
+
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Currency"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Repeat same structure for rows 2–4 -->
+        <!-- Row 2 -->
+        <LinearLayout style="@style/RowStyle">
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardDistance"
+                android:contentDescription="Open Distance Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Distance"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardAddition"
+                android:contentDescription="Open Addition Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Addition"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Row 3 -->
+        <LinearLayout style="@style/RowStyle">
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardSubtraction"
+                android:contentDescription="Open Subtraction Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Subtraction"
+                    android:textSize="18sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardMultiplication"
+                android:contentDescription="Open Multiplication Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Multiplication"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Row 4 -->
+        <LinearLayout style="@style/RowStyle">
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardDivision"
+                android:contentDescription="Open Division Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Division"
+                    android:textSize="18sp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardTilerFrame"
+                android:contentDescription="Open Tiler Frame Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Tiler Frame"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

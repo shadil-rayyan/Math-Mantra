@@ -1,0 +1,91 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/background"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="50dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <!-- Instruction Text -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/instruction_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listen carefully and subtract the second number you hear from the first number."
+            android:textSize="24sp"
+            android:layout_margin="10dp"
+            android:textColor="?attr/colorOnSecondary"
+            android:importantForAccessibility="yes"
+
+            android:contentDescription="Instruction. Listen carefully. Tap 'Read the Question' to hear the numbers before solving."
+            android:accessibilityLiveRegion="polite"/>
+
+        <!-- Read Question Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/read_question_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textSize="20sp"
+            android:text="Read the Question"
+            android:textColor="?attr/colorOnSecondary"
+            android:backgroundTint="?attr/colorOnPrimary"
+            android:importantForAccessibility="yes"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:contentDescription="Button to read the math question aloud. Double tap to listen." />
+
+        <!-- Answer Input Field -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:boxBackgroundMode="outline"
+            android:textColor="?attr/colorPrimary"
+            app:boxBackgroundColor="?attr/background"
+            android:importantForAccessibility="yes"
+            android:contentDescription="Answer input field. Type your answer here."
+            android:hint="Enter your answer"
+            android:labelFor="@id/answer_et">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/answer_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Your Answer Here"
+                android:textColorHint="?attr/colorOnPrimary"
+                android:textColor="?attr/colorOnPrimary"
+                android:backgroundTint="?attr/colorPrimary"
+                android:importantForAccessibility="yes"
+                android:inputType="number"
+                android:contentDescription="Enter your answer in numbers only. Example: 5 or 10."
+                android:accessibilityLiveRegion="polite"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Submit Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit_answer_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textSize="24sp"
+            android:text="Submit"
+            android:textColor="?attr/colorOnPrimary"
+            android:backgroundTint="?attr/colorPrimary"
+            android:importantForAccessibility="yes"
+            android:contentDescription="Submit button. Double tap to submit your answer." />
+    </LinearLayout>
+
+</FrameLayout>

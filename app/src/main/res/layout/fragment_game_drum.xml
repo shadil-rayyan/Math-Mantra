@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:id="@+id/root_frame"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.TapTablaFragment"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:importantForAccessibility="yes"
+    android:contentDescription="This is the drum  Play Screen. Tap the drum [target] times. Double tap anywhere to play the tabla sound.">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Tap Count - Static Text (Optional Announcement) -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tap_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:clickable="false"
+            android:contentDescription="Tap count: 0"
+            android:focusable="false"
+            android:text="0"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="48sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Tabla Animation - Main Interactive Element -->
+
+        <!-- Tap to Play Text - Useful for context -->
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/tabla_animation_view"
+            android:layout_width="218dp"
+            android:layout_height="176dp"
+            android:layout_marginTop="244dp"
+            android:clickable="true"
+            android:contentDescription="Double tap to play the tabla sound. This is the main interactive drum animation."
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@drawable/game_drum" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tap_me_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:contentDescription="Instruction: Double tap the tabla above to play the drum sound."
+            android:focusable="false"
+            android:text="Tap to play!"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="28sp"
+            tools:layout_editor_absoluteX="133dp"
+            tools:layout_editor_absoluteY="527dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

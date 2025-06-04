@@ -1,0 +1,46 @@
+<resources>
+    <string name="user_guide_text"><![CDATA[
+<b>Maths Manthraa User Guide</b><br/><br/>
+
+<b>1. Introduction</b><br/>
+Maths Manthraa is an innovative and inclusive math learning app designed for students of all abilities.<br/>
+With a variety of interactive modes — including touch, motion, and sound-based learning — it makes math engaging and accessible.<br/><br/>
+
+<b>2. How to Use Maths Manthraa?</b><br/>
+Maths Manthraa provides multiple game and learning modes, designed to reinforce core mathematical concepts through fun, interactive exercises.<br/><br/>
+
+<b>3. Features Overview</b><br/>
+<b>Game Modes:</b><br/>
+• Quick Play Mode – Instantly starts a random math challenge without navigating menus.<br/>
+• Drum Mode – Tap the screen to match the required count.<br/>
+• Bell Mode – Shake the phone to count bells.<br/>
+• Drawing Mode – Draw basic shapes for spatial awareness.<br/>
+• Directional Mode – Rotate the device to match target directions.<br/>
+• Touch the Screen Mode – Place a specific number of fingers on the screen.<br/>
+• Stereo Sound Mode – Solve math problems using stereo audio cues.<br/>
+• MCQ Mode – Answer multiple-choice math questions.<br/><br/>
+
+<b>Learning Modes:</b><br/>
+• Currency Mode – Learn to manage money with real-life purchase scenarios.<br/>
+• Time Mode – Solve time-related math problems.<br/>
+• Distance Mode – Calculate speed and distance problems.<br/>
+• Core Arithmetic – Basic addition, subtraction, multiplication, and division.<br/>
+• Number Line Mode – Swipe to solve problems on a number line.<br/><br/>
+
+<b>4. Accessibility Features</b><br/>
+• Fully supports TalkBack and custom accessibility gestures.<br/>
+• Text-to-Speech (TTS) guides users through menus and exercises.<br/><br/>
+
+<b>5. Settings</b><br/>
+• Customize sound, speech, and high-contrast mode.<br/>
+• Enable or disable background music and vibrations.<br/><br/>
+
+<b>6. Quit Option</b><br/>
+• Users are prompted with a confirmation dialog before exiting the app.<br/><br/>
+
+<b>7. Localization</b><br/>
+• Supports multiple languages for a wider reach.<br/><br/>
+
+Enjoy learning with Maths Manthraa!
+    ]]></string>
+</resources>

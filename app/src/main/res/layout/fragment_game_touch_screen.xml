@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/background"
+    tools:context=".ui.MathQuizFragment"
+    android:contentDescription="Math quiz screen. Solve the math problem and enter your answer.">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp">
+
+        <!-- Angle Question TextView -->
+
+        <!-- ImageView (Rotate Phone Animation) -->
+
+        <TextView
+            android:id="@+id/angle_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="put 2 finger in the screen"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title_text" />
+
+        <ImageView
+            android:id="@+id/animated_view"
+            android:layout_width="138dp"
+            android:layout_height="127dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/touchthescreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/angle_question" />
+
+    </LinearLayout>
+
+</FrameLayout>

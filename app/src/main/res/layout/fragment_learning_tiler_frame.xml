@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="?attr/colorSurface"
+    android:padding="16dp">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What is"
+        android:textSize="32sp"
+        android:textColor="?attr/colorOnSecondary"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:contentDescription="Title: What is the result of the operation?" />
+
+    <!-- First Number Row -->
+    <LinearLayout
+        android:id="@+id/firstNumberLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:contentDescription="First number row">
+
+        <TextView
+            android:id="@+id/first_digit_1"
+            style="@style/NumberBox"
+            android:contentDescription="First digit of the first number" />
+
+        <TextView
+            android:id="@+id/first_digit_2"
+            style="@style/NumberBox"
+            android:contentDescription="Second digit of the first number" />
+
+        <TextView
+            android:id="@+id/first_digit_3"
+            style="@style/NumberBox"
+            android:contentDescription="Third digit of the first number" />
+    </LinearLayout>
+
+    <!-- Operator -->
+    <TextView
+        android:id="@+id/operator_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:textSize="32sp"
+        android:textColor="?attr/colorOnSecondary"
+        android:layout_marginVertical="8dp"
+        android:layout_gravity="center"
+        android:contentDescription="Operator symbol for the mathematical operation" />
+
+    <!-- Second Number Row -->
+    <LinearLayout
+        android:id="@+id/secondNumberLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:contentDescription="Second number row">
+
+        <TextView
+            android:id="@+id/second_digit_1"
+            style="@style/NumberBox"
+            android:contentDescription="First digit of the second number" />
+
+        <TextView
+            android:id="@+id/second_digit_2"
+            style="@style/NumberBox"
+            android:contentDescription="Second digit of the second number" />
+
+        <TextView
+            android:id="@+id/second_digit_3"
+            style="@style/NumberBox"
+            android:contentDescription="Third digit of the second number" />
+    </LinearLayout>
+
+    <!-- Horizontal Line -->
+    <View
+        android:layout_width="120dp"
+        android:layout_height="2dp"
+        android:background="?attr/colorPrimary"
+        android:layout_marginVertical="8dp"
+        android:layout_gravity="center"
+        android:contentDescription="Divider line between the numbers and answer" />
+
+    <!-- Answer Row (Editable Fields) -->
+    <LinearLayout
+        android:id="@+id/resultNumberLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:contentDescription="Answer input row">
+
+        <EditText
+            android:id="@+id/result_digit_1"
+            style="@style/NumberBox"
+            android:inputType="number"
+            android:hint="0"
+            android:importantForAccessibility="yes"
+            android:contentDescription="First digit of the answer" />
+
+        <EditText
+            android:id="@+id/result_digit_2"
+            style="@style/NumberBox"
+            android:inputType="number"
+            android:hint="0"
+            android:importantForAccessibility="yes"
+            android:contentDescription="Second digit of the answer" />
+
+        <EditText
+            android:id="@+id/result_digit_3"
+            style="@style/NumberBox"
+            android:inputType="number"
+            android:hint="0"
+            android:importantForAccessibility="yes"
+            android:contentDescription="Third digit of the answer" />
+    </LinearLayout>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:textSize="18sp"
+        android:textColor="?attr/colorOnPrimary"
+        android:backgroundTint="?attr/colorPrimary"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:contentDescription="Submit button to check the answer" />
+</LinearLayout>
