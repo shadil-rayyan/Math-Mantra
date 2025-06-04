@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     tools:context=".ui.game.NumberLineFragment"
-    android:contentDescription="Number Line Activity. Use the buttons to move left or right on the number line to solve the math question.">
+    android:contentDescription="@string/number_line_description">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,17 +18,17 @@
             android:id="@+id/number_line_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What is 0 + 12?"
+            android:text="@string/number_line_question"
             android:textAlignment="center"
             android:textSize="36sp"
             android:focusable="true"
             android:clickable="true"
-            android:contentDescription="Question. What is 0 plus 12? Double tap to repeat the question."
+            android:contentDescription="@string/number_line_question_description"
             android:importantForAccessibility="yes"
             android:textColor="?attr/colorOnSecondary"
             android:layout_marginBottom="10dp" />
 
-        <!-- Number Line View (Visual Only, Skipped for Accessibility) -->
+        <!-- Number Line View -->
         <com.zendalona.mathsmantra.view.NumberLineView
             android:id="@+id/number_line_view"
             android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:clickable="false"
             android:importantForAccessibility="no"
             android:layout_marginBottom="5dp"
-            android:contentDescription="Visual number line. Use the buttons below to move left or right." />
+            android:contentDescription="@string/number_line_visual_description" />
 
         <!-- Current Position Feedback -->
         <com.google.android.material.textview.MaterialTextView
@@ -52,9 +52,9 @@
             android:text="@string/use_to_move"
             android:textColor="?attr/colorOnSecondary"
             android:layout_marginBottom="50dp"
-            android:contentDescription="Current position on the number line. Use the buttons to move left or right." />
+            android:contentDescription="@string/current_position_description" />
 
-        <!-- Navigation Buttons: Left (Subtract) and Right (Add) -->
+        <!-- Navigation Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,8 +71,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:importantForAccessibility="yes"
-                android:contentDescription="Move left button. Moves one step left on the number line."
-                android:text="-"
+                android:contentDescription="@string/move_left_description"
+                android:text="@string/move_left"
                 android:textColor="?attr/colorOnPrimary"
                 android:backgroundTint="?attr/colorPrimary"
                 android:nextFocusLeft="@id/btn_right"
@@ -88,8 +88,8 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:importantForAccessibility="yes"
-                android:contentDescription="Move right button. Moves one step right on the number line."
-                android:text="+"
+                android:contentDescription="@string/move_right_description"
+                android:text="@string/move_right"
                 android:textColor="?attr/colorOnPrimary"
                 android:backgroundTint="?attr/colorPrimary"
                 android:nextFocusLeft="@id/btn_left"
@@ -98,5 +98,4 @@
         </LinearLayout>
 
     </LinearLayout>
-
 </FrameLayout>

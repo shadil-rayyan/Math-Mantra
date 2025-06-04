@@ -154,9 +154,31 @@ public class NumberLineFragment extends Fragment {
     }
 
     private void setupObservers() {
+        viewModel.getLineStart().observe(getViewLifecycleOwner(), start -> {
+            Integer end = viewModel.getLineEnd().getValue();
+            Integer pos = viewModel.getCurrentPosition().getValue();
+            if (start != null && end != null && pos != null) {
+                binding.numberLineView.updateNumberLine(start, end, pos);
+            }
+        });
+
+        viewModel.getLineEnd().observe(getViewLifecycleOwner(), end -> {
+            Integer start = viewModel.getLineStart().getValue();
+            Integer pos = viewModel.getCurrentPosition().getValue();
+            if (start != null && end != null && pos != null) {
+                binding.numberLineView.updateNumberLine(start, end, pos);
+            }
+        });
+
         viewModel.getCurrentPosition().observe(getViewLifecycleOwner(), position -> {
             binding.currentPositionTv.setText(CURRENT_POSITION + position);
-            if (position == answer) {
+            Integer start = viewModel.getLineStart().getValue();
+            Integer end = viewModel.getLineEnd().getValue();
+            if (start != null && end != null && position != null) {
+                binding.numberLineView.updateNumberLine(start, end, position);
+            }
+
+            if (position != null && position == answer) {
                 tts.speak("Correct Answer! " + correctAnswerDesc);
                 appreciateUser();
             } else {
@@ -164,6 +186,7 @@ public class NumberLineFragment extends Fragment {
             }
         });
     }
+
 
     private void appreciateUser() {
         LayoutInflater inflater = getLayoutInflater();

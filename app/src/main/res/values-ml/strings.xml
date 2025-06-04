@@ -92,9 +92,66 @@
         <string name="drawing">ചിതറല്‍</string>
         <string name="direction">ദിശ</string>
         <string name="touch_the_screen">സ്‌ക്രീനില്‍ തൊട്ട്</string>
+    <string name="turn_to_angle">%1$d° വരെ തിരിക്കുക</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="compassdescription">കമ്പസ്: ചോദ്യത്തിൽ ആവശ്യപ്പെട്ട പ്രകാരം ഫോൺ തിരിക്കുക</string>
+    <string name="drawing_description">രൂപരേഖ വരയ്ക്കൽ സ്ക്രീൻ, ആകൃതിയുള്ള ഇൻപുട്ടും നിയന്ത്രണ ബട്ടണുകളും</string>
+    <string name="draw_shape">ആകൃതി വരയ്ക്കുക</string>
+    <string name="draw_instruction">നിർദ്ദേശം: ആവശ്യമായ ആകൃതി വരയ്ക്കുക</string>
+    <string name="drawing_canvas_description">രൂപരേഖ വരയ്ക്കുന്നതിനുള്ള ക്യാൻവാസ്. ടച്ച് ജസ്റ്റേഴ്സുകൾ ഉപയോഗിച്ച് ആകൃതി വരയ്ക്കുക.</string>
+    <string name="reset">പുനഃസജ്ജമാക്കുക</string>
+    <string name="reset_description">രൂപരേഖ മായ്ച്ച് പുതിയതായി തുടങ്ങുക</string>
+    <string name="submit_description">നിങ്ങളുടെ രൂപരേഖ വിലയിരുത്തലിനായി സമർപ്പിക്കുക</string>
+    <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
+    <string name="turn_phone_90_degrees">നിങ്ങളുടെ ഫോൺ 90° വരെ തിരിക്കുക</string>
+    <string name="rotation_angle_default">തിരിവ് കോണം: 0°</string>
+    <string name="angle_description">ഫോൺ തിരിക്കുന്നതിനുള്ള നിർദ്ദേശങ്ങൾ കാണിക്കുന്ന സ്ക്രീൻ</string>
+
+    <!-- Mental Calculation Fragment -->
+    <string name="mental_description">മാനസിക ഗണിത ചോദ്യവും ഇൻപുട്ടും ഉള്ള സ്ക്രീൻ</string>
+    <string name="calculate_prompt">ഇതിന്റെ മൂല്യം കണക്കാക്കുക:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
+    <string name="math_question_description">ഗണിത ചോദ്യമാണ്. 2 പ്ലസ് 2 ടൈംസ് 2 മൈനസ് 5 എത്ര? ചോദ്യത്തെ ആവർത്തിക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
+    <string name="answer_input_description">നിങ്ങളുടെ ഉത്തരം ഇവിടെ നൽകുക</string>
+    <string name="answer_hint">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
 
 
+    <!-- Shake Fragment -->
+    <string name="shake_count_initial">0</string>
+    <string name="shake_count_description">നിലവിലെ ഷേക്ക് എണ്ണം, ആരംഭത്തിൽ 0</string>
+    <string name="shake_instruction">ഗെയിം തുടങ്ങാൻ ഉപകരണം ഷേക്ക് ചെയ്യുക</string>
+    <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഉപകരണം ഷേക്ക് ചെയ്യാൻ നിർദ്ദേശം</string>
 
-    <string name="use_to_move"><![CDATA[<< --/+ ഉപയോഗിച്ച് നീക്കാൻ ഉപയോഗിക്കുക >>]]></string>
+    <!-- Audio Math Fragment -->
+    <string name="audio_instruction">ശ്രദ്ധയോടെ കേൾക്കുക, രണ്ടാം സംഖ്യ ആദ്യത്തെ സംഖ്യയിൽ നിന്നും കുറയ്ക്കുക.</string>
+    <string name="audio_instruction_description">നിർദ്ദേശം: ശ്രദ്ധയോടെ കേൾക്കുക. ചോദ്യങ്ങൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കുകബട്ടൺ ടാപ്പ് ചെയ്യുക.</string>
+    <string name="read_question">ചോദ്യത്തെ വായിക്കുക</string>
+    <string name="read_question_description">ഗണിത ചോദ്യത്തെ ശബ്ദത്തിൽ വായിക്കാൻ ബട്ടൺ. കേൾക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
+    <string name="enter_answer_hint">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
+    <string name="your_answer_here">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
+
+    <!-- Number Line Fragment -->
+    <string name="number_line_description">നമ്പർ ലൈൻ പ്രവർത്തനം. ഗണിത ചോദ്യ പരിഹരിക്കാൻ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങുക.</string>
+    <string name="number_line_question">0 + 12 എത്ര?</string>
+    <string name="number_line_question_description">ചോദ്യമാണ്. 0 പ്ലസ് 12 എത്ര? ചോദ്യത്തെ ആവർത്തിക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
+    <string name="number_line_visual_description">ദൃശ്യ നമ്പർ ലൈൻ. താഴെയുള്ള ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങുക.</string>
+    <string name="current_position_description">നമ്പർ ലൈൻ上的 നിലവിലെ സ്ഥാനം. ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങാൻ ബട്ടണുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="use_to_move">നമ്പർ ലൈൻ上 നീങ്ങാൻ ബട്ടണുകൾ ഉപയോഗിക്കുക</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">ഇടത്തേക്ക് നീക്കുക ബട്ടൺ. നമ്പർ ലൈൻ上 ഒരു പടി ഇടത്തേക്ക് നീങ്ങാൻ.</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">വലത്തേക്ക് നീക്കുക ബട്ടൺ. നമ്പർ ലൈൻ上 ഒരു പടി വലത്തേക്ക് നീങ്ങാൻ.</string>
+    <string name="tap_screen_description">ഇത് ടാപ്പ് കൗണ്ട് സ്ക്രീനാണ്. എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
+    <string name="tap_count_description">ടാപ്പ് എണ്ണം: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക</string>
+    <string name="tap_instruction_description">നിർദ്ദേശം: എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
+
+    <!-- TouchScreenFragment Strings -->
+    <string name="touch_screen_description">നിങ്ങളുടെ വിരൽ ഉപയോഗിച്ച് ഗെയിം ഉത്തരം നൽകുക</string>
+    <string name="touch_instruction">സ്ക്രീനിൽ 2 വിരൽ വെക്കുക</string>
+    <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ സ്പർശിക്കുന്നതിന്റെ ചിത്രീകരണം</string>
+
+
 
 </resources>

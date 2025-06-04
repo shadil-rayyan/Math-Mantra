@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    tools:context=".ui.game.ShakeFragment"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:importantForAccessibility="yes">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="3762dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/ring_count"
+            android:layout_width="162dp"
+            android:layout_height="173dp"
+            android:clickable="false"
+            android:focusable="false"
+            android:importantForAccessibility="yes"
+            android:text="@string/shake_count_initial"
+            android:contentDescription="@string/shake_count_description"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="48sp"
+            tools:layout_editor_absoluteX="124dp"
+            tools:layout_editor_absoluteY="244dp" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/ring_me_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shake_instruction"
+            android:contentDescription="@string/shake_instruction_description"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSecondary"
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="73dp"
+            tools:layout_editor_absoluteY="538dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

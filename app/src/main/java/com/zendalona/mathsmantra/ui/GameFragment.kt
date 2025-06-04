@@ -13,9 +13,9 @@ import com.zendalona.mathsmantra.ui.game.CompassFragment
 import com.zendalona.mathsmantra.ui.game.DrawingFragment
 import com.zendalona.mathsmantra.ui.game.MentalCalculationFragment
 import com.zendalona.mathsmantra.ui.game.NumberLineFragment
-import com.zendalona.mathsmantra.ui.game.RingBellFragment
+import com.zendalona.mathsmantra.ui.game.ShakeFragment
 import com.zendalona.mathsmantra.ui.game.SterioFragment
-import com.zendalona.mathsmantra.ui.game.TapTablaFragment
+import com.zendalona.mathsmantra.ui.game.TapFragment
 import com.zendalona.mathsmantra.ui.game.TouchScreenFragment
 
 class GameFragment : Fragment() {
@@ -42,7 +42,7 @@ class GameFragment : Fragment() {
         binding!!.bellButton.setOnClickListener(View.OnClickListener { v: View? ->
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
-                    RingBellFragment(),
+                    ShakeFragment(),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN
                 )
             }
@@ -50,7 +50,7 @@ class GameFragment : Fragment() {
         binding!!.drumButton.setOnClickListener(View.OnClickListener { v: View? ->
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
-                    TapTablaFragment(),
+                    TapFragment(),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN
                 )
             }

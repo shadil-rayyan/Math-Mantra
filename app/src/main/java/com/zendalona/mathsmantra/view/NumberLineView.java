@@ -57,11 +57,11 @@ public class NumberLineView extends View {
 
     private void init(Context context) {
         linePaint = new Paint();
-        linePaint.setColor(ContextCompat.getColor(context, R.color.blue));
+        linePaint.setColor(ContextCompat.getColor(context, R.color.light_purple_button));
         linePaint.setStrokeWidth(12f);
 
         numberPaint = new Paint();
-        numberPaint.setColor(ContextCompat.getColor(context, R.color.lightBlue));
+        numberPaint.setColor(ContextCompat.getColor(context, R.color.light_red_button));
         numberPaint.setTextSize(40f);
 
         mascotPaint = new Paint();

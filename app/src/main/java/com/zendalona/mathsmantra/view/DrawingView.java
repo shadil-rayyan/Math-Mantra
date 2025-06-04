@@ -32,7 +32,7 @@ public class DrawingView extends View {
 
     private void init(Context context) {
         paint = new Paint();
-        paint.setColor(0xFF000000); // Black color
+        paint.setColor(0xFFD14D42); // Black color
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
 

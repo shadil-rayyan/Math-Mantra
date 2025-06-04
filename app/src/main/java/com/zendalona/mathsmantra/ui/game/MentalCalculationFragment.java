@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.databinding.DialogResultBinding;
 import com.zendalona.mathsmantra.databinding.FragmentGameMentalCalculationBinding;
 
-import java.util.Locale;
 import java.util.Random;
 import java.util.Stack;
 
@@ -29,19 +27,18 @@ public class MentalCalculationFragment extends Fragment {
     private FragmentGameMentalCalculationBinding binding;
     private String currentExpression;
     private int correctAnswer;
-    private TextToSpeech textToSpeech;
-    private boolean isQuestionAnsweredCorrectly = false; // Track correctness
+    private boolean isQuestionAnsweredCorrectly = false;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         binding = FragmentGameMentalCalculationBinding.inflate(inflater, container, false);
-        setupTextToSpeech();
         generateNewQuestion();
 
         binding.submitAnswerBtn.setOnClickListener(v -> checkAnswer());
 
-        // Auto-submit on keyboard 'tick' or 'right' button press
         binding.answerEt.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 checkAnswer();
@@ -51,14 +48,6 @@ public class MentalCalculationFragment extends Fragment {
         });
 
         return binding.getRoot();
-    }
-
-    private void setupTextToSpeech() {
-        textToSpeech = new TextToSpeech(getContext(), status -> {
-            if (status == TextToSpeech.SUCCESS) {
-                textToSpeech.setLanguage(Locale.US);
-            }
-        });
     }
 
     private void generateNewQuestion() {
@@ -76,33 +65,48 @@ public class MentalCalculationFragment extends Fragment {
         currentExpression = num1 + " " + op1 + " " + num2 + " " + op2 + " " + num3 + " " + op3 + " " + num4;
         correctAnswer = evaluateExpression(currentExpression);
 
-        String displayText = formatExpressionForDisplay(currentExpression) + " = ?";
-        binding.mentalCalculation.setText(displayText);
+        // Reset view and disable input while showing expression
+        isQuestionAnsweredCorrectly = false;
+        binding.answerEt.setText("");
+        binding.answerEt.setEnabled(false);
+        binding.submitAnswerBtn.setEnabled(false);
+        binding.mentalCalculation.setText("");
 
-        // Accessibility description
-        String spokenExpression = "Math question: " + formatExpressionForSpeech(currentExpression) + ". What is the answer?";
-        binding.mentalCalculation.setContentDescription(spokenExpression);
-
-        // Read the question aloud when the screen opens
-        speak(spokenExpression);
-
-        isQuestionAnsweredCorrectly = false; // Reset correctness tracker
+        // Start revealing tokens one at a time
+        String[] tokens = currentExpression.split(" ");
+        revealTokensSequentially(tokens, 0);
     }
 
-    private int evaluateExpression(String expression) {
-        return evaluateMath(expression);
+    private void revealTokensSequentially(String[] tokens, int index) {
+        if (index >= tokens.length) {
+            binding.answerEt.setEnabled(true);
+            binding.submitAnswerBtn.setEnabled(true);
+            binding.answerEt.requestFocus();
+            return;
+        }
+
+        String currentText = binding.mentalCalculation.getText().toString();
+        String displayToken = tokens[index].equals("/") ? "÷" : tokens[index];
+        binding.mentalCalculation.setText(currentText + " " + displayToken);
+
+        handler.postDelayed(() -> revealTokensSequentially(tokens, index + 1), 1500);
     }
 
     private void checkAnswer() {
-        String userInput = binding.answerEt.getText().toString();
+        String userInput = binding.answerEt.getText().toString().trim();
         if (userInput.isEmpty()) {
             Toast.makeText(getContext(), "Enter your answer", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        boolean isCorrect = Integer.parseInt(userInput) == correctAnswer;
-        isQuestionAnsweredCorrectly = isCorrect;
-        showResultDialog(isCorrect);
+        try {
+            int userAnswer = Integer.parseInt(userInput);
+            boolean isCorrect = (userAnswer == correctAnswer);
+            isQuestionAnsweredCorrectly = isCorrect;
+            showResultDialog(isCorrect);
+        } catch (NumberFormatException e) {
+            Toast.makeText(getContext(), "Please enter a valid number", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showResultDialog(boolean isCorrect) {
@@ -119,7 +123,6 @@ public class MentalCalculationFragment extends Fragment {
                 .into(dialogBinding.gifImageView);
 
         dialogBinding.messageTextView.setText(message);
-        speak(message); // Read the result message aloud
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
@@ -128,48 +131,26 @@ public class MentalCalculationFragment extends Fragment {
 
         dialog.show();
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        handler.postDelayed(() -> {
             if (dialog.isShowing()) {
                 dialog.dismiss();
                 if (isCorrect) {
-                    generateNewQuestion(); // Only change question if correct
+                    generateNewQuestion(); // New question only if correct
                 }
             }
         }, 2000);
     }
 
-    private void speak(String text) {
-        if (textToSpeech != null) {
-            textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
-        }
+    private int evaluateExpression(String expression) {
+        return evaluateMath(expression);
     }
 
-    private String formatExpressionForDisplay(String expression) {
-        return expression.replace("/", "÷");
-    }
-
-    private String formatExpressionForSpeech(String expression) {
-        return expression.replace("+", " plus ")
-                .replace("-", " minus ")
-                .replace("*", " times ")
-                .replace("/", " divided by ");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-        }
-        binding = null;
-    }
-
+    // Math expression evaluator with operator precedence
     private int evaluateMath(String expression) {
         Stack<Integer> numbers = new Stack<>();
         Stack<Character> operators = new Stack<>();
-
         String[] tokens = expression.split(" ");
+
         for (String token : tokens) {
             if (isNumber(token)) {
                 numbers.push(Integer.parseInt(token));
@@ -219,10 +200,15 @@ public class MentalCalculationFragment extends Fragment {
             case '*':
                 return a * b;
             case '/':
-                return (b == 0) ? 0 : a / b; // Handle division by zero
+                return (b == 0) ? 0 : a / b;
             default:
                 return 0;
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }

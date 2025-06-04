@@ -70,15 +70,14 @@
     <string name="reset_settings_desc">Reset all settings to default values</string>
 
 
-        <string name="language_default">Default</string>
-        <string name="language_english">English</string>
-        <string name="language_malayalam">Malayalam</string>
-        <!-- Other strings -->
-        <string name="sample_story_question">Arjun has %1$d apples and Mithra has %2$d apples. How many apples do they have?</string>
-        <string name="hint_enter_answer">Enter your answer</string>
-        <string name="submit">Submit</string>
-        <string name="content_submit_button">Submit your answer</string>
-        <string name="content_answer_field">Answer input field</string>
+    <string name="language_default">Default</string>
+    <string name="language_english">English</string>
+    <string name="language_malayalam">Malayalam</string>
+    <!-- Other strings -->
+    <string name="sample_story_question">Arjun has %1$d apples and Mithra has %2$d apples. How many apples do they have?</string>
+    <string name="hint_enter_answer">Enter your answer</string>
+    <string name="content_submit_button">Submit your answer</string>
+    <string name="content_answer_field">Answer input field</string>
 
 
     <string name="bell_ring">Bell Ring</string>
@@ -90,11 +89,67 @@
     <string name="stereo_sound">Stereo Sound</string>
     <string name="drawing">Drawing</string>
     <string name="direction">Direction</string>
-    <string name="touch_the_screen">Touch the Screen</string>
 
+
+    <string name="touch_the_screen">Touch the Screen</string>
+    <string name="turn_to_angle">Turn to %1$d°</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="compassdescription">compass turn the phone in the direction as asked in teh question </string>
+    <string name="drawing_description">Drawing screen with shape input and control buttons</string>
+    <string name="draw_shape">Draw a shape</string>
+    <string name="draw_instruction">Instruction: Draw the required shape</string>
+    <string name="drawing_canvas_description">Canvas for drawing. Use touch gestures to draw your shape.</string>
+    <string name="reset">Reset</string>
+    <string name="reset_description">Clear the drawing and start again</string>
+    <string name="submit">Submit</string>
+    <string name="submit_description">Submit your drawing for evaluation</string>
+    <string name="rotate_your_phone">Rotate Your Phone</string>
+    <string name="turn_phone_90_degrees">Turn your phone 90 degrees</string>
+    <string name="rotation_angle_default">Rotation Angle: 0°</string>
+    <string name="angle_description">Screen showing phone rotation instructions</string>
+
+    <string name="mental_description">Mental calculation screen with math question and input</string>
+    <string name="calculate_prompt">Calculate the value of:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
+    <string name="math_question_description">Math question. What is 2 plus 2 times 2 minus 5? Double tap to repeat the question.</string>
+    <string name="answer_input_description">Enter your answer here</string>
+    <string name="answer_hint">Your Answer Here</string>
 
     <string name="use_to_move"><![CDATA[<< Use -/+ to move >>]]></string>
 
+    <!-- Shake Fragment -->
+    <string name="shake_count_initial">0</string>
+    <string name="shake_count_description">Current shake count, starts at 0</string>
+    <string name="shake_instruction">Shake the device to start</string>
+    <string name="shake_instruction_description">Instruction to shake the device to start the game</string>
 
+    <!-- Audio Math Fragment -->
+    <string name="audio_instruction">Listen carefully and subtract the second number you hear from the first number.</string>
+    <string name="audio_instruction_description">Instruction. Listen carefully. Tap Read the Question to hear the numbers before solving.</string>
+    <string name="read_question">Read the Question</string>
+    <string name="read_question_description">Button to read the math question aloud. Double tap to listen.</string>
+    <string name="enter_answer_hint">Enter your answer</string>
+    <string name="your_answer_here">Your Answer Here</string>
+
+
+    <string name="number_line_description">Number Line Activity. Use the buttons to move left or right on the number line to solve the math question.</string>
+    <string name="number_line_question">What is 0 + 12?</string>
+    <string name="number_line_question_description">Question. What is 0 plus 12? Double tap to repeat the question.</string>
+    <string name="number_line_visual_description">Visual number line. Use the buttons below to move left or right.</string>
+    <string name="current_position_description">Current position on the number line. Use the buttons to move left or right.</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">Move left button. Moves one step left on the number line.</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">Move right button. Moves one step right on the number line.</string>
+    <string name="tap_screen_description">This is the Tap Count Screen. Tap anywhere to increase the count.</string>
+    <string name="tap_count_description">Tap count: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">Tap anywhere to increase count</string>
+    <string name="tap_instruction_description">Instruction: Tap anywhere to increase the count.</string>
+
+    <!-- TouchScreenFragment Strings -->
+    <string name="touch_screen_description">Touch your finger game answer with your fingers</string>
+    <string name="touch_instruction">Put 2 fingers on the screen</string>
+    <string name="touch_image_description">Illustration of two fingers touching the screen</string>
 
 </resources>

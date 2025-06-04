@@ -8,18 +8,19 @@
     android:padding="16dp"
     android:background="?attr/colorSurface"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:contentDescription="@string/drawing_description">
 
     <!-- Title TextView -->
     <TextView
         android:id="@+id/questionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Draw a shape"
+        android:text="@string/draw_shape"
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnSecondary"
-        android:contentDescription="Instruction: Draw the required shape"
+        android:contentDescription="@string/draw_instruction"
         android:accessibilityLiveRegion="polite"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -37,8 +38,8 @@
         app:layout_constraintTop_toBottomOf="@id/questionText"
         app:layout_constraintBottom_toTopOf="@id/resetButton"
         android:layout_marginTop="20dp"
-        android:background="@android:color/white"
-        android:contentDescription="Canvas for drawing. Use touch gestures to draw your shape."
+        android:background="?attr/colorSurface"
+        android:contentDescription="@string/drawing_canvas_description"
         android:importantForAccessibility="yes" />
 
     <!-- Reset Button -->
@@ -46,11 +47,11 @@
         android:id="@+id/resetButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Reset"
+        android:text="@string/reset"
         android:textAllCaps="false"
         android:paddingVertical="12dp"
         android:minHeight="48dp"
-        android:contentDescription="Clear the drawing and start again"
+        android:contentDescription="@string/reset_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/submitButton"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -63,11 +64,11 @@
         android:id="@+id/submitButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="@string/submit"
         android:textAllCaps="false"
         android:paddingVertical="12dp"
         android:minHeight="48dp"
-        android:contentDescription="Submit your drawing for evaluation"
+        android:contentDescription="@string/submit_description"
         app:layout_constraintStart_toEndOf="@id/resetButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

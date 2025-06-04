@@ -2,20 +2,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface">
+    android:background="?attr/colorSurface"
+    android:contentDescription="@string/compassdescription">
 
-    <!-- Question Text -->
+    <!-- Instructional Text -->
     <TextView
         android:id="@+id/questionTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center|top"
-        android:textSize="24sp"
-        android:textColor="?attr/colorOnSecondary"
-        android:text="Turn to 0°"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        />
+        android:text="@string/turn_to_angle"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="24sp" />
 
     <!-- Compass Image -->
     <ImageView
@@ -30,10 +31,9 @@
         android:id="@+id/degreeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:layout_gravity="center|bottom"
-        android:textSize="24sp"
+        android:text="@string/degree_placeholder"
         android:textColor="?attr/colorOnSecondary"
-        android:text="0°"
-        />
-
+        android:textSize="24sp" />
 </FrameLayout>

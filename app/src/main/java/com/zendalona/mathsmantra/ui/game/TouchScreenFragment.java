@@ -38,8 +38,8 @@ public class TouchScreenFragment extends Fragment {
     }
 
     private void generateNewQuestion() {
-        int num1 = random.nextInt(5) + 1; // 1 to 5
-        int num2 = random.nextInt(5) + 1; // 1 to 5
+        int num1 = random.nextInt(3) + 1; // 1 to 5
+        int num2 = random.nextInt(3) + 1; // 1 to 5
         correctAnswer = num1 + num2;
         answeredCorrectly = false; // Reset answer tracking
 

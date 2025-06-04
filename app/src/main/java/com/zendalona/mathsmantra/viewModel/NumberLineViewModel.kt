@@ -26,10 +26,13 @@ class NumberLineViewModel : ViewModel() {
             if (currentPositionValue < lineEndValue) {
                 _currentPosition.setValue(currentPositionValue + 1)
             } else {
+                // Only shift line if needed, but do NOT reset position to newStart blindly.
+                // Instead, move currentPosition by 1 if possible.
                 shiftRight()
             }
         }
     }
+
 
     fun moveLeft() {
         val currentPositionValue = _currentPosition.getValue()
@@ -45,14 +48,16 @@ class NumberLineViewModel : ViewModel() {
 
     private fun shiftRight() {
         val lineEndValue = _lineEnd.getValue()
-        if (lineEndValue != null) {
+        val currentPositionValue = _currentPosition.getValue()
+        if (lineEndValue != null && currentPositionValue != null) {
             val newStart = lineEndValue + 1
             val newEnd = newStart + 10
             _lineStart.setValue(newStart)
             _lineEnd.setValue(newEnd)
-            _currentPosition.setValue(newStart)
+            _currentPosition.setValue(currentPositionValue + 1)  // keep continuity
         }
     }
+
 
     private fun shiftLeft() {
         val lineStartValue = _lineStart.getValue()
