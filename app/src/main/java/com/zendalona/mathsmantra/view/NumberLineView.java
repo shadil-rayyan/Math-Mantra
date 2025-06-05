@@ -14,7 +14,6 @@ import android.view.View;
 
 import androidx.core.content.ContextCompat;
 
-import com.zendalona.mathsmantra.MainActivity;
 import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
@@ -30,15 +29,13 @@ public class NumberLineView extends View {
     private Paint linePaint;
     private Paint numberPaint;
     private Paint mascotPaint;
-
     private float gap;
 
-    private GestureDetector gestureDetector;
-
-    private boolean talkBackEnabled = false;
-
+    // Accessibility and gesture
+    private boolean talkBackEnabled;
+    private boolean isTwoFingerGesture;
     private float initialX1, initialX2;
-    private boolean isTwoFingerGesture = false;
+    private GestureDetector gestureDetector;
 
     public NumberLineView(Context context) {
         super(context);
@@ -57,11 +54,11 @@ public class NumberLineView extends View {
 
     private void init(Context context) {
         linePaint = new Paint();
-        linePaint.setColor(ContextCompat.getColor(context, R.color.light_purple_button));
+        linePaint.setColor(ContextCompat.getColor(getContext(), R.color.blue));
         linePaint.setStrokeWidth(12f);
 
         numberPaint = new Paint();
-        numberPaint.setColor(ContextCompat.getColor(context, R.color.light_red_button));
+        numberPaint.setColor(ContextCompat.getColor(getContext(), R.color.lightBlue));
         numberPaint.setTextSize(40f);
 
         mascotPaint = new Paint();
@@ -84,11 +81,11 @@ public class NumberLineView extends View {
         float endX = getWidth() * 0.98f;
         float centerY = getHeight() / 2f;
 
-        canvas.drawLine(0, centerY, getWidth(), centerY, linePaint);
+        canvas.drawLine(0 , centerY, getWidth(), centerY, linePaint);
 
         gap = (endX - startX) / (numberRangeEnd - numberRangeStart);
 
-        int d = Log.d("Drawing number line range : ", numberRangeStart + " to " + numberRangeEnd);
+        Log.d("Drawing number line", numberRangeStart + " to " + numberRangeEnd);
         for (int number = numberRangeStart; number <= numberRangeEnd; number++) {
             float x = startX + (number - numberRangeStart) * gap;
             canvas.drawText(String.valueOf(number), x, centerY + 50f, numberPaint);
@@ -98,10 +95,9 @@ public class NumberLineView extends View {
     private void drawMascot(Canvas canvas) {
         float centerY = getHeight() / 2f;
         float mascotPosition = (currentPosition - numberRangeStart - 0.4f) * gap;
-
-        mascotPosition = Math.max(0, Math.min(mascotPosition, getWidth()));
-
-        canvas.drawText(MASCOT_EMOJI, mascotPosition, centerY - 50f, mascotPaint);
+        if (mascotPosition < 0) mascotPosition = 0;
+        if (mascotPosition > getWidth()) mascotPosition = getWidth();
+        canvas.drawText(MASCOT_EMOJI, mascotPosition , centerY - 50f, mascotPaint);
     }
 
     public void updateNumberLine(int start, int end, int position) {
@@ -109,23 +105,20 @@ public class NumberLineView extends View {
         this.numberRangeEnd = end;
         this.currentPosition = position;
         invalidate();
+        announcePosition();
     }
 
     public int moveLeft() {
-        if (currentPosition > numberRangeStart) {
-            currentPosition--;
-            invalidate();
-            announcePosition();
-        }
+        currentPosition--;
+        invalidate();
+        announcePosition();
         return currentPosition;
     }
 
     public int moveRight() {
-        if (currentPosition < numberRangeEnd) {
-            currentPosition++;
-            invalidate();
-            announcePosition();
-        }
+        currentPosition++;
+        invalidate();
+        announcePosition();
         return currentPosition;
     }
 
@@ -226,10 +219,8 @@ public class NumberLineView extends View {
 
     public void onResume() {
         if (talkBackEnabled) {
-            // Get the context from the view and cast it to an Activity
             Context context = getContext();
             if (context instanceof Activity) {
-                // Access the system service for accessibility service
                 AccessibilityService accessibilityService = (AccessibilityService) ((Activity) context).getSystemService(AccessibilityService.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     AccessibilityHelper.disableExploreByTouch((MathsManthraAccessibilityService) accessibilityService);
@@ -240,10 +231,8 @@ public class NumberLineView extends View {
 
     public void onPause() {
         if (talkBackEnabled) {
-            // Get the context from the view and cast it to an Activity
             Context context = getContext();
             if (context instanceof Activity) {
-                // Access the system service for accessibility service
                 AccessibilityService accessibilityService = (AccessibilityService) ((Activity) context).getSystemService(AccessibilityService.class);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     AccessibilityHelper.resetExploreByTouch((MathsManthraAccessibilityService) accessibilityService);
