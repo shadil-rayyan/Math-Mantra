@@ -152,4 +152,36 @@
     <string name="touch_instruction">Put 2 fingers on the screen</string>
     <string name="touch_image_description">Illustration of two fingers touching the screen</string>
 
+
+    <string name="right_answer">Right Answer!</string>
+    <string name="wrong_answer">Wrong Answer!</string>
+    <string name="turn_to_angle_template">Turn to %1$d° from your current direction</string>
+    <string name="relative_angle_template">Relative Angle: %1$d°</string>
+    <string name="current_angle_announcement">Current Angle: %1$s</string>
+
+    <string name="compass_turn_to">Turn to %1$s </string>
+    <string name="compass_correct">Correct!</string>
+    <string name="compass_correct_msg">You turned to the correct direction!</string>
+    <string name="current_direction_accessibility">Current direction: %1$s </string>
+
+    <string-array name="compass_directions">
+        <item>North</item>
+        <item>North-Northeast</item>
+        <item>Northeast</item>
+        <item>East-Northeast</item>
+        <item>East</item>
+        <item>East-Southeast</item>
+        <item>Southeast</item>
+        <item>South-Southeast</item>
+        <item>South</item>
+        <item>South-Southwest</item>
+        <item>Southwest</item>
+        <item>West-Southwest</item>
+        <item>West</item>
+        <item>West-Northwest</item>
+        <item>Northwest</item>
+        <item>North-Northwest</item>
+    </string-array>
+
+
 </resources>

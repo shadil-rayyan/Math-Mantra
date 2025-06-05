@@ -10,7 +10,7 @@ object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
 
-    fun getLanguage(context: Context): String {
+    fun getLanguage(context: Context?): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         return prefs.getString(SELECTED_LANGUAGE, Locale.getDefault().language) ?: Locale.getDefault().language
     }

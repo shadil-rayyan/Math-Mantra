@@ -153,5 +153,37 @@
     <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ സ്പർശിക്കുന്നതിന്റെ ചിത്രീകരണം</string>
 
 
+    <string name="right_answer">ശരിയായ ഉത്തരമാണ്!</string>
+    <string name="wrong_answer">തെറ്റായ ഉത്തരമാണ്!</string>
+    <string name="turn_to_angle_template">നിങ്ങളുടെ നിലവിലെ ദിശയിൽ നിന്ന് %1$d° തിരിക്കുക</string>
+    <string name="relative_angle_template">ആമുഖ കോണം: %1$d°</string>
+    <string name="current_angle_announcement">നിലവിലെ കോണം: %1$s</string>
+
+    <string name="compass_turn_to"> %1$s ദിശയിലേയ്ക്ക് തിരിക്കുക</string>
+    <string name="compass_correct">ശരി!</string>
+    <string name="compass_correct_msg">നിങ്ങൾ ശരിയായ ദിശയിലേക്കാണ് തിരിച്ചതു!</string>
+    <string name="current_direction_accessibility">നിലവിലെ ദിശ: %1$s </string>
+
+    <string-array name="compass_directions">
+        <item>വടക്ക്</item> <!-- North -->
+        <item>വടക്കുചെറുകിഴക്ക്</item> <!-- North-Northeast -->
+        <item>ചെറുകിഴക്ക്</item> <!-- Northeast -->
+        <item>കിഴക്കുചെറുകിഴക്ക്</item> <!-- East-Northeast -->
+        <item>കിഴക്ക്</item> <!-- East -->
+        <item>കിഴക്കുചെറുദക്ഷിണം</item> <!-- East-Southeast -->
+        <item>ചെറുദക്ഷിണം</item> <!-- Southeast -->
+        <item>തെക്കുചെറുദക്ഷിണം</item> <!-- South-Southeast -->
+        <item>തെക്ക്</item> <!-- South -->
+        <item>തെക്കുചെറുപടിഞ്ഞാറ്</item> <!-- South-Southwest -->
+        <item>ചെറുപടിഞ്ഞാറ്</item> <!-- Southwest -->
+        <item>പടിഞ്ഞാറുചെറുപടിഞ്ഞാറ്</item> <!-- West-Southwest -->
+        <item>പടിഞ്ഞാറ്</item> <!-- West -->
+        <item>പടിഞ്ഞാറുചെറുവടക്ക്</item> <!-- West-Northwest -->
+        <item>ചെറുവടക്ക്</item> <!-- Northwest -->
+        <item>വടക്കുചെറുവടക്ക്</item> <!-- North-Northwest -->
+    </string-array>
+
+
+
 
 </resources>
