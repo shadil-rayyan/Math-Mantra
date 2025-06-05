@@ -19,11 +19,13 @@ import com.zendalona.mathsmantra.databinding.DialogResultBinding;
 import com.zendalona.mathsmantra.model.RotationSensorUtility;
 
 import java.util.Random;
+
 public class AngleFragment extends Fragment implements RotationSensorUtility.RotationListener {
 
     private TextView rotationTextView, questionTextView;
     private RotationSensorUtility rotationSensorUtility;
     private float targetRotation = 0f;
+    private float baseAzimuth = -1f;  // initial compass direction
     private boolean questionAnswered = false;
     private Handler angleUpdateHandler;
     private Runnable angleUpdateRunnable;
@@ -36,18 +38,9 @@ public class AngleFragment extends Fragment implements RotationSensorUtility.Rot
         rotationTextView = view.findViewById(R.id.rotation_angle_text);
         questionTextView = view.findViewById(R.id.angle_question);
 
-        generateNewQuestion();
-
         rotationSensorUtility = new RotationSensorUtility(requireContext(), this);
 
-        // Start updating angle every 2 seconds
         angleUpdateHandler = new Handler(Looper.getMainLooper());
-        angleUpdateRunnable = () -> {
-            if (!questionAnswered && rotationTextView != null) {
-                rotationTextView.announceForAccessibility("Current Angle: " + rotationTextView.getText());
-                angleUpdateHandler.postDelayed(angleUpdateRunnable, 2000);  // Only post if not answered
-            }
-        };
 
         return view;
     }
@@ -55,34 +48,26 @@ public class AngleFragment extends Fragment implements RotationSensorUtility.Rot
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (rotationSensorUtility != null) {
-            rotationSensorUtility.unregisterListener();
-        }
-        if (angleUpdateHandler != null) {
-            angleUpdateHandler.removeCallbacks(angleUpdateRunnable);  // Avoid memory leak
-        }
+        if (rotationSensorUtility != null) rotationSensorUtility.unregisterListener();
+        if (angleUpdateHandler != null) angleUpdateHandler.removeCallbacks(angleUpdateRunnable);
     }
 
     @Override
     public void onRotationChanged(float azimuth, float pitch, float roll) {
-        float normalizedAngle = normalizeAngle(roll);
-
-        if (rotationTextView != null) {
-            if (isAdded()) {  // Check if the fragment is still added to the activity
-                requireActivity().runOnUiThread(() -> {
-                    rotationTextView.setText(String.format("Current Angle: %d°", (int) normalizedAngle));
-                    checkIfCorrect(normalizedAngle);
-                });
-            }
+        if (baseAzimuth < 0) {
+            baseAzimuth = azimuth;  // Set first reading as the base direction
+            generateNewQuestion();
+            return;
         }
-    }
 
-    private float normalizeAngle(float roll) {
-        if (roll >= -10 && roll <= 10) return 0;        // Portrait
-        if (roll >= 80 && roll <= 100) return 90;       // Landscape left
-        if (roll >= 170 || roll <= -170) return 180;    // Upside-down portrait
-        if (roll >= -100 && roll <= -80) return 270;    // Landscape right
-        return roll;  // If outside defined ranges, keep the original
+        float relativeAzimuth = (azimuth - baseAzimuth + 360) % 360;
+
+        if (rotationTextView != null && isAdded()) {
+            requireActivity().runOnUiThread(() -> {
+                rotationTextView.setText(String.format("Relative Angle: %d°", (int) relativeAzimuth));
+                checkIfCorrect(relativeAzimuth);
+            });
+        }
     }
 
     private void checkIfCorrect(float currentAngle) {
@@ -92,7 +77,7 @@ public class AngleFragment extends Fragment implements RotationSensorUtility.Rot
 
         if (isCorrect) {
             questionAnswered = true;
-            angleUpdateHandler.removeCallbacks(angleUpdateRunnable); // Stop announcing updates
+            angleUpdateHandler.removeCallbacks(angleUpdateRunnable);
             showResultDialog(true);
         }
     }
@@ -118,7 +103,6 @@ public class AngleFragment extends Fragment implements RotationSensorUtility.Rot
                 .create();
 
         dialog.show();
-
         dialogView.announceForAccessibility(message);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -130,30 +114,22 @@ public class AngleFragment extends Fragment implements RotationSensorUtility.Rot
     }
 
     private void generateNewQuestion() {
-        int[] validAngles = {0, 90, 180, 270};
+        int[] validAngles = {45, 90, 120, 180, 270};
         targetRotation = validAngles[new Random().nextInt(validAngles.length)];
         questionAnswered = false;
 
-        String questionText = "Rotate to " + (int) targetRotation + "°";
+        String questionText = "Turn to " + (int) targetRotation + "° from your current direction";
         questionTextView.setText(questionText);
         questionTextView.announceForAccessibility(questionText);
 
-        // Check if angleUpdateHandler is null
-        if (angleUpdateHandler == null) {
-            angleUpdateHandler = new Handler(Looper.getMainLooper());  // Initialize if null
-        }
-
-        // Start announcing the real-time angle every 2 seconds
         if (angleUpdateRunnable == null) {
             angleUpdateRunnable = () -> {
-                if (!questionAnswered) {
+                if (!questionAnswered && rotationTextView != null) {
                     rotationTextView.announceForAccessibility("Current Angle: " + rotationTextView.getText());
                     angleUpdateHandler.postDelayed(angleUpdateRunnable, 2000);
                 }
             };
         }
-
         angleUpdateHandler.postDelayed(angleUpdateRunnable, 2000);
     }
-
 }

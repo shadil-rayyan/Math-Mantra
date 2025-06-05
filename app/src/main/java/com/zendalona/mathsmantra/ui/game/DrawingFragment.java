@@ -51,9 +51,7 @@ public class DrawingFragment extends Fragment {
         });
 
         // Submit Button - Checks the drawing only when clicked
-        binding.submitButton.setOnClickListener(v -> {
-            checkDrawing();
-        });
+        binding.submitButton.setOnClickListener(v -> checkDrawing());
 
         return binding.getRoot();
     }
@@ -75,11 +73,22 @@ public class DrawingFragment extends Fragment {
         drawingView.clearCanvas();
     }
 
-
-
-
     private void checkDrawing() {
-        boolean isCorrect = drawingView.isShapeCorrect(currentShape);
+        // Get points drawn from drawingView
+        // We will use points and expected corners based on currentShape
+        int expectedCorners;
+        if ("triangle".equalsIgnoreCase(currentShape)) {
+            expectedCorners = 3;
+        } else if ("rectangle".equalsIgnoreCase(currentShape)) {
+            expectedCorners = 4;
+        } else {
+            expectedCorners = 0; // fallback
+        }
+
+        // Set epsilon for RDP simplification (tweak if needed)
+        float epsilon = 10f;
+
+        boolean isCorrect = drawingView.isShapeCorrect(drawingView.getAllPoints(), expectedCorners, epsilon);
         showResultDialog(isCorrect);
     }
 

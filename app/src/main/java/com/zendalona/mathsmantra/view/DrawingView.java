@@ -5,17 +5,25 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+
+import com.zendalona.mathsmantra.utility.drawing.RDP;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DrawingView extends View {
+
+    private static final String TAG = "DrawingView";
+
     private Paint paint;
     private Path path;
-    private List<float[]> points; // Store points for shape recognition
+    private List<float[]> points; // All points from all strokes
+    private List<List<float[]>> strokes = new ArrayList<>();
+    private List<float[]> currentStroke;
 
     private boolean isDrawingComplete = false;
     private AccessibilityManager accessibilityManager;
@@ -32,13 +40,15 @@ public class DrawingView extends View {
 
     private void init(Context context) {
         paint = new Paint();
-        paint.setColor(0xFFD14D42); // Black color
+        paint.setColor(0xFFD14D42); // Your chosen color
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
 
         path = new Path();
         points = new ArrayList<>();
         accessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+
+        Log.d(TAG, "DrawingView initialized");
     }
 
     @Override
@@ -52,20 +62,29 @@ public class DrawingView extends View {
         float x = event.getX();
         float y = event.getY();
 
+        Log.d(TAG, "onTouchEvent action=" + event.getAction() + " at (" + x + ", " + y + ")");
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                currentStroke = new ArrayList<>();
+                currentStroke.add(new float[]{x, y});
+                strokes.add(currentStroke);
+
                 path.moveTo(x, y);
-                points.clear();
-                points.add(new float[]{x, y});
+                Log.d(TAG, "ACTION_DOWN - start stroke at (" + x + ", " + y + ")");
                 return true;
+
             case MotionEvent.ACTION_MOVE:
+                currentStroke.add(new float[]{x, y});
                 path.lineTo(x, y);
-                points.add(new float[]{x, y});
                 invalidate();
+                Log.d(TAG, "ACTION_MOVE - added point (" + x + ", " + y + ")");
                 return true;
+
             case MotionEvent.ACTION_UP:
+                currentStroke.add(new float[]{x, y});
                 isDrawingComplete = true;
-                points.add(new float[]{x, y});
+                Log.d(TAG, "ACTION_UP - end stroke at (" + x + ", " + y + ")");
                 return true;
         }
         return false;
@@ -73,64 +92,182 @@ public class DrawingView extends View {
 
     public void clearCanvas() {
         path.reset();
+        strokes.clear();
         points.clear();
+        currentStroke = null;
         isDrawingComplete = false;
         invalidate();
+
+        Log.d(TAG, "Canvas cleared");
     }
 
-    public boolean isShapeCorrect(String expectedShape) {
-        if (!isDrawingComplete) return false;
+    /**
+     * Get all points drawn by the user (flatten strokes into one list)
+     */
+    public List<float[]> getAllPoints() {
+        List<float[]> allPoints = new ArrayList<>();
+        for (List<float[]> stroke : strokes) {
+            allPoints.addAll(stroke);
+        }
+        Log.d(TAG, "getAllPoints returned " + allPoints.size() + " points");
+        return allPoints;
+    }
 
-        int cornerCount = countCorners();
-        boolean isClosed = isPathClosed();
+    /**
+     * Checks if drawn shape is correct based on points, expected corners and epsilon for RDP.
+     *
+     * @param points          List of points (x,y)
+     * @param expectedCorners Expected number of corners (e.g. 3 for triangle, 4 for rectangle)
+     * @param epsilon         Epsilon for RDP simplification
+     * @return true if shape matches expectation, false otherwise
+     */
+    public boolean isShapeCorrect(List<float[]> points, int expectedCorners, float epsilon) {
+        Log.d(TAG, "isShapeCorrect called with expectedCorners=" + expectedCorners + ", epsilon=" + epsilon);
 
-        if (expectedShape.equals("triangle") && cornerCount == 3 && isClosed) {
-            announceResult("Correct! You drew a triangle.");
-            return true;
-        } else if (expectedShape.equals("rectangle") && cornerCount == 4 && isClosed) {
-            announceResult("Correct! You drew a rectangle.");
-            return true;
-        } else {
-            announceResult("Incorrect shape. Try again.");
+        if (points == null || points.size() < 3) {
+            Log.d(TAG, "Too few points to form shape.");
             return false;
         }
-    }
 
-    private int countCorners() {
-        int corners = 0;
-        for (int i = 1; i < points.size() - 1; i++) {
-            float[] prev = points.get(i - 1);
-            float[] curr = points.get(i);
-            float[] next = points.get(i + 1);
+        // Step 1: Simplify points using RDP
+        List<float[]> simplified = RDP.rdp(points, epsilon);
+        Log.d(TAG, "RDP simplified points count: " + simplified.size());
 
-            double angle = calculateAngle(prev, curr, next);
-            if (angle < 140 && angle > 40) { // Angle detection for corners
-                corners++;
+        int n = simplified.size();
+        if (n < 3) {
+            Log.d(TAG, "Simplified points too few for polygon.");
+            return false;
+        }
+
+        // Step 2: Check if shape is closed (first and last points close enough)
+        float[] first = simplified.get(0);
+        float[] last = simplified.get(n - 1);
+        double dist = Math.hypot(first[0] - last[0], first[1] - last[1]);
+        Log.d(TAG, "Distance between first and last points: " + dist);
+        if (dist > epsilon * 2) {
+            Log.d(TAG, "Shape not closed enough.");
+            return false;
+        }
+
+        // Step 3: Calculate corner angles and count valid corners
+        int validCorners = 0;
+        for (int i = 0; i < n; i++) {
+            float[] p1 = simplified.get((i - 1 + n) % n);
+            float[] p2 = simplified.get(i);
+            float[] p3 = simplified.get((i + 1) % n);
+
+            double angle = calculateAngle(p1, p2, p3);
+            Log.d(TAG, "Corner " + i + " angle: " + angle);
+
+            // Accept corner angles roughly between 20° and 160° as valid corners
+            if (angle > 20 && angle < 160) {
+                validCorners++;
             }
         }
-        return corners;
-    }
+        Log.d(TAG, "Valid corners counted: " + validCorners);
 
-    private boolean isPathClosed() {
-        if (points.size() < 3) return false;
-        float[] first = points.get(0);
-        float[] last = points.get(points.size() - 1);
-
-        float distance = (float) Math.sqrt(Math.pow(last[0] - first[0], 2) + Math.pow(last[1] - first[1], 2));
-        return distance < 50; // Closeness threshold
-    }
-
-    private double calculateAngle(float[] p1, float[] p2, float[] p3) {
-        double angle = Math.toDegrees(
-                Math.atan2(p3[1] - p2[1], p3[0] - p2[0]) -
-                        Math.atan2(p1[1] - p2[1], p1[0] - p2[0])
-        );
-        return Math.abs(angle);
-    }
-
-    private void announceResult(String message) {
-        if (accessibilityManager.isEnabled()) {
-            announceForAccessibility(message);
+        // Step 4: Check corner count is near expected (+/- 1 tolerance)
+        if (!(validCorners >= expectedCorners - 1 && validCorners <= expectedCorners + 1)) {
+            Log.d(TAG, "Corner count not in acceptable range. Expected around " + expectedCorners);
+            return false;
         }
+
+        // Step 5: Additional checks for rectangles (4 corners)
+        if (expectedCorners == 4) {
+            double perimeter = calculatePerimeter(simplified);
+            double area = calculatePolygonArea(simplified);
+
+            float[] bounds = getBoundingBox(simplified);
+            double width = bounds[2] - bounds[0];
+            double height = bounds[3] - bounds[1];
+            double aspectRatio = width / height;
+
+            Log.d(TAG, "Perimeter: " + perimeter + ", Area: " + area);
+            Log.d(TAG, "Aspect ratio: " + aspectRatio);
+
+            // Reject very skinny or irregular shapes
+            if (aspectRatio < 0.5 || aspectRatio > 2.0) {
+                Log.d(TAG, "Aspect ratio outside allowed range.");
+                return false;
+            }
+
+            // Compactness check: (4π * area) / (perimeter²)
+            double compactness = (4 * Math.PI * area) / (perimeter * perimeter);
+            Log.d(TAG, "Compactness: " + compactness);
+            if (compactness < 0.1) {
+                Log.d(TAG, "Shape too irregular (low compactness).");
+                return false;
+            }
+        }
+
+        Log.d(TAG, "Shape passes all checks.");
+        return true; // Passed all checks
+    }
+
+    // Helpers:
+
+    private double calculatePerimeter(List<float[]> points) {
+        double perimeter = 0;
+        int n = points.size();
+        for (int i = 0; i < n; i++) {
+            float[] p1 = points.get(i);
+            float[] p2 = points.get((i + 1) % n);
+            double d = Math.hypot(p1[0] - p2[0], p1[1] - p2[1]);
+            perimeter += d;
+            Log.d(TAG, "Edge " + i + " length: " + d);
+        }
+        Log.d(TAG, "Total perimeter: " + perimeter);
+        return perimeter;
+    }
+
+    private double calculatePolygonArea(List<float[]> points) {
+        double area = 0;
+        int n = points.size();
+        for (int i = 0; i < n; i++) {
+            float[] p1 = points.get(i);
+            float[] p2 = points.get((i + 1) % n);
+            double term = p1[0] * p2[1] - p2[0] * p1[1];
+            area += term;
+            Log.d(TAG, "Area term " + i + ": " + term);
+        }
+        area = Math.abs(area / 2.0);
+        Log.d(TAG, "Polygon area: " + area);
+        return area;
+    }
+
+    private float[] getBoundingBox(List<float[]> points) {
+        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
+
+        for (float[] p : points) {
+            if (p[0] < minX) minX = p[0];
+            if (p[1] < minY) minY = p[1];
+            if (p[0] > maxX) maxX = p[0];
+            if (p[1] > maxY) maxY = p[1];
+        }
+
+        Log.d(TAG, "Bounding box: minX=" + minX + ", minY=" + minY + ", maxX=" + maxX + ", maxY=" + maxY);
+        return new float[]{minX, minY, maxX, maxY};
+    }
+
+    /**
+     * Calculate the angle between three points (in degrees)
+     */
+    private static double calculateAngle(float[] p1, float[] p2, float[] p3) {
+        double dx1 = p1[0] - p2[0];
+        double dy1 = p1[1] - p2[1];
+        double dx2 = p3[0] - p2[0];
+        double dy2 = p3[1] - p2[1];
+
+        double angle1 = Math.atan2(dy1, dx1);
+        double angle2 = Math.atan2(dy2, dx2);
+
+        double result = Math.toDegrees(angle2 - angle1);
+        if (result < 0) {
+            result += 360;
+        }
+
+        Log.d(TAG, "Angle calculated between points: " + result);
+        return result;
     }
 }

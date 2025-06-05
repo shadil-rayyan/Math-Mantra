@@ -79,9 +79,15 @@ public class MentalCalculationFragment extends Fragment {
 
     private void revealTokensSequentially(String[] tokens, int index) {
         if (index >= tokens.length) {
-            binding.answerEt.setEnabled(true);
-            binding.submitAnswerBtn.setEnabled(true);
-            binding.answerEt.requestFocus();
+            // Clear the expression from the screen after full reveal
+            handler.postDelayed(() -> binding.mentalCalculation.setText(""), 1000);
+
+            // Enable answer input shortly after clearing
+            handler.postDelayed(() -> {
+                binding.answerEt.setEnabled(true);
+                binding.submitAnswerBtn.setEnabled(true);
+                binding.answerEt.requestFocus();
+            }, 1200); // input enabled after clearing
             return;
         }
 
@@ -91,6 +97,7 @@ public class MentalCalculationFragment extends Fragment {
 
         handler.postDelayed(() -> revealTokensSequentially(tokens, index + 1), 1500);
     }
+
 
     private void checkAnswer() {
         String userInput = binding.answerEt.getText().toString().trim();

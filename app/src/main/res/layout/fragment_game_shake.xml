@@ -16,29 +16,32 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_count"
-            android:layout_width="162dp"
-            android:layout_height="173dp"
+            android:layout_width="53dp"
+            android:layout_height="68dp"
             android:clickable="false"
+            android:contentDescription="@string/shake_count_description"
             android:focusable="false"
             android:importantForAccessibility="yes"
             android:text="@string/shake_count_initial"
-            android:contentDescription="@string/shake_count_description"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="48sp"
-            tools:layout_editor_absoluteX="124dp"
-            tools:layout_editor_absoluteY="244dp" />
+            tools:layout_editor_absoluteX="179dp"
+            tools:layout_editor_absoluteY="320dp" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_me_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/shake_instruction"
+            android:layout_marginTop="540dp"
             android:contentDescription="@string/shake_instruction_description"
+            android:text="@string/shake_instruction"
             android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="24sp"
-            tools:layout_editor_absoluteX="73dp"
-            tools:layout_editor_absoluteY="538dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

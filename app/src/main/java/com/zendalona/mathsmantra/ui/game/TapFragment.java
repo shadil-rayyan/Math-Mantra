@@ -9,20 +9,21 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.databinding.FragmentGameTapBinding;
 import com.zendalona.mathsmantra.utility.common.TTSUtility;
+
+import java.util.Random;
 
 public class TapFragment extends Fragment {
 
     private FragmentGameTapBinding binding;
     private TTSUtility tts;
     private int count;
+    private int targetTaps;
     private Handler handler = new Handler();
+    private boolean gameOver = false;
 
-    public TapFragment() {
-        // Required empty public constructor
-    }
+    public TapFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,9 +35,7 @@ public class TapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentGameTapBinding.inflate(inflater, container, false);
 
-        startGame();
-
-        // Allow tapping anywhere on the screen to increment count
+        startNewRound();
         setupGlobalTouchHandler();
 
         return binding.getRoot();
@@ -44,35 +43,43 @@ public class TapFragment extends Fragment {
 
     private void setupGlobalTouchHandler() {
         binding.getRoot().setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN && !gameOver) {
                 onScreenTapped();
             }
-            return true; // Consume all touch events
+            return true;
         });
     }
 
     private void onScreenTapped() {
         count++;
         binding.tapCount.setText(String.valueOf(count));
+        tts.stop();
+        tts.speak("Tap count: " + count);
 
-        // Stop previous TTS and announce new count
-        tts.stop();  // Stop any ongoing TTS
-        tts.speak("Tap count: " + count);  // Announce the updated count
+        if (count == targetTaps) {
+            gameOver = true;
+            tts.speak("Correct! You tapped " + targetTaps + " times.");
+            handler.postDelayed(this::startNewRound, 3000);
+        } else if (count > targetTaps) {
+            gameOver = true;
+            tts.speak("Too many taps. The target was " + targetTaps + ". Try again.");
+            handler.postDelayed(this::startNewRound, 3000);
+        }
     }
 
-    private void startGame() {
+    private void startNewRound() {
         count = 0;
+        targetTaps = new Random().nextInt(4) + 2; // Random between 2 and 5
+        gameOver = false;
         binding.tapCount.setText("0");
-
-        // Introduce the game with TTS
-        tts.speak("Tap anywhere to increase the count. Let's go!");
+        tts.speak("Tap " + targetTaps + " times.");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        handler.removeCallbacksAndMessages(null); // Stop any delayed tasks
-        tts.stop(); // Stop any TTS playback when the view is destroyed
+        handler.removeCallbacksAndMessages(null);
+        tts.stop();
         binding = null;
     }
 }

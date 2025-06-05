@@ -41,15 +41,19 @@ public class RotationSensorUtility implements SensorEventListener {
             float[] orientationValues = new float[3];
             SensorManager.getOrientation(rotationMatrix, orientationValues);
 
-            float azimuth = (float) Math.toDegrees(orientationValues[0]); // Rotation around Z-axis
-            float pitch = (float) Math.toDegrees(orientationValues[1]);   // Rotation around X-axis
-            float roll = (float) Math.toDegrees(orientationValues[2]);    // Rotation around Y-axis
+            float azimuth = (float) Math.toDegrees(orientationValues[0]); // Z-axis (compass direction)
+            float pitch = (float) Math.toDegrees(orientationValues[1]);   // X-axis
+            float roll = (float) Math.toDegrees(orientationValues[2]);    // Y-axis
+
+            // Normalize azimuth to 0–360 degrees
+            if (azimuth < 0) azimuth += 360;
 
             if (listener != null) {
                 listener.onRotationChanged(azimuth, pitch, roll);
             }
         }
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.androidx.core.ktx.v1101)
     implementation(libs.androidx.lifecycle.runtime.ktx.v261)
     implementation(libs.androidx.activity)
+    implementation("com.google.mlkit:digital-ink-recognition:18.0.0")
+
 
     implementation(libs.androidx.constraintlayout)
     implementation(libs.material)
