@@ -1,4 +1,5 @@
 package com.zendalona.mathsmantra.utility.QuestionParser.parserimplemention
+
 import kotlin.random.Random
 
 class ArithmeticParser : ParserStrategy {
@@ -23,48 +24,50 @@ class ArithmeticParser : ParserStrategy {
         }
     }
 
-    private fun evalExpression(expression: String): Int {
-        val tokens = mutableListOf<String>()
-        var current = ""
-        for (ch in expression) {
-            if (ch in "+-*/") {
-                if (current.isNotEmpty()) tokens.add(current)
-                tokens.add(ch.toString())
-                current = ""
-            } else current += ch
-        }
-        if (current.isNotEmpty()) tokens.add(current)
-
-        var result = tokens[0].toIntOrNull() ?: 0
-        var index = 1
-        while (index < tokens.size) {
-            val op = tokens[index]
-            val num = tokens[index + 1].toIntOrNull() ?: 0
-            when (op) {
-                "+" -> result += num
-                "-" -> result -= num
-                "*" -> result *= num
-                "/" -> if (num != 0) result /= num
-            }
-            index += 2
-        }
-        return result
-    }
-
     override fun parseQuestion(expr: String): Pair<String, Int> {
         val operators = setOf('+', '-', '*', '/')
-        val builder = StringBuilder()
-        var token = ""
+        val tokens = mutableListOf<String>()
+        var currentToken = ""
+
         for (ch in expr) {
             if (ch in operators) {
-                builder.append(parseToken(token)).append(ch)
-                token = ""
-            } else token += ch
+                tokens.add(currentToken)
+                tokens.add(ch.toString())
+                currentToken = ""
+            } else currentToken += ch
         }
-        if (token.isNotEmpty()) builder.append(parseToken(token))
+        if (currentToken.isNotEmpty()) tokens.add(currentToken)
 
-        val question = builder.toString()
-        val answer = evalExpression(question)
-        return question to answer
+        val values = mutableListOf<Int>()
+        val ops = mutableListOf<Char>()
+
+        for ((index, token) in tokens.withIndex()) {
+            if (index % 2 == 0) {
+                values.add(parseToken(token))
+            } else {
+                ops.add(token[0])
+            }
+        }
+
+        var result = values[0]
+        val builder = StringBuilder()
+        builder.append(values[0])
+
+        for (i in ops.indices) {
+            val op = ops[i]
+            val nextVal = values[i + 1]
+            builder.append(op).append(nextVal)
+
+            result = when (op) {
+                '+' -> result + nextVal
+                '-' -> result - nextVal
+                '*' -> result * nextVal
+                '/' -> if (nextVal != 0) result / nextVal else result
+                else -> result
+            }
+        }
+
+        val questionStr = builder.toString()
+        return questionStr to result
     }
 }

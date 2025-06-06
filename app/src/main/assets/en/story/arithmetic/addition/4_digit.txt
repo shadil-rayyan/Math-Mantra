@@ -1,0 +1,1 @@
+You have %d mangoes  and % applie and your friend gives you %d more mangoes and %d more apple. How many mangoes and apple do you have in total?

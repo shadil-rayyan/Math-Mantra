@@ -10,13 +10,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentQuickPlayBinding
-import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
+import com.zendalona.mathsmantra.utility.story.StoryQuestionGenerator
 import java.io.IOException
 import java.util.*
 
@@ -83,6 +83,7 @@ class QuickPlayFragment : Fragment() {
     }
 
     private fun loadRawQuestionsFromAssets(category: String) {
+        // Example file path: "numbers/landingpage/quickplay/easy.txt"
         val filename = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
         Log.d("QuickPlayFragment", "Loading questions from file: $filename")
 
@@ -118,14 +119,23 @@ class QuickPlayFragment : Fragment() {
             return
         }
 
-        val parts = rawQuestions[currentIndex].split("===")
-        val rawExpression = parts[0].trim()
+        val rawLine = rawQuestions[currentIndex]
+        Log.d("QuickPlayFragment", "Loading question $currentIndex: rawLine=$rawLine")
+
+        val parts = rawLine.split("===")
+        if (parts.size < 3) {
+            Log.w("QuickPlayFragment", "Invalid question format at index $currentIndex")
+            loadNextQuestion()
+            return
+        }
+
+        val metadata = parts[0].trim()   // e.g. "add:4+3"
         val timeLimit = parts[1].trim().toIntOrNull() ?: 20
 
-        Log.d("QuickPlayFragment", "Loading question $currentIndex: expression=$rawExpression, timeLimit=$timeLimit")
+        // Generate story question text and get correct answer
+        val (questionText, correctAnswer) = StoryQuestionGenerator.generateStoryQuestion(requireContext(), metadata)
 
-        val (questionText, correctAnswer) = QuestionParser.parseExpression(rawExpression)
-        Log.d("QuickPlayFragment", "Parsed questionText: $questionText, correctAnswer: $correctAnswer")
+        Log.d("QuickPlayFragment", "Generated story question: $questionText, correctAnswer: $correctAnswer")
 
         if (questionList.size > currentIndex) {
             questionList[currentIndex] = questionText to correctAnswer
