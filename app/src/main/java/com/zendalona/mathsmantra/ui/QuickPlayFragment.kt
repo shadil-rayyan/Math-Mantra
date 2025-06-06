@@ -2,6 +2,7 @@ package com.zendalona.mathsmantra.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +14,9 @@ import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
-import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.common.TTSUtility
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import java.io.IOException
 import java.util.*
 
@@ -23,7 +25,7 @@ class QuickPlayFragment : Fragment() {
     private var _binding: FragmentQuickPlayBinding? = null
     private val binding get() = _binding!!
 
-    private var rawQuestions = mutableListOf<String>()
+    private val rawQuestions = mutableListOf<String>()
     private val questionList = mutableListOf<Pair<String, Int>>()
     private val wrongQuestionsSet = mutableSetOf<Int>()
 
@@ -31,9 +33,12 @@ class QuickPlayFragment : Fragment() {
     private var currentQuestionAttempts = 0
     private var totalScore = 0
     private var totalQuestions = 0
+
     private lateinit var difficulty: String
+    private lateinit var lang: String
     private var startTime: Long = 0
     private var currentQuestionTimeLimit = 60
+
     private var mediaPlayer: MediaPlayer? = null
     private lateinit var ttsUtility: TTSUtility
 
@@ -41,14 +46,22 @@ class QuickPlayFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("QuickPlayFragment", "onCreate called")
 
-        // Get category from arguments or default to "default"
         questionCategory = arguments?.getString(ARG_CATEGORY) ?: "default"
+        Log.d("QuickPlayFragment", "Question category: $questionCategory")
 
-        ttsUtility = TTSUtility(requireContext())
-        difficulty = DifficultyPreferences.getDifficulty(requireContext())
-
-        loadRawQuestionsFromAssets(questionCategory!!)
+        context?.let {
+            ttsUtility = TTSUtility(it)
+            difficulty = DifficultyPreferences.getDifficulty(it)
+            lang = LocaleHelper.getLanguage(it) ?: "en"
+            Log.d("QuickPlayFragment", "Initialized ttsUtility, difficulty: $difficulty, language: $lang")
+            loadRawQuestionsFromAssets(questionCategory!!)
+        } ?: run {
+            difficulty = "easy"
+            lang = "en"
+            Log.w("QuickPlayFragment", "Context is null during onCreate, defaulting difficulty and lang")
+        }
     }
 
     override fun onCreateView(
@@ -56,27 +69,41 @@ class QuickPlayFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("QuickPlayFragment", "onCreateView called")
         _binding = FragmentQuickPlayBinding.inflate(inflater, container, false)
-        binding.submitAnswerBtn.setOnClickListener { checkAnswer() }
+
+        binding.submitAnswerBtn.setOnClickListener {
+            Log.d("QuickPlayFragment", "Submit Answer button clicked")
+            checkAnswer()
+        }
+
         loadNextQuestion()
+
         return binding.root
     }
 
     private fun loadRawQuestionsFromAssets(category: String) {
-        val filename = "quickplay/$category/quickplay_${difficulty.lowercase(Locale.ROOT)}.txt"
+        val filename = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
+        Log.d("QuickPlayFragment", "Loading questions from file: $filename")
+
         try {
             val lines = requireContext().assets.open(filename).bufferedReader().readLines()
             rawQuestions.clear()
             for (line in lines) {
-                // Each line must have at least 3 parts separated by "==="
                 if (line.isNotBlank() && line.split("===").size >= 3) {
                     rawQuestions.add(line.trim())
+                } else {
+                    Log.d("QuickPlayFragment", "Skipping invalid question line: $line")
                 }
             }
+            Log.d("QuickPlayFragment", "Loaded ${rawQuestions.size} valid questions")
+
             if (rawQuestions.isEmpty()) {
                 Toast.makeText(requireContext(), "No valid questions found", Toast.LENGTH_LONG).show()
+                Log.w("QuickPlayFragment", "No valid questions found in asset file")
             }
         } catch (e: IOException) {
+            Log.e("QuickPlayFragment", "IOException reading file: $filename", e)
             Toast.makeText(requireContext(), "Error reading file: $filename", Toast.LENGTH_LONG).show()
         }
     }
@@ -86,6 +113,7 @@ class QuickPlayFragment : Fragment() {
         currentQuestionAttempts = 0
 
         if (currentIndex >= rawQuestions.size) {
+            Log.d("QuickPlayFragment", "No more questions. Ending game.")
             endGame()
             return
         }
@@ -94,8 +122,10 @@ class QuickPlayFragment : Fragment() {
         val rawExpression = parts[0].trim()
         val timeLimit = parts[1].trim().toIntOrNull() ?: 20
 
-        // Use your existing parser
+        Log.d("QuickPlayFragment", "Loading question $currentIndex: expression=$rawExpression, timeLimit=$timeLimit")
+
         val (questionText, correctAnswer) = QuestionParser.parseExpression(rawExpression)
+        Log.d("QuickPlayFragment", "Parsed questionText: $questionText, correctAnswer: $correctAnswer")
 
         if (questionList.size > currentIndex) {
             questionList[currentIndex] = questionText to correctAnswer
@@ -104,26 +134,35 @@ class QuickPlayFragment : Fragment() {
         }
 
         binding.questionTv.text = questionText
-
         val spokenQuestion = TTSHelper.formatMathText(questionText)
         ttsUtility.speak(spokenQuestion)
+        Log.d("QuickPlayFragment", "Spoke question")
 
         binding.answerEt.text?.clear()
+
         startTime = System.currentTimeMillis()
         currentQuestionTimeLimit = timeLimit
         totalQuestions = rawQuestions.size
+        Log.d("QuickPlayFragment", "Question timer started. Time limit: $currentQuestionTimeLimit seconds")
     }
 
     private fun checkAnswer() {
-        if (currentIndex >= questionList.size) return
+        if (currentIndex >= questionList.size) {
+            Log.w("QuickPlayFragment", "checkAnswer called but currentIndex out of bounds")
+            return
+        }
 
         val userInput = binding.answerEt.text.toString().toIntOrNull()
         val correctAnswer = questionList[currentIndex].second
         val elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000.0
 
+        Log.d("QuickPlayFragment", "User input: $userInput, correct answer: $correctAnswer, elapsed time: $elapsedSeconds sec")
+
         if (userInput == correctAnswer) {
             val grade = GradingUtils.getGrade(elapsedSeconds, currentQuestionTimeLimit.toDouble(), true)
             totalScore += GradingUtils.getPointsForGrade(grade)
+            Log.d("QuickPlayFragment", "Correct answer! Grade: $grade, totalScore: $totalScore")
+
             playSound("correct")
 
             DialogUtils.showResultDialog(
@@ -138,6 +177,8 @@ class QuickPlayFragment : Fragment() {
         } else {
             playSound("wrong")
             currentQuestionAttempts++
+            Log.d("QuickPlayFragment", "Wrong answer attempt $currentQuestionAttempts of 3")
+
             if (currentQuestionAttempts < 3) {
                 DialogUtils.showRetryDialog(
                     requireContext(),
@@ -150,6 +191,8 @@ class QuickPlayFragment : Fragment() {
             } else {
                 totalScore += GradingUtils.getPointsForGrade("Wrong Answer")
                 wrongQuestionsSet.add(currentIndex)
+                Log.d("QuickPlayFragment", "Max attempts reached for question $currentIndex. Correct answer: $correctAnswer")
+
                 val msg = "Wrong! The correct answer is $correctAnswer"
                 DialogUtils.showRetryDialog(
                     requireContext(),
@@ -158,6 +201,7 @@ class QuickPlayFragment : Fragment() {
                     msg
                 ) {
                     if (wrongQuestionsSet.size >= 4) {
+                        Log.d("QuickPlayFragment", "Wrong questions limit reached (${wrongQuestionsSet.size}). Ending game.")
                         endGame()
                     } else {
                         loadNextQuestion()
@@ -172,6 +216,8 @@ class QuickPlayFragment : Fragment() {
         val percentage = if (maxPossibleScore > 0) {
             (totalScore.toDouble() * 100) / maxPossibleScore
         } else 0.0
+
+        Log.d("QuickPlayFragment", "Game ended. Total Score: $totalScore, Total Questions: $totalQuestions, Percentage: $percentage")
 
         Toast.makeText(requireContext(), "Quiz Over! Score: $totalScore", Toast.LENGTH_LONG).show()
 
@@ -199,11 +245,13 @@ class QuickPlayFragment : Fragment() {
             mediaPlayer?.release()
             mediaPlayer = MediaPlayer.create(requireContext(), it)
             mediaPlayer?.start()
+            Log.d("QuickPlayFragment", "Playing sound: $name")
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d("QuickPlayFragment", "onDestroyView called - releasing mediaPlayer and shutting down TTS")
         _binding = null
         mediaPlayer?.release()
         mediaPlayer = null

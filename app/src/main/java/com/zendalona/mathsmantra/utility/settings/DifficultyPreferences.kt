@@ -13,7 +13,7 @@ object DifficultyPreferences {
     }
 
     @JvmStatic
-    fun getDifficulty(context: Context): String {
+    fun getDifficulty(context: Context?): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         return prefs.getString(KEY_DIFFICULTY, "medium") ?: "medium"
     }
