@@ -3,15 +3,19 @@ package com.zendalona.mathsmantra
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
+import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.ui.FragmentNavigation
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.ui.LandingPageFragment
+import com.zendalona.mathsmantra.ui.game.ShakeFragment
+import com.zendalona.mathsmantra.utility.FragmentHintVisibility
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.PermissionManager
-import com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
@@ -19,32 +23,30 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
     private lateinit var permissionManager: PermissionManager
 
     override fun attachBaseContext(newBase: Context) {
-        val context = LocaleHelper.onAttach(newBase)  // apply locale here
-        super.attachBaseContext(context)
+        super.attachBaseContext(LocaleHelper.onAttach(newBase))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState) // locale already applied
-
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // Show/hide back button depending on back stack
+        // Enable back arrow depending on stack
         supportFragmentManager.addOnBackStackChangedListener {
             val canGoBack = supportFragmentManager.backStackEntryCount > 0
             supportActionBar?.setDisplayHomeAsUpEnabled(canGoBack)
         }
 
-        // Load landing page initially without backstack
+        // Initial fragment
         if (savedInstanceState == null) {
-            val landingPageFragment = LandingPageFragment()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, landingPageFragment)
+                .replace(R.id.fragment_container, LandingPageFragment())
                 .commit()
         }
 
-        // Handle permissions
+        // Permissions
         permissionManager = PermissionManager(this, object : PermissionManager.PermissionCallback {
             override fun onPermissionGranted() {
                 Log.d("PermissionManager", "Granted!")
@@ -56,11 +58,11 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         })
         permissionManager.requestMicrophonePermission()
 
-        // Check and show accessibility service dialog if needed
+        // Accessibility dialog
         AccessibilityHelper.checkAndShowAccessibilityDialog(this)
     }
 
-    // Handle toolbar back button pressed
+    // Handle back button in toolbar
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -70,17 +72,54 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .setTransition(transit)
-            .addToBackStack(null)  // important: add to back stack to enable back button
+            .addToBackStack(null)
             .commit()
+
+        invalidateOptionsMenu() // 🔄 Ensures menu updates
     }
 
-    // Optional: function to update toolbar title from fragments
     fun updateToolbarTitle(title: String) {
         supportActionBar?.title = title
     }
 
+    // Inflate toolbar menu
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.top_menu, menu)
+        return true
+    }
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        menu.findItem(R.id.action_hint)?.isVisible = FragmentHintVisibility.shouldShowHint(currentFragment)
+        return super.onPrepareOptionsMenu(menu)
+    }
 
 
-    // Handle touch events for two-finger swipe gestures (back navigation)
 
+
+    // Handle toolbar icon clicks
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_hint -> {
+                val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                if (fragment is ShakeFragment) {
+                    fragment.showHint()
+                } else {
+                    // fallback filepath if not from ShakeFragment
+                    val hintFragment = HintFragment().apply {
+                        arguments = Bundle().apply {
+                            putString("filepath", "en/hint/default.txt")
+                        }
+                    }
+                    loadFragment(hintFragment, TRANSIT_FRAGMENT_OPEN)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    companion object {
+        const val TRANSIT_FRAGMENT_OPEN = androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+    }
 }

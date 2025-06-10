@@ -8,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.databinding.FragmentUserguideBinding
 import com.zendalona.mathsmantra.R
+import com.zendalona.mathsmantra.model.HintIconVisibilityController
 
-class UserGuideFragment : Fragment() {
+class UserGuideFragment : Fragment(), HintIconVisibilityController {
+    override fun shouldShowHintIcon() = false
 
     private var _binding: FragmentUserguideBinding? = null
     private val binding get() = _binding!!

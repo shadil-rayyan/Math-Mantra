@@ -211,6 +211,7 @@
         <item>ചെറുവടക്ക്</item> <!-- Northwest -->
         <item>വടക്കുചെറുവടക്ക്</item> <!-- North-Northwest -->
     </string-array>
+    <string name="hint_fallback">something went wrong</string>
 
 
 

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.zendalona.mathsmantra.databinding.FragmentGameShakeBinding;
+import com.zendalona.mathsmantra.ui.HintFragment;
 import com.zendalona.mathsmantra.utility.AccelerometerUtility;
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences;
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
@@ -181,6 +182,20 @@ public class ShakeFragment extends Fragment {
             }
         }, 500);
     }
+
+    public void showHint() {
+        Bundle bundle = new Bundle();
+        bundle.putString("filepath", "hint/game/shake.txt");  // relative asset path
+
+        HintFragment hintFragment = new HintFragment();
+        hintFragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, hintFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
 
     @Override
     public void onPause() {

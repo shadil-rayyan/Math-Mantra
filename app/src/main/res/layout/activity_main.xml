@@ -11,17 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="?attr/colorSecondary"
-        app:title="MathMantra"
-        app:titleTextColor="?attr/colorOnSurface"
-
-        android:importantForAccessibility="no"
-        android:focusable="false"
-        android:screenReaderFocusable="false"
-        android:contentDescription="@null"
         app:titleEnabled="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/top_menu" />
+
 
 
     <androidx.fragment.app.FragmentContainerView

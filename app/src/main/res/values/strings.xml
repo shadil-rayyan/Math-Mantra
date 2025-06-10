@@ -197,6 +197,8 @@
     <string name="appreciation_message">Good going</string>
         <string name="continue_button">Continue</string>
 
+    <string name="hint_fallback">something went wrong</string>
+
 
 
 
