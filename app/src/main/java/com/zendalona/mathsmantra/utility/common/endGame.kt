@@ -1,23 +1,45 @@
 package com.zendalona.mathsmantra.utility.common
 
-import android.os.Bundle
+import android.app.AlertDialog
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
+import com.zendalona.mathsmantra.databinding.DialogResultBinding
 
 object EndScore {
-    fun Fragment.endGameWithScore(score: Int, totalQuestions: Int) {
-        val percentage = if (totalQuestions > 0) {
-            (score.toDouble() * 100) / (totalQuestions * 50)
-        } else 0.0
+    fun Fragment.endGameWithScore() {
+        val binding = DialogResultBinding.inflate(LayoutInflater.from(requireContext()))
 
-        val bundle = Bundle().apply {
-            putInt("score", score)
-            putInt("totalQuestions", totalQuestions)
-            putDouble("percentage", percentage)
-        }
+        // Set a simple "Game Finished" message
+        binding.messageTextView.text = getString(R.string.game_finished)
 
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, ScorePageFragment::class.java, bundle)
-            .commit()
+        // Pick a random drawable from game over assets
+        val gameOverDrawables = listOf(
+            R.drawable.dialog_finished_1,
+            R.drawable.dialog_finished_2,
+            R.drawable.dialog_finished_3
+        )
+        val drawable = gameOverDrawables.random()
+
+        Glide.with(requireContext())
+            .asGif()
+            .load(drawable)
+            .into(binding.gifImageView)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+
+        // Automatically dismiss after 5 seconds and go back
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (dialog.isShowing) dialog.dismiss()
+            parentFragmentManager.popBackStack()
+        }, 5000)
     }
 }

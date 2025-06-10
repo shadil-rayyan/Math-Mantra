@@ -222,5 +222,47 @@
         <item>North-Northwest</item>
     </string-array>
 
+    <string name="continue_text">Continue</string>
+
+    <!-- Excellent -->
+    <string name="excellent_1">Fantastic work!</string>
+    <string name="excellent_2">You’re a genius!</string>
+    <string name="excellent_3">Outstanding!</string>
+    <string name="excellent_4">Absolutely correct!</string>
+    <string name="excellent_5">You nailed it!</string>
+
+    <!-- Very Good -->
+    <string name="very_good_1">Great job!</string>
+    <string name="very_good_2">Well done!</string>
+    <string name="very_good_3">You’re getting better!</string>
+    <string name="very_good_4">That’s right!</string>
+    <string name="very_good_5">Impressive!</string>
+
+    <!-- Good -->
+    <string name="good_1">Nice work!</string>
+    <string name="good_2">That’s good!</string>
+    <string name="good_3">Keep it up!</string>
+    <string name="good_4">Correct answer!</string>
+    <string name="good_5">Good thinking!</string>
+
+    <!-- Fair -->
+    <!-- Not Bad -->
+    <string name="not_bad_1">Not bad!</string>
+    <string name="not_bad_2">Almost perfect!</string>
+    <string name="not_bad_3">Keep improving!</string>
+    <string name="not_bad_4">Fair enough!</string>
+    <string name="not_bad_5">That’s decent!</string>
+
+
+    <!-- Okay -->
+    <string name="okay_1">You’re getting there!</string>
+    <string name="okay_2">Good try!</string>
+    <string name="okay_3">Okay answer!</string>
+    <string name="okay_4">Try to be faster!</string>
+    <string name="okay_5">Fine answer!</string>
+
+    <string name="game_finished">Game Finished!</string>
+
+
 
 </resources>

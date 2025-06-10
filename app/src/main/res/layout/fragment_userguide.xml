@@ -17,7 +17,7 @@
             android:id="@+id/tvUserGuide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?attr/colorPrimary"
+            android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
             android:paddingBottom="16dp" />
     </ScrollView>

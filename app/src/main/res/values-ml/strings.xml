@@ -212,6 +212,46 @@
         <item>വടക്കുചെറുവടക്ക്</item> <!-- North-Northwest -->
     </string-array>
     <string name="hint_fallback">something went wrong</string>
+    <string name="continue_text">തുടരുക</string>
+
+    <!-- Excellent -->
+    <string name="excellent_1">അസാധാരണമാണ്!</string>
+    <string name="excellent_2">നിങ്ങൾ സ്മാർട്ടാണ്!</string>
+    <string name="excellent_3">ഉറപ്പായ വിജയം!</string>
+    <string name="excellent_4">സൂപ്പർ ഉത്തരമാണ്!</string>
+    <string name="excellent_5">അഭിനന്ദനങ്ങൾ!</string>
+
+    <!-- Very Good -->
+    <string name="very_good_1">നന്നായിപ്പോയി!</string>
+    <string name="very_good_2">വെൽ ഡൺ!</string>
+    <string name="very_good_3">നല്ല പുരോഗതി!</string>
+    <string name="very_good_4">കൃത്യമായ ഉത്തരം!</string>
+    <string name="very_good_5">ഇത് നല്ലതാണ്!</string>
+
+    <!-- Good -->
+    <string name="good_1">നല്ല ശ്രമം!</string>
+    <string name="good_2">നന്നായി ഉദ്ദേശിച്ചു!</string>
+    <string name="good_3">ഇതൊന്നു കൂടെ ശ്രമിക്കൂ!</string>
+    <string name="good_4">ഉത്തരമൊത്താണ്!</string>
+    <string name="good_5">ചിന്താശേഷി നല്ലതാണ്!</string>
+
+    <!-- Fair -->
+    <!-- Not Bad -->
+    <string name="not_bad_1">ശരാശരി ഉത്തരം!</string>
+    <string name="not_bad_2">കൂടുതൽ പരിശ്രമം വേണം!</string>
+    <string name="not_bad_3">ഇതിൽ മെച്ചപ്പെടാം!</string>
+    <string name="not_bad_4">നന്നായ ശ്രമം!</string>
+    <string name="not_bad_5">നല്ലതാണെങ്കിലും കൂടി പഠിക്കണം!</string>
+
+
+    <!-- Okay -->
+    <string name="okay_1">സമയം കൊണ്ട് ഉത്തരം!</string>
+    <string name="okay_2">നല്ല ശ്രമം, തുടരൂ!</string>
+    <string name="okay_3">ശരിയാണ്, പക്ഷേ മെച്ചപ്പെടുത്താം!</string>
+    <string name="okay_4">ത്വരിതമായി ഉത്തരം പറയൂ!</string>
+    <string name="okay_5">മധ്യസ്ഥതയുള്ള ഉത്തരം!</string>
+
+    <string name="game_finished">കളി അവസാനിച്ചു!</string>
 
 
 

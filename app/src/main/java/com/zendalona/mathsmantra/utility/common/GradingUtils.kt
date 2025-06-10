@@ -1,13 +1,12 @@
 package com.zendalona.mathsmantra.utility.common
 
-
 object GradingUtils {
 
     private val gradePoints = mapOf(
         "Excellent" to 50,
         "Very Good" to 40,
         "Good" to 30,
-        "Fair" to 20,
+        "Not Bad" to 20,
         "Okay" to 10,
         "Wrong Answer" to -10
     )
@@ -16,10 +15,10 @@ object GradingUtils {
         if (!isCorrect) return "Wrong Answer"
 
         return when {
-            elapsedTime <= totalTime * 0.5 -> "Excellent"
-            elapsedTime <= totalTime * 0.75 -> "Very Good"
-            elapsedTime <= totalTime -> "Good"
-            elapsedTime <= totalTime * 1.25 -> "Fair"
+            elapsedTime < totalTime * 0.5 -> "Excellent"
+            elapsedTime < totalTime * 0.75 -> "Very Good"
+            elapsedTime < totalTime -> "Good"
+            elapsedTime < totalTime * 1.25 -> "Not Bad" // renamed from Fair
             else -> "Okay"
         }
     }

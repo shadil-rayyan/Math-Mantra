@@ -227,7 +227,7 @@ class QuickPlayFragment : Fragment() {
         val spokenEnd = TTSHelper.formatMathText("Quiz over! Your final score is $totalScore")
         ttsUtility.speak(spokenEnd)
 
-        endGameWithScore(totalScore, totalQuestions)
+        endGameWithScore()
     }
 
     private fun playSound(name: String) {
