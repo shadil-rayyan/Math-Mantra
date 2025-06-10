@@ -102,6 +102,8 @@
     <string name="reset">Reset</string>
     <string name="reset_description">Clear the drawing and start again</string>
     <string name="submit">Submit</string>
+    <string name="next">next</string>
+
     <string name="submit_description">Submit your drawing for evaluation</string>
     <string name="rotate_your_phone">Rotate Your Phone</string>
     <string name="turn_phone_90_degrees">Turn your phone 90 degrees</string>
@@ -144,8 +146,8 @@
     <string name="tap_screen_description">This is the Tap Count Screen. Tap anywhere to increase the count.</string>
     <string name="tap_count_description">Tap count: 0</string>
     <string name="initial_tap_count">0</string>
-    <string name="tap_instruction">Tap anywhere to increase count</string>
-    <string name="tap_instruction_description">Instruction: Tap anywhere to increase the count.</string>
+    <string name="tap_instruction">Tap  %1$d° times  </string>
+    <string name="tap_instruction_description">Instruction: Tap anywhere to increase the   %1$d° count.</string>
 
     <!-- TouchScreenFragment Strings -->
     <string name="touch_screen_description">Touch your finger game answer with your fingers</string>
@@ -163,6 +165,41 @@
     <string name="compass_correct">Correct!</string>
     <string name="compass_correct_msg">You turned to the correct direction!</string>
     <string name="current_direction_accessibility">Current direction: %1$s </string>
+
+        <string name="correct_answer">Right Answer</string>
+        <string name="touchscreen_question_format">%1$d + %2$d = ? (Use fingers to answer)</string>
+        <string name="touchscreen_fingers_on_screen">Fingers on screen: %1$d</string>
+
+    <string name="canvas_cleared">Canvas cleared. You can draw again.</string>
+    <string name="drawing_task">Drawing task. Draw a %1$s. Use touch gestures to draw.</string>
+
+    <string name="task_completed">Task completed</string>
+
+
+    <string name="shake_count_announcement">Shake count: %1$d</string>
+    <string name="shake_target_instruction">Shake the device %1$d times</string>
+    <string name="shake_success">Well done!</string>
+    <string name="shake_failure">Try again!</string>
+    <string name="shake_continue">Continue</string>
+    <string name="shake_next_question">Next question</string>
+    <string name="shake_game_over">Shake game over.</string>
+
+    <!-- res/values/strings.xml -->
+        <string name="current_position_label">You re standing on number:\n</string>
+        <string name="plus">plus</string>
+        <string name="minus">minus</string>
+        <string name="right">right</string>
+        <string name="left">left</string>
+     <string name="standing_on">You re standing on %1$s. </string>
+    <string name="what_is">What is %1$s %2$s %3$s? </string>
+    <string name="units_to_direction">Move %1$s units to the %2$s of Number line.</string>
+
+    <string name="appreciation_message">Good going</string>
+        <string name="continue_button">Continue</string>
+
+
+
+
 
     <string-array name="compass_directions">
         <item>North</item>

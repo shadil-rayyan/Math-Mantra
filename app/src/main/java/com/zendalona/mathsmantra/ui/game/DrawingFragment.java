@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,117 +19,138 @@ import com.bumptech.glide.Glide;
 import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.databinding.DialogResultBinding;
 import com.zendalona.mathsmantra.databinding.FragmentGameDrawingBinding;
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences;
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
 import com.zendalona.mathsmantra.view.DrawingView;
 
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class DrawingFragment extends Fragment {
 
     private FragmentGameDrawingBinding binding;
-    private String currentShape; // "triangle" or "rectangle"
     private DrawingView drawingView;
     private AccessibilityManager accessibilityManager;
 
-    @Nullable
+    private List<String> shapeList = new ArrayList<>();
+    private int currentIndex = 0;
+    private String lang = "en";
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentGameDrawingBinding.inflate(inflater, container, false);
+        Context context = requireContext();
 
-        // Initialize Accessibility Manager
-        accessibilityManager = (AccessibilityManager) requireContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+        accessibilityManager = (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-        // Create a custom DrawingView for drawing
-        drawingView = new DrawingView(requireContext());
-        binding.drawingContainer.addView(drawingView); // Add it to the layout
+        // Add the custom drawing view to the container
+        drawingView = new DrawingView(context);
+        binding.drawingContainer.addView(drawingView);
 
-        // Generate first question
-        generateNewQuestion();
+        // Load language and difficulty
+        String difficulty = DifficultyPreferences.getDifficulty(context);
+        lang = LocaleHelper.getLanguage(context);
+        if (TextUtils.isEmpty(lang)) lang = "en";
 
-        // Reset Button
-        binding.resetButton.setOnClickListener(v -> {
-            drawingView.clearCanvas();
-            announce("Canvas cleared. You can draw again.");
-        });
+        shapeList = loadShapesFromAssets(lang, difficulty);
 
-        // Submit Button - Checks the drawing only when clicked
-        binding.submitButton.setOnClickListener(v -> checkDrawing());
+        setupListeners();
+        loadNextShape();
 
         return binding.getRoot();
     }
 
-    private void generateNewQuestion() {
-        // Randomly choose "triangle" or "rectangle"
-        currentShape = new Random().nextBoolean() ? "triangle" : "rectangle";
-        String instruction = "Draw a " + currentShape;
+    private List<String> loadShapesFromAssets(String lang, String difficulty) {
+        List<String> shapes = new ArrayList<>();
+        String fileName = lang + "/game/drawing/" + difficulty.toLowerCase(Locale.ROOT) + ".txt";
 
-        // Update TextView and Content Description
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(requireContext().getAssets().open(fileName)))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    shapes.add(line.trim());
+                }
+            }
+
+            if (shapes.isEmpty()) {
+                showToast("No shapes found in " + fileName);
+            }
+
+        } catch (IOException e) {
+            showToast("Failed to load shapes from: " + fileName);
+            e.printStackTrace();
+        }
+
+        return shapes;
+    }
+
+    private void setupListeners() {
+        binding.resetButton.setOnClickListener(v -> {
+            drawingView.clearCanvas();
+            announce(getString(R.string.canvas_cleared));
+        });
+
+        binding.submitButton.setOnClickListener(v -> {
+            showResultDialogAndNext(); // No checking, just move ahead
+        });
+    }
+
+    private void loadNextShape() {
+        if (currentIndex >= shapeList.size()) {
+            announce(getString(R.string.task_completed));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> requireActivity().onBackPressed(), 3000);
+            return;
+        }
+
+        String shape = shapeList.get(currentIndex);
+        String instruction = getString(R.string.drawing_task, shape);
+
         binding.questionText.setText(instruction);
-        String questionDescription = "Drawing task. " + instruction + ". Use touch gestures to draw.";
-        binding.questionText.setContentDescription(questionDescription);
-
-        // Announce the updated instruction for TalkBack
-        binding.questionText.post(() -> binding.questionText.announceForAccessibility(questionDescription));
-
-        // Clear the drawing canvas
+        binding.questionText.setContentDescription(instruction);
+        binding.questionText.announceForAccessibility(instruction);
         drawingView.clearCanvas();
     }
 
-    private void checkDrawing() {
-        // Get points drawn from drawingView
-        // We will use points and expected corners based on currentShape
-        int expectedCorners;
-        if ("triangle".equalsIgnoreCase(currentShape)) {
-            expectedCorners = 3;
-        } else if ("rectangle".equalsIgnoreCase(currentShape)) {
-            expectedCorners = 4;
-        } else {
-            expectedCorners = 0; // fallback
-        }
+    private void showResultDialogAndNext() {
+        // Generic success feedback
+        String message = getString(R.string.right_answer);
+        int gifResource = R.drawable.right;
 
-        // Set epsilon for RDP simplification (tweak if needed)
-        float epsilon = 10f;
-
-        boolean isCorrect = drawingView.isShapeCorrect(drawingView.getAllPoints(), expectedCorners, epsilon);
-        showResultDialog(isCorrect);
-    }
-
-    private void showResultDialog(boolean isCorrect) {
-        String message = isCorrect ? "Right Answer" : "Wrong Answer";
-        int gifResource = isCorrect ? R.drawable.right : R.drawable.wrong;
-
-        LayoutInflater inflater = getLayoutInflater();
-        DialogResultBinding dialogBinding = DialogResultBinding.inflate(inflater);
+        DialogResultBinding dialogBinding = DialogResultBinding.inflate(getLayoutInflater());
         View dialogView = dialogBinding.getRoot();
 
-        Glide.with(this)
-                .asGif()
-                .load(gifResource)
-                .into(dialogBinding.gifImageView);
-
+        Glide.with(this).asGif().load(gifResource).into(dialogBinding.gifImageView);
         dialogBinding.messageTextView.setText(message);
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setCancelable(false)
                 .create();
-
         dialog.show();
 
-        // Announce result for TalkBack users
         announce(message);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-                generateNewQuestion();
-            }
-        }, 4000);
+            dialog.dismiss();
+            currentIndex++;
+            loadNextShape();
+        }, 3000);
     }
 
     private void announce(String message) {
         if (accessibilityManager.isEnabled()) {
             binding.getRoot().announceForAccessibility(message);
         }
+    }
+
+    private void showToast(String msg) {
+        android.widget.Toast.makeText(requireContext(), msg, android.widget.Toast.LENGTH_SHORT).show();
     }
 
     @Override

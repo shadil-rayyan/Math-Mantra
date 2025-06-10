@@ -31,8 +31,8 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener {
 
     override fun onCreateView(
             @NonNull inflater: LayoutInflater,
-            @Nullable container: ViewGroup?,
-            @Nullable savedInstanceState: Bundle?
+             container: ViewGroup?,
+             savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_game_angle, container, false)
 

@@ -164,6 +164,35 @@
     <string name="compass_correct_msg">നിങ്ങൾ ശരിയായ ദിശയിലേക്കാണ് തിരിച്ചതു!</string>
     <string name="current_direction_accessibility">നിലവിലെ ദിശ: %1$s </string>
 
+    <string name="correct_answer">ശരിയായ ഉത്തരമാണ്</string>
+    <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം പറയാൻ വിരൽ ഉപയോഗിക്കുക)</string>
+    <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരൽ എണ്ണം: %1$d</string>
+
+    <string name="canvas_cleared">ക്യാൻവാസ് ശൂന്യമാക്കി. വീണ്ടും വരയ്ക്കാം.</string>
+    <string name="drawing_task">വരയ്ക്കേണ്ട പ്രവർത്തനം: %1$s വരയ്ക്കുക. വരയ്ക്കാൻ ടച്ച് ചലനങ്ങൾ ഉപയോഗിക്കുക.</string>
+
+    <string name="task_completed">പ്രവർത്തനം പൂർത്തിയായി</string>
+    <string name="next">next</string>
+    <string name="shake_count_announcement">കുലുക്കൽ എണ്ണം: %1$d</string>
+    <string name="shake_target_instruction">ഉപകരണം %1$d പ്രാവശ്യം കുലുക്കുക</string>
+    <string name="shake_success">ശരിയാണ്!</string>
+    <string name="shake_failure">വീണ്ടും ശ്രമിക്കുക!</string>
+    <string name="shake_continue">തുടരുക</string>
+    <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
+    <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
+
+        <string name="current_position_label">നിങ്ങൾ നിൽക്കുന്ന നമ്പർ:\n</string>
+        <string name="standing_on">നിങ്ങൾ %1$s ൽ നിൽക്കുന്നു.</string>
+        <string name="plus">കൂട്ടിയത്</string>
+        <string name="minus">കുറച്ചത്</string>
+        <string name="right">വലത്</string>
+        <string name="left">ഇടത്</string>
+        <string name="what_is">%1$s %2$s %3$s എത്ര?</string>
+        <string name="units_to_direction">%1$s യൂണിറ്റുകൾ നമ്പർ ലൈനിന്റെ %2$s ഭാഗത്തേക്ക് നീക്കുക.</string>
+        <string name="appreciation_message">നല്ല ശ്രമം!</string>
+        <string name="continue_button">തുടരുക</string>
+
+
     <string-array name="compass_directions">
         <item>വടക്ക്</item> <!-- North -->
         <item>വടക്കുചെറുകിഴക്ക്</item> <!-- North-Northeast -->

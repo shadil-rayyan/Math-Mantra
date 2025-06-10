@@ -9,12 +9,12 @@ import java.util.Locale
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
-
+    @JvmStatic
     fun getLanguage(context: Context?): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         return prefs.getString(SELECTED_LANGUAGE, Locale.getDefault().language) ?: Locale.getDefault().language
     }
-
+    @JvmStatic
     fun setLocale(context: Context, language: String?): Context {
         if (language == null || language == "default") {
             clearLanguage(context)

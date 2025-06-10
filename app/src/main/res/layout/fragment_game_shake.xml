@@ -16,8 +16,9 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_count"
-            android:layout_width="53dp"
-            android:layout_height="68dp"
+            android:layout_width="117dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="268dp"
             android:clickable="false"
             android:contentDescription="@string/shake_count_description"
             android:focusable="false"
@@ -25,8 +26,9 @@
             android:text="@string/shake_count_initial"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="48sp"
-            tools:layout_editor_absoluteX="179dp"
-            tools:layout_editor_absoluteY="320dp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_me_tv"

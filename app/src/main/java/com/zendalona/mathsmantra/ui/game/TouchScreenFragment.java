@@ -25,12 +25,14 @@ public class TouchScreenFragment extends Fragment {
     private FragmentGameTouchScreenBinding binding;
     private Random random;
     private int correctAnswer;
-    private boolean answeredCorrectly = false; // Track if the correct answer was already given
+    private boolean answeredCorrectly = false;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false);
+
+
         random = new Random();
         generateNewQuestion();
         setupTouchListener();
@@ -38,12 +40,12 @@ public class TouchScreenFragment extends Fragment {
     }
 
     private void generateNewQuestion() {
-        int num1 = random.nextInt(3) + 1; // 1 to 5
-        int num2 = random.nextInt(3) + 1; // 1 to 5
+        int num1 = random.nextInt(3) + 1; // 1 to 3
+        int num2 = random.nextInt(3) + 1; // 1 to 3
         correctAnswer = num1 + num2;
-        answeredCorrectly = false; // Reset answer tracking
+        answeredCorrectly = false;
 
-        String question = num1 + " + " + num2 + " = ? (Use fingers to answer)";
+        String question = getString(R.string.touchscreen_question_format, num1, num2);
         binding.angleQuestion.setText(question);
     }
 
@@ -52,9 +54,9 @@ public class TouchScreenFragment extends Fragment {
             int pointerCount = event.getPointerCount();
 
             if (event.getAction() == MotionEvent.ACTION_MOVE || event.getAction() == MotionEvent.ACTION_DOWN) {
-                binding.angleQuestion.setText("Fingers on screen: " + pointerCount);
+                String statusText = getString(R.string.touchscreen_fingers_on_screen, pointerCount);
+                binding.angleQuestion.setText(statusText);
 
-                // If the correct answer is touched, show result immediately
                 if (pointerCount == correctAnswer && !answeredCorrectly) {
                     answeredCorrectly = true;
                     showResultDialog(true);
@@ -62,7 +64,6 @@ public class TouchScreenFragment extends Fragment {
             }
 
             if (event.getAction() == MotionEvent.ACTION_UP) {
-                // If user lifts fingers and didn't answer correctly, show "Wrong Answer"
                 if (!answeredCorrectly) {
                     showResultDialog(false);
                 }
@@ -73,7 +74,7 @@ public class TouchScreenFragment extends Fragment {
     }
 
     private void showResultDialog(boolean isCorrect) {
-        String message = isCorrect ? "Right Answer" : "Wrong Answer";
+        int messageRes = isCorrect ? R.string.correct_answer : R.string.wrong_answer;
         int gifResource = isCorrect ? R.drawable.right : R.drawable.wrong;
 
         LayoutInflater inflater = getLayoutInflater();
@@ -85,7 +86,7 @@ public class TouchScreenFragment extends Fragment {
                 .load(gifResource)
                 .into(dialogBinding.gifImageView);
 
-        dialogBinding.messageTextView.setText(message);
+        dialogBinding.messageTextView.setText(getString(messageRes));
 
         AlertDialog dialog = new AlertDialog.Builder(requireContext())
                 .setView(dialogView)

@@ -68,6 +68,7 @@ public class TTSUtility {
         Log.d("TTSUtility", "Speaking: " + text + " at rate " + speechRate);
     }
 
+
     public void stop() {
         if (tts != null && tts.isSpeaking()) {
             tts.stop();

@@ -13,30 +13,51 @@ import androidx.fragment.app.Fragment;
 
 import com.zendalona.mathsmantra.databinding.FragmentGameShakeBinding;
 import com.zendalona.mathsmantra.utility.AccelerometerUtility;
-import com.zendalona.mathsmantra.utility.RandomValueGenerator;
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences;
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
 import com.zendalona.mathsmantra.utility.common.TTSUtility;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import com.zendalona.mathsmantra.R;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import android.widget.Toast;
+
+
 
 public class ShakeFragment extends Fragment {
 
     private FragmentGameShakeBinding binding;
     private AccelerometerUtility accelerometerUtility;
     private TTSUtility tts;
-    private RandomValueGenerator randomValueGenerator;
-    private int count = 0, target;
+    private int count = 0, target = 0;
     private boolean isShakingAllowed = true;
     private final Handler shakeHandler = new Handler();
     private final Handler gameHandler = new Handler(Looper.getMainLooper());
+    private List<String> targetList;
+    private int index = 0;
+    private String lang;
+    private String difficulty;
 
-    public ShakeFragment() {
-        // Required empty public constructor
-    }
+    public ShakeFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lang = LocaleHelper.getLanguage(requireContext());
+        difficulty = DifficultyPreferences.getDifficulty(requireContext());
         tts = new TTSUtility(requireContext());
         accelerometerUtility = new AccelerometerUtility(requireContext());
-        randomValueGenerator = new RandomValueGenerator();
+
+        targetList = loadShakeQuestionsFromAssets(lang, difficulty);
+        if (targetList == null || targetList.isEmpty()) {
+            targetList = List.of("2", "3", "4", "5", "6", "7");  // fallback
+        }
     }
 
     @Override
@@ -55,9 +76,9 @@ public class ShakeFragment extends Fragment {
         count++;
         binding.ringCount.setText(String.valueOf(count));
 
-        // Stop current speech if shaking occurs and speak the count
-        tts.stop();  // Stop any ongoing speech
-        tts.speak("Shake count: " + count);  // Announce the count after shake
+        tts.stop();
+        String countText = getString(R.string.shake_count_announcement, count);
+        tts.speak(countText);
 
         if (count == target) {
             evaluateGameResult();
@@ -71,29 +92,54 @@ public class ShakeFragment extends Fragment {
             } else {
                 showFailureDialog();
             }
-        }, 2000); // Delay before showing the result
+        }, 2000);
     }
 
     private void showSuccessDialog() {
-        showResultDialog("Well done!");
+        showResultDialog(getString(R.string.shake_success));
     }
 
     private void showFailureDialog() {
-        showResultDialog("Try again!");
+        showResultDialog(getString(R.string.shake_failure));
+    }
+    private List<String> loadShakeQuestionsFromAssets(String lang, String difficulty) {
+        List<String> shakes = new ArrayList<>();
+        String fileName =   lang + "/game/shake/" + difficulty.toLowerCase(Locale.ROOT) + ".txt";
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(requireContext().getAssets().open(fileName)))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (!line.isEmpty()) {
+                    shakes.add(line);
+                }
+            }
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "Error loading shake questions: " + fileName, Toast.LENGTH_SHORT).show();
+        }
+
+        return shakes;
     }
 
+
     private void showResultDialog(String message) {
-        // Show a dialog with the result message
         binding.ringMeTv.setText(message);
 
-        tts.speak(message + ", Click continue!");
+        tts.speak(message + ", " + getString(R.string.shake_continue));
 
         new android.app.AlertDialog.Builder(requireContext())
                 .setMessage(message)
-                .setPositiveButton("Continue", (dialog, which) -> {
+                .setPositiveButton(R.string.shake_continue, (dialog, which) -> {
                     dialog.dismiss();
-                    tts.speak("Next question");
-                    gameHandler.postDelayed(this::startGame, 1000);
+                    index++;
+                    if (index >= targetList.size()) {
+                        tts.speak(getString(R.string.shake_game_over));
+                        requireActivity().onBackPressed();
+                    } else {
+                        tts.speak(getString(R.string.shake_next_question));
+                        gameHandler.postDelayed(this::startGame, 1000);
+                    }
                 })
                 .create()
                 .show();
@@ -101,21 +147,22 @@ public class ShakeFragment extends Fragment {
 
     private void startGame() {
         count = 0;
-        binding.ringCount.setText("0");
-        target = randomValueGenerator.generateNumberForCountGame();
-        String targetText = "Shake the device " + target + " times";
-        binding.ringMeTv.setText(targetText);
+        binding.ringCount.setText(getString(R.string.shake_count_initial));
+        target = Integer.parseInt(targetList.get(index % targetList.size()));
 
+        String instruction = getString(R.string.shake_target_instruction, target);
+        binding.ringMeTv.setText(instruction);
+        binding.ringMeTv.setContentDescription(instruction);
         binding.ringMeTv.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
         binding.ringMeTv.setFocusable(true);
         binding.ringMeTv.setFocusableInTouchMode(true);
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             binding.ringMeTv.requestFocus();
-            binding.ringMeTv.announceForAccessibility(targetText);
+            binding.ringMeTv.announceForAccessibility(instruction);
         }, 500);
 
-        tts.speak(targetText);
+        tts.speak(instruction);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class NumberLineFragment extends Fragment {
     private NumberLineViewModel viewModel;
     private TTSUtility tts;
     private RandomValueGenerator random;
-    private final String CURRENT_POSITION = "You're standing on number : \n";
+    private String CURRENT_POSITION;
     private int answer;
     private String questionDesc = "";
     private String correctAnswerDesc = "";
@@ -45,6 +45,8 @@ public class NumberLineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(NumberLineViewModel.class);
+        CURRENT_POSITION = getString(R.string.current_position_label);
+
         tts = new TTSUtility(requireContext());
         tts.setSpeechRate(0.8f);
     }
@@ -98,34 +100,34 @@ public class NumberLineFragment extends Fragment {
 //    }
 
     private String askNewQuestion(int position) {
-
-        Topic topic = random.generateNumberLineQuestion()? Topic.ADDITION : Topic.SUBTRACTION;
+        Topic topic = random.generateNumberLineQuestion() ? Topic.ADDITION : Topic.SUBTRACTION;
         int unitsToMove = random.generateNumberForCountGame();
-        String operator = " plus ";
-        String direction = " right ";
-        Map<String, String> operatorMap = new HashMap<>();
-        operatorMap.put("plus","+");
-        operatorMap.put("minus","-");
+        String operator;
+        String direction;
 
-        switch (topic){
+        switch (topic) {
             case ADDITION:
-                operator = " plus ";
-                direction = " right ";
+                operator = getString(R.string.plus); // "+" or "plus"
+                direction = getString(R.string.right); // "right"
                 answer = position + unitsToMove;
                 break;
             case SUBTRACTION:
-                operator = " minus ";
-                direction = " left ";
+                operator = getString(R.string.minus); // "-" or "minus"
+                direction = getString(R.string.left); // "left"
                 answer = position - unitsToMove;
                 break;
+            default:
+                operator = "?";
+                direction = "?";
         }
-        String questionBrief = "What is " + position + operatorMap.get(operator.trim()) + unitsToMove + "?";
-        binding.numberLineQuestion.setText(questionBrief);
-        questionDesc =
-                "You're standing on " + position + "."
-                        + "What is  " + position + operator + unitsToMove + "?"
-                        + "Move  " + unitsToMove + "units to the" + direction + "of Number line.";
 
+        // ✅ use %1$s in strings.xml and pass strings
+        String questionBrief = getString(R.string.what_is, String.valueOf(position), operator, String.valueOf(unitsToMove));
+        questionDesc = getString(R.string.standing_on, String.valueOf(position)) +
+                getString(R.string.what_is, String.valueOf(position), operator, String.valueOf(unitsToMove)) +
+                getString(R.string.units_to_direction, String.valueOf(unitsToMove), direction);
+
+        binding.numberLineQuestion.setText(questionBrief);
         tts.speak(questionDesc);
 
         return position + operator + unitsToMove + " equals " + answer;
@@ -168,12 +170,12 @@ public class NumberLineFragment extends Fragment {
                 .load(gifResource)
                 .into(dialogBinding.gifImageView);
 
-        dialogBinding.messageTextView.setText(message);
+        dialogBinding.messageTextView.setText(getString(R.string.appreciation_message));
 
 
         new AlertDialog.Builder(requireContext())
                 .setView(dialogView)
-                .setPositiveButton("Continue", (dialog, which) -> {
+                .setPositiveButton(getString(R.string.continue_button),(dialog, which) -> {
                     dialog.dismiss();
                     correctAnswerDesc = askNewQuestion(answer);
                 })

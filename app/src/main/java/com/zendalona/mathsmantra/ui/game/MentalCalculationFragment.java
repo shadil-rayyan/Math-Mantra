@@ -18,24 +18,42 @@ import com.bumptech.glide.Glide;
 import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.databinding.DialogResultBinding;
 import com.zendalona.mathsmantra.databinding.FragmentGameMentalCalculationBinding;
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences;
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
 
-import java.util.Random;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 public class MentalCalculationFragment extends Fragment {
 
     private FragmentGameMentalCalculationBinding binding;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private List<String> expressionList = new ArrayList<>();
+    private int currentQuestionIndex = 0;
     private String currentExpression;
     private int correctAnswer;
-    private boolean isQuestionAnsweredCorrectly = false;
-    private final Handler handler = new Handler(Looper.getMainLooper());
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentGameMentalCalculationBinding.inflate(inflater, container, false);
-        generateNewQuestion();
+
+        String lang = LocaleHelper.getLanguage(requireContext()); // "en", "ml", etc.
+        String difficulty = DifficultyPreferences.getDifficulty(requireContext());
+
+        expressionList = loadExpressionsFromAssets(lang, difficulty);
+
+        if (!expressionList.isEmpty()) {
+            loadNextQuestion();
+        } else {
+            Toast.makeText(getContext(), "No questions available!", Toast.LENGTH_SHORT).show();
+        }
 
         binding.submitAnswerBtn.setOnClickListener(v -> checkAnswer());
 
@@ -50,54 +68,82 @@ public class MentalCalculationFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void generateNewQuestion() {
-        Random random = new Random();
-        int num1 = random.nextInt(10) + 1;
-        int num2 = random.nextInt(10) + 1;
-        int num3 = random.nextInt(10) + 1;
-        int num4 = random.nextInt(10) + 1;
+    private List<String> loadExpressionsFromAssets(String lang, String difficulty) {
+        List<String> expressions = new ArrayList<>();
+        String fileName = lang + "/game/mentalcalculation/" + difficulty.toLowerCase(Locale.ROOT) + ".txt";
 
-        String[] operators = {"+", "-", "*", "/"};
-        String op1 = operators[random.nextInt(4)];
-        String op2 = operators[random.nextInt(4)];
-        String op3 = operators[random.nextInt(4)];
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(requireContext().getAssets().open(fileName)))) {
 
-        currentExpression = num1 + " " + op1 + " " + num2 + " " + op2 + " " + num3 + " " + op3 + " " + num4;
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    expressions.add(line.trim());
+                }
+            }
+
+            if (expressions.isEmpty()) {
+                Toast.makeText(getContext(), "No expressions found in " + fileName, Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "Failed to load expressions from: " + fileName, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
+        return expressions;
+    }
+
+    private void loadNextQuestion() {
+        if (currentQuestionIndex >= expressionList.size()) {
+            Toast.makeText(getContext(), "Activity over", Toast.LENGTH_SHORT).show();
+            if (requireActivity() != null) requireActivity().onBackPressed();
+            return;
+        }
+
+        currentExpression = expressionList.get(currentQuestionIndex);
         correctAnswer = evaluateExpression(currentExpression);
+        currentQuestionIndex++;
 
-        // Reset view and disable input while showing expression
-        isQuestionAnsweredCorrectly = false;
         binding.answerEt.setText("");
         binding.answerEt.setEnabled(false);
         binding.submitAnswerBtn.setEnabled(false);
         binding.mentalCalculation.setText("");
 
-        // Start revealing tokens one at a time
         String[] tokens = currentExpression.split(" ");
-        revealTokensSequentially(tokens, 0);
+        revealTokensOneByOne(tokens, 0);
     }
 
-    private void revealTokensSequentially(String[] tokens, int index) {
+    private void revealTokensOneByOne(String[] tokens, int index) {
         if (index >= tokens.length) {
-            // Clear the expression from the screen after full reveal
-            handler.postDelayed(() -> binding.mentalCalculation.setText(""), 1000);
-
-            // Enable answer input shortly after clearing
             handler.postDelayed(() -> {
                 binding.answerEt.setEnabled(true);
                 binding.submitAnswerBtn.setEnabled(true);
                 binding.answerEt.requestFocus();
-            }, 1200); // input enabled after clearing
+            }, 500);
             return;
         }
 
-        String currentText = binding.mentalCalculation.getText().toString();
-        String displayToken = tokens[index].equals("/") ? "÷" : tokens[index];
-        binding.mentalCalculation.setText(currentText + " " + displayToken);
+        String token = tokens[index].equals("/") ? "÷" : tokens[index];
 
-        handler.postDelayed(() -> revealTokensSequentially(tokens, index + 1), 1500);
+        // Set token for accessibility
+        binding.mentalCalculation.setText(token);
+        binding.mentalCalculation.setContentDescription(token);
+        binding.mentalCalculation.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+        binding.mentalCalculation.setFocusable(true);
+        binding.mentalCalculation.setFocusableInTouchMode(true);
+
+        handler.postDelayed(() -> {
+            binding.mentalCalculation.requestFocus();
+            binding.mentalCalculation.announceForAccessibility(token);
+
+            // After short delay, clear and move to next token
+            handler.postDelayed(() -> {
+                binding.mentalCalculation.setText("");
+                revealTokensOneByOne(tokens, index + 1);
+            }, 1200); // Delay after speaking one token
+        }, 200); // Delay before focusing and speaking
     }
-
 
     private void checkAnswer() {
         String userInput = binding.answerEt.getText().toString().trim();
@@ -109,7 +155,6 @@ public class MentalCalculationFragment extends Fragment {
         try {
             int userAnswer = Integer.parseInt(userInput);
             boolean isCorrect = (userAnswer == correctAnswer);
-            isQuestionAnsweredCorrectly = isCorrect;
             showResultDialog(isCorrect);
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Please enter a valid number", Toast.LENGTH_SHORT).show();
@@ -142,18 +187,13 @@ public class MentalCalculationFragment extends Fragment {
             if (dialog.isShowing()) {
                 dialog.dismiss();
                 if (isCorrect) {
-                    generateNewQuestion(); // New question only if correct
+                    loadNextQuestion();
                 }
             }
         }, 2000);
     }
 
     private int evaluateExpression(String expression) {
-        return evaluateMath(expression);
-    }
-
-    // Math expression evaluator with operator precedence
-    private int evaluateMath(String expression) {
         Stack<Integer> numbers = new Stack<>();
         Stack<Character> operators = new Stack<>();
         String[] tokens = expression.split(" ");
@@ -162,15 +202,20 @@ public class MentalCalculationFragment extends Fragment {
             if (isNumber(token)) {
                 numbers.push(Integer.parseInt(token));
             } else {
-                while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(token.charAt(0))) {
-                    numbers.push(applyOp(operators.pop(), numbers.pop(), numbers.pop()));
+                char op = token.charAt(0);
+                while (!operators.isEmpty() && precedence(operators.peek()) >= precedence(op)) {
+                    int b = numbers.pop();
+                    int a = numbers.pop();
+                    numbers.push(applyOp(operators.pop(), a, b));
                 }
-                operators.push(token.charAt(0));
+                operators.push(op);
             }
         }
 
         while (!operators.isEmpty()) {
-            numbers.push(applyOp(operators.pop(), numbers.pop(), numbers.pop()));
+            int b = numbers.pop();
+            int a = numbers.pop();
+            numbers.push(applyOp(operators.pop(), a, b));
         }
 
         return numbers.pop();
@@ -188,34 +233,20 @@ public class MentalCalculationFragment extends Fragment {
     private int precedence(char op) {
         switch (op) {
             case '+':
-            case '-':
-                return 1;
+            case '-': return 1;
             case '*':
-            case '/':
-                return 2;
-            default:
-                return -1;
+            case '/': return 2;
+            default: return -1;
         }
     }
 
-    private int applyOp(char op, int b, int a) {
+    private int applyOp(char op, int a, int b) {
         switch (op) {
-            case '+':
-                return a + b;
-            case '-':
-                return a - b;
-            case '*':
-                return a * b;
-            case '/':
-                return (b == 0) ? 0 : a / b;
-            default:
-                return 0;
+            case '+': return a + b;
+            case '-': return a - b;
+            case '*': return a * b;
+            case '/': return b == 0 ? 0 : a / b;
+            default: return 0;
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }
