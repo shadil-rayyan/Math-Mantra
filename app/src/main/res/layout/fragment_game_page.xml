@@ -20,7 +20,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/bellButton"
+                android:id="@+id/shakeButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -32,14 +32,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/bell_ring"
+                    android:text="@string/shake_button"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/drumButton"
+                android:id="@+id/tapButton"
                 android:layout_width="175dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="10dp"
@@ -51,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/drum"
+                    android:text="@string/tap_button"
                     android:textColor="?attr/colorOnPrimary"
                     android:textSize="20sp"
                     android:layout_gravity="center"/>

@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentQuickPlayBinding
 import com.zendalona.mathsmantra.utility.common.DialogUtils
+import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
+import com.zendalona.mathsmantra.utility.common.ScorePageFragment
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
@@ -222,27 +224,10 @@ class QuickPlayFragment : Fragment() {
     }
 
     private fun endGame() {
-        val maxPossibleScore = 50 * totalQuestions
-        val percentage = if (maxPossibleScore > 0) {
-            (totalScore.toDouble() * 100) / maxPossibleScore
-        } else 0.0
-
-        Log.d("QuickPlayFragment", "Game ended. Total Score: $totalScore, Total Questions: $totalQuestions, Percentage: $percentage")
-
-        Toast.makeText(requireContext(), "Quiz Over! Score: $totalScore", Toast.LENGTH_LONG).show()
-
         val spokenEnd = TTSHelper.formatMathText("Quiz over! Your final score is $totalScore")
         ttsUtility.speak(spokenEnd)
 
-        val bundle = Bundle().apply {
-            putInt("score", totalScore)
-            putInt("totalQuestions", totalQuestions)
-            putDouble("percentage", percentage)
-        }
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, EndScoreFragment::class.java, bundle)
-            .commit()
+        endGameWithScore(totalScore, totalQuestions)
     }
 
     private fun playSound(name: String) {

@@ -82,8 +82,8 @@
     <string name="content_answer_field">ഉത്തരം നൽകുന്ന പ്രദേശം</string>
 
 
-        <string name="bell_ring">ബെല്‍ റിംഗ്</string>
-        <string name="drum">ഡ്രം</string>
+        <string name="shake_button">കുലുക്കുക</string>
+        <string name="tap_button">ടാപ്പ് ചെയ്യുക</string>
         <string name="mcq">MCQ</string>
         <string name="number_line">അണ്ണോ ലൈന</string>
         <string name="mental_calculation">മാനസിക ഗണന</string>
@@ -157,7 +157,7 @@
     <string name="wrong_answer">തെറ്റായ ഉത്തരമാണ്!</string>
     <string name="turn_to_angle_template">നിങ്ങളുടെ നിലവിലെ ദിശയിൽ നിന്ന് %1$d° തിരിക്കുക</string>
     <string name="relative_angle_template">ആമുഖ കോണം: %1$d°</string>
-    <string name="current_angle_announcement">നിലവിലെ കോണം: %1$s</string>
+    <string name="current_angle_announcement">%1$s</string>
 
     <string name="compass_turn_to"> %1$s ദിശയിലേയ്ക്ക് തിരിക്കുക</string>
     <string name="compass_correct">ശരി!</string>

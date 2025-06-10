@@ -80,8 +80,8 @@
     <string name="content_answer_field">Answer input field</string>
 
 
-    <string name="bell_ring">Bell Ring</string>
-    <string name="drum">Drum</string>
+    <string name="shake_button">shake </string>
+    <string name="tap_button">tap</string>
     <string name="mcq">MCQ</string>
     <string name="number_line">Number Line</string>
     <string name="mental_calculation">Mental Calculation</string>
@@ -159,7 +159,7 @@
     <string name="wrong_answer">Wrong Answer!</string>
     <string name="turn_to_angle_template">Turn to %1$d° from your current direction</string>
     <string name="relative_angle_template">Relative Angle: %1$d°</string>
-    <string name="current_angle_announcement">Current Angle: %1$s</string>
+    <string name="current_angle_announcement"> %1$s</string>
 
     <string name="compass_turn_to">Turn to %1$s </string>
     <string name="compass_correct">Correct!</string>

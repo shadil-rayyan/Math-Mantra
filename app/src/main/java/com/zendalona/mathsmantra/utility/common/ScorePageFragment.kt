@@ -1,14 +1,18 @@
-package com.zendalona.mathsmantra.ui
+package com.zendalona.mathsmantra.utility.common
 
+import android.R
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.databinding.FragmentEndScoreBinding
 
-class EndScoreFragment : Fragment() {
+class ScorePageFragment : Fragment() {
 
     private var _binding: FragmentEndScoreBinding? = null
     private val binding get() = _binding!!
@@ -58,7 +62,7 @@ class EndScoreFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
+        if (item.itemId == R.id.home) {
             goBack()
             return true
         }

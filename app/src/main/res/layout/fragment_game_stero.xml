@@ -8,76 +8,86 @@
     android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true">
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="50dp"
+        android:fillViewport="true"
+        android:padding="16dp"
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/instruction_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/audio_instruction"
-            android:textSize="24sp"
-            android:layout_margin="10dp"
-            android:textColor="?attr/colorOnSecondary"
-            android:importantForAccessibility="yes"
-            android:contentDescription="@string/audio_instruction_description"
-            android:accessibilityLiveRegion="polite" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/read_question_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="20sp"
-            android:text="@string/read_question"
-            android:textColor="?attr/colorOnPrimary"
-            android:backgroundTint="?attr/colorPrimary"
-            android:importantForAccessibility="yes"
+            android:layout_height="match_parent"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:contentDescription="@string/read_question_description" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_margin="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:boxBackgroundMode="outline"
-            android:textColor="?attr/colorPrimary"
-            app:boxBackgroundColor="?attr/colorSurface"
-            android:importantForAccessibility="yes"
-            android:contentDescription="@string/answer_input_description"
-            android:hint="@string/enter_answer_hint"
-            android:labelFor="@id/answer_et">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/answer_et"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/instruction_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/your_answer_here"
-                android:textColor="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPrimary"
+                android:layout_margin="10dp"
+                android:accessibilityLiveRegion="polite"
+                android:baselineAligned="false"
+                android:contentDescription="@string/audio_instruction_description"
                 android:importantForAccessibility="yes"
-                android:inputType="number"
-                android:accessibilityLiveRegion="polite"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/audio_instruction"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="24sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/submit_answer_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:textSize="24sp"
-            android:text="@string/submit"
-            android:textColor="?attr/colorOnPrimary"
-            android:backgroundTint="?attr/colorPrimary"
-            android:importantForAccessibility="yes"
-            android:contentDescription="@string/submit_description" />
-    </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/read_question_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:contentDescription="@string/read_question_description"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:importantForAccessibility="yes"
+                android:text="@string/read_question"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="20sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:contentDescription="@string/answer_input_description"
+                android:hint="@string/answer_hint"
+                android:importantForAccessibility="yes"
+                android:labelFor="@id/answer_et"
+                android:textColor="?attr/colorPrimary"
+                app:boxBackgroundColor="?attr/colorSurface"
+                app:boxBackgroundMode="outline">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/answer_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:accessibilityLiveRegion="polite"
+                    android:backgroundTint="?attr/colorPrimary"
+                    android:hint="@string/answer_hint"
+                    android:importantForAccessibility="yes"
+                    android:inputType="number"
+                    android:textColor="?attr/colorOnPrimary" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/submit_answer_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:contentDescription="@string/submit_description"
+                android:importantForAccessibility="yes"
+                android:text="@string/submit"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="24sp" />
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

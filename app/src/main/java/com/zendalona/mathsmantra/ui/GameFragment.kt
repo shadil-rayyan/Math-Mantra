@@ -39,7 +39,7 @@ class GameFragment : Fragment() {
         binding = FragmentGamePageBinding.inflate(inflater, container, false)
 
         // Set up OnClickListeners for buttons
-        binding!!.bellButton.setOnClickListener(View.OnClickListener { v: View? ->
+        binding!!.shakeButton.setOnClickListener(View.OnClickListener { v: View? ->
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
                     ShakeFragment(),
@@ -47,7 +47,7 @@ class GameFragment : Fragment() {
                 )
             }
         })
-        binding!!.drumButton.setOnClickListener(View.OnClickListener { v: View? ->
+        binding!!.tapButton.setOnClickListener(View.OnClickListener { v: View? ->
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
                     TapFragment(),
