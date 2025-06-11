@@ -1,5 +1,6 @@
 package com.zendalona.mathsmantra.ui.game
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -32,12 +33,20 @@ class ShakeFragment : Fragment() {
     private var isShakingAllowed = true
     private val shakeHandler = Handler()
     private val gameHandler = Handler(Looper.getMainLooper())
-    private var targetList: List<String> = emptyList()
     private var index = 0
     private lateinit var lang: String
     private lateinit var difficulty: String
-    private var parsedShakeList: List<Pair<String, Int>> = emptyList()
 
+    // Game state
+    private data class ShakeQuestion(
+        val expression: String,
+        val answer: Int,
+        val timeLimit: Int = 20,
+        val celebration: Boolean = false
+    )
+
+    private var parsedShakeList: List<ShakeQuestion> = emptyList()
+    private var questionStartTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +57,11 @@ class ShakeFragment : Fragment() {
         accelerometerUtility = AccelerometerUtility(requireContext())
         parsedShakeList = loadShakeQuestionsFromAssets(lang, difficulty)
         if (parsedShakeList.isEmpty()) {
-            parsedShakeList = listOf("2+1" to 3, "1+2+3" to 6)
+            parsedShakeList = listOf(
+                ShakeQuestion("2+1", 3),
+                ShakeQuestion("1+2+3", 6)
+            )
         }
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,8 +70,8 @@ class ShakeFragment : Fragment() {
         return binding!!.root
     }
 
-    private fun loadShakeQuestionsFromAssets(lang: String, difficulty: String): List<Pair<String, Int>> {
-        val parsedQuestions = mutableListOf<Pair<String, Int>>()
+    private fun loadShakeQuestionsFromAssets(lang: String, difficulty: String): List<ShakeQuestion> {
+        val questions = mutableListOf<ShakeQuestion>()
         val fileName = "$lang/game/shake/${difficulty.lowercase(Locale.ROOT)}.txt"
 
         try {
@@ -68,23 +79,28 @@ class ShakeFragment : Fragment() {
             var line: String?
             while (reader.readLine().also { line = it } != null) {
                 line?.trim()?.takeIf { it.isNotEmpty() }?.let {
-                    val parsed = QuestionParser.parseExpression(it)
-                    parsedQuestions.add(parsed)
+                    val parts = it.split("→")
+                    val (questionText, answer) = QuestionParser.parseExpression(parts[0])
+                    val timeLimit = parts.getOrNull(1)?.toIntOrNull() ?: 20
+                    val celebration = parts.getOrNull(2)?.toIntOrNull() == 1
+                    questions.add(ShakeQuestion(questionText, answer, timeLimit, celebration))
                 }
             }
         } catch (e: IOException) {
             Toast.makeText(context, "Error loading shake questions: $fileName", Toast.LENGTH_SHORT).show()
         }
-        return parsedQuestions
-    }
 
+        return questions
+    }
 
     private fun startGame() {
         count = 0
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
 
-        val (question, answer) = parsedShakeList[index % parsedShakeList.size]
-        target = answer
+        val question = parsedShakeList[index % parsedShakeList.size]
+        target = question.answer
+
+        questionStartTime = System.currentTimeMillis()
 
         val instruction = getString(R.string.shake_target_instruction, target)
         binding?.ringMeTv?.apply {
@@ -98,7 +114,6 @@ class ShakeFragment : Fragment() {
 
         tts.speak(instruction)
     }
-
 
     private fun onShakeDetected() {
         if (!isShakingAllowed) return
@@ -121,27 +136,23 @@ class ShakeFragment : Fragment() {
 
     private fun evaluateGameResult() {
         gameHandler.postDelayed({
-            if (count == target) showSuccessDialog()
-            else showFailureDialog()
+            val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+            val question = parsedShakeList[index]
+            val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), count == target)
+
+            if (count == target) {
+                if (question.celebration) {
+                    MediaPlayer.create(context, R.raw.bell_ring)
+                }
+                DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
+                    nextOrEnd()
+                }
+            } else {
+                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
+                    nextOrEnd()
+                }
+            }
         }, 2000)
-    }
-
-    private fun showSuccessDialog() {
-        val grade = GradingUtils.getGrade(0.0, 1.0, true)
-        DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-            nextOrEnd()
-        }
-    }
-
-    private fun showFailureDialog() {
-        DialogUtils.showRetryDialog(
-            requireContext(),
-            layoutInflater,
-            tts,
-            getString(R.string.shake_failure)
-        ) {
-            nextOrEnd()
-        }
     }
 
     private fun nextOrEnd() {
@@ -154,7 +165,6 @@ class ShakeFragment : Fragment() {
             gameHandler.postDelayed({ startGame() }, 1000)
         }
     }
-
 
     fun showHint() {
         val bundle = Bundle().apply {

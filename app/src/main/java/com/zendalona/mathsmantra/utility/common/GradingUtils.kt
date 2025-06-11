@@ -12,7 +12,7 @@ object GradingUtils {
     )
 
     fun getGrade(elapsedTime: Double, totalTime: Double, isCorrect: Boolean): String {
-        if (!isCorrect) return "Wrong Answer"
+        if (!isCorrect) return "Wrong"
 
         return when {
             elapsedTime < totalTime * 0.5 -> "Excellent"
