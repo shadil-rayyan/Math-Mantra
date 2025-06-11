@@ -34,10 +34,11 @@ class ShakeFragment : Fragment() {
     private val shakeHandler = Handler()
     private val gameHandler = Handler(Looper.getMainLooper())
     private var index = 0
+    private var wrongAttempts = 0
+
     private lateinit var lang: String
     private lateinit var difficulty: String
 
-    // Game state
     private data class ShakeQuestion(
         val expression: String,
         val answer: Int,
@@ -99,20 +100,23 @@ class ShakeFragment : Fragment() {
 
         val question = parsedShakeList[index % parsedShakeList.size]
         target = question.answer
-
         questionStartTime = System.currentTimeMillis()
 
-        val instruction = getString(R.string.shake_target_instruction, target)
+        // Visual + TTS Instruction
+        val instruction = getString(R.string.shake_target_expression, question.expression)
+        val speakText = question.expression.replace("+", " plus ")
+        val speakInstruction = "Shake $speakText times"
+
         binding?.ringMeTv?.apply {
             text = instruction
-            contentDescription = instruction
+            contentDescription = speakInstruction
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
             isFocusable = true
             isFocusableInTouchMode = true
-            postDelayed({ requestFocus(); announceForAccessibility(instruction) }, 500)
+            postDelayed({ requestFocus(); announceForAccessibility(speakInstruction) }, 500)
         }
 
-        tts.speak(instruction)
+        tts.speak(speakInstruction)
     }
 
     private fun onShakeDetected() {
@@ -141,6 +145,26 @@ class ShakeFragment : Fragment() {
             val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), count == target)
 
             if (count == target) {
+                if (count == target) {
+                    wrongAttempts = 0  // reset on success
+                    if (question.celebration) {
+                        MediaPlayer.create(context, R.raw.bell_ring)
+                    }
+                    DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
+                        nextOrEnd()
+                    }
+                } else {
+                    wrongAttempts++
+                    if (wrongAttempts >= 3) {
+                        tts.speak(getString(R.string.shake_game_over))
+                        endGameWithScore()
+                    } else {
+                        DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
+                            startGame() // retry same question
+                        }
+                    }
+                }
+
                 if (question.celebration) {
                     MediaPlayer.create(context, R.raw.bell_ring)
                 }

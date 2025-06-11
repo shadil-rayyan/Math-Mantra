@@ -264,5 +264,11 @@
     <string name="game_finished">Game Finished!</string>
 
 
+    <string name="shake_target_expression">Shake %1$s times!</string>
+
+
+
+
+
 
 </resources>
