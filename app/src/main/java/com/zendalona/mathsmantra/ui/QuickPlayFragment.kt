@@ -1,12 +1,14 @@
 package com.zendalona.mathsmantra.ui
 
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentQuickPlayBinding
@@ -16,6 +18,7 @@ import com.zendalona.mathsmantra.utility.common.ScorePageFragment
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
+import com.zendalona.mathsmantra.utility.common.VibrationUtils
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import com.zendalona.mathsmantra.utility.story.StoryQuestionGenerator
@@ -171,6 +174,8 @@ class QuickPlayFragment : Fragment() {
         Log.d("QuickPlayFragment", "User input: $userInput, correct answer: $correctAnswer, elapsed time: $elapsedSeconds sec")
 
         if (userInput == correctAnswer) {
+            VibrationUtils.vibrate(requireContext(), 200) // short
+
             val grade = GradingUtils.getGrade(elapsedSeconds, currentQuestionTimeLimit.toDouble(), true)
             totalScore += GradingUtils.getPointsForGrade(grade)
             Log.d("QuickPlayFragment", "Correct answer! Grade: $grade, totalScore: $totalScore")
@@ -188,6 +193,7 @@ class QuickPlayFragment : Fragment() {
 
         } else {
             playSound("wrong")
+            VibrationUtils.vibrate(requireContext(), 400)
             currentQuestionAttempts++
             Log.d("QuickPlayFragment", "Wrong answer attempt $currentQuestionAttempts of 3")
 
