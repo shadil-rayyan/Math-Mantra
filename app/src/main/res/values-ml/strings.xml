@@ -84,7 +84,7 @@
 
         <string name="shake_button">കുലുക്കുക</string>
         <string name="tap_button">ടാപ്പ് ചെയ്യുക</string>
-        <string name="mcq">MCQ</string>
+        <string name="day">ദിവസം</string>
         <string name="number_line">അണ്ണോ ലൈന</string>
         <string name="mental_calculation">മാനസിക ഗണന</string>
         <string name="angle">കോണം</string>
@@ -261,6 +261,23 @@
     <string name="tap_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
 
     <string name="touchscreen_question_expression">%1$s</string>
+
+
+        <!-- Days in Malayalam -->
+        <string name="monday">തിങ്കള്‍</string>
+        <string name="tuesday">ചൊവ്വ</string>
+        <string name="wednesday">ബുധന്‍</string>
+        <string name="thursday">വ്യാഴം</string>
+        <string name="friday">വെള്ളി</string>
+        <string name="saturday">ശനി</string>
+        <string name="sunday">ഞായര്‍</string>
+
+        <!-- UI Text -->
+        <string name="question_text_template">%1$s ആണ് ഇന്ന്, %2$d ദിവസത്തിന് ശേഷം ഏത് ദിവസം?</string>
+
+
+        <string name="wrong_answer_reveal">തെറ്റായ ഉത്തരം! ശരിയായ ഉത്തരം: %1$s</string>
+
 
 
 

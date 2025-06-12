@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameDayBinding
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
+import kotlin.math.log
 import kotlin.random.Random
 
 class DayFragment : Fragment() {
@@ -28,12 +30,9 @@ class DayFragment : Fragment() {
 
     private lateinit var ttsUtility: TTSUtility
     private var questionStartTime: Long = 0L
-    private val totalTime: Double = 30.0 // in seconds
+    private val totalTime: Double = 30.0 // seconds
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -55,21 +54,36 @@ class DayFragment : Fragment() {
         generateQuestion()
     }
 
+    private fun getDayStringRes(day: String): Int {
+        return when (day) {
+            "Monday" -> R.string.monday
+            "Tuesday" -> R.string.tuesday
+            "Wednesday" -> R.string.wednesday
+            "Thursday" -> R.string.thursday
+            "Friday" -> R.string.friday
+            "Saturday" -> R.string.saturday
+            "Sunday" -> R.string.sunday
+            else -> throw IllegalArgumentException("Unknown day: $day")
+        }
+    }
+
     private fun generateQuestion() {
         startDayIndex = Random.nextInt(days.size)
-        addDays = Random.nextInt(1, 14) // 1 to 13 days
+        addDays = Random.nextInt(1, 14)
         correctDay = days[(startDayIndex + addDays) % 7]
         attemptCount = 0
 
         val startDay = days[startDayIndex]
-        binding.questionText.text = "If today is $startDay,\nwhat day is after $addDays days?"
+        val startDayLocalized = getString(getDayStringRes(startDay))
+
+        binding.questionText.text = getString(R.string.question_text_template, startDayLocalized, addDays)
 
         enableAllButtons()
         questionStartTime = System.currentTimeMillis()
     }
 
     private fun checkAnswer(selected: String, buttons: List<Button>) {
-        val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0 // in seconds
+        val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
 
         if (selected == correctDay) {
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, isCorrect = true)
@@ -86,22 +100,22 @@ class DayFragment : Fragment() {
 
         } else {
             attemptCount++
-            ttsUtility.speak("Wrong answer. Try again.")
+            ttsUtility.speak(getString(R.string.wrong_answer))
 
             if (attemptCount >= 3) {
                 totalWrongQuestions++
                 disableAllButtons(buttons)
 
                 if (totalWrongQuestions >= 3) {
-                    // End game after 3 wrong questions
                     this.endGameWithScore()
                 } else {
-                    // Show correct answer, then go to next question
+                    val correctDayLocalized = getString(getDayStringRes(correctDay))
+
                     DialogUtils.showRetryDialog(
                         requireContext(),
                         layoutInflater,
                         ttsUtility,
-                        "Wrong! The correct answer was $correctDay"
+                        getString(R.string.wrong_answer_reveal, correctDayLocalized)
                     ) {
                         generateQuestion()
                     }

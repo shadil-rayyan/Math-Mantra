@@ -82,7 +82,7 @@
 
     <string name="shake_button">shake </string>
     <string name="tap_button">tap</string>
-    <string name="mcq">MCQ</string>
+    <string name="day">day</string>
     <string name="number_line">Number Line</string>
     <string name="mental_calculation">Mental Calculation</string>
     <string name="angle">Angle</string>
@@ -273,10 +273,7 @@
 
     <string name="touchscreen_question_expression">%1$s</string>
 
-        <string name="day_name">Day Calculator</string>
-        <string name="day_prompt">Calculate which day it will be after adding days.</string>
-        <string name="content_description_day_calc">Find which day is after %1$s + %2$d days</string>
-
+        <!-- Days -->
         <string name="monday">Monday</string>
         <string name="tuesday">Tuesday</string>
         <string name="wednesday">Wednesday</string>
@@ -284,6 +281,12 @@
         <string name="friday">Friday</string>
         <string name="saturday">Saturday</string>
         <string name="sunday">Sunday</string>
+
+        <!-- UI Text -->
+        <string name="question_text_template">If today is %1$s,\nwhat day is after %2$d days?</string>
+
+        <string name="wrong_answer_reveal">Wrong! The correct answer was %1$s</string>
+
 
 
 
