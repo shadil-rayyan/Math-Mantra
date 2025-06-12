@@ -1,3 +1,4 @@
-drawing?rectangle===30===0
-drawing?square===30===0
-drawing?triangle===30===0
+rectangle
+square
+triangle
+circle

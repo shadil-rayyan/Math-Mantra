@@ -1,0 +1,6 @@
+Right Triangle
+Isosceles Triangle
+Equilateral Triangle
+Oval
+Parallelogram
+Trapezoid

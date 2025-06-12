@@ -39,7 +39,6 @@
         app:layout_constraintBottom_toTopOf="@id/resetButton"
         android:layout_marginTop="20dp"
         android:background="?attr/colorSurface"
-        android:contentDescription="@string/drawing_canvas_description"
         android:importantForAccessibility="yes" />
 
     <!-- Reset Button -->
@@ -64,7 +63,7 @@
         android:id="@+id/submitButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/submit"
+        android:text="@string/next"
         android:textAllCaps="false"
         android:paddingVertical="12dp"
         android:minHeight="48dp"
