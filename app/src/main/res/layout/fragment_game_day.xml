@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:padding="14dp"
+    android:contentDescription="@string/mental_description"
+    tools:context=".ui.game.MentalCalculationFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="80dp"
+        android:paddingBottom="40dp">
+
+        <!-- Question Text Centered -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/questionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="If today is Monday, what day after is 5 days?"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="100dp"
+            android:textAlignment="center"
+            android:importantForAccessibility="yes"
+            android:accessibilityLiveRegion="polite" />
+
+        <!-- Button Grid -->
+        <GridLayout
+            android:id="@+id/dayButtonsGrid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="3"
+            android:rowOrderPreserved="false"
+            android:useDefaultMargins="true"
+            android:alignmentMode="alignMargins"
+            android:layout_marginTop="80dp">
+
+            <!-- 6 Weekday Buttons -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMonday"
+                style="@style/DayButton"
+                android:text="@string/monday" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTuesday"
+                style="@style/DayButton"
+                android:text="@string/tuesday" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnWednesday"
+                style="@style/DayButton"
+                android:text="@string/wednesday" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnThursday"
+                style="@style/DayButton"
+                android:text="@string/thursday" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnFriday"
+                style="@style/DayButton"
+                android:text="@string/friday" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaturday"
+                style="@style/DayButton"
+                android:text="@string/saturday" />
+
+            <!-- Sunday Full-Width -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSunday"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_columnSpan="3"
+                android:layout_gravity="fill"
+                android:text="@string/sunday"
+                android:textSize="18sp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="?attr/colorOnPrimary" />
+
+        </GridLayout>
+
+
+    </LinearLayout>
+</ScrollView>

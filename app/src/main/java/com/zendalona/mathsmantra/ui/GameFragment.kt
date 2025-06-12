@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.zendalona.mathsmantra.databinding.FragmentGamePageBinding
 import com.zendalona.mathsmantra.ui.game.AngleFragment
 import com.zendalona.mathsmantra.ui.game.CompassFragment
+import com.zendalona.mathsmantra.ui.game.DayFragment
 import com.zendalona.mathsmantra.ui.game.DrawingFragment
 import com.zendalona.mathsmantra.ui.game.MentalCalculationFragment
 import com.zendalona.mathsmantra.ui.game.NumberLineFragment
@@ -107,6 +108,14 @@ class GameFragment : Fragment() {
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
                     TouchScreenFragment(),
+                    FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+                )
+            }
+        })
+        binding!!.mcqButton.setOnClickListener(View.OnClickListener { v: View? ->
+            if (navigationListener != null) {
+                navigationListener!!.loadFragment(
+                    DayFragment(),
                     FragmentTransaction.TRANSIT_FRAGMENT_OPEN
                 )
             }
