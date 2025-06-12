@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmantra.model.HintIconVisibilityController
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.FragmentNavigation
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.ui.LandingPageFragment
@@ -101,10 +102,10 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         return when (item.itemId) {
             R.id.action_hint -> {
                 val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-                if (fragment is ShakeFragment) {
+                if (fragment is Hintable) {
                     fragment.showHint()
                 } else {
-                    // fallback filepath if not from ShakeFragment
+                    // fallback filepath if fragment doesn't implement Hintable
                     val hintFragment = HintFragment().apply {
                         arguments = Bundle().apply {
                             putString("filepath", "en/hint/default.txt")

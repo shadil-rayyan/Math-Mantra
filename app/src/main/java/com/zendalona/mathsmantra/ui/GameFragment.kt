@@ -112,7 +112,7 @@ class GameFragment : Fragment() {
                 )
             }
         })
-        binding!!.mcqButton.setOnClickListener(View.OnClickListener { v: View? ->
+        binding!!.dayButton.setOnClickListener(View.OnClickListener { v: View? ->
             if (navigationListener != null) {
                 navigationListener!!.loadFragment(
                     DayFragment(),

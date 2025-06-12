@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameDayBinding
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
@@ -32,8 +33,11 @@ class DayFragment : Fragment() {
     private var questionStartTime: Long = 0L
     private val totalTime: Double = 30.0 // seconds
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
+
+
         return binding.root
     }
 
@@ -123,7 +127,17 @@ class DayFragment : Fragment() {
             }
         }
     }
+    fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/day.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
 
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
+    }
     private fun disableAllButtons(buttons: List<Button>) {
         buttons.forEach { it.isEnabled = false }
     }
