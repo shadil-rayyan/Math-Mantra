@@ -64,7 +64,7 @@ object AccessibilityHelper {
 
         for (serviceInfo in enabledServices) {
             if (serviceInfo.getId()
-                    .contains("com.zendalona.mathmanthra/.utils.MathsManthraAccessibilityService")
+                    .contains("com.zendalona.mathsmantra/com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService")
             ) {
                 return true
             }

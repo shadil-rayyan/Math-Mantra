@@ -14,20 +14,20 @@ public class MathsManthraAccessibilityService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         // This method is called when an accessibility event occurs
-        Log.d("MathsManthraAccessible", "WINDOW_STATE_CHANGED " + event);
+        Log.d("MathsMantraAccessible", "WINDOW_STATE_CHANGED " + event);
 
         // Check if the accessibility event is triggered due to a window state change
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             String packageName = event.getPackageName().toString();
-            if ("com.zendalona.mathmantra".equals(packageName)) {
-                Log.d("MathsManthraAccessible", "WINDOW_STATE_CHANGED " + event);
+            if ("com.zendalona.mathsmantra".equals(packageName)) {
+                Log.d("MathsMantraAccessible", "WINDOW_STATE_CHANGED " + event);
             }
         }
 
         // Handle the event when a view receives accessibility focus
         if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
             String packageName = event.getPackageName().toString();
-            if ("com.zendalona.mathsmanthra".equals(packageName)) {
+            if ("com.zendalona.mathsmantra".equals(packageName)) {
                 Log.d("MathsManthraAccessible", "TYPE_VIEW_ACCESSIBILITY_FOCUSED " + event);
 
                 // Correctly call updateWindowState from AccessibilityHelper
@@ -57,6 +57,7 @@ public class MathsManthraAccessibilityService extends AccessibilityService {
     protected void onServiceConnected() {
         // onServiceConnected() is called when the accessibility service is successfully enabled
         super.onServiceConnected();
+        Log.d("AccessibilityService", "onServiceConnected triggered");
 
         // Set this service in the AccessibilityHelper for use
         AccessibilityHelper.setAccessibilityService(this);

@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.model.RotationSensorUtility
+import com.zendalona.mathsmantra.ui.HintFragment
 import java.util.Random
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener {
@@ -131,5 +132,17 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener {
             }
         }
         angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 2000)
+    }
+
+    fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/angle.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
     }
 }

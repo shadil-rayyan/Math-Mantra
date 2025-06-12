@@ -12,7 +12,7 @@ object QuestionParser {
         // Step 1: Strip type if present, e.g., add?3+4===10===1
         val cleanedExpr = expr.substringAfter('?')
 
-        // Step 2: Remove ===time===bell part if present
+        // Step 2: Remove ===time===angle part if present
         val questionPart = cleanedExpr.substringBefore("===")
 
         // Step 3: Choose strategy (can extend more prefixes later)
@@ -20,9 +20,15 @@ object QuestionParser {
             questionPart.startsWith("ratio:", true) -> RatioProportionParser()
             questionPart.startsWith("convert:", true) -> UnitConversionParser()
             else -> ArithmeticParser()
-        }
+        } as ParserStrategy
 
         return strategy.parseQuestion(questionPart)
     }
+//    fun sterioexpression(expr: String): SterioExpression {
+//        val cleanedExpr = expr.substringAfter('?')
+//        val questionPart = cleanedExpr.substringBefore("===")
+//
+//        return SterioParser().parseExpressionFull(questionPart)
+//    }
 
 }

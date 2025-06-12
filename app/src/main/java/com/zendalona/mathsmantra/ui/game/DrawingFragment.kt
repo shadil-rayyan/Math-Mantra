@@ -1,0 +1,159 @@
+package com.zendalona.mathsmantra.ui.game
+
+import android.app.AlertDialog
+import android.content.Context
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.TextUtils
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.zendalona.mathsmantra.R
+import com.zendalona.mathsmantra.databinding.DialogResultBinding
+import com.zendalona.mathsmantra.databinding.FragmentGameDrawingBinding
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.mathsmantra.view.DrawingView
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+
+class DrawingFragment : Fragment() {
+    private var binding: FragmentGameDrawingBinding? = null
+    private var drawingView: DrawingView? = null
+    private var accessibilityManager: AccessibilityManager? = null
+
+    private var shapeList: MutableList<String?> = ArrayList<String?>()
+    private var currentIndex = 0
+    private var lang = "en"
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentGameDrawingBinding.inflate(inflater, container, false)
+        val context = requireContext()
+
+        accessibilityManager =
+            context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+
+        // Add the custom drawing view to the container
+        drawingView = DrawingView(context)
+        binding!!.drawingContainer.addView(drawingView)
+
+        // Load language and difficulty
+        val difficulty = getDifficulty(context)
+        lang = getLanguage(context)
+        if (TextUtils.isEmpty(lang)) lang = "en"
+
+        shapeList = loadShapesFromAssets(lang, difficulty)
+
+        setupListeners()
+        loadNextShape()
+
+        return binding!!.getRoot()
+    }
+
+    private fun loadShapesFromAssets(lang: String?, difficulty: String): MutableList<String?> {
+        val shapes: MutableList<String?> = ArrayList<String?>()
+        val fileName = lang + "/game/drawing/" + difficulty.lowercase() + ".txt"
+
+        try {
+            BufferedReader(
+                InputStreamReader(requireContext().getAssets().open(fileName))
+            ).use { reader ->
+                var line: String?
+                while ((reader.readLine().also { line = it }) != null) {
+                    if (!line!!.trim { it <= ' ' }.isEmpty()) {
+                        shapes.add(line.trim { it <= ' ' })
+                    }
+                }
+                if (shapes.isEmpty()) {
+                    showToast("No shapes found in " + fileName)
+                }
+            }
+        } catch (e: IOException) {
+            showToast("Failed to load shapes from: " + fileName)
+            e.printStackTrace()
+        }
+
+        return shapes
+    }
+
+    private fun setupListeners() {
+        binding!!.resetButton.setOnClickListener(View.OnClickListener { v: View? ->
+            drawingView!!.clearCanvas()
+            announce(getString(R.string.canvas_cleared))
+        })
+
+        binding!!.submitButton.setOnClickListener(View.OnClickListener { v: View? ->
+            showResultDialogAndNext() // No checking, just move ahead
+        })
+    }
+
+    private fun loadNextShape() {
+        if (currentIndex >= shapeList.size) {
+            announce(getString(R.string.task_completed))
+            Handler(Looper.getMainLooper()).postDelayed(
+                Runnable { requireActivity().onBackPressed() },
+                3000
+            )
+            return
+        }
+
+        val shape = shapeList.get(currentIndex)
+        val instruction = getString(R.string.drawing_task, shape)
+
+        binding!!.questionText.setText(instruction)
+        binding!!.questionText.setContentDescription(instruction)
+        binding!!.questionText.announceForAccessibility(instruction)
+        drawingView!!.clearCanvas()
+    }
+
+    private fun showResultDialogAndNext() {
+        // Generic success feedback
+        val message = getString(R.string.right_answer)
+        val gifResource = R.drawable.right
+
+        val dialogBinding = DialogResultBinding.inflate(getLayoutInflater())
+        val dialogView: View = dialogBinding.getRoot()
+
+        Glide.with(this).asGif().load(gifResource).into(dialogBinding.gifImageView)
+        dialogBinding.messageTextView.setText(message)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+        dialog.show()
+
+        announce(message)
+
+        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+            dialog.dismiss()
+            currentIndex++
+            loadNextShape()
+        }, 3000)
+    }
+
+    private fun announce(message: String?) {
+        if (accessibilityManager!!.isEnabled()) {
+            binding!!.getRoot().announceForAccessibility(message)
+        }
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+}

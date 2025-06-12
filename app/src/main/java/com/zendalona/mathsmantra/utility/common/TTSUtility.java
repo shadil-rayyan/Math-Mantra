@@ -62,6 +62,7 @@ public class TTSUtility {
         }
     }
 
+
     private void speakInternal(String text) {
         tts.setSpeechRate(speechRate);
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "utteranceId");

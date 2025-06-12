@@ -36,7 +36,7 @@ class AccessibilityUtils {
             for (serviceInfo in enabledServices) {
                 // Important: Match your package + service class name
                 if (serviceInfo.getId()
-                        .contains("com.zendalona.mathmantra/.utils.MathsManthraAccessibilityService")
+                        .contains("com.zendalona.mathsmantra/com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService")
                 ) {
                     return true
                 }
@@ -45,15 +45,15 @@ class AccessibilityUtils {
         }
 
         // ⚠️ Optional - This is less reliable. You can keep or remove this.
-        fun isMathsManthraAccessibilityServiceRunning(context: Context): Boolean {
-            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            for (service in manager.getRunningServices(Int.Companion.MAX_VALUE)) {
-                if (MathsManthraAccessibilityService::class.java.getName() == service.service.getClassName()) {
-                    return true
-                }
-            }
-            return false
-        }
+//        fun isMathsManthraAccessibilityServiceRunning(context: Context): Boolean {
+//            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+//            for (service in manager.getRunningServices(Int.Companion.MAX_VALUE)) {
+//                if (MathsManthraAccessibilityService::class.java.getName() == service.service.getClassName()) {
+//                    return true
+//                }
+//            }
+//            return false
+//        }
 
         // Announce message to TalkBack/Screen Reader
         fun sendTextToScreenReader(context: Context, message: String?) {

@@ -1,0 +1,111 @@
+🧭 Welcome to the Compass Game
+An engaging challenge where you use your device’s built-in compass to physically turn toward a specific cardinal direction (like North, East, or Southwest). The game is fully accessible and provides voice feedback to help you play independently.
+
+🎯 Objective of the Game
+Your goal is to rotate your device so it points toward the target compass direction announced by the game (e.g., “North” or “Southeast”). The game will monitor your orientation using the device’s magnetic sensors and let you know when you’re facing the correct direction.
+
+⚙️ Game Setup
+📱 Launching the Game
+After starting the game, your device will begin listening for its orientation using the built-in accelerometer and magnetometer (compass sensors).
+
+🔊 Initial Instructions
+Once the game starts, you’ll hear something like:
+
+“Turn to North.”
+
+This is your target direction. You’ll now begin rotating your device to align with it.
+
+🕹️ Gameplay Instructions
+🧭 Understanding the Question
+Each question will ask you to face a direction such as:
+
+“Turn to East”
+“Turn to Northwest”
+
+The game supports all 8 compass directions:
+
+North
+
+Northeast
+
+East
+
+Southeast
+
+South
+
+Southwest
+
+West
+
+Northwest
+
+🔄 Rotating and Feedback
+As you rotate your device, the game will:
+
+Track your current direction
+
+Speak the current direction every few seconds, like:
+
+“You are now facing Southwest.”
+
+This real-time feedback helps you adjust your orientation.
+
+✅ Detecting the Correct Direction
+Once your device is pointed close enough (within ±22.5 degrees) to the correct direction, the game will say:
+
+“Correct! You’ve reached the target direction!”
+
+A sound or vibration may also play to confirm your success.
+
+📊 Result Dialog and New Question
+🌟 After Correct Answer
+You will hear a confirmation message and possibly a celebratory sound.
+
+The game will then wait a few seconds and automatically move to the next question.
+
+❌ After Incorrect Alignment
+If you are not close to the target direction, the game will continue giving feedback.
+
+You’ll hear your current direction again to help guide you:
+
+“You are now facing South. Try again.”
+
+💡 Tips for Playing
+🔄 Rotating Your Device
+Hold the device in front of you, flat and steady.
+
+Turn your entire body or gently rotate your hands to face different directions.
+
+Avoid quick jerks or tilts — smooth movements work best.
+
+🧏‍♂️ Verbal Feedback
+Every few seconds, the game announces your current direction.
+
+Use this feedback to gradually adjust toward the target.
+
+👨‍🦯 Accessibility Features
+Voice Prompts: All instructions and directions are spoken aloud.
+
+Screen Reader Support: All elements are compatible with screen readers.
+
+Vibration Cues (optional): May vibrate on success or changes, depending on settings.
+
+🏁 Finishing the Game
+After answering all questions, the game announces:
+
+“Game Over!”
+
+You can stop anytime by exiting the app.
+
+🛠 Troubleshooting
+📉 Not Receiving Direction Updates?
+Ensure that your device’s compass sensor is working.
+
+Restart the game if it gets stuck or try moving the device in a figure-eight motion to recalibrate.
+
+📱 Device Not Responding Well?
+Rotate slowly and steadily.
+
+Ensure you’re not holding the device too close to strong magnets or metal, which can interfere with compass readings.
+

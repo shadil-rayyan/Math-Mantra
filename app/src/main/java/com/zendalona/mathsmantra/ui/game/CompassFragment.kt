@@ -119,7 +119,7 @@ class CompassFragment : Fragment(), SensorEventListener {
 
         val raw = rawQuestions.get(currentIndex)
         val parts: Array<String?> =
-            raw.replace("compass?", "").split("==".toRegex()).dropLastWhile { it.isEmpty() }
+            raw.replace("compass?", "").split("===".toRegex()).dropLastWhile { it.isEmpty() }
                 .toTypedArray()
 
         if (parts.size >= 1) currentTargetDirection = parts[0]!!.trim { it <= ' ' }

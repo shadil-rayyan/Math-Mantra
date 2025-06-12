@@ -1,0 +1,94 @@
+✏️ Welcome to the Drawing Game
+In this game, you will be asked to draw simple shapes on your device’s screen using touch gestures. The game provides voice guidance and feedback to help you complete each drawing task independently.
+
+🎯 Objective of the Game
+Your goal is to draw the shape named by the game using your finger on the touchscreen. The game does not check accuracy automatically but encourages practice and exploration of shapes through touch and drawing.
+
+⚙️ Game Setup
+📱 Launching the Game
+Once you start the game, you will hear a prompt describing the shape to draw, for example:
+
+“Draw a circle.”
+
+The drawing canvas will appear on your screen ready for you to draw.
+
+🔊 Initial Instructions
+The instruction will be announced out loud and displayed visually for sighted users, helping you know what shape to draw next.
+
+🕹️ Gameplay Instructions
+✍️ How to Draw
+Use your finger to draw the requested shape on the touchscreen.
+
+You can freely draw any shape you want inside the drawing area.
+
+Don’t worry about making a perfect shape; the goal is to practice.
+
+🔄 Resetting the Canvas
+If you want to clear your drawing and start over, press the Reset button.
+
+You will hear:
+
+“Canvas cleared.”
+
+This lets you try again if you make a mistake or want to improve your drawing.
+
+✅ Submitting Your Drawing
+When you finish your drawing, press the Submit button.
+
+The game will confirm your submission with a message like:
+
+“Correct!”
+
+A celebratory animation or sound may also play.
+
+Then, the next shape to draw will be announced.
+
+📊 Moving to the Next Shape
+After submitting a drawing, the game automatically loads the next shape.
+
+You will hear the name of the new shape and can start drawing right away.
+
+If you finish all shapes, you will hear:
+
+“Task completed.”
+
+The game will then exit or return to the previous menu.
+
+💡 Tips for Playing
+🖐 Drawing Tips
+Use smooth finger movements on the screen.
+
+If you make a mistake, use the Reset button to clear the canvas and start fresh.
+
+Take your time and enjoy practicing different shapes.
+
+🧏‍♂️ Verbal Feedback
+The game announces every instruction clearly.
+
+After each submission, the game provides spoken feedback.
+
+Make sure your device’s volume is up, or use headphones for the best experience.
+
+👨‍🦯 Accessibility Features
+The game supports screen readers and announces all instructions and results.
+
+Buttons are large and easy to find by touch.
+
+The drawing canvas responds well to touch gestures.
+
+🏁 Finishing the Game
+The game continues until you complete all the shapes in the list.
+
+You can exit anytime by pressing the back button on your device.
+
+🛠 Troubleshooting
+🎨 Canvas Not Responding?
+Ensure your screen is clean and your fingers are dry.
+
+Restart the game if the drawing area doesn’t respond to touch.
+
+🔈 No Sound or Announcements?
+Check if your device’s volume is turned up.
+
+Make sure screen reader and accessibility services are enabled for full audio support.
+

@@ -1,0 +1,69 @@
+How to Play the Mental Calculation Game (For Blind or Visually Impaired Players)
+Welcome to the Mental Calculation Game! This game tests your quick math skills by asking you to solve arithmetic problems spoken aloud. Here is a step-by-step guide to help you enjoy and succeed in the game using voice feedback and accessible controls.
+
+Objective of the Game
+Your goal is to listen carefully to the arithmetic problem spoken by the game and then enter the correct answer using the keyboard. The game will tell you if your answer is right or wrong, and you will advance through a series of questions.
+
+Game Setup
+Starting the Game:
+
+When the game begins, you will hear an instruction asking you to solve a math expression.
+
+The expressions will be simple arithmetic operations like addition, subtraction, multiplication, and division (for example: "Solve 7 plus 3").
+
+The difficulty of the questions depends on the settings you have selected.
+
+Gameplay Instructions
+Listening to the Question:
+
+The question will be spoken aloud, one word or number at a time, with a short pause between each token (e.g., "7", then "plus", then "3").
+
+The game also displays the expression visually if you want to follow along.
+
+Answering the Question:
+
+Once the question is fully spoken, the input field for your answer will be enabled.
+
+Use your device’s keyboard or screen reader input to type your answer.
+
+After typing your answer, press the "Submit" button or the keyboard’s "Done" key to submit your answer.
+
+Feedback After Answer Submission:
+
+If your answer is correct, you will hear a positive response such as "Correct!" along with a congratulatory sound for some questions.
+
+If your answer is wrong, you will be asked to try again, with up to three attempts allowed per question.
+
+If you get the answer wrong three times, the game will end and announce "Game Over."
+
+Tips for Playing
+Focus on Listening: Since the question is read aloud slowly, focus on listening carefully to each part of the expression.
+
+Use the Submit Button or Keyboard: You can submit your answer either by tapping the submit button or pressing the keyboard’s done key.
+
+Don’t Rush: Take your time to calculate the answer mentally before submitting.
+
+Multiple Attempts: You can retry if you make a mistake, so don’t worry if you don’t get it right on the first try.
+
+Accessibility Features
+Text-to-Speech Announcements: Every question and important message is spoken aloud for you.
+
+Focus and Navigation: The app automatically sets focus on the input box when it’s time to answer, so you don’t need to hunt for it.
+
+Error Messages: If you enter an invalid answer (like letters instead of numbers), the game will inform you to enter a valid number.
+
+Celebrations: For some correct answers, you’ll hear a special celebratory sound to encourage you.
+
+Finishing the Game
+The game continues question after question until you complete all questions or get three wrong answers on one question.
+
+When the game ends, you will hear a clear message like "Game Over" and your final score if applicable.
+
+You can then restart or exit the game.
+
+Troubleshooting
+No Speech Output: Make sure your device volume is turned up and text-to-speech settings are enabled.
+
+Unable to Enter Answer: Ensure the answer input box is enabled after the question is read aloud. If it’s disabled, wait a moment for the question to finish.
+
+Invalid Answer Warning: Enter only numbers without spaces or symbols. If you make a mistake, clear the input and try again.

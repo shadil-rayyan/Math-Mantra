@@ -119,24 +119,6 @@ class ShakeFragment : Fragment() {
         tts.speak(speakInstruction)
     }
 
-    private fun onShakeDetected() {
-        if (!isShakingAllowed) return
-
-        isShakingAllowed = false
-        shakeHandler.postDelayed({ isShakingAllowed = true }, 500)
-
-        count++
-        binding?.ringCount?.text = count.toString()
-
-        VibrationUtils.vibrate(requireContext(), 100)
-        tts.stop()
-        val countText = getString(R.string.shake_count_announcement, count)
-        tts.speak(countText)
-
-        if (count == target) {
-            evaluateGameResult()
-        }
-    }
 
     private fun evaluateGameResult() {
         gameHandler.postDelayed({
@@ -177,6 +159,25 @@ class ShakeFragment : Fragment() {
                 }
             }
         }, 2000)
+    }
+
+    private fun onShakeDetected() {
+        if (!isShakingAllowed) return
+
+        isShakingAllowed = false
+        shakeHandler.postDelayed({ isShakingAllowed = true }, 500)
+
+        count++
+        binding?.ringCount?.text = count.toString()
+
+        VibrationUtils.vibrate(requireContext(), 100)
+        tts.stop()
+        val countText = getString(R.string.shake_count_announcement, count)
+        tts.speak(countText)
+
+        if (count == target) {
+            evaluateGameResult()
+        }
     }
 
     private fun nextOrEnd() {

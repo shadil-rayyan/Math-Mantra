@@ -1,0 +1,95 @@
+Welcome to the Angle Game, an exciting challenge where you will be asked to turn to specific angles using your device’s rotation sensors. Here's a detailed step-by-step guide to help you play the game:
+
+Objective of the Game
+Your goal is to correctly adjust the orientation of your device to match the target angle displayed in the game. You will receive verbal prompts to help guide you in turning the device to the correct angle.
+
+Game Setup
+Launching the Game:
+
+Once you start the game, you will be asked to rotate your device. The game uses the rotation sensor of your device to track the angle you're facing.
+
+Initial Instructions:
+
+After launching the game, you will hear an announcement saying something like, "Rotate your device to the target angle."
+
+At this point, the game is listening for your rotation to calculate the relative angle.
+
+Gameplay Instructions
+Understanding the Question:
+
+After starting the game, you will hear a question such as:
+"Turn to 90 degrees." (This means the game wants you to rotate your device to 90 degrees.)
+
+The angle will be one of the following: 45°, 90°, 120°, 180°, or 270°.
+
+Rotation and Feedback:
+
+As you rotate your device, the game will provide real-time verbal feedback on your current angle.
+
+You will hear updates like:
+"Your current angle is 45 degrees."
+
+The feedback will be repeated every 2 seconds to guide you during your turn.
+
+Correcting Your Angle:
+
+The game will check if the angle you are currently holding matches the target angle.
+
+If your current angle is within 10 degrees of the target angle, you will hear a message like:
+"Correct! You’ve reached the target angle!"
+
+The game will then show you a result dialog with a celebratory sound (such as a cheering or a correct answer sound) if you are successful.
+
+Wrong Answer:
+
+If your angle is not correct, you will hear:
+"Incorrect, try again."
+
+The game will then give you additional verbal feedback to help you adjust your position.
+
+Result Dialog and New Question
+After Correct Answer:
+
+If you answer correctly, a result dialog will appear with a confirmation sound and a message saying "Correct answer!" or "Well done!".
+
+After a brief moment, the game will automatically generate a new target angle and prompt you to try again.
+
+After Incorrect Answer:
+
+If you answer incorrectly, the game will provide a message like "Wrong answer, try again."
+
+The game will repeat the question with a new attempt, guiding you towards the correct angle.
+
+Tips for Playing
+Rotating Your Device:
+
+Make sure your device is held in a stable position and rotated slowly for more accurate angle tracking.
+
+The game will give continuous feedback about your angle, so you always know where you stand.
+
+Verbal Feedback:
+
+The game provides constant verbal feedback every 2 seconds to keep you informed on your progress. Listen carefully to the angle updates.
+
+Accessibility Features:
+
+If you need help understanding what’s happening in the game, the screen reader on your device will provide additional details. Make sure your screen reader is enabled, so you can hear all the instructions clearly.
+
+Finishing the Game
+The game can continue for as long as you want. After successfully completing a few questions, you can choose to stop by exiting the game or simply closing the app.
+
+Accessibility Features Included in the Game
+Voice Announcements: Throughout the game, every action is announced clearly to ensure you can understand your progress.
+
+Vibration Feedback: If needed, the game can also provide vibration feedback for certain actions.
+
+Screen Reader Support: All in-game text is compatible with screen readers, so all written prompts and questions are read aloud.
+
+Troubleshooting
+Not Receiving Angle Updates:
+
+Make sure that the rotation sensor on your device is active. If the game isn't updating your angle, you might need to check your device’s sensor settings.
+
+Difficulty in Rotation:
+
+If the device’s sensor isn’t responding well to your movements, try rotating your device slowly and steadily. Avoid sharp, quick turns.

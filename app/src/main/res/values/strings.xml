@@ -126,7 +126,7 @@
     <string name="shake_instruction_description">Instruction to shake the device to start the game</string>
 
     <!-- Audio Math Fragment -->
-    <string name="audio_instruction">Listen carefully and subtract the second number you hear from the first number.</string>
+    <string name="audio_instruction">Listen carefully  substract first number from second number.</string>
     <string name="audio_instruction_description">Instruction. Listen carefully. Tap Read the Question to hear the numbers before solving.</string>
     <string name="read_question">Read the Question</string>
     <string name="read_question_description">Button to read the math question aloud. Double tap to listen.</string>
@@ -265,6 +265,14 @@
 
 
     <string name="shake_target_expression">Shake %1$s times!</string>
+    <string name="tap_target_expression">Tap %1$s times</string>
+    <string name="tap_count_announcement">Tap count: %1$d</string>
+    <string name="tap_failure">Incorrect tap count. Try again!</string>
+    <string name="tap_game_over">Game Over! You tried 3 times.</string>
+    <string name="tap_next_question">Next question</string>
+
+    <string name="touchscreen_question_expression">%1$s</string>
+
 
 
 

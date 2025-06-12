@@ -1,0 +1,71 @@
+How to Play the Number Line Game (For Blind or Visually Impaired Players)
+Welcome to the Number Line Game! This game helps you practice addition and subtraction by moving along a number line using simple voice commands and button controls. Here’s a detailed guide to help you play:
+
+Objective of the Game
+Your goal is to start at a certain position on an imaginary number line and move either left (subtract) or right (add) by a certain number of units to reach the correct final position.
+
+Game Setup
+Starting the Game:
+
+When the game starts, you will hear a spoken question telling you your current position and how many units you need to move, either left or right on the number line.
+
+For example, you might hear: "You are standing on 3. What is 3 plus 4?" or "You are standing on 7. What is 7 minus 2?"
+
+Gameplay Instructions
+Understanding the Question:
+
+The question always tells you your current position and whether to add or subtract a certain number.
+
+"Plus" means move right on the number line, and "minus" means move left.
+
+Moving Along the Number Line:
+
+Use the Right button to move one unit to the right (add 1).
+
+Use the Left button to move one unit to the left (subtract 1).
+
+Each button press will move your position by one unit and update your location on the number line.
+
+Listening to Your Position:
+
+Your current position is displayed on the screen and announced by the text-to-speech.
+
+Tap the question text at any time to hear the question read aloud again.
+
+Answering the Question:
+
+Move left or right the required number of steps to reach the answer.
+
+When your position matches the correct answer, you will hear "Correct Answer!" followed by a positive message.
+
+Tips for Playing
+Take your time: Move step-by-step using the left and right buttons.
+
+Listen carefully: The question will tell you exactly how many units to move and in which direction.
+
+Ask for repetition: Tap the question text if you want to hear the question again.
+
+Keep track: Remember your current position, which is updated and spoken after each move.
+
+Accessibility Features
+Text-to-Speech: The game speaks all questions and important messages clearly.
+
+Button Controls: The large left and right buttons are easy to find and press.
+
+Visual and Audio Feedback: Your current position updates visually and is announced aloud for confirmation.
+
+Encouragement: When you get the answer right, a congratulatory sound and message are played.
+
+Finishing the Game
+After you answer correctly, a dialog with an encouraging message and a fun animation will appear.
+
+You can press the Continue button to get a new question and keep playing.
+
+To stop playing, simply exit the game or close the app.
+
+Troubleshooting
+Not hearing questions: Check your device volume and ensure text-to-speech is enabled.
+
+Buttons not responding: Make sure the screen is active and buttons are visible.
+
+Confused about position: Tap the question text to hear your current task again.

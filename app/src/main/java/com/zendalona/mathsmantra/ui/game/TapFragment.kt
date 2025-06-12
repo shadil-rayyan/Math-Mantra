@@ -1,0 +1,213 @@
+package com.zendalona.mathsmantra.ui.game
+
+import android.media.MediaPlayer
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.zendalona.mathsmantra.R
+import com.zendalona.mathsmantra.databinding.FragmentGameTapBinding
+import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
+import com.zendalona.mathsmantra.utility.common.*
+import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
+import com.zendalona.mathsmantra.utility.settings.LocaleHelper
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
+import java.util.*
+
+class TapFragment : Fragment() {
+
+    private var binding: FragmentGameTapBinding? = null
+    private lateinit var tts: TTSUtility
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var count = 0
+    private var index = 0
+    private var wrongAttempts = 0
+    private var questionStartTime: Long = 0
+
+    private lateinit var questions: List<TapQuestion>
+
+    private data class TapQuestion(
+        val expression: String,
+        val answer: Int,
+        val timeLimit: Int = 20,
+        val celebration: Boolean = false
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        tts = TTSUtility(requireContext())
+        val lang = LocaleHelper.getLanguage(requireContext())
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        questions = loadTapQuestionsFromAssets(lang, difficulty)
+
+        if (questions.isEmpty()) {
+            questions = listOf(
+                TapQuestion("2+1", 3),
+                TapQuestion("1+2+3", 6)
+            )
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentGameTapBinding.inflate(inflater, container, false)
+
+        binding?.root?.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                onScreenTapped()
+            }
+            true
+        }
+
+        startGame()
+        return binding!!.root
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val service = AccessibilityHelper.getAccessibilityService()
+        if (service != null) {
+            AccessibilityHelper.disableExploreByTouch(service)
+        }
+    }
+
+
+    private fun loadTapQuestionsFromAssets(lang: String, difficulty: String): List<TapQuestion> {
+        val list = mutableListOf<TapQuestion>()
+        val fileName = "$lang/game/tap/${difficulty.lowercase(Locale.ROOT)}.txt"
+
+        try {
+            val reader = BufferedReader(InputStreamReader(requireContext().assets.open(fileName)))
+            var line: String?
+            while (reader.readLine().also { line = it } != null) {
+                line?.trim()?.takeIf { it.isNotEmpty() }?.let {
+                    val parts = it.split("→")
+                    val (expr, ans) = QuestionParser.parseExpression(parts[0])
+                    val timeLimit = parts.getOrNull(1)?.toIntOrNull() ?: 20
+                    val celebration = parts.getOrNull(2)?.toIntOrNull() == 1
+                    list.add(TapQuestion(expr, ans, timeLimit, celebration))
+                }
+            }
+        } catch (e: IOException) {
+            Toast.makeText(context, "Error loading tap questions: $fileName", Toast.LENGTH_SHORT).show()
+        }
+
+        return list
+    }
+
+    private fun startGame() {
+        if (index >= questions.size) {
+            tts.speak(getString(R.string.tap_game_over))
+            endGameWithScore()
+            return
+        }
+
+        count = 0
+        binding?.tapCount?.text = "0"
+
+        val question = questions[index]
+        questionStartTime = System.currentTimeMillis()
+
+        val instruction = getString(R.string.tap_target_expression, question.expression)
+        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")} times"
+
+        binding?.tapMeTv?.apply {
+            text = instruction
+            contentDescription = speakInstruction
+            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
+            isFocusable = true
+            isFocusableInTouchMode = true
+            postDelayed({ requestFocus(); announceForAccessibility(speakInstruction) }, 500)
+        }
+
+        tts.speak(speakInstruction)
+    }
+
+    private fun onScreenTapped() {
+        count++
+        binding?.tapCount?.text = count.toString()
+
+        VibrationUtils.vibrate(requireContext(), 100)
+
+        tts.stop()
+        tts.speak(getString(R.string.tap_count_announcement, count))
+
+        val question = questions[index]
+        if (count == question.answer) {
+            evaluateResult(true)
+        } else if (count > question.answer) {
+            evaluateResult(false)
+        }
+    }
+
+    private fun evaluateResult(isCorrect: Boolean) {
+        val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+        val question = questions[index]
+        val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
+
+        if (isCorrect) {
+            wrongAttempts = 0
+            if (question.celebration) {
+                MediaPlayer.create(requireContext(), R.raw.bell_ring).start()
+            }
+
+            DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
+                nextOrEnd()
+            }
+        } else {
+            wrongAttempts++
+            if (wrongAttempts >= 3) {
+                tts.speak(getString(R.string.tap_game_over))
+                endGameWithScore()
+            } else {
+                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.tap_failure)) {
+                    startGame()
+                }
+            }
+        }
+    }
+
+    private fun nextOrEnd() {
+        index++
+        startGame()
+    }
+
+    fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/tap.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    override fun onPause() {
+        super.onPause()
+
+        val service = AccessibilityHelper.getAccessibilityService()
+        if (service != null) {
+            AccessibilityHelper.resetExploreByTouch(service)
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        handler.removeCallbacksAndMessages(null)
+        tts.shutdown()
+    }
+}

@@ -254,6 +254,14 @@
     <string name="game_finished">കളി അവസാനിച്ചു!</string>
 
     <string name="shake_target_expression">%1$s തവണ കുലുക്കൂ!</string>
+    <string name="tap_target_expression">നീ ടാപ്പ് ചെയ്യേണ്ടത് %1$s തവണയാണ്</string>
+    <string name="tap_count_announcement">ടാപ്പ് ചെയ്തത്: %1$d തവണ</string>
+    <string name="tap_failure">തെറ്റായ ടാപ്പ് എണ്ണം. വീണ്ടും ശ്രമിക്കൂ!</string>
+    <string name="tap_game_over">ഗെയിം ഒടുക്കം! നീ 3 തവണ ശ്രമിച്ചു.</string>
+    <string name="tap_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
+
+    <string name="touchscreen_question_expression">%1$s</string>
+
 
 
 

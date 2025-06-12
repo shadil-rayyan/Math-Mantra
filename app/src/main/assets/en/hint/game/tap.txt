@@ -1,0 +1,79 @@
+👆 How to Play the Tap Game (For Blind or Visually Impaired Users)
+This game challenges you to tap the screen a specific number of times as indicated by a simple math expression. You’ll receive spoken instructions and audio feedback throughout.
+
+🎯 Objective of the Game
+You will be given a math expression such as 2 + 1. Your goal is to tap the screen exactly 3 times.
+
+🕹️ Gameplay Instructions
+🔈 Listening to Instructions
+At the start of each round, you will hear the math expression read aloud, for example:
+
+“Tap two plus one times.”
+
+This tells you the exact number of times you need to tap the screen.
+
+👆 How to Tap
+Tap anywhere on the screen.
+
+Each tap is counted.
+
+After each tap, you will hear the current tap count announced.
+
+🎯 Reaching the Target
+When your tap count matches the target number from the expression, the game will check your answer.
+
+If correct, you will hear positive feedback.
+
+If you tap more than the required number, it will be considered a wrong attempt.
+
+🔄 Retry and Progression
+You have up to 3 tries for each question.
+
+If you fail 3 times, the game ends and announces your final score.
+
+If you answer correctly, the game moves to the next question automatically.
+
+⏰ Time Limits and Scoring
+Each tap challenge has a time limit, usually around 20 seconds.
+
+You earn better grades by tapping the correct number quickly and accurately.
+
+Your performance is announced after each question.
+
+🔔 Feedback and Sound
+The app vibrates briefly after each tap to confirm your input.
+
+Voice announcements keep you informed about your tap count.
+
+Bells or other sounds celebrate success.
+
+🛠 Tips for Playing
+Tap steadily and listen closely to instructions.
+
+Use headphones or ensure your device volume is turned up.
+
+Don’t rush taps too fast; wait for each count to be announced.
+
+If you make a mistake, you can retry the question.
+
+📱 Accessibility Features
+All instructions and feedback are delivered via text-to-speech.
+
+The current tap count is announced after every tap.
+
+Vibrations give physical confirmation of each tap.
+
+🚪 Ending the Game
+The game ends after all questions or after 3 failed attempts.
+
+When finished, you will hear:
+
+“Game over.”
+
+🆘 Troubleshooting
+If taps are not registered, try tapping slower or in a different area of the screen.
+
+Check device volume and text-to-speech settings if you do not hear instructions.
+
+Make sure vibration settings are enabled for tactile feedback.
+
