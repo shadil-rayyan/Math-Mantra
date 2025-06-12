@@ -11,39 +11,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/theory_image"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_marginTop="50dp"
-            android:focusable="false"
-            android:clickable="false"
-            android:src="@drawable/landing_app_icon"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
         <!-- Wrap the text in a ScrollView -->
         <ScrollView
             android:id="@+id/theory_scroll"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_margin="16dp"
             android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@id/theory_image"
             app:layout_constraintBottom_toTopOf="@id/repeat_button"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_margin="16dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/theory_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="?attr/colorOnSecondary"
+                android:layout_height="match_parent"
+                android:lineSpacingExtra="8dp"
                 android:text="Loading..."
-                android:gravity="start|top"
-                android:lineSpacingExtra="8dp" />
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="20sp" />
         </ScrollView>
 
         <com.google.android.material.button.MaterialButton

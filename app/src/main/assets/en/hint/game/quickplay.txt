@@ -1,0 +1,27 @@
+"QuickPay - How to Play
+How to Play the QuickPay Number Game
+
+Welcome to the QuickPay Number Game! This game helps you practice adding numbers with clear spoken questions.
+
+Objective of the Game
+You will hear or see a story problem involving QuickPay. Your task is to find the total sum of two numbers and enter the correct answer.
+
+Gameplay Instructions
+
+Listen carefully to the story question, for example: “Sam has {a} pencils and finds {b} more. How many pencils does he have now?”
+
+Enter your answer in the input field.
+
+Press the Submit button to check your answer.
+
+Tips
+
+Take your time to understand the story before answering.
+
+Use the Read Question button to hear the question again.
+
+Accessibility Features
+
+Text-to-Speech will clearly speak the question.
+
+Buttons are labeled for screen readers."

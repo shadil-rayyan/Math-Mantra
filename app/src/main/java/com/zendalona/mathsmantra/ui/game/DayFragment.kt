@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameDayBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
@@ -16,7 +17,7 @@ import com.zendalona.mathsmantra.utility.common.TTSUtility
 import kotlin.math.log
 import kotlin.random.Random
 
-class DayFragment : Fragment() {
+class DayFragment : Fragment(), Hintable {
 
     private var _binding: FragmentGameDayBinding? = null
     private val binding get() = _binding!!
@@ -127,17 +128,7 @@ class DayFragment : Fragment() {
             }
         }
     }
-    fun showHint() {
-        val bundle = Bundle().apply {
-            putString("filepath", "hint/game/day.txt")
-        }
-        val hintFragment = HintFragment().apply { arguments = bundle }
 
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, hintFragment)
-            .addToBackStack(null)
-            .commit()
-    }
     private fun disableAllButtons(buttons: List<Button>) {
         buttons.forEach { it.isEnabled = false }
     }
@@ -147,6 +138,17 @@ class DayFragment : Fragment() {
             binding.btnMonday, binding.btnTuesday, binding.btnWednesday,
             binding.btnThursday, binding.btnFriday, binding.btnSaturday, binding.btnSunday
         ).forEach { it.isEnabled = true }
+    }
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/day.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDestroyView() {

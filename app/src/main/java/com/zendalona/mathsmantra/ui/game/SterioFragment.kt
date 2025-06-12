@@ -17,10 +17,12 @@ import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.mathsmantra.model.AudioPlayerUtility
+import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.RandomValueGenerator
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 
-class SterioFragment : Fragment() {
+class SterioFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameSteroBinding? = null
     private var ttsUtility: TTSUtility? = null
@@ -148,6 +150,23 @@ class SterioFragment : Fragment() {
     private fun announce(message: String) {
         binding?.answerEt?.announceForAccessibility(message)
     }
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/sterio.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

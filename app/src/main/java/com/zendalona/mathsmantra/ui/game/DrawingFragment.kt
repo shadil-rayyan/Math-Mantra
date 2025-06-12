@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.databinding.FragmentGameDrawingBinding
+import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.mathsmantra.view.DrawingView
@@ -23,7 +25,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-class DrawingFragment : Fragment() {
+class DrawingFragment : Fragment(), Hintable {
     private var binding: FragmentGameDrawingBinding? = null
     private var drawingView: DrawingView? = null
     private var accessibilityManager: AccessibilityManager? = null
@@ -160,6 +162,17 @@ class DrawingFragment : Fragment() {
     override fun onPause() {
         drawingView?.onPause()
         super.onPause()
+    }
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/drawing.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
 

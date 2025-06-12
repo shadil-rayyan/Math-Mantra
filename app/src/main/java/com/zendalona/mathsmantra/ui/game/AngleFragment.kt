@@ -14,11 +14,12 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.model.RotationSensorUtility
 import com.zendalona.mathsmantra.ui.HintFragment
 import java.util.Random
 
-class AngleFragment : Fragment(), RotationSensorUtility.RotationListener {
+class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
 
     private lateinit var rotationTextView: TextView
     private lateinit var questionTextView: TextView
@@ -134,7 +135,7 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener {
         angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 2000)
     }
 
-    fun showHint() {
+    override fun showHint() {
         val bundle = Bundle().apply {
             putString("filepath", "hint/game/angle.txt")
         }

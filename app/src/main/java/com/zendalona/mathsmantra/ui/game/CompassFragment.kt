@@ -17,6 +17,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding
+import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import java.io.BufferedReader
@@ -25,7 +27,7 @@ import java.io.InputStreamReader
 import java.util.Locale
 import kotlin.math.abs
 
-class CompassFragment : Fragment(), SensorEventListener {
+class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private var binding: FragmentGameCompassBinding? = null
     private var sensorManager: SensorManager? = null
     private var magnetometer: Sensor? = null
@@ -243,6 +245,17 @@ class CompassFragment : Fragment(), SensorEventListener {
     private fun getCompassDirection(degrees: Float): String? {
         val index = ((degrees + 11.25) / 22.5).toInt() % 16
         return compassDirections[index]
+    }
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/compass.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}

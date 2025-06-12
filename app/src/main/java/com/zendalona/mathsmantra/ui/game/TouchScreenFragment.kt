@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameTouchScreenBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.common.*
@@ -22,7 +23,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
 
-class TouchScreenFragment : Fragment() {
+class TouchScreenFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameTouchScreenBinding? = null
     private lateinit var tts: TTSUtility
@@ -157,7 +158,7 @@ class TouchScreenFragment : Fragment() {
         }, 500)
     }
 
-    fun showHint() {
+    override fun showHint() {
         val bundle = Bundle().apply {
             putString("filepath", "hint/game/touch.txt")
         }

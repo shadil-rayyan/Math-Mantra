@@ -15,12 +15,14 @@ import com.zendalona.mathsmantra.Enum.Topic
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.databinding.FragmentGameNumberLineBinding
+import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.RandomValueGenerator
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.viewModel.NumberLineViewModel
 
-class NumberLineFragment : Fragment() {
+class NumberLineFragment : Fragment(), Hintable {
 
     companion object {
         private const val TAG = "NumberLineFragment"
@@ -161,6 +163,7 @@ class NumberLineFragment : Fragment() {
         return "$position $operator $units equals $answer"
     }
 
+
     private fun appreciateUser() {
         val dialogBinding = DialogResultBinding.inflate(layoutInflater)
 
@@ -181,10 +184,7 @@ class NumberLineFragment : Fragment() {
             .show()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-    }
+
 
     private inner class SwipeGestureListener : android.view.GestureDetector.SimpleOnGestureListener() {
 
@@ -218,4 +218,20 @@ class NumberLineFragment : Fragment() {
             return false
         }
     }
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/numberline.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
 }

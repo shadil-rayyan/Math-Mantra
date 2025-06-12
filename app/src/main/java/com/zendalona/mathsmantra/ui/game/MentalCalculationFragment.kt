@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameMentalCalculationBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
@@ -27,7 +28,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
-class MentalCalculationFragment : Fragment() {
+class MentalCalculationFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameMentalCalculationBinding? = null
     private val handler = Handler(Looper.getMainLooper())
@@ -185,11 +186,12 @@ class MentalCalculationFragment : Fragment() {
         }
     }
 
-    fun showHint() {
+    override fun showHint() {
         val bundle = Bundle().apply {
             putString("filepath", "hint/game/mentalcalculation.txt")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
+
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)

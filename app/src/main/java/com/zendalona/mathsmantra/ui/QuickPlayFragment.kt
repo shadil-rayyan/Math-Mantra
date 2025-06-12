@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentQuickPlayBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.ScorePageFragment
@@ -25,7 +26,7 @@ import com.zendalona.mathsmantra.utility.story.StoryQuestionGenerator
 import java.io.IOException
 import java.util.*
 
-class QuickPlayFragment : Fragment() {
+class QuickPlayFragment : Fragment(), Hintable {
 
     private var _binding: FragmentQuickPlayBinding? = null
     private val binding get() = _binding!!
@@ -248,6 +249,18 @@ class QuickPlayFragment : Fragment() {
             mediaPlayer?.start()
             Log.d("QuickPlayFragment", "Playing sound: $name")
         }
+    }
+
+    override fun showHint() {
+        val bundle = Bundle().apply {
+            putString("filepath", "hint/game/quickplay.txt")
+        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, hintFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDestroyView() {

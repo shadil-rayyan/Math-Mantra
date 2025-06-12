@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameTapBinding
+import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
@@ -24,7 +25,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
-class TapFragment : Fragment() {
+class TapFragment : Fragment(),Hintable {
 
     private var binding: FragmentGameTapBinding? = null
     private lateinit var tts: TTSUtility
@@ -183,7 +184,7 @@ class TapFragment : Fragment() {
         startGame()
     }
 
-    fun showHint() {
+    override fun showHint() {
         val bundle = Bundle().apply {
             putString("filepath", "hint/game/tap.txt")
         }
