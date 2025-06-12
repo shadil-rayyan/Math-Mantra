@@ -152,6 +152,17 @@ class DrawingFragment : Fragment() {
         Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        drawingView?.onResume()
+    }
+
+    override fun onPause() {
+        drawingView?.onPause()
+        super.onPause()
+    }
+
+
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

@@ -4,12 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
 import com.zendalona.mathsmantra.utility.drawing.RDP;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class DrawingView extends View {
         paint.setColor(0xFFD14D42); // Your chosen color
         paint.setStrokeWidth(10);
         paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
 
         path = new Path();
         points = new ArrayList<>();
@@ -101,9 +105,6 @@ public class DrawingView extends View {
         Log.d(TAG, "Canvas cleared");
     }
 
-    /**
-     * Get all points drawn by the user (flatten strokes into one list)
-     */
     public List<float[]> getAllPoints() {
         List<float[]> allPoints = new ArrayList<>();
         for (List<float[]> stroke : strokes) {
@@ -113,14 +114,6 @@ public class DrawingView extends View {
         return allPoints;
     }
 
-    /**
-     * Checks if drawn shape is correct based on points, expected corners and epsilon for RDP.
-     *
-     * @param points          List of points (x,y)
-     * @param expectedCorners Expected number of corners (e.g. 3 for triangle, 4 for rectangle)
-     * @param epsilon         Epsilon for RDP simplification
-     * @return true if shape matches expectation, false otherwise
-     */
     public boolean isShapeCorrect(List<float[]> points, int expectedCorners, float epsilon) {
         Log.d(TAG, "isShapeCorrect called with expectedCorners=" + expectedCorners + ", epsilon=" + epsilon);
 
@@ -129,7 +122,6 @@ public class DrawingView extends View {
             return false;
         }
 
-        // Step 1: Simplify points using RDP
         List<float[]> simplified = RDP.rdp(points, epsilon);
         Log.d(TAG, "RDP simplified points count: " + simplified.size());
 
@@ -139,7 +131,6 @@ public class DrawingView extends View {
             return false;
         }
 
-        // Step 2: Check if shape is closed (first and last points close enough)
         float[] first = simplified.get(0);
         float[] last = simplified.get(n - 1);
         double dist = Math.hypot(first[0] - last[0], first[1] - last[1]);
@@ -149,7 +140,6 @@ public class DrawingView extends View {
             return false;
         }
 
-        // Step 3: Calculate corner angles and count valid corners
         int validCorners = 0;
         for (int i = 0; i < n; i++) {
             float[] p1 = simplified.get((i - 1 + n) % n);
@@ -159,20 +149,17 @@ public class DrawingView extends View {
             double angle = calculateAngle(p1, p2, p3);
             Log.d(TAG, "Corner " + i + " angle: " + angle);
 
-            // Accept corner angles roughly between 20° and 160° as valid corners
             if (angle > 20 && angle < 160) {
                 validCorners++;
             }
         }
         Log.d(TAG, "Valid corners counted: " + validCorners);
 
-        // Step 4: Check corner count is near expected (+/- 1 tolerance)
         if (!(validCorners >= expectedCorners - 1 && validCorners <= expectedCorners + 1)) {
             Log.d(TAG, "Corner count not in acceptable range. Expected around " + expectedCorners);
             return false;
         }
 
-        // Step 5: Additional checks for rectangles (4 corners)
         if (expectedCorners == 4) {
             double perimeter = calculatePerimeter(simplified);
             double area = calculatePolygonArea(simplified);
@@ -185,13 +172,11 @@ public class DrawingView extends View {
             Log.d(TAG, "Perimeter: " + perimeter + ", Area: " + area);
             Log.d(TAG, "Aspect ratio: " + aspectRatio);
 
-            // Reject very skinny or irregular shapes
             if (aspectRatio < 0.5 || aspectRatio > 2.0) {
                 Log.d(TAG, "Aspect ratio outside allowed range.");
                 return false;
             }
 
-            // Compactness check: (4π * area) / (perimeter²)
             double compactness = (4 * Math.PI * area) / (perimeter * perimeter);
             Log.d(TAG, "Compactness: " + compactness);
             if (compactness < 0.1) {
@@ -201,10 +186,8 @@ public class DrawingView extends View {
         }
 
         Log.d(TAG, "Shape passes all checks.");
-        return true; // Passed all checks
+        return true;
     }
-
-    // Helpers:
 
     private double calculatePerimeter(List<float[]> points) {
         double perimeter = 0;
@@ -250,9 +233,6 @@ public class DrawingView extends View {
         return new float[]{minX, minY, maxX, maxY};
     }
 
-    /**
-     * Calculate the angle between three points (in degrees)
-     */
     private static double calculateAngle(float[] p1, float[] p2, float[] p3) {
         double dx1 = p1[0] - p2[0];
         double dy1 = p1[1] - p2[1];
@@ -269,5 +249,19 @@ public class DrawingView extends View {
 
         Log.d(TAG, "Angle calculated between points: " + result);
         return result;
+    }
+
+    // === New lifecycle-like methods to call from your Activity ===
+
+    public void onResume() {
+        Log.d(TAG, "DrawingView onResume called: disabling Explore-by-Touch");
+        // Disable Explore-by-Touch passthrough region so touch events work properly
+        AccessibilityHelper.disableExploreByTouch(AccessibilityHelper.getAccessibilityService());
+    }
+
+    public void onPause() {
+        Log.d(TAG, "DrawingView onPause called: resetting Explore-by-Touch");
+        // Reset Explore-by-Touch passthrough region
+        AccessibilityHelper.resetExploreByTouch(AccessibilityHelper.getAccessibilityService());
     }
 }
