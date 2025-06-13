@@ -35,16 +35,17 @@
     <string name="content_answer_field">Answer input field</string>
 
     <!-- game page-->
-    <string name="shake_button">shake </string>
-    <string name="tap_button">tap</string>
-    <string name="day">day</string>
-    <string name="number_line">Number Line</string>
-    <string name="mental_calculation">Mental Calculation</string>
-    <string name="angle">Angle</string>
-    <string name="stereo_sound">Stereo Sound</string>
-    <string name="drawing">Drawing</string>
-    <string name="direction">Direction</string>
-    <string name="touch_the_screen">Touch the Screen</string>
+    <string name="shake_button">Shake Quest</string>
+    <string name="tap_button">Tap Challenge</string>
+    <string name="day">Day Dash</string>
+    <string name="number_line">Line Jumper</string>
+    <string name="mental_calculation">Mind Sprint</string>
+    <string name="angle">Angle Master</string>
+    <string name="stereo_sound">Echo Explorer</string>
+    <string name="drawing">Sketch &amp; Solve</string>
+    <string name="direction">Path Finder</string>
+    <string name="touch_the_screen">Touch Adventure</string>
+
 
     <string name="submit">Submit</string>
     <string name="next">next</string>
