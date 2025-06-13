@@ -2,6 +2,8 @@ package com.zendalona.mathsmantra
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -60,7 +62,9 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         permissionManager.requestMicrophonePermission()
 
         // Accessibility dialog
-        AccessibilityHelper.checkAndShowAccessibilityDialog(this)
+        Handler(Looper.getMainLooper()).postDelayed({
+            AccessibilityHelper.enforceAccessibilityRequirement(this)
+        }, 500)
     }
 
     // Handle back button in toolbar

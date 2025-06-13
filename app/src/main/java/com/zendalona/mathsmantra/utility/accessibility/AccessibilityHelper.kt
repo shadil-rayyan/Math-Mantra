@@ -7,118 +7,93 @@ import android.content.Intent
 import android.graphics.Region
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.view.Display
 import android.view.accessibility.AccessibilityManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 object AccessibilityHelper {
 
-    // Reference to the Accessibility Service
     private var accessibilityService: MathsManthraAccessibilityService? = null
 
-    // Check and show the accessibility dialog if needed
-    fun checkAndShowAccessibilityDialog(context: Context) {
-        val isTalkBackOn = isSystemExploreByTouchEnabled(context)
-        val isServiceEnabled = isMathsManthraAccessibilityServiceEnabled(context)
+    // Always check and enforce the requirement every time it's called
+    fun enforceAccessibilityRequirement(context: Context) {
+        val isEnabled = isMathsManthraAccessibilityServiceEnabled(context)
 
-        if (isTalkBackOn && !isServiceEnabled) {
+        if (!isEnabled) {
             showAccessibilityDialog(context)
+        } else {
+            Log.d("AccessibilityHelper", "Service is already enabled.")
+            // Optionally: trigger some kind of registration or reconnection logic here
         }
     }
 
-    private fun showAccessibilityDialog(context: Context) {
+
+    fun showAccessibilityDialog(context: Context) {
         AlertDialog.Builder(context)
             .setTitle("Enable Accessibility Service")
-            .setMessage("MathsManthra needs Accessibility Service to function properly. Would you like to enable it?")
-            .setPositiveButton(
-                "Enable",
-                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int ->
-                    val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                    context.startActivity(intent)
-                })
-            .setNegativeButton(
-                "Cancel",
-                DialogInterface.OnClickListener { dialog: DialogInterface?, which: Int -> dialog!!.dismiss() })
+            .setMessage("MathsManthra requires Accessibility Service to function properly. Please enable it in the settings.")
+            .setCancelable(true)
+            .setPositiveButton("Enable") { _: DialogInterface, _: Int ->
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss() // Do nothing else, just close the dialog
+            }
             .show()
     }
 
-    // Check if TalkBack (Explore by Touch) is enabled
-    private fun isSystemExploreByTouchEnabled(context: Context): Boolean {
-        val accessibilityManager =
-            context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager?
-        return accessibilityManager != null && accessibilityManager.isEnabled() && accessibilityManager.isTouchExplorationEnabled()
-    }
-
-    // Check if MathsManthraAccessibilityService is enabled in Accessibility Settings
+    // Check if the custom accessibility service is enabled
     private fun isMathsManthraAccessibilityServiceEnabled(context: Context): Boolean {
-        val accessibilityManager =
-            context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager?
+        val targetServiceId = "${context.packageName}/${MathsManthraAccessibilityService::class.java.name}"
+        Log.d("AccessibilityService", "Target ID: $targetServiceId")
 
-        if (accessibilityManager == null) {
-            return false
+        val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+            ?: return false
+
+        val enabledServices = accessibilityManager.getEnabledAccessibilityServiceList(
+            AccessibilityServiceInfo.FEEDBACK_ALL_MASK
+        )
+
+        enabledServices.forEach {
+            Log.d("AccessibilityService", "Enabled: ${it.id}")
         }
 
-        val enabledServices =
-            accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
-
-        for (serviceInfo in enabledServices) {
-            if (serviceInfo.getId()
-                    .contains("com.zendalona.mathsmantra/com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService")
-            ) {
-                return true
-            }
-        }
-        return false
+        return enabledServices.any { it.id == targetServiceId }
     }
 
-    // Enable explore-by-touch passthrough region
+
+    // Optional: control touch exploration passthrough
     @JvmStatic
-    fun disableExploreByTouch(appAccessibilityService: MathsManthraAccessibilityService?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && appAccessibilityService != null) {
-            val fullScreenRegion = Region(
+    fun disableExploreByTouch(service: MathsManthraAccessibilityService?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && service != null) {
+            val region = Region(
                 0,
                 0,
-                appAccessibilityService.resources.displayMetrics.widthPixels,
-                appAccessibilityService.resources.displayMetrics.heightPixels
+                service.resources.displayMetrics.widthPixels,
+                service.resources.displayMetrics.heightPixels
             )
-            appAccessibilityService.setTouchExplorationPassthroughRegion(
-                Display.DEFAULT_DISPLAY,
-                fullScreenRegion
-            )
-            appAccessibilityService.setGestureDetectionPassthroughRegion(
-                Display.DEFAULT_DISPLAY,
-                fullScreenRegion
-            )
+            service.setTouchExplorationPassthroughRegion(Display.DEFAULT_DISPLAY, region)
+            service.setGestureDetectionPassthroughRegion(Display.DEFAULT_DISPLAY, region)
         }
     }
 
-    // Reset explore-by-touch passthrough region
     @JvmStatic
-    fun resetExploreByTouch(appAccessibilityService: MathsManthraAccessibilityService?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && appAccessibilityService != null) {
-            val emptyRegion = Region()
-            appAccessibilityService.setTouchExplorationPassthroughRegion(
-                Display.DEFAULT_DISPLAY,
-                emptyRegion
-            )
-            appAccessibilityService.setGestureDetectionPassthroughRegion(
-                Display.DEFAULT_DISPLAY,
-                emptyRegion
-            )
+    fun resetExploreByTouch(service: MathsManthraAccessibilityService?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && service != null) {
+            val empty = Region()
+            service.setTouchExplorationPassthroughRegion(Display.DEFAULT_DISPLAY, empty)
+            service.setGestureDetectionPassthroughRegion(Display.DEFAULT_DISPLAY, empty)
         }
     }
 
-    // Update window state, based on your requirements (e.g., UI updates)
-
-
-    // Get the stored instance of the Accessibility Service
     @JvmStatic
     fun getAccessibilityService(): MathsManthraAccessibilityService? {
         return accessibilityService
     }
 
-    // Static method to set the Accessibility Service instance
     @JvmStatic
     fun setAccessibilityService(service: MathsManthraAccessibilityService) {
         accessibilityService = service
