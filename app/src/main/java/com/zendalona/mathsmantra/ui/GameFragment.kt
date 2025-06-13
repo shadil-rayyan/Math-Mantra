@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zendalona.mathsmantra.databinding.FragmentGamePageBinding
+import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.ui.game.AngleFragment
 import com.zendalona.mathsmantra.ui.game.CompassFragment
 import com.zendalona.mathsmantra.ui.game.DayFragment
@@ -19,7 +20,9 @@ import com.zendalona.mathsmantra.ui.game.SterioFragment
 import com.zendalona.mathsmantra.ui.game.TapFragment
 import com.zendalona.mathsmantra.ui.game.TouchScreenFragment
 
-class GameFragment : Fragment() {
+class GameFragment : Fragment() ,HintIconVisibilityController {
+
+    override fun shouldShowHintIcon() = false
     private var binding: FragmentGamePageBinding? = null
     private var navigationListener: FragmentNavigation? = null
 

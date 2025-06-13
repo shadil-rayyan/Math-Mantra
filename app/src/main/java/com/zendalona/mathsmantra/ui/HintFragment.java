@@ -11,17 +11,16 @@ import androidx.fragment.app.Fragment;
 
 import com.zendalona.mathsmantra.R;
 import com.zendalona.mathsmantra.databinding.FragmentHintBinding;
+import com.zendalona.mathsmantra.model.HintIconVisibilityController;
 import com.zendalona.mathsmantra.utility.common.TTSUtility;
-import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences;
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-public class HintFragment extends Fragment {
+
+public class HintFragment extends Fragment implements HintIconVisibilityController {
 
     private FragmentHintBinding binding;
     private TTSUtility tts;
@@ -31,6 +30,11 @@ public class HintFragment extends Fragment {
     private String filepath;
 
     public HintFragment() {}
+
+    @Override
+    public boolean shouldShowHintIcon() {
+        return false;  // Hint icon hidden for this fragment
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,6 @@ public class HintFragment extends Fragment {
         updateTheoryContent();
 
         binding.repeatButton.setOnClickListener(v -> tts.speak(binding.theoryText.getText().toString()));
-
 
         return binding.getRoot();
     }

@@ -92,9 +92,18 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         return true
     }
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        menu.findItem(R.id.action_hint)?.isVisible = HintVisibilityUtil.shouldShowHint()
+        val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        val showHint = if (fragment is HintIconVisibilityController) {
+            fragment.shouldShowHintIcon()
+        } else {
+            true // default fallback if fragment doesn't implement interface
+        }
+
+        menu.findItem(R.id.action_hint)?.isVisible = showHint
         return super.onPrepareOptionsMenu(menu)
     }
+
 
 
 

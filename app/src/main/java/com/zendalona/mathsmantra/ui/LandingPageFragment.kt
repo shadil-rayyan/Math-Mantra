@@ -14,6 +14,7 @@ import com.zendalona.mathsmantra.utility.settings.BackgroundMusicPlayer
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentLandingPageBinding
+import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import java.util.Locale
@@ -22,7 +23,9 @@ interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
 }
 
-class LandingPageFragment : Fragment() {
+class LandingPageFragment : Fragment(),HintIconVisibilityController {
+
+    override fun shouldShowHintIcon() = false
 
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!

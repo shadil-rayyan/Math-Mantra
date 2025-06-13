@@ -18,9 +18,10 @@ import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
+import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.utility.HintVisibilityUtil
 
-class SettingFragment : Fragment() {
+class SettingFragment : Fragment(),HintIconVisibilityController {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -233,7 +234,6 @@ class SettingFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        HintVisibilityUtil.showHint(false) // show hint icon here
     }
 
 
@@ -241,5 +241,9 @@ class SettingFragment : Fragment() {
         super.onDestroyView()
         _binding = null
         ttsUtility.shutdown()
+    }
+
+    override fun shouldShowHintIcon(): Boolean {
+        return false // or true, depending on your logic
     }
 }
