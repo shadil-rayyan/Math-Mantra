@@ -34,6 +34,8 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
 
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
 
         // Enable back arrow depending on stack
         supportFragmentManager.addOnBackStackChangedListener {
@@ -82,9 +84,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         invalidateOptionsMenu() // 🔄 Ensures menu updates
     }
 
-    fun updateToolbarTitle(title: String) {
-        supportActionBar?.title = title
-    }
+
 
     // Inflate toolbar menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

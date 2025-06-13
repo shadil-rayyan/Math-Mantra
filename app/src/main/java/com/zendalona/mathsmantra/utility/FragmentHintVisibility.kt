@@ -1,9 +1,8 @@
 package com.zendalona.mathsmantra.utility;
 
-import androidx.fragment.app.Fragment
 
 object HintVisibilityUtil {
-    var isHintVisible: Boolean = false
+    var isHintVisible: Boolean = true
 
     fun showHint(show: Boolean) {
         isHintVisible = show
