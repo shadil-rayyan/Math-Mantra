@@ -12,8 +12,18 @@ object LocaleHelper {
     @JvmStatic
     fun getLanguage(context: Context?): String {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        return prefs.getString(SELECTED_LANGUAGE, Locale.getDefault().language) ?: Locale.getDefault().language
+        return prefs.getString(SELECTED_LANGUAGE, getSystemLanguage(context!!)) ?: getSystemLanguage(context)
     }
+
+    private fun getSystemLanguage(context: Context): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales[0].language
+        } else {
+            @Suppress("DEPRECATION")
+            context.resources.configuration.locale.language
+        }
+    }
+
     @JvmStatic
     fun setLocale(context: Context, language: String?): Context {
         if (language == null || language == "default") {
