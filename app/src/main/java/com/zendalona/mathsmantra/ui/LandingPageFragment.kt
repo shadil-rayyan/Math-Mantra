@@ -105,7 +105,7 @@ class LandingPageFragment : Fragment(),HintIconVisibilityController {
             Log.d("LandingPageFragment", "Background music paused")
         }
 
-        ttsUtility.speak("Welcome to the landing page")
+//        ttsUtility.speak("Welcome to the landing page")
         Log.d("LandingPageFragment", "TTS spoke welcome message")
     }
 
