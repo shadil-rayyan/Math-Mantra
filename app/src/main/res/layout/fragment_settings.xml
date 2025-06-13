@@ -55,7 +55,8 @@
         <TextView
             android:id="@+id/music_volume_value"
             android:layout_width="64dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
             android:text="24"
             android:gravity="center"
             android:textSize="20sp"
@@ -113,7 +114,8 @@
         <TextView
             android:id="@+id/speech_volume_value"
             android:layout_width="64dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
             android:text="24"
             android:gravity="center"
             android:textSize="20sp"
@@ -171,7 +173,8 @@
         <TextView
             android:id="@+id/speech_rate_value"
             android:layout_width="64dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="12dp"
             android:text="24"
             android:gravity="center"
             android:textSize="20sp"
@@ -220,6 +223,7 @@
             android:id="@+id/contrast_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="12dp"
             android:text="@string/choose_contrast"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="16sp"
@@ -242,28 +246,32 @@
                 android:id="@+id/contrast_default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="@string/contrast_default"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorTertiary"
+                android:background="?attr/colorPrimary"
                 android:checked="true"
                 android:contentDescription="@string/contrast_default_desc"/>
 
             <RadioButton
                 android:id="@+id/contrast_white_on_black"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
+
                 android:text="@string/contrast_white_on_black"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorTertiary"
+                android:background="?attr/colorPrimary"
+                android:buttonTint="?attr/colorAccent"
                 android:contentDescription="@string/contrast_white_on_black_desc"/>
 
             <RadioButton
                 android:id="@+id/contrast_black_on_white"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/contrast_black_on_white"
-                android:textColor="?attr/colorOnSecondary"
-                android:background="?attr/colorTertiary"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
                 android:contentDescription="@string/contrast_black_on_white_desc"/>
         </RadioGroup>
 
@@ -294,28 +302,31 @@
                 android:id="@+id/difficulty_easy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="@string/difficulty_easy"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorTertiary"
+                android:background="?attr/colorPrimary"
                 android:contentDescription="@string/difficulty_easy_desc"/>
 
             <RadioButton
                 android:id="@+id/difficulty_medium"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="@string/difficulty_medium"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorTertiary"
+                android:background="?attr/colorPrimary"
                 android:checked="true"
                 android:contentDescription="@string/difficulty_medium_desc"/>
 
             <RadioButton
                 android:id="@+id/difficulty_hard"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
                 android:text="@string/difficulty_hard"
                 android:textColor="?attr/colorOnPrimary"
-                android:background="?attr/colorTertiary"
+                android:background="?attr/colorPrimary"
                 android:contentDescription="@string/difficulty_hard_desc"/>
         </RadioGroup>
 
@@ -343,7 +354,8 @@
             app:layout_constraintTop_toBottomOf="@id/language_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            />
 
         <!-- Reset Settings Button -->
         <Button
