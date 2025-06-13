@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- angle -->
+    <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
+    <string name="turn_phone_90_degrees">ഫോൺ 90 ഡിഗ്രി തിരിക്കുക</string>
+    <string name="rotation_angle_default">ഭ്രമണ കോണം: 0°</string>
+    <string name="angle_description">ഫോണിന്റെ തിരിവ് കാണിക്കുന്ന സ്ക്രീൻ</string>
+    <!-- shake -->
+    <string name="shake_target_expression">%1$s തവണ ഫോണിനെ കുലുക്കുക!</string>
+    <string name="shake_count_announcement">കുലുക്കൽ എണ്ണം: %1$d</string>
+    <string name="shake_target_instruction">ഫോൺ %1$d തവണ കുലുക്കുക</string>
+    <string name="shake_success">ശബാഷ്!</string>
+    <string name="shake_failure">മറുപടി തെറ്റാണ്! വീണ്ടും ശ്രമിക്കുക!</string>
+    <string name="shake_continue">തുടരുക</string>
+    <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
+    <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
+    <string name="shake_count_initial">0</string>
+    <string name="shake_count_description">നിലവിലെ കുലുക്കൽ എണ്ണം, ആരംഭത്തിൽ 0</string>
+    <string name="shake_instruction">ഫോൺ കുലുക്കി തുടങ്ങുക</string>
+    <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഫോൺ കുലുക്കാൻ നിർദ്ദേശം</string>
+
+    <!-- Tap -->
+    <string name="tap_target_expression">%1$s തവണ ടാപ്പ് ചെയ്യുക</string>
+    <string name="tap_count_announcement">ടാപ്പ് എണ്ണം: %1$d</string>
+    <string name="tap_failure">ടാപ്പ് എണ്ണം തെറ്റാണ്. വീണ്ടും ശ്രമിക്കുക!</string>
+    <string name="tap_game_over">ഗെയിം അവസാനിച്ചു! നിങ്ങൾ 3 തവണ ശ്രമിച്ചു.</string>
+    <string name="tap_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
+    <string name="tap_screen_description">ഇത് ടാപ്പ് എണ്ണം സ്ക്രീനാണ്. എണ്ണം വർദ്ധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
+    <string name="tap_count_description">ടാപ്പ് എണ്ണം: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">%1$d° തവണ ടാപ്പ് ചെയ്യുക</string>
+    <string name="tap_instruction_description">നിർദ്ദേശം: %1$d° എണ്ണം വർദ്ധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
+    <!-- touch the screen -->
+    <string name="touchscreen_question_expression">%1$s</string>
+    <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിക്കുക)</string>
+    <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരലുകൾ: %1$d</string>
+    <string name="touch_screen_description">ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിച്ച് ടച്ച് ചെയ്യുക</string>
+    <string name="touch_instruction">സ്ക്രീനിൽ 2 വിരലുകൾ വെക്കുക</string>
+    <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ ടച്ച് ചെയ്യുന്ന ചിത്രം</string>
+
+    <!-- Days -->
+    <string name="monday">തിങ്കൾ</string>
+    <string name="tuesday">ചൊവ്വ</string>
+    <string name="wednesday">ബുധൻ</string>
+    <string name="thursday">വ്യാഴം</string>
+    <string name="friday">വെള്ളി</string>
+    <string name="saturday">ശനിയാഴ്ച</string>
+    <string name="sunday">ഞായറാഴ്ച</string>
+    <string name="question_text_template">ഇന്ന് %1$s ആണെങ്കിൽ, %2$d ദിവസങ്ങൾക്ക് ശേഷം ഏത് ദിവസം?</string>
+    <string name="wrong_answer_reveal">തെറ്റാണ്! ശരിയായ ഉത്തരം %1$s ആയിരുന്നു</string>
+
+    <!-- drawing -->
+    <string name="drawing_description">ആകൃതിയുള്ള ഡ്രോയിംഗ് സ്ക്രീൻ, ഇൻപുട്ടും നിയന്ത്രണ ബട്ടണുകളും</string>
+    <string name="draw_shape">ഒരു ആകൃതി വരയ്ക്കുക</string>
+    <string name="draw_instruction">നിർദ്ദേശം: ആവശ്യമായ ആകൃതി വരയ്ക്കുക</string>
+    <string name="drawing_canvas_description">ഡ്രോയിംഗ് കാൻവാസ്. ടച്ച് ജസ്റ്ററുകൾ ഉപയോഗിച്ച് ആകൃതി വരയ്ക്കുക.</string>
+    <string name="canvas_cleared">കാൻവാസ് ക്ലിയർ ചെയ്തു. വീണ്ടും വരയ്ക്കാം.</string>
+    <string name="drawing_task">ഡ്രോയിംഗ് ടാസ്ക്. ഒരു %1$s വരയ്ക്കുക. ടച്ച് ജസ്റ്ററുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="reset">പുതുക്കുക</string>
+    <string name="reset_description">ഡ്രോയിംഗ് ക്ലിയർ ചെയ്ത് വീണ്ടും തുടങ്ങുക</string>
+    <string name="submit_description">നിങ്ങളുടെ ഡ്രോയിംഗ് വിലയിരുത്തലിനായി സമർപ്പിക്കുക</string>
+
+    <!-- compass -->
+    <string name="turn_to_angle">%1$d° ലേക്ക് തിരിക്കുക</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="compassdescription">കമ്പസ്: ചോദ്യത്തിൽ പറയുന്ന ദിശയിലേക്ക് ഫോൺ തിരിക്കുക</string>
+    <string name="turn_to_angle_template">നിങ്ങളുടെ നിലവിലെ ദിശയിൽ നിന്ന് %1$d° ലേക്ക് തിരിക്കുക</string>
+    <string name="relative_angle_template">സംബന്ധിക ഭ്രമണ കോണം: %1$d°</string>
+    <string name="current_angle_announcement">%1$s</string>
+    <string name="compass_turn_to">%1$s ലേക്ക് തിരിക്കുക</string>
+    <string name="compass_correct">ശരിയാണ്!</string>
+    <string name="compass_correct_msg">നിങ്ങൾ ശരിയായ ദിശയിലേക്ക് തിരിച്ചു!</string>
+    <string name="current_direction_accessibility">നിലവിലെ ദിശ: %1$s</string>
+
+    <string-array name="compass_directions">
+        <item>വടക്ക്</item>
+        <item>വടക്ക്-ഉത്തരേന്ത്യ</item>
+        <item>ഉത്തരേന്ത്യ</item>
+        <item>കിഴക്ക്-ഉത്തരേന്ത്യ</item>
+        <item>കിഴക്ക്</item>
+        <item>കിഴക്ക്-ദക്ഷിണേന്ത്യ</item>
+        <item>ദക്ഷിണേന്ത്യ</item>
+        <item>ദക്ഷിണേന്ത്യ-പശ്ചിമേന്ത്യ</item>
+        <item>പശ്ചിമേന്ത്യ</item>
+        <item>പശ്ചിമേന്ത്യ-ദക്ഷിണേന്ത്യ</item>
+        <item>ദക്ഷിണേന്ത്യ</item>
+        <item>ദക്ഷിണേന്ത്യ-ഉത്തരേന്ത്യ</item>
+        <item>ഉത്തരേന്ത്യ</item>
+        <item>ഉത്തരേന്ത്യ-വടക്ക്</item>
+    </string-array>
+
+    <!-- Sterio Sound-->
+    <string name="audio_instruction">ശ്രദ്ധയോടെ കേൾക്കുക, ആദ്യ സംഖ്യ രണ്ടാമത്തേത് നിന്ന് കുറയ്ക്കുക.</string>
+    <string name="audio_instruction_description">നിർദ്ദേശം: ശ്രദ്ധയോടെ കേൾക്കുക. സംഖ്യകൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കു ബട്ടൺ ഉപയോഗിക്കുക.</string>
+    <string name="read_question">ചോദ്യത്തെ വായിക്കുക</string>
+    <string name="read_question_description">സംഖ്യകൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കുക ബട്ടൺ ഉപയോഗിക്കുക. ഡബിൾ ടാപ്പ് ചെയ്ത് കേൾക്കാം.</string>
+    <string name="enter_answer_hint">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
+    <string name="your_answer_here">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
+
+    <!-- Mental calcuation-->
+    <string name="mental_description">മാനസിക ഗണിത സ്ക്രീൻ, ഗണിത ചോദ്യവും ഇൻപുട്ടും</string>
+    <string name="calculate_prompt">ഇതിന്റെ മൂല്യം കണക്കാക്കുക:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
+    <string name="math_question_description">ഗണിത ചോദ്യമാണ്. 2 പ്ലസ് 2 ടൈംസ് 2 മൈനസ് 5 എത്ര? ഡബിൾ ടാപ്പ് ചെയ്ത് ചോദ്യം ആവർത്തിക്കുക.</string>
+    <string name="answer_input_description">നിങ്ങളുടെ ഉത്തരം ഇവിടെ നൽകുക</string>
+    <string name="answer_hint">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
+
+    <!-- number line -->
+    <string name="current_position_label">നിങ്ങൾ നിൽക്കുന്ന നമ്പർ:\n</string>
+    <string name="plus">പ്ലസ്</string>
+    <string name="minus">മൈനസ്</string>
+    <string name="right">വലത്</string>
+    <string name="left">ഇടത്</string>
+    <string name="standing_on">നിങ്ങൾ %1$s ൽ നിൽക്കുന്നു.</string>
+    <string name="what_is">%1$s %2$s %3$s എത്ര?</string>
+    <string name="units_to_direction">നമ്പർ ലൈൻ ൽ %1$s യൂണിറ്റ് %2$s നീക്കുക.</string>
+    <string name="number_line_description">നമ്പർ ലൈൻ പ്രവർത്തനം. ഗണിത ചോദ്യത്തെ പരിഹരിക്കാൻ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തോ വലത്തോ നീങ്ങുക.</string>
+    <string name="number_line_question">0 + 12 എത്ര?</string>
+    <string name="number_line_question_description">ചോദ്യമാണ്. 0 പ്ലസ് 12 എത്ര? ഡബിൾ ടാപ്പ് ചെയ്ത് ചോദ്യം ആവർത്തിക്കുക.</string>
+    <string name="number_line_visual_description">ദൃശ്യ നമ്പർ ലൈൻ. താഴെ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തോ വലത്തോ നീങ്ങുക.</string>
+    <string name="current_position_description">നിലവിലെ സ്ഥാനം നമ്പർ ലൈൻ ൽ. ഇടത്തേയ്ക്കോ വലത്തേയ്ക്കോ നീങ്ങാൻ ബട്ടണുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">ഇടത്തേയ്ക്ക് നീങ്ങുന്ന ബട്ടൺ. നമ്പർ ലൈൻ ൽ ഒരു ഘട്ടം ഇടത്തേക്ക് നീങ്ങും.</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">വലത്തേയ്ക്ക് നീങ്ങുന്ന ബട്ടൺ. നമ്പർ ലൈൻ ൽ ഒരു ഘട്ടം വലത്തേക്ക് നീങ്ങും.</string>
+    <string name="use_to_move"><![CDATA[<< നീങ്ങാൻ -/+ ഉപയോഗിക്കുക >>]]></string>
+
+</resources>

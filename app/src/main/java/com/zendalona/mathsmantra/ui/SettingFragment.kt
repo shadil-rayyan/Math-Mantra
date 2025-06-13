@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmantra.Enum.Difficulty
 import com.zendalona.mathsmantra.utility.settings.BackgroundMusicPlayer
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
@@ -55,6 +57,14 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
 
         BackgroundMusicPlayer.initialize(requireContext())
         ttsUtility = TTSUtility(requireContext())
+
+        val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.toolbar)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+
+        // Show the back arrow (up button)
+        val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false) // or true if you want title
 
         setupLanguageSpinner()
         setupContrastRadioButtons()

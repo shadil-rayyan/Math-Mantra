@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Settings</string>
+    <string name="music_volume_label">Music Volume</string>
+    <string name="music_volume_decrease_desc">Decrease music volume</string>
+    <string name="music_volume_increase_desc">Increase music volume</string>
+    <string name="music_volume_value_desc">Current music volume level</string>
+
+    <string name="speech_volume_label">Speech Volume</string>
+    <string name="speech_volume_decrease_desc">Decrease speech volume</string>
+    <string name="speech_volume_increase_desc">Increase speech volume</string>
+    <string name="speech_volume_value_desc">Current speech volume level</string>
+
+    <string name="speech_rate_label">Speech Rate</string>
+    <string name="speech_rate_decrease_desc">Decrease speech volume</string>
+    <string name="speech_rate_increase_desc">Increase speech volume</string>
+    <string name="speech_rate_value_desc">Current speech volume level</string>
+
+    <string name="background_music_toggle_label">Background Music</string>
+    <string name="background_music_toggle_desc">Toggle background music on or off</string>
+
+    <string name="choose_contrast">Choose Contrast</string>
+    <string name="choose_contrast_desc">Select the screen contrast option</string>
+    <string name="contrast_default">Default Contrast</string>
+    <string name="contrast_default_desc">Use the default color contrast</string>
+    <string name="contrast_white_on_black">White on Black</string>
+    <string name="contrast_white_on_black_desc">Use white text on black background</string>
+    <string name="contrast_black_on_white">Black on White</string>
+    <string name="contrast_black_on_white_desc">Use black text on white background</string>
+
+    <string name="difficulty_label">Difficulty</string>
+    <string name="difficulty_options_desc">Select game difficulty level</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_easy_desc">Easy difficulty level</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_medium_desc">Medium difficulty level</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_hard_desc">Hard difficulty level</string>
+
+    <string name="choose_language">Choose Language</string>
+    <string name="choose_language_desc">Select your preferred language</string>
+
+    <string name="reset_settings">Reset Settings</string>
+    <string name="reset_settings_desc">Reset all settings to default values</string>
+
+
+    <string name="language_default">Default</string>
+    <string name="language_english">English</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="language_arabic">Arabic</string>
+    <string name="language_tamil">Tamil</string>
+    <string name="language_sanskrit">Sanskrit</string>
+    <string name="language_malayalam">Malayalam</string>
+
+
+
+
+
+
+</resources>

@@ -1,287 +1,96 @@
 <resources>
-    <string name="app_name">മാത്സ് മന്ത്ര</string>
-    <string name="app_title">മാത്സ് മന്ത്ര</string>
+    <!-- ആപ്പ് നാമം -->
+    <string name="app_name">മാത്ത്‌സ് മന്ത്ര</string>
+    <string name="app_title">മാത്ത്‌സ് മന്ത്ര</string>
+    <string name="logo_description">ആപ്പ് ലോഗോ</string>
     <string name="accessibility_service_description">
-    മാത്ത്സ് മന്ത്ര ആക്സസിബിലിറ്റി സർവീസ് സ്ക്രീൻ ഉള്ളടക്കം നിരീക്ഷിച്ച് ഉച്ചത്തിൽ പ്രതികരണം നൽകുന്നതിനാൽ മികച്ച പഠന അനുഭവം നൽകാൻ സഹായിക്കുന്നു.
-</string>
+        മാത്ത്‌സ് മന്ത്ര ആക്സസിബിലിറ്റി സേവനം സ്ക്രീൻ ഉള്ളടക്കം നിരീക്ഷിച്ച് സംസാരിക്കുന്ന പ്രതികരണം നൽകുന്നതിലൂടെ മികച്ച പഠനാനുഭവം നൽകാൻ സഹായിക്കുന്നു.
+    </string>
 
-    <string name="subtitle">ഒരു പ്രശ്നം ഒറ്റയ്ക്ക്, നിങ്ങളുടെ ഗണിതക്ഷമത വളർത്തൂ.</string>
+    <!-- ഹിന്റ് പേജ് -->
+    <string name="hint_fallback">എന്തോ തെറ്റ് സംഭവിച്ചു</string>
 
-    <string name="quick_play">വേഗത്തിലുള്ള കളി</string>
+    <!-- ലാൻഡിംഗ് പേജ് -->
+    <string name="quick_play">ക്വിക്ക് പ്ലേ</string>
     <string name="learning_mode">പഠന മോഡ്</string>
     <string name="game_mode">ഗെയിം മോഡ്</string>
     <string name="userguide">ഉപയോക്തൃ ഗൈഡ്</string>
-    <string name="settings">ക്രമീകരണങ്ങൾ</string>
-    <string name="quit">പുറത്തുകടക്കുക</string>
-    <string name="footer">2025 മാത്സ് മന്ത്ര എല്ലാ അവകാശങ്ങളും സംരക്ഷിച്ചിരിക്കുന്നു</string>
+    <string name="settings">സജ്ജീകരണങ്ങൾ</string>
+    <string name="quit">വിട്ടു പോകുക</string>
+    <string name="footer">© 2025 മാത്ത്‌സ് മന്ത്ര എല്ലാ അവകാശങ്ങളും സംരക്ഷിച്ചിരിക്കുന്നു</string>
+    <string name="subtitle">നിങ്ങളുടെ ഗണിത കഴിവുകൾ sharpen ചെയ്യുക, ഓരോ പ്രശ്നവും ഒരിക്കൽ.</string>
 
-    <!-- Accessibility content descriptions -->
-    <string name="logo_description">ആപ്പ് ലോഗോ</string>
-    <string name="quick_play_desc">ഒരു വേഗത്തിലുള്ള ഗണിത വെല്ലുവിളി ആരംഭിക്കുക</string>
+    <!-- ലാൻഡിംഗ് പേജ് വിവരണം -->
+    <string name="quick_play_desc">ഒരു ക്വിക്ക് ഗണിത ചലഞ്ച് ആരംഭിക്കുക</string>
     <string name="learning_mode_desc">പഠന മോഡിലേക്ക് പ്രവേശിക്കുക</string>
     <string name="game_mode_desc">ഗെയിം മോഡിലേക്ക് പ്രവേശിക്കുക</string>
     <string name="userguide_desc">ഉപയോക്തൃ ഗൈഡ് തുറക്കുക</string>
-    <string name="settings_desc">ക്രമീകരണങ്ങൾ തുറക്കുക</string>
-    <string name="quit_desc">ആപ്പ് ബഹിഷ്‌കരിക്കുക</string>
+    <string name="settings_desc">സജ്ജീകരണങ്ങൾ തുറക്കുക</string>
+    <string name="quit_desc">ആപ്പ് വിട്ടു പോകുക</string>
 
-        <!-- Titles and Labels -->
-        <string name="settings_title">ക്രമീകരണങ്ങൾ</string>
-
-        <string name="music_volume_label">സംഗീതത്തിന്റെ ശബ്ദം</string>
-        <string name="music_volume_decrease_desc">സംഗീത ശബ്ദം കുറയ്ക്കുക</string>
-        <string name="music_volume_increase_desc">സംഗീത ശബ്ദം വർദ്ധിപ്പിക്കുക</string>
-        <string name="music_volume_value_desc">ഇപ്പോൾ ഉള്ള സംഗീത ശബ്ദ നില</string>
-
-        <string name="speech_volume_label">സ്പീച്ച് ശബ്ദം</string>
-        <string name="speech_volume_decrease_desc">സ്പീച്ച് ശബ്ദം കുറയ്ക്കുക</string>
-        <string name="speech_volume_increase_desc">സ്പീച്ച് ശബ്ദം വർദ്ധിപ്പിക്കുക</string>
-        <string name="speech_volume_value_desc">ഇപ്പോൾ ഉള്ള സ്പീച്ച് ശബ്ദ നില</string>
-
-        <string name="background_music_toggle_label">പശ്ചാത്തല സംഗീതം</string>
-        <string name="background_music_toggle_desc">പശ്ചാത്തല സംഗീതം ഓണോ ഓഫ് ആക്കുക</string>
-
-    <string name="speech_rate_label">വാചക പ്രവാഹം</string>
-    <string name="speech_rate_decrease_desc">വാചക പ്രവാഹം കുറയ്ക്കുക</string>
-    <string name="speech_rate_increase_desc">വാചക പ്രവാഹം വർദ്ധിപ്പിക്കുക</string>
-    <string name="speech_rate_value_desc">ഇപ്പോൾ ഉള്ള വാചക പ്രവാഹ നിരക്ക്</string>
-
-
-    <string name="choose_contrast">വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
-        <string name="choose_contrast_desc">സ്ക്രീൻ വിരുദ്ധം തിരഞ്ഞെടുക്കുക</string>
-        <string name="contrast_default">സാധാരണ വിരുദ്ധം</string>
-        <string name="contrast_default_desc">സാധാരണ വർണ വിരുദ്ധം ഉപയോഗിക്കുക</string>
-        <string name="contrast_white_on_black">കറുപ്പിൽ വെളുപ്പ്</string>
-        <string name="contrast_white_on_black_desc">കറുപ്പ് പശ്ചാത്തലത്തിൽ വെളുത്ത വാക്കുകൾ ഉപയോഗിക്കുക</string>
-        <string name="contrast_black_on_white">വെള്ളയിൽ കറുപ്പ്</string>
-        <string name="contrast_black_on_white_desc">വെളുത്ത പശ്ചാത്തലത്തിൽ കറുത്ത വാക്കുകൾ ഉപയോഗിക്കുക</string>
-
-        <string name="difficulty_label">പ്രശ്നത്തിന്റെ ബുദ്ധിമുട്ട്</string>
-        <string name="difficulty_options_desc">ഗെയിം ബുദ്ധിമുട്ട് നില തിരഞ്ഞെടുക്കുക</string>
-        <string name="difficulty_easy">ലളിതം</string>
-        <string name="difficulty_easy_desc">ലളിത ബുദ്ധിമുട്ട്</string>
-        <string name="difficulty_medium">മധ്യം</string>
-        <string name="difficulty_medium_desc">മധ്യമ ബുദ്ധിമുട്ട്</string>
-        <string name="difficulty_hard">കഠിനം</string>
-        <string name="difficulty_hard_desc">കഠിന ബുദ്ധിമുട്ട്</string>
-
-        <string name="choose_language">ഭാഷ തിരഞ്ഞെടുക്കുക</string>
-        <string name="choose_language_desc">നിങ്ങളുടെ ഇഷ്ടഭാഷ തിരഞ്ഞെടുക്കുക</string>
-
-        <string name="reset_settings">ക്രമീകരണങ്ങൾ പുനഃസജ്ജമാക്കുക</string>
-        <string name="reset_settings_desc">എല്ലാ ക്രമീകരണങ്ങളും ഡിഫോൾട്ട് വല്യുക്കളിലേക്ക് പുനഃസജ്ജമാക്കുക</string>
-
-    <string name="language_default">ഡിഫോൾട്ട്</string>
-    <string name="language_english">ഇംഗ്ലീഷ്</string>
-    <string name="language_malayalam">മലയാളം</string>
-
-
-    <string name="sample_story_question">അർജുൻക്ക് %1$d ആപ്പിളുകളും മിത്രയ്ക്ക %2$d ആപ്പിളുകളും ഉണ്ട്. ആകെ എത്ര ആപ്പിളുകളാണ്?</string>
+    <!-- ക്വിക്ക് പ്ലേ -->
+    <string name="sample_story_question">അർജുൻക്ക് %1$d ആപ്പിളുകളും മിത്രയ്ക്ക് %2$d ആപ്പിളുകളും ഉണ്ട്. അവർക്കെല്ലാം എത്ര ആപ്പിളുകൾ ഉണ്ട്?</string>
     <string name="hint_enter_answer">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
-    <string name="submit">സമർപ്പിക്കുക</string>
     <string name="content_submit_button">നിങ്ങളുടെ ഉത്തരം സമർപ്പിക്കുക</string>
-    <string name="content_answer_field">ഉത്തരം നൽകുന്ന പ്രദേശം</string>
+    <string name="content_answer_field">ഉത്തരം നൽകാനുള്ള ഫീൽഡ്</string>
 
+    <!-- ഗെയിം പേജ് -->
+    <string name="shake_button">കുലുക്കുക</string>
+    <string name="tap_button">ടാപ്പ് ചെയ്യുക</string>
+    <string name="day">ദിവസം</string>
+    <string name="number_line">നമ്പർ ലൈൻ</string>
+    <string name="mental_calculation">മാനസിക ഗണിതം</string>
+    <string name="angle">കോണം</string>
+    <string name="stereo_sound">സ്റ്റീരിയോ ശബ്ദം</string>
+    <string name="drawing">ചിത്രരചന</string>
+    <string name="direction">ദിശ</string>
+    <string name="touch_the_screen">സ്ക്രീൻ ടച്ച് ചെയ്യുക</string>
 
-        <string name="shake_button">കുലുക്കുക</string>
-        <string name="tap_button">ടാപ്പ് ചെയ്യുക</string>
-        <string name="day">ദിവസം</string>
-        <string name="number_line">അണ്ണോ ലൈന</string>
-        <string name="mental_calculation">മാനസിക ഗണന</string>
-        <string name="angle">കോണം</string>
-        <string name="stereo_sound">സ്റ്റെറിയോ ശബ്ദം</string>
-        <string name="drawing">ചിതറല്‍</string>
-        <string name="direction">ദിശ</string>
-        <string name="touch_the_screen">സ്‌ക്രീനില്‍ തൊട്ട്</string>
-    <string name="turn_to_angle">%1$d° വരെ തിരിക്കുക</string>
-    <string name="degree_placeholder">0°</string>
-    <string name="compassdescription">കമ്പസ്: ചോദ്യത്തിൽ ആവശ്യപ്പെട്ട പ്രകാരം ഫോൺ തിരിക്കുക</string>
-    <string name="drawing_description">രൂപരേഖ വരയ്ക്കൽ സ്ക്രീൻ, ആകൃതിയുള്ള ഇൻപുട്ടും നിയന്ത്രണ ബട്ടണുകളും</string>
-    <string name="draw_shape">ആകൃതി വരയ്ക്കുക</string>
-    <string name="draw_instruction">നിർദ്ദേശം: ആവശ്യമായ ആകൃതി വരയ്ക്കുക</string>
-    <string name="drawing_canvas_description">രൂപരേഖ വരയ്ക്കുന്നതിനുള്ള ക്യാൻവാസ്. ടച്ച് ജസ്റ്റേഴ്സുകൾ ഉപയോഗിച്ച് ആകൃതി വരയ്ക്കുക.</string>
-    <string name="reset">പുനഃസജ്ജമാക്കുക</string>
-    <string name="reset_description">രൂപരേഖ മായ്ച്ച് പുതിയതായി തുടങ്ങുക</string>
-    <string name="submit_description">നിങ്ങളുടെ രൂപരേഖ വിലയിരുത്തലിനായി സമർപ്പിക്കുക</string>
-    <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
-    <string name="turn_phone_90_degrees">നിങ്ങളുടെ ഫോൺ 90° വരെ തിരിക്കുക</string>
-    <string name="rotation_angle_default">തിരിവ് കോണം: 0°</string>
-    <string name="angle_description">ഫോൺ തിരിക്കുന്നതിനുള്ള നിർദ്ദേശങ്ങൾ കാണിക്കുന്ന സ്ക്രീൻ</string>
+    <string name="submit">സമർപ്പിക്കുക</string>
+    <string name="next">അടുത്തത്</string>
 
-    <!-- Mental Calculation Fragment -->
-    <string name="mental_description">മാനസിക ഗണിത ചോദ്യവും ഇൻപുട്ടും ഉള്ള സ്ക്രീൻ</string>
-    <string name="calculate_prompt">ഇതിന്റെ മൂല്യം കണക്കാക്കുക:</string>
-    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
-    <string name="math_question_description">ഗണിത ചോദ്യമാണ്. 2 പ്ലസ് 2 ടൈംസ് 2 മൈനസ് 5 എത്ര? ചോദ്യത്തെ ആവർത്തിക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
-    <string name="answer_input_description">നിങ്ങളുടെ ഉത്തരം ഇവിടെ നൽകുക</string>
-    <string name="answer_hint">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
-
-
-    <!-- Shake Fragment -->
-    <string name="shake_count_initial">0</string>
-    <string name="shake_count_description">നിലവിലെ ഷേക്ക് എണ്ണം, ആരംഭത്തിൽ 0</string>
-    <string name="shake_instruction">ഗെയിം തുടങ്ങാൻ ഉപകരണം ഷേക്ക് ചെയ്യുക</string>
-    <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഉപകരണം ഷേക്ക് ചെയ്യാൻ നിർദ്ദേശം</string>
-
-    <!-- Audio Math Fragment -->
-    <string name="audio_instruction">ശ്രദ്ധയോടെ കേൾക്കുക, രണ്ടാം സംഖ്യ ആദ്യത്തെ സംഖ്യയിൽ നിന്നും കുറയ്ക്കുക.</string>
-    <string name="audio_instruction_description">നിർദ്ദേശം: ശ്രദ്ധയോടെ കേൾക്കുക. ചോദ്യങ്ങൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കുകബട്ടൺ ടാപ്പ് ചെയ്യുക.</string>
-    <string name="read_question">ചോദ്യത്തെ വായിക്കുക</string>
-    <string name="read_question_description">ഗണിത ചോദ്യത്തെ ശബ്ദത്തിൽ വായിക്കാൻ ബട്ടൺ. കേൾക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
-    <string name="enter_answer_hint">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
-    <string name="your_answer_here">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
-
-    <!-- Number Line Fragment -->
-    <string name="number_line_description">നമ്പർ ലൈൻ പ്രവർത്തനം. ഗണിത ചോദ്യ പരിഹരിക്കാൻ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങുക.</string>
-    <string name="number_line_question">0 + 12 എത്ര?</string>
-    <string name="number_line_question_description">ചോദ്യമാണ്. 0 പ്ലസ് 12 എത്ര? ചോദ്യത്തെ ആവർത്തിക്കാൻ ഡബിൾ ടാപ്പ് ചെയ്യുക.</string>
-    <string name="number_line_visual_description">ദൃശ്യ നമ്പർ ലൈൻ. താഴെയുള്ള ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങുക.</string>
-    <string name="current_position_description">നമ്പർ ലൈൻ上的 നിലവിലെ സ്ഥാനം. ഇടത്തേക്ക് അല്ലെങ്കിൽ വലത്തേക്ക് നീങ്ങാൻ ബട്ടണുകൾ ഉപയോഗിക്കുക.</string>
-    <string name="use_to_move">നമ്പർ ലൈൻ上 നീങ്ങാൻ ബട്ടണുകൾ ഉപയോഗിക്കുക</string>
-    <string name="move_left">-</string>
-    <string name="move_left_description">ഇടത്തേക്ക് നീക്കുക ബട്ടൺ. നമ്പർ ലൈൻ上 ഒരു പടി ഇടത്തേക്ക് നീങ്ങാൻ.</string>
-    <string name="move_right">+</string>
-    <string name="move_right_description">വലത്തേക്ക് നീക്കുക ബട്ടൺ. നമ്പർ ലൈൻ上 ഒരു പടി വലത്തേക്ക് നീങ്ങാൻ.</string>
-    <string name="tap_screen_description">ഇത് ടാപ്പ് കൗണ്ട് സ്ക്രീനാണ്. എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
-    <string name="tap_count_description">ടാപ്പ് എണ്ണം: 0</string>
-    <string name="initial_tap_count">0</string>
-    <string name="tap_instruction">എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക</string>
-    <string name="tap_instruction_description">നിർദ്ദേശം: എണ്ണ വർധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
-
-    <!-- TouchScreenFragment Strings -->
-    <string name="touch_screen_description">നിങ്ങളുടെ വിരൽ ഉപയോഗിച്ച് ഗെയിം ഉത്തരം നൽകുക</string>
-    <string name="touch_instruction">സ്ക്രീനിൽ 2 വിരൽ വെക്കുക</string>
-    <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ സ്പർശിക്കുന്നതിന്റെ ചിത്രീകരണം</string>
-
-
-    <string name="right_answer">ശരിയായ ഉത്തരമാണ്!</string>
-    <string name="wrong_answer">തെറ്റായ ഉത്തരമാണ്!</string>
-    <string name="turn_to_angle_template">നിങ്ങളുടെ നിലവിലെ ദിശയിൽ നിന്ന് %1$d° തിരിക്കുക</string>
-    <string name="relative_angle_template">ആമുഖ കോണം: %1$d°</string>
-    <string name="current_angle_announcement">%1$s</string>
-
-    <string name="compass_turn_to"> %1$s ദിശയിലേയ്ക്ക് തിരിക്കുക</string>
-    <string name="compass_correct">ശരി!</string>
-    <string name="compass_correct_msg">നിങ്ങൾ ശരിയായ ദിശയിലേക്കാണ് തിരിച്ചതു!</string>
-    <string name="current_direction_accessibility">നിലവിലെ ദിശ: %1$s </string>
-
-    <string name="correct_answer">ശരിയായ ഉത്തരമാണ്</string>
-    <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം പറയാൻ വിരൽ ഉപയോഗിക്കുക)</string>
-    <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരൽ എണ്ണം: %1$d</string>
-
-    <string name="canvas_cleared">ക്യാൻവാസ് ശൂന്യമാക്കി. വീണ്ടും വരയ്ക്കാം.</string>
-    <string name="drawing_task">വരയ്ക്കേണ്ട പ്രവർത്തനം: %1$s വരയ്ക്കുക. വരയ്ക്കാൻ ടച്ച് ചലനങ്ങൾ ഉപയോഗിക്കുക.</string>
-
-    <string name="task_completed">പ്രവർത്തനം പൂർത്തിയായി</string>
-    <string name="next">next</string>
-    <string name="shake_count_announcement">കുലുക്കൽ എണ്ണം: %1$d</string>
-    <string name="shake_target_instruction">ഉപകരണം %1$d പ്രാവശ്യം കുലുക്കുക</string>
-    <string name="shake_success">ശരിയാണ്!</string>
-    <string name="shake_failure">വീണ്ടും ശ്രമിക്കുക!</string>
-    <string name="shake_continue">തുടരുക</string>
-    <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
-    <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
-
-        <string name="current_position_label">നിങ്ങൾ നിൽക്കുന്ന നമ്പർ:\n</string>
-        <string name="standing_on">നിങ്ങൾ %1$s ൽ നിൽക്കുന്നു.</string>
-        <string name="plus">കൂട്ടിയത്</string>
-        <string name="minus">കുറച്ചത്</string>
-        <string name="right">വലത്</string>
-        <string name="left">ഇടത്</string>
-        <string name="what_is">%1$s %2$s %3$s എത്ര?</string>
-        <string name="units_to_direction">%1$s യൂണിറ്റുകൾ നമ്പർ ലൈനിന്റെ %2$s ഭാഗത്തേക്ക് നീക്കുക.</string>
-        <string name="appreciation_message">നല്ല ശ്രമം!</string>
-        <string name="continue_button">തുടരുക</string>
-
-
-    <string-array name="compass_directions">
-        <item>വടക്ക്</item> <!-- North -->
-        <item>വടക്കുചെറുകിഴക്ക്</item> <!-- North-Northeast -->
-        <item>ചെറുകിഴക്ക്</item> <!-- Northeast -->
-        <item>കിഴക്കുചെറുകിഴക്ക്</item> <!-- East-Northeast -->
-        <item>കിഴക്ക്</item> <!-- East -->
-        <item>കിഴക്കുചെറുദക്ഷിണം</item> <!-- East-Southeast -->
-        <item>ചെറുദക്ഷിണം</item> <!-- Southeast -->
-        <item>തെക്കുചെറുദക്ഷിണം</item> <!-- South-Southeast -->
-        <item>തെക്ക്</item> <!-- South -->
-        <item>തെക്കുചെറുപടിഞ്ഞാറ്</item> <!-- South-Southwest -->
-        <item>ചെറുപടിഞ്ഞാറ്</item> <!-- Southwest -->
-        <item>പടിഞ്ഞാറുചെറുപടിഞ്ഞാറ്</item> <!-- West-Southwest -->
-        <item>പടിഞ്ഞാറ്</item> <!-- West -->
-        <item>പടിഞ്ഞാറുചെറുവടക്ക്</item> <!-- West-Northwest -->
-        <item>ചെറുവടക്ക്</item> <!-- Northwest -->
-        <item>വടക്കുചെറുവടക്ക്</item> <!-- North-Northwest -->
-    </string-array>
-    <string name="hint_fallback">something went wrong</string>
+    <string name="right_answer">ശരിയായ ഉത്തരം!</string>
+    <string name="wrong_answer">തെറ്റായ ഉത്തരം!</string>
+    <string name="correct_answer">ശരിയായ ഉത്തരം</string>
+    <string name="task_completed">പ്രവൃത്തി പൂർത്തിയായി</string>
+    <string name="appreciation_message">ശരിയായി പോകുന്നു</string>
+    <string name="continue_button">തുടരുക</string>
     <string name="continue_text">തുടരുക</string>
 
-    <!-- Excellent -->
-    <string name="excellent_1">അസാധാരണമാണ്!</string>
-    <string name="excellent_2">നിങ്ങൾ സ്മാർട്ടാണ്!</string>
-    <string name="excellent_3">ഉറപ്പായ വിജയം!</string>
-    <string name="excellent_4">സൂപ്പർ ഉത്തരമാണ്!</string>
-    <string name="excellent_5">അഭിനന്ദനങ്ങൾ!</string>
+    <!-- ഉത്തമം -->
+    <string name="excellent_1">അദ്ഭുതകരമായ ജോലി!</string>
+    <string name="excellent_2">നിങ്ങൾ ഒരു ജീനിയസ് ആണ്!</string>
+    <string name="excellent_3">അസാധാരണ!</string>
+    <string name="excellent_4">പൂർണ്ണമായും ശരി!</string>
+    <string name="excellent_5">നിങ്ങൾ അത് പിടിച്ചു!</string>
 
-    <!-- Very Good -->
-    <string name="very_good_1">നന്നായിപ്പോയി!</string>
-    <string name="very_good_2">വെൽ ഡൺ!</string>
-    <string name="very_good_3">നല്ല പുരോഗതി!</string>
-    <string name="very_good_4">കൃത്യമായ ഉത്തരം!</string>
-    <string name="very_good_5">ഇത് നല്ലതാണ്!</string>
+    <!-- വളരെ നല്ലത് -->
+    <string name="very_good_1">ശ്രേഷ്ഠമായ ജോലി!</string>
+    <string name="very_good_2">നന്നായി ചെയ്തു!</string>
+    <string name="very_good_3">നിങ്ങൾ മെച്ചപ്പെടുന്നു!</string>
+    <string name="very_good_4">അത് ശരി!</string>
+    <string name="very_good_5">പ്രഭാവിതമായത്!</string>
 
-    <!-- Good -->
-    <string name="good_1">നല്ല ശ്രമം!</string>
-    <string name="good_2">നന്നായി ഉദ്ദേശിച്ചു!</string>
-    <string name="good_3">ഇതൊന്നു കൂടെ ശ്രമിക്കൂ!</string>
-    <string name="good_4">ഉത്തരമൊത്താണ്!</string>
-    <string name="good_5">ചിന്താശേഷി നല്ലതാണ്!</string>
+    <!-- നല്ലത് -->
+    <string name="good_1">നല്ല ജോലി!</string>
+    <string name="good_2">അത് നല്ലത്!</string>
+    <string name="good_3">തുടരുക!</string>
+    <string name="good_4">ശരിയായ ഉത്തരം!</string>
+    <string name="good_5">നല്ല ചിന്തനം!</string>
 
-    <!-- Fair -->
-    <!-- Not Bad -->
-    <string name="not_bad_1">ശരാശരി ഉത്തരം!</string>
-    <string name="not_bad_2">കൂടുതൽ പരിശ്രമം വേണം!</string>
-    <string name="not_bad_3">ഇതിൽ മെച്ചപ്പെടാം!</string>
-    <string name="not_bad_4">നന്നായ ശ്രമം!</string>
-    <string name="not_bad_5">നല്ലതാണെങ്കിലും കൂടി പഠിക്കണം!</string>
+    <!-- മോശം അല്ല -->
+    <string name="not_bad_1">മോശം അല്ല!</string>
+    <string name="not_bad_2">ഏറ്റവും പൂർണ്ണമായില്ല!</string>
+    <string name="not_bad_3">മികച്ചതിലേക്ക് തുടരുക!</string>
+    <string name="not_bad_4">സാധാരണ!</string>
+    <string name="not_bad_5">അത് ശരിയായത്!</string>
 
+    <!-- ശരി -->
+    <string name="okay_1">നിങ്ങൾ അവിടെ എത്തുന്നു!</string>
+    <string name="okay_2">നല്ല ശ്രമം!</string>
+    <string name="okay_3">ശരി ഉത്തരം!</string>
+    <string name="okay_4">വേഗത വർദ്ധിപ്പിക്കാൻ ശ്രമിക്കുക!</string>
+    <string name="okay_5">ശരി ഉത്തരം!</string>
 
-    <!-- Okay -->
-    <string name="okay_1">സമയം കൊണ്ട് ഉത്തരം!</string>
-    <string name="okay_2">നല്ല ശ്രമം, തുടരൂ!</string>
-    <string name="okay_3">ശരിയാണ്, പക്ഷേ മെച്ചപ്പെടുത്താം!</string>
-    <string name="okay_4">ത്വരിതമായി ഉത്തരം പറയൂ!</string>
-    <string name="okay_5">മധ്യസ്ഥതയുള്ള ഉത്തരം!</string>
-
-    <string name="game_finished">കളി അവസാനിച്ചു!</string>
-
-    <string name="shake_target_expression">%1$s തവണ കുലുക്കൂ!</string>
-    <string name="tap_target_expression">നീ ടാപ്പ് ചെയ്യേണ്ടത് %1$s തവണയാണ്</string>
-    <string name="tap_count_announcement">ടാപ്പ് ചെയ്തത്: %1$d തവണ</string>
-    <string name="tap_failure">തെറ്റായ ടാപ്പ് എണ്ണം. വീണ്ടും ശ്രമിക്കൂ!</string>
-    <string name="tap_game_over">ഗെയിം ഒടുക്കം! നീ 3 തവണ ശ്രമിച്ചു.</string>
-    <string name="tap_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
-
-    <string name="touchscreen_question_expression">%1$s</string>
-
-
-        <!-- Days in Malayalam -->
-        <string name="monday">തിങ്കള്‍</string>
-        <string name="tuesday">ചൊവ്വ</string>
-        <string name="wednesday">ബുധന്‍</string>
-        <string name="thursday">വ്യാഴം</string>
-        <string name="friday">വെള്ളി</string>
-        <string name="saturday">ശനി</string>
-        <string name="sunday">ഞായര്‍</string>
-
-        <!-- UI Text -->
-        <string name="question_text_template">%1$s ആണ് ഇന്ന്, %2$d ദിവസത്തിന് ശേഷം ഏത് ദിവസം?</string>
-
-
-        <string name="wrong_answer_reveal">തെറ്റായ ഉത്തരം! ശരിയായ ഉത്തരം: %1$s</string>
-
-
-
-
-
-
-
+    <string name="game_finished">ഗെയിം പൂർത്തിയായി!</string>
 </resources>

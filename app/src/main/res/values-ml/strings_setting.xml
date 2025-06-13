@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">ക്രമീകരണങ്ങൾ</string>
+    <string name="music_volume_label">സംഗീത ശബ്ദം</string>
+    <string name="music_volume_decrease_desc">സംഗീത ശബ്ദം കുറയ്ക്കൂ</string>
+    <string name="music_volume_increase_desc">സംഗീത ശബ്ദം കൂട്ടൂ</string>
+    <string name="music_volume_value_desc">ഇപ്പോഴുള്ള സംഗീത ശബ്ദം</string>
+
+    <string name="speech_volume_label">വാക്കിന്റെ ശബ്ദം</string>
+    <string name="speech_volume_decrease_desc">വാക്കിന്റെ ശബ്ദം കുറയ്ക്കൂ</string>
+    <string name="speech_volume_increase_desc">വാക്കിന്റെ ശബ്ദം കൂട്ടൂ</string>
+    <string name="speech_volume_value_desc">ഇപ്പോഴുള്ള വാക്കിന്റെ ശബ്ദം</string>
+
+    <string name="speech_rate_label">വാക്ക് വേഗം</string>
+    <string name="speech_rate_decrease_desc">വാക്ക് വേഗം കുറയ്ക്കൂ</string>
+    <string name="speech_rate_increase_desc">വാക്ക് വേഗം കൂട്ടൂ</string>
+    <string name="speech_rate_value_desc">ഇപ്പോഴുള്ള വാക്ക് വേഗം</string>
+
+    <string name="background_music_toggle_label">പിന്നണി സംഗീതം</string>
+    <string name="background_music_toggle_desc">പിന്നണി സംഗീതം ഓണാക്കൂ അല്ലെങ്കിൽ ഓഫ് ആക്കൂ</string>
+
+    <string name="choose_contrast">കൺട്രാസ്റ്റ് തിരഞ്ഞെടുക്കൂ</string>
+    <string name="choose_contrast_desc">സ്ക്രീൻ കളർ എങ്ങനെയിരിക്കണം എന്ന് തിരഞ്ഞെടുക്കൂ</string>
+    <string name="contrast_default">ഡിഫാൾട്ട് കളർ</string>
+    <string name="contrast_default_desc">സാധാരണ കളർ ഉപയോഗിക്കൂ</string>
+    <string name="contrast_white_on_black">കറുപ്പിൽ വെള്ളം</string>
+    <string name="contrast_white_on_black_desc">കറുപ്പ് പശ്ചാത്തലത്തിൽ വെള്ള എഴുത്ത്</string>
+    <string name="contrast_black_on_white">വെളുപ്പിൽ കറുപ്പ്</string>
+    <string name="contrast_black_on_white_desc">വെളുപ്പ് പശ്ചാത്തലത്തിൽ കറുപ്പ് എഴുത്ത്</string>
+
+    <string name="difficulty_label">കഠിനത</string>
+    <string name="difficulty_options_desc">ഗെയിം എളുപ്പമോ കഠിനമോ എന്ന് തിരഞ്ഞെടുക്കൂ</string>
+    <string name="difficulty_easy">എളുപ്പം</string>
+    <string name="difficulty_easy_desc">എളുപ്പമായ നില</string>
+    <string name="difficulty_medium">സാധാരണം</string>
+    <string name="difficulty_medium_desc">മധ്യനില</string>
+    <string name="difficulty_hard">കഠിനം</string>
+    <string name="difficulty_hard_desc">കഠിനമായ നില</string>
+
+    <string name="choose_language">ഭാഷ തിരഞ്ഞെടുക്കൂ</string>
+    <string name="choose_language_desc">നിങ്ങളുടെ ഇഷ്ടംപോലെ ഭാഷ എടുക്കൂ</string>
+
+    <string name="reset_settings">ക്രമീകരണം റീസെറ്റ് ചെയ്യൂ</string>
+    <string name="reset_settings_desc">എല്ലാ ക്രമീകരണവും പഴയപോലെ ആക്കൂ</string>
+
+    <string name="language_default">ഡിഫാൾട്ട്</string>
+    <string name="language_english">ഇംഗ്ലീഷ്</string>
+    <string name="language_hindi">ഹിന്ദി</string>
+    <string name="language_arabic">അറബിക്</string>
+    <string name="language_tamil">തമിഴ്</string>
+    <string name="language_sanskrit">സംസ്കൃതം</string>
+    <string name="language_malayalam">മലയാളം</string>
+</resources>
