@@ -18,15 +18,18 @@ object AccessibilityHelper {
 
     // Always check and enforce the requirement every time it's called
     fun enforceAccessibilityRequirement(context: Context) {
-        val isEnabled = isMathsManthraAccessibilityServiceEnabled(context)
+        val isServiceEnabled = isMathsManthraAccessibilityServiceEnabled(context)
+        val isTalkBackOn = AccessibilityUtils().isSystemExploreByTouchEnabled(context)
 
-        if (!isEnabled) {
+        Log.d("AccessibilityHelper", "Service Enabled: $isServiceEnabled, TalkBack On: $isTalkBackOn")
+
+        if (!isServiceEnabled && isTalkBackOn) {
             showAccessibilityDialog(context)
         } else {
-            Log.d("AccessibilityHelper", "Service is already enabled.")
-            // Optionally: trigger some kind of registration or reconnection logic here
+            Log.d("AccessibilityHelper", "Accessibility requirement satisfied or TalkBack is off.")
         }
     }
+
 
 
     fun showAccessibilityDialog(context: Context) {

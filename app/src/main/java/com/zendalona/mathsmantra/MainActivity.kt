@@ -15,8 +15,7 @@ import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.FragmentNavigation
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.ui.LandingPageFragment
-import com.zendalona.mathsmantra.ui.game.ShakeFragment
-import com.zendalona.mathsmantra.utility.FragmentHintVisibility
+import com.zendalona.mathsmantra.utility.HintVisibilityUtil
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.PermissionManager
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
@@ -93,10 +92,10 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         return true
     }
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        menu.findItem(R.id.action_hint)?.isVisible = FragmentHintVisibility.shouldShowHint(currentFragment)
+        menu.findItem(R.id.action_hint)?.isVisible = HintVisibilityUtil.shouldShowHint()
         return super.onPrepareOptionsMenu(menu)
     }
+
 
 
 

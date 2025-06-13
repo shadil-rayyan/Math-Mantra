@@ -2,20 +2,14 @@ package com.zendalona.mathsmantra.utility;
 
 import androidx.fragment.app.Fragment
 
-object FragmentHintVisibility {
-val fragmentsWithoutHint = setOf(
-        "UserGuideFragment",
-        "GameFragment",
-        "HintFragment",
-        "SettingFragment",
-        "LearningFragment",
-        "ScorePageFragment",
+object HintVisibilityUtil {
+    var isHintVisible: Boolean = false
 
+    fun showHint(show: Boolean) {
+        isHintVisible = show
+    }
 
-
-    )
-
-fun shouldShowHint(fragment: Fragment?): Boolean {
-    return fragment?.javaClass?.simpleName !in fragmentsWithoutHint
+    fun shouldShowHint(): Boolean = isHintVisible
 }
-}
+
+

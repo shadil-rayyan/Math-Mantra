@@ -18,6 +18,7 @@ import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
+import com.zendalona.mathsmantra.utility.HintVisibilityUtil
 
 class SettingFragment : Fragment() {
 
@@ -230,6 +231,11 @@ class SettingFragment : Fragment() {
             Log.d("SettingFragment", "Settings reset to defaults")
         }
     }
+    override fun onResume() {
+        super.onResume()
+        HintVisibilityUtil.showHint(false) // show hint icon here
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
