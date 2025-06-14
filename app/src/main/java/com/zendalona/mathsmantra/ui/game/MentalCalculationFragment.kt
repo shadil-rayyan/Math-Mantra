@@ -44,7 +44,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val expression: String,
         val answer: Int,
         val celebration: Boolean = false,
-        val timeLimit: Int = 20
+        val timeLimit: Int = 30
     )
 
     override fun onCreateView(
@@ -116,7 +116,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val tokens = question.expression.split(" ")
         startTime = System.currentTimeMillis()
 
-        tts.speak("Solve " + question.expression.replace("+", " plus").replace("-", " minus").replace("*", " times").replace("/", " divided by"))
+//        tts.speak("Solve " + question.expression.replace("+", " plus").replace("-", " minus").replace("*", " times").replace("/", " divided by"))
         revealTokens(tokens, 0)
     }
 
@@ -143,7 +143,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
         handler.postDelayed({
             binding?.mentalCalculation?.text = ""
             revealTokens(tokens, index + 1)
-        }, 1000)
+        }, 4000)
     }
 
     private fun checkAnswer() {
@@ -172,7 +172,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
             } else {
                 wrongAttempts++
                 if (wrongAttempts >= 3) {
-                    tts.speak(getString(R.string.shake_game_over))
+//                    tts.speak(getString(R.string.shake_game_over))
                     endGameWithScore()
                 } else {
                     DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
