@@ -74,14 +74,7 @@ class TapFragment : Fragment(),Hintable {
         startGame()
         return binding!!.root
     }
-    override fun onResume() {
-        super.onResume()
 
-        val service = AccessibilityHelper.getAccessibilityService()
-        if (service != null) {
-            AccessibilityHelper.disableExploreByTouch(service)
-        }
-    }
 
 
     private fun loadTapQuestionsFromAssets(lang: String, difficulty: String): List<TapQuestion> {
@@ -194,6 +187,14 @@ class TapFragment : Fragment(),Hintable {
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)
             .commit()
+    }
+    override fun onResume() {
+        super.onResume()
+
+        val service = AccessibilityHelper.getAccessibilityService()
+        if (service != null) {
+            AccessibilityHelper.disableExploreByTouch(service)
+        }
     }
     override fun onPause() {
         super.onPause()

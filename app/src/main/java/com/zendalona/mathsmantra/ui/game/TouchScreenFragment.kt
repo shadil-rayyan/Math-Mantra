@@ -15,6 +15,7 @@ import com.zendalona.mathsmantra.databinding.FragmentGameTouchScreenBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.common.*
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
@@ -187,8 +188,21 @@ class TouchScreenFragment : Fragment(), Hintable {
             .commit()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val service = AccessibilityHelper.getAccessibilityService()
+        if (service != null) {
+            AccessibilityHelper.disableExploreByTouch(service)
+        }
+    }
+
     override fun onPause() {
         super.onPause()
+        val service = AccessibilityHelper.getAccessibilityService()
+        if (service != null) {
+            AccessibilityHelper.resetExploreByTouch(service)
+        }
         handler.removeCallbacksAndMessages(null)
         tts.stop()
     }
