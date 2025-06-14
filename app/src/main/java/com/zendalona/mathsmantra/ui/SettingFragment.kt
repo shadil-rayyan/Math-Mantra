@@ -220,7 +220,7 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
         binding.resetSettingsButton.setOnClickListener {
             prefsEditor.putBoolean("music_enabled", false)
             prefsEditor.putFloat("tts_speed", 1.0f)
-            prefsEditor.putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_NO)
+            prefsEditor.putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             prefsEditor.remove("Locale.Helper.Selected.Language")
             DifficultyPreferences.setDifficulty(requireContext(), Difficulty.EASY)
             prefsEditor.apply()
@@ -230,7 +230,7 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
             ttsUtility.setSpeechRate(1.0f)
 
             binding.contrastBlackOnWhite.isChecked = true
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
             binding.languageSpinner.setSelection(0)
             languageSpinnerInitialized = false
