@@ -55,7 +55,7 @@
     <string name="draw_instruction">Instruction: Draw the required shape</string>
     <string name="drawing_canvas_description">Canvas for drawing. Use touch gestures to draw your shape.</string>
     <string name="canvas_cleared">Canvas cleared. You can draw again.</string>
-    <string name="drawing_task">Drawing task. Draw a %1$s. Use touch gestures to draw.</string>
+    <string name="drawing_task">Draw a %1$s.</string>
     <string name="reset">Reset</string>
     <string name="reset_description">Clear the drawing and start again</string>
     <string name="submit_description">Submit your drawing for evaluation</string>

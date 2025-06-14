@@ -18,6 +18,8 @@ import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.utility.common.DialogUtils
+import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.mathsmantra.view.DrawingView
@@ -119,30 +121,21 @@ class DrawingFragment : Fragment(), Hintable {
     }
 
     private fun showResultDialogAndNext() {
-        // Generic success feedback
-        val message = getString(R.string.right_answer)
-        val gifResource = R.drawable.right
+        val message = getString(R.string.moving_to_next_question)
 
-        val dialogBinding = DialogResultBinding.inflate(getLayoutInflater())
-        val dialogView: View = dialogBinding.getRoot()
-
-        Glide.with(this).asGif().load(gifResource).into(dialogBinding.gifImageView)
-        dialogBinding.messageTextView.setText(message)
-
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
-        dialog.show()
-
-        announce(message)
-
-        Handler(Looper.getMainLooper()).postDelayed(Runnable {
-            dialog.dismiss()
+        DialogUtils.showNextDialog(
+            context = requireContext(),
+            inflater = layoutInflater,
+            ttsUtility = TTSUtility(requireContext()),
+            message = message
+        ) {
             currentIndex++
             loadNextShape()
-        }, 3000)
+        }
+
+        announce(message)
     }
+
 
     private fun announce(message: String?) {
         if (accessibilityManager!!.isEnabled()) {

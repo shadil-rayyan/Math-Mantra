@@ -55,7 +55,7 @@
     <string name="draw_instruction">നിർദ്ദേശം: ആവശ്യമായ ആകൃതി വരയ്ക്കുക</string>
     <string name="drawing_canvas_description">ഡ്രോയിംഗ് കാൻവാസ്. ടച്ച് ജസ്റ്ററുകൾ ഉപയോഗിച്ച് ആകൃതി വരയ്ക്കുക.</string>
     <string name="canvas_cleared">കാൻവാസ് ക്ലിയർ ചെയ്തു. വീണ്ടും വരയ്ക്കാം.</string>
-    <string name="drawing_task">ഡ്രോയിംഗ് ടാസ്ക്. ഒരു %1$s വരയ്ക്കുക. ടച്ച് ജസ്റ്ററുകൾ ഉപയോഗിക്കുക.</string>
+    <string name="drawing_task"> %1$s വരയ്ക്കുക. .</string>
     <string name="reset">പുതുക്കുക</string>
     <string name="reset_description">ഡ്രോയിംഗ് ക്ലിയർ ചെയ്ത് വീണ്ടും തുടങ്ങുക</string>
     <string name="submit_description">നിങ്ങളുടെ ഡ്രോയിംഗ് വിലയിരുത്തലിനായി സമർപ്പിക്കുക</string>
