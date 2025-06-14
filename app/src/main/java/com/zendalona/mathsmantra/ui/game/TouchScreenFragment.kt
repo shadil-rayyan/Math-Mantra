@@ -32,11 +32,12 @@ class TouchScreenFragment : Fragment(), Hintable {
     private var index = 0
     private var wrongAttempts = 0
     private var questionStartTime = 0L
+    private var correctAnswer = 0
+    private var inputLocked = false
 
     private lateinit var lang: String
     private lateinit var difficulty: String
     private lateinit var parsedTouchList: List<TouchQuestion>
-    private var correctAnswer = 0
 
     data class TouchQuestion(
         val expression: String,
@@ -53,7 +54,11 @@ class TouchScreenFragment : Fragment(), Hintable {
         parsedTouchList = loadTouchQuestionsFromAssets(lang, difficulty)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
         startGame()
         return binding!!.root
@@ -89,22 +94,21 @@ class TouchScreenFragment : Fragment(), Hintable {
             return
         }
 
+        inputLocked = false
         val question = parsedTouchList[index]
         correctAnswer = question.answer
         questionStartTime = System.currentTimeMillis()
 
-        val displayText = getString(R.string.touchscreen_question_expression, question.expression)
-        val speakText = question.expression.replace("+", " plus ").replace("-", " minus ")
+        val readableExpr = question.expression.replace("+", " plus ").replace("-", " minus ")
+        val speakText = "Touch the screen with $readableExpr fingers"
 
         binding?.angleQuestion?.apply {
-            text = displayText
+            text = speakText
             contentDescription = speakText
-            isFocusable = true
-            isFocusableInTouchMode = true
             announceForAccessibility(speakText)
         }
 
-        tts.speak("Touch the screen with $speakText fingers")
+        tts.speak(speakText)
         setupTouchListener()
     }
 
@@ -113,13 +117,17 @@ class TouchScreenFragment : Fragment(), Hintable {
             val pointerCount = event.pointerCount
 
             if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
-                binding?.angleQuestion?.text = getString(R.string.touchscreen_fingers_on_screen, pointerCount)
-                if (pointerCount == correctAnswer) {
+                binding?.angleQuestion?.text =
+                    getString(R.string.touchscreen_fingers_on_screen, pointerCount)
+
+                if (pointerCount == correctAnswer && !inputLocked) {
+                    inputLocked = true
                     evaluateGameResult(success = true)
                 }
             }
 
-            if (event.action == MotionEvent.ACTION_UP) {
+            if (event.action == MotionEvent.ACTION_UP && !inputLocked) {
+                inputLocked = true
                 evaluateGameResult(success = false)
             }
             true
@@ -135,12 +143,16 @@ class TouchScreenFragment : Fragment(), Hintable {
             if (success) {
                 wrongAttempts = 0
                 if (question.celebration) {
-                    MediaPlayer.create(context, R.raw.bell_ring).start()
+                    MediaPlayer.create(context, R.raw.bell_ring)?.apply {
+                        setOnCompletionListener { release() }
+                        start()
+                    }
                 }
                 DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
                     index++
                     startGame()
                 }
+
             } else {
                 wrongAttempts++
                 if (wrongAttempts >= 3) {
@@ -148,13 +160,16 @@ class TouchScreenFragment : Fragment(), Hintable {
                     endGameWithScore()
                 } else {
                     DialogUtils.showRetryDialog(
-                        requireContext(), layoutInflater, tts,
+                        requireContext(),
+                        layoutInflater,
+                        tts,
                         getString(R.string.shake_failure)
                     ) {
                         startGame()
                     }
                 }
             }
+
         }, 500)
     }
 
@@ -162,7 +177,9 @@ class TouchScreenFragment : Fragment(), Hintable {
         val bundle = Bundle().apply {
             putString("filepath", "hint/game/touch.txt")
         }
-        val hintFragment = HintFragment().apply { arguments = bundle }
+        val hintFragment = HintFragment().apply {
+            arguments = bundle
+        }
 
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
