@@ -326,5 +326,7 @@ class NumberLineFragment : Fragment(), Hintable {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+        tts?.stop()
+
     }
 }
