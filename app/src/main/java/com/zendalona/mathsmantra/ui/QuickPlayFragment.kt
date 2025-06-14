@@ -219,7 +219,7 @@ class QuickPlayFragment : Fragment(), Hintable {
                     ttsUtility,
                     msg
                 ) {
-                    if (wrongQuestionsSet.size >= 4) {
+                    if (wrongQuestionsSet.size >= 7) {
                         Log.d("QuickPlayFragment", "Wrong questions limit reached (${wrongQuestionsSet.size}). Ending game.")
                         endGame()
                     } else {

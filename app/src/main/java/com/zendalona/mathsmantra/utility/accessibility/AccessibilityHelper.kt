@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Display
 import android.view.accessibility.AccessibilityManager
 import androidx.appcompat.app.AlertDialog
+import com.zendalona.mathsmantra.R
 
 object AccessibilityHelper {
 
@@ -34,19 +35,20 @@ object AccessibilityHelper {
 
     fun showAccessibilityDialog(context: Context) {
         AlertDialog.Builder(context)
-            .setTitle("Enable Accessibility Service")
-            .setMessage("MathsManthra requires Accessibility Service to function properly. Please enable it in the settings.")
+            .setTitle(context.getString(R.string.accessibility_dialog_title))
+            .setMessage(context.getString(R.string.accessibility_dialog_message))
             .setCancelable(true)
-            .setPositiveButton("Enable") { _: DialogInterface, _: Int ->
+            .setPositiveButton(context.getString(R.string.accessibility_enable_button)) { _: DialogInterface, _: Int ->
                 val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss() // Do nothing else, just close the dialog
+            .setNegativeButton(context.getString(R.string.accessibility_cancel_button)) { dialog, _ ->
+                dialog.dismiss()
             }
             .show()
     }
+
 
     // Check if the custom accessibility service is enabled
     private fun isMathsManthraAccessibilityServiceEnabled(context: Context): Boolean {
