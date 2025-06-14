@@ -54,6 +54,9 @@ class NumberLineFragment : Fragment(), Hintable {
     private var wrongAttemptsForCurrentQuestion = 0
     private var lastQuestionKey: String? = null
 
+    // Track how many times the correct answer dialog was shown for the current question
+    private var correctAnswerDialogCount = 0
+
     // Track question start time for grading
     private var questionStartTime: Long = 0L
 
@@ -130,49 +133,76 @@ class NumberLineFragment : Fragment(), Hintable {
         val totalTime = 15.0 // Set your question time limit here
 
         if (position == answer) {
-            // Correct answer
+            // Correct answer: reset counters and show dialog then new question
             wrongAttemptsForCurrentQuestion = 0
             lastQuestionKey = null
+            correctAnswerDialogCount = 0
 
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, true)
             context?.let { ctx ->
                 activity?.layoutInflater?.let { inflater ->
                     DialogUtils.showResultDialog(ctx, inflater, tts!!, grade) {
                         correctAnswerDesc = askNewQuestion(answer)
-
                     }
                 }
             }
         } else {
-            // Wrong answer
+            // Wrong answer: process wrong attempts and possible dialogs
             onWrongAttempt(questionKey)
         }
     }
 
+    private var totalWrongAttemptsForCurrentQuestion = 0
+
     private fun onWrongAttempt(questionKey: String) {
         if (lastQuestionKey == questionKey) {
             wrongAttemptsForCurrentQuestion++
+            totalWrongAttemptsForCurrentQuestion++
         } else {
             lastQuestionKey = questionKey
             wrongAttemptsForCurrentQuestion = 1
-        }
-
-        val message = getString(R.string.wrong_answer)
-
-        context?.let { ctx ->
-            activity?.layoutInflater?.let { inflater ->
-                DialogUtils.showRetryDialog(ctx, inflater, tts!!, message) {
-                    // Retry dialog dismissed, user can try again
-                }
-            }
+            totalWrongAttemptsForCurrentQuestion = 1
+            correctAnswerDialogCount = 0
         }
 
         if (wrongAttemptsForCurrentQuestion >= MAX_WRONG_ATTEMPTS) {
-            // After 3 wrong attempts on same question, reveal answer and move to next
-            tts?.speak("The correct answer is $answer. Let's move to the next question.")
-            wrongAttemptsForCurrentQuestion = 0
-            lastQuestionKey = null
-            correctAnswerDesc = askNewQuestion(answer)
+            correctAnswerDialogCount++
+
+            context?.let { ctx ->
+                activity?.layoutInflater?.let { inflater ->
+
+                    val correctAnswerText = "The correct answer is $answer."
+
+                    DialogUtils.showCorrectAnswerDialog(ctx, inflater, tts!!, correctAnswerText) {
+                        when {
+                            totalWrongAttemptsForCurrentQuestion < 6 -> {
+                                // Allow user to retry same question
+                                wrongAttemptsForCurrentQuestion = 0
+                            }
+                            else -> {
+                                // After 6 total wrong attempts, move to next question
+                                wrongAttemptsForCurrentQuestion = 0
+                                totalWrongAttemptsForCurrentQuestion = 0
+                                correctAnswerDialogCount = 0
+                                lastQuestionKey = null
+                                correctAnswerDesc = askNewQuestion(answer)
+                            }
+                        }
+                    }
+                }
+            }
+
+            return // ❗ Prevent retry dialog from showing
+        }
+
+        // Show retry dialog if not yet reached threshold
+        val message = getString(R.string.wrong_answer)
+        context?.let { ctx ->
+            activity?.layoutInflater?.let { inflater ->
+                DialogUtils.showRetryDialog(ctx, inflater, tts!!, message) {
+                    // Retry dialog dismissed
+                }
+            }
         }
     }
 

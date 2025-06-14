@@ -2,6 +2,8 @@ package com.zendalona.mathsmantra.utility.common
 
 import android.app.AlertDialog
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
@@ -72,6 +74,9 @@ object DialogUtils {
     ) {
         val binding = DialogResultBinding.inflate(inflater)
 
+        // Vibrate on show
+        VibrationUtils.vibrate(context, 150)
+
         // Get a random message and drawable for the grade
         val messageRes = appreciationDict[grade]?.random() ?: R.string.wrong_answer
         val drawableRes = appreciationDrawables[grade]?.random()
@@ -102,6 +107,7 @@ object DialogUtils {
             .create()
             .show()
     }
+
     fun showRetryDialog(
         context: Context,
         inflater: LayoutInflater,
@@ -110,6 +116,9 @@ object DialogUtils {
         onContinue: () -> Unit
     ) {
         val binding = DialogResultBinding.inflate(inflater)
+
+        // Vibrate on show
+        VibrationUtils.vibrate(context, 300)
 
         ttsUtility.speak(message)
 
@@ -131,4 +140,43 @@ object DialogUtils {
             .show()
     }
 
-}
+    /**
+     * Shows a dialog with the correct answer message,
+     * plays animation, vibrates and auto dismisses after 4 seconds.
+     */
+    fun showCorrectAnswerDialog(
+        context: Context,
+        inflater: LayoutInflater,
+        ttsUtility: TTSUtility,
+        correctAnswerText: String,
+        onContinue: () -> Unit
+    ) {
+        val binding = DialogResultBinding.inflate(inflater)
+
+        // Vibrate on show
+        VibrationUtils.vibrate(context, 400)
+
+        // Speak the correct answer text
+        ttsUtility.speak(correctAnswerText)
+
+        // Load a correct answer animation GIF - make sure this drawable exists
+        Glide.with(context)
+            .asGif()
+            .load(R.drawable.dialog_wrong_anwser_repeted_1) // Replace with your drawable resource
+            .into(binding.gifImageView)
+
+        // Set the message text
+        binding.messageTextView.text = correctAnswerText
+
+        AlertDialog.Builder(context)
+            .setView(binding.root)
+            .setCancelable(false)
+            .setPositiveButton(R.string.continue_text) { dialog, _ ->
+                dialog.dismiss()
+                onContinue()
+            }
+            .create()
+            .show()
+    }
+    }
+
