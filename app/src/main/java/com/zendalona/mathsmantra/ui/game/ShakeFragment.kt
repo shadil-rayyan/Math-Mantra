@@ -174,14 +174,15 @@ class ShakeFragment : Fragment(), Hintable {
                 retryCount = 0
                 failCountOnQuestion = 0
 
+
                 if (totalFailedQuestions >= 3) {
                     tts.speak(getString(R.string.shake_game_over))
                     endGameWithScore()
                     return
                 } else {
-                    val correctAnswerMessage = "${question.expression} = ${question.answer}"
-                    DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, correctAnswerMessage) {
-                        nextOrEnd()
+                    val nextMessage = getString(R.string.moving_to_next_question)
+                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, nextMessage) {
+                        // ...
                     }
                     return
                 }
@@ -190,7 +191,7 @@ class ShakeFragment : Fragment(), Hintable {
             if (retryCount >= 3) {
                 // Show correct answer dialog but DO NOT reload question or move next
                 retryCount = 0
-                val correctAnswerMessage = "${question.expression} = ${question.answer}"
+                val correctAnswerMessage = "${question.answer}"
                 DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, correctAnswerMessage) {}
             } else {
                 // Show retry dialog to allow another attempt

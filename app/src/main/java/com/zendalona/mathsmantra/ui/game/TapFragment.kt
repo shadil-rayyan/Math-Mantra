@@ -25,16 +25,19 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
-class TapFragment : Fragment(),Hintable {
+class TapFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameTapBinding? = null
     private lateinit var tts: TTSUtility
     private val handler = Handler(Looper.getMainLooper())
 
-    private var count = 0
     private var index = 0
-    private var wrongAttempts = 0
+    private var count = 0
+    private var retryCount = 0
+    private var failCountOnQuestion = 0
+    private var totalFailedQuestions = 0
     private var questionStartTime: Long = 0
+    private var answerCheckScheduled = false
 
     private lateinit var questions: List<TapQuestion>
 
@@ -47,11 +50,11 @@ class TapFragment : Fragment(),Hintable {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         tts = TTSUtility(requireContext())
+
         val lang = LocaleHelper.getLanguage(requireContext())
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        questions = loadTapQuestionsFromAssets(lang, difficulty)
+        questions = loadQuestionsFromAssets(lang, difficulty)
 
         if (questions.isEmpty()) {
             questions = listOf(
@@ -66,7 +69,7 @@ class TapFragment : Fragment(),Hintable {
 
         binding?.root?.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
-                onScreenTapped()
+                onTap()
             }
             true
         }
@@ -75,11 +78,9 @@ class TapFragment : Fragment(),Hintable {
         return binding!!.root
     }
 
-
-
-    private fun loadTapQuestionsFromAssets(lang: String, difficulty: String): List<TapQuestion> {
-        val list = mutableListOf<TapQuestion>()
+    private fun loadQuestionsFromAssets(lang: String, difficulty: String): List<TapQuestion> {
         val fileName = "$lang/game/tap/${difficulty.lowercase(Locale.ROOT)}.txt"
+        val list = mutableListOf<TapQuestion>()
 
         try {
             val reader = BufferedReader(InputStreamReader(requireContext().assets.open(fileName)))
@@ -108,16 +109,19 @@ class TapFragment : Fragment(),Hintable {
         }
 
         count = 0
+        retryCount = 0
+        failCountOnQuestion = 0
+        answerCheckScheduled = false
         binding?.tapCount?.text = "0"
 
         val question = questions[index]
         questionStartTime = System.currentTimeMillis()
 
-        val instruction = getString(R.string.tap_target_expression, question.expression)
+        val instructionText = getString(R.string.tap_target_expression, question.expression)
         val speakInstruction = "Tap ${question.expression.replace("+", " plus ")} times"
 
         binding?.tapMeTv?.apply {
-            text = instruction
+            text = instructionText
             contentDescription = speakInstruction
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
             isFocusable = true
@@ -128,51 +132,97 @@ class TapFragment : Fragment(),Hintable {
         tts.speak(speakInstruction)
     }
 
-    private fun onScreenTapped() {
+    private fun onTap() {
         count++
         binding?.tapCount?.text = count.toString()
-
         VibrationUtils.vibrate(requireContext(), 100)
 
         tts.stop()
         tts.speak(getString(R.string.tap_count_announcement, count))
 
         val question = questions[index]
-        if (count == question.answer) {
-            evaluateResult(true)
-        } else if (count > question.answer) {
-            evaluateResult(false)
+
+        if (count == question.answer && !answerCheckScheduled) {
+            answerCheckScheduled = true
+
+            // Schedule delayed success check
+            handler.postDelayed({
+                // If count is still equal, accept success
+                if (count == question.answer) {
+                    checkAnswer(true)
+                } else if (count > question.answer) {
+                    checkAnswer(false)
+                }
+            }, 3000)
+
+        } else if (count > question.answer && !answerCheckScheduled) {
+            checkAnswer(false)
         }
     }
 
-    private fun evaluateResult(isCorrect: Boolean) {
-        val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+    private fun checkAnswer(isCorrect: Boolean) {
         val question = questions[index]
+        val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
         val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
 
         if (isCorrect) {
-            wrongAttempts = 0
-            if (question.celebration) {
-                MediaPlayer.create(requireContext(), R.raw.bell_ring).start()
-            }
+//            if (question.celebration) {
+//                MediaPlayer.create(requireContext(), R.raw.bell_ring)?.apply {
+//                    setOnCompletionListener { release() }
+//                    start()
+//                }
+//            }
 
             DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                nextOrEnd()
+                nextQuestion()
             }
+
         } else {
-            wrongAttempts++
-            if (wrongAttempts >= 3) {
-                tts.speak(getString(R.string.tap_game_over))
-                endGameWithScore()
+            retryCount++
+            failCountOnQuestion++
+
+            if (failCountOnQuestion >= 6) {
+                totalFailedQuestions++
+                retryCount = 0
+                failCountOnQuestion = 0
+
+                if (totalFailedQuestions >= 3) {
+                    tts.speak(getString(R.string.tap_game_over))
+                    endGameWithScore()
+                } else {
+                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, getString(R.string.moving_to_next_question)) {
+                        nextQuestion()
+                    }
+                }
+                return
+            }
+
+            if (retryCount >= 3) {
+                retryCount = 0
+                DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, question.answer.toString()) {
+                    resetQuestion()
+
+                }
             } else {
                 DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.tap_failure)) {
-                    startGame()
+                    resetQuestion()
+
                 }
             }
         }
     }
 
-    private fun nextOrEnd() {
+    private fun resetQuestion() {
+        count = 0
+        answerCheckScheduled = false
+        binding?.tapCount?.text = "0"
+
+        val question = questions[index]
+        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")} times"
+        tts.speak(speakInstruction)
+    }
+
+    private fun nextQuestion() {
         index++
         startGame()
     }
@@ -188,23 +238,21 @@ class TapFragment : Fragment(),Hintable {
             .addToBackStack(null)
             .commit()
     }
+
     override fun onResume() {
         super.onResume()
-
-        val service = AccessibilityHelper.getAccessibilityService()
-        if (service != null) {
-            AccessibilityHelper.disableExploreByTouch(service)
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.disableExploreByTouch(it)
         }
     }
+
     override fun onPause() {
         super.onPause()
-
-        val service = AccessibilityHelper.getAccessibilityService()
-        if (service != null) {
-            AccessibilityHelper.resetExploreByTouch(service)
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.resetExploreByTouch(it)
         }
+        tts.stop()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

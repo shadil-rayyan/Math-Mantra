@@ -88,6 +88,11 @@
     <string name="okay_3">Okay answer!</string>
     <string name="okay_4">Try to be faster!</string>
     <string name="okay_5">Fine answer!</string>
+    <!-- correct answe dialog -->
+
+    <!-- nextquestoindialog-->
+    <string name="moving_to_next_question">moving to next question</string>
+
     <string name="game_finished">Game Finished!</string>
 
 </resources>

@@ -136,4 +136,42 @@ object DialogUtils {
             }
         }, 4000)
     }
+    fun showNextDialog(
+        context: Context,
+        inflater: LayoutInflater,
+        ttsUtility: TTSUtility,
+        message: String,
+        onContinue: () -> Unit
+    ) {
+        val binding = DialogResultBinding.inflate(inflater)
+        VibrationUtils.vibrate(context, 200)  // vibration for feedback
+
+        ttsUtility.speak(message)
+
+        Glide.with(context).asGif()
+            .load(R.drawable.dialog_wrong_anwser_repeted_2)  // You need to add this drawable in your resources
+            .into(binding.gifImageView)
+
+        binding.messageTextView.text = message
+
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .setCancelable(false)
+            .setPositiveButton(R.string.continue_text) { d, _ ->
+                d.dismiss()
+                onContinue()
+            }
+            .create()
+
+        dialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (dialog.isShowing) {
+                dialog.dismiss()
+                onContinue()
+            }
+        }, 4000)
+    }
+
+
 }

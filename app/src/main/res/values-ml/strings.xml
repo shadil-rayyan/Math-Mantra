@@ -92,5 +92,8 @@
     <string name="okay_4">വേഗത വർദ്ധിപ്പിക്കാൻ ശ്രമിക്കുക!</string>
     <string name="okay_5">ശരി ഉത്തരം!</string>
 
+    <!-- nextquestoindialog-->
+    <string name="moving_to_next_question">moving to next question</string>
+
     <string name="game_finished">ഗെയിം പൂർത്തിയായി!</string>
 </resources>
