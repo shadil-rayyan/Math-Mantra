@@ -1,5 +1,6 @@
 package com.zendalona.mathsmantra.ui.game
 
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -24,7 +25,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.util.*
 
-class ShakeFragment : Fragment(),Hintable {
+class ShakeFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameShakeBinding? = null
     private lateinit var accelerometerUtility: AccelerometerUtility
@@ -35,7 +36,12 @@ class ShakeFragment : Fragment(),Hintable {
     private val shakeHandler = Handler()
     private val gameHandler = Handler(Looper.getMainLooper())
     private var index = 0
-    private var wrongAttempts = 0
+
+    private var retryCount = 0
+    private var failCountOnQuestion = 0
+    private var totalFailedQuestions = 0
+    private var firstShakeTime: Long = 0
+    private var answerChecked = false
 
     private lateinit var lang: String
     private lateinit var difficulty: String
@@ -97,6 +103,8 @@ class ShakeFragment : Fragment(),Hintable {
 
     private fun startGame() {
         count = 0
+        firstShakeTime = 0L
+        answerChecked = false
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
 
         val question = parsedShakeList[index % parsedShakeList.size]
@@ -120,48 +128,6 @@ class ShakeFragment : Fragment(),Hintable {
         tts.speak(speakInstruction)
     }
 
-
-    private fun evaluateGameResult() {
-        gameHandler.postDelayed({
-            val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-            val question = parsedShakeList[index]
-            val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), count == target)
-
-            if (count == target) {
-                if (count == target) {
-                    wrongAttempts = 0  // reset on success
-                    if (question.celebration) {
-                        MediaPlayer.create(context, R.raw.bell_ring)
-                    }
-                    DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                        nextOrEnd()
-                    }
-                } else {
-                    wrongAttempts++
-                    if (wrongAttempts >= 3) {
-                        tts.speak(getString(R.string.shake_game_over))
-                        endGameWithScore()
-                    } else {
-                        DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
-                            startGame() // retry same question
-                        }
-                    }
-                }
-
-                if (question.celebration) {
-                    MediaPlayer.create(context, R.raw.bell_ring)
-                }
-                DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                    nextOrEnd()
-                }
-            } else {
-                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
-                    nextOrEnd()
-                }
-            }
-        }, 2000)
-    }
-
     private fun onShakeDetected() {
         if (!isShakingAllowed) return
 
@@ -171,15 +137,107 @@ class ShakeFragment : Fragment(),Hintable {
         count++
         binding?.ringCount?.text = count.toString()
 
-        VibrationUtils.vibrate(requireContext(), 100)
         tts.stop()
         val countText = getString(R.string.shake_count_announcement, count)
         tts.speak(countText)
 
-        if (count == target) {
-            evaluateGameResult()
+        if (firstShakeTime == 0L) {
+            firstShakeTime = System.currentTimeMillis()
+            answerChecked = false
+
+            // Schedule 2-second timer to evaluate answer
+            gameHandler.postDelayed({
+                checkAnswer()
+            }, 3000)
+        }
+
+        // If count already above target and answer not checked, force wrong answer immediately
+        if (count > target && !answerChecked) {
+            checkAnswer(forceWrong = true)
         }
     }
+
+    private fun checkAnswer(forceWrong: Boolean = false) {
+        if (answerChecked) return
+
+        val question = parsedShakeList[index]
+        answerChecked = true
+
+        // If forced wrong or count > target → wrong answer
+        if (forceWrong || count > target) {
+            retryCount++
+            failCountOnQuestion++
+
+            if (failCountOnQuestion >= 6) {
+                // Move to next question after 6 fails on current question
+                totalFailedQuestions++
+                retryCount = 0
+                failCountOnQuestion = 0
+
+                if (totalFailedQuestions >= 3) {
+                    tts.speak(getString(R.string.shake_game_over))
+                    endGameWithScore()
+                    return
+                } else {
+                    val correctAnswerMessage = "${question.expression} = ${question.answer}"
+                    DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, correctAnswerMessage) {
+                        nextOrEnd()
+                    }
+                    return
+                }
+            }
+
+            if (retryCount >= 3) {
+                // Show correct answer dialog but DO NOT reload question or move next
+                retryCount = 0
+                val correctAnswerMessage = "${question.expression} = ${question.answer}"
+                DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, correctAnswerMessage) {}
+            } else {
+                // Show retry dialog to allow another attempt
+                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
+                    // Reset for retry
+                    count = 0
+                    firstShakeTime = 0L
+                    answerChecked = false
+                    binding?.ringCount?.text = getString(R.string.shake_count_initial)
+                    val speakText = question.expression.replace("+", " plus ")
+                    val speakInstruction = "Shake $speakText times"
+                    tts.speak(speakInstruction)
+                }
+            }
+
+        } else if (count == target) {
+            // Correct answer
+            retryCount = 0
+            failCountOnQuestion = 0
+            totalFailedQuestions = 0
+
+            if (question.celebration) {
+                MediaPlayer.create(context, R.raw.bell_ring)?.apply {
+                    setOnCompletionListener { release() }
+                    start()
+                }
+            }
+
+            val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+            val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), true)
+
+            DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
+                nextOrEnd()
+            }
+        } else {
+            // count < target, do nothing (allow user to keep shaking)
+            // Reset answerChecked to false so checkAnswer can be called again later if needed
+            answerChecked = false
+        }
+
+        // Reset count and timers only if answer is correct or forced wrong
+        if (answerChecked) {
+            count = 0
+            firstShakeTime = 0L
+        }
+    }
+
 
     private fun nextOrEnd() {
         index++
