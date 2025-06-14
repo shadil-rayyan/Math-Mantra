@@ -72,14 +72,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSunday"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_columnSpan="3"
-                android:layout_gravity="fill"
+                style="@style/DayButton"
                 android:text="@string/sunday"
-                android:textSize="18sp"
-                android:backgroundTint="?attr/colorPrimary"
-                android:textColor="?attr/colorOnPrimary" />
+                android:layout_row="2"
+                android:layout_column="1"
+
+               />
+
 
         </GridLayout>
 
