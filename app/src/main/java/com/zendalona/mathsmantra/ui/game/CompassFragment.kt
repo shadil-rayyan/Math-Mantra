@@ -185,27 +185,26 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
             val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
             val azimuthFixed = (azimuth + 360) % 360
 
-            updateCompassUI(-azimuthFixed)
+            updateCompassUI(-azimuthFixed, azimuthFixed) // pass both
+
         }
     }
 
-    private fun updateCompassUI(rotationDegrees: Float) {
+    private fun updateCompassUI(rotationDegrees: Float, actualAzimuth: Float) {
         if (binding == null) return
 
         binding!!.compass.setRotation(rotationDegrees)
 
-        val directionText = getCompassDirection((rotationDegrees + 360) % 360)
-        binding!!.degreeText.setText(directionText)
+        val directionText = getCompassDirection(actualAzimuth)
+        binding!!.degreeText.text = directionText
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
-        Log.d("CompassDebug", "Target direction (raw): $currentTargetDirection")
-        Log.d("CompassDebug", "Localized question text: $questionText")
         binding!!.questionTv.text = questionText
         binding!!.questionTv.announceForAccessibility(questionText)
 
-
-        checkIfCorrect(rotationDegrees)
+        checkIfCorrect(actualAzimuth)
     }
+
 
     private fun checkIfCorrect(currentDegrees: Float) {
         if (questionAnswered) return
