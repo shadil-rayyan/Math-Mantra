@@ -12,57 +12,21 @@ import com.zendalona.mathsmantra.databinding.DialogResultBinding
 object DialogUtils {
 
     private val appreciationDict = mapOf(
-        "Excellent" to listOf(
-            R.string.excellent_1, R.string.excellent_2, R.string.excellent_3, R.string.excellent_4, R.string.excellent_5
-        ),
-        "Very Good" to listOf(
-            R.string.very_good_1, R.string.very_good_2, R.string.very_good_3, R.string.very_good_4, R.string.very_good_5
-        ),
-        "Good" to listOf(
-            R.string.good_1, R.string.good_2, R.string.good_3, R.string.good_4, R.string.good_5
-        ),
-        "Not Bad" to listOf(
-            R.string.not_bad_1, R.string.not_bad_2, R.string.not_bad_3, R.string.not_bad_4, R.string.not_bad_5
-        ),
-        "Okay" to listOf(
-            R.string.okay_1, R.string.okay_2, R.string.okay_3, R.string.okay_4, R.string.okay_5
-        ),
-        "Wrong" to listOf(
-            R.string.wrong_answer // Add more if needed
-        )
+        "Excellent" to listOf(R.string.excellent_1, R.string.excellent_2, R.string.excellent_3, R.string.excellent_4, R.string.excellent_5),
+        "Very Good" to listOf(R.string.very_good_1, R.string.very_good_2, R.string.very_good_3, R.string.very_good_4, R.string.very_good_5),
+        "Good" to listOf(R.string.good_1, R.string.good_2, R.string.good_3, R.string.good_4, R.string.good_5),
+        "Not Bad" to listOf(R.string.not_bad_1, R.string.not_bad_2, R.string.not_bad_3, R.string.not_bad_4, R.string.not_bad_5),
+        "Okay" to listOf(R.string.okay_1, R.string.okay_2, R.string.okay_3, R.string.okay_4, R.string.okay_5),
+        "Wrong" to listOf(R.string.wrong_answer)
     )
 
     private val appreciationDrawables = mapOf(
-        "Excellent" to listOf(
-            R.drawable.dialog_excellent_1,
-            R.drawable.dialog_excellent_2,
-            R.drawable.dialog_excellent_3
-        ),
-        "Very Good" to listOf(
-            R.drawable.dialog_very_good_1,
-            R.drawable.dialog_very_good_2,
-            R.drawable.dialog_very_good_3
-        ),
-        "Good" to listOf(
-            R.drawable.dialog_good_1,
-            R.drawable.dialog_good_2,
-            R.drawable.dialog_good_3
-        ),
-        "Not Bad" to listOf(
-            R.drawable.dialog_not_bad_1,
-            R.drawable.dialog_not_bad_2,
-            R.drawable.dialog_not_bad_3
-        ),
-        "Okay" to listOf(
-            R.drawable.dialog_okay_1,
-            R.drawable.dialog_okay_2,
-            R.drawable.dialog_okay_3
-        ),
-        "Wrong" to listOf(
-            R.drawable.dialog_wrong_anwser_1,
-            R.drawable.dialog_wrong_anwser_2,
-            R.drawable.dialog_wrong_anwser_3
-        )
+        "Excellent" to listOf(R.drawable.dialog_excellent_1, R.drawable.dialog_excellent_2, R.drawable.dialog_excellent_3),
+        "Very Good" to listOf(R.drawable.dialog_very_good_1, R.drawable.dialog_very_good_2, R.drawable.dialog_very_good_3),
+        "Good" to listOf(R.drawable.dialog_good_1, R.drawable.dialog_good_2, R.drawable.dialog_good_3),
+        "Not Bad" to listOf(R.drawable.dialog_not_bad_1, R.drawable.dialog_not_bad_2, R.drawable.dialog_not_bad_3),
+        "Okay" to listOf(R.drawable.dialog_okay_1, R.drawable.dialog_okay_2, R.drawable.dialog_okay_3),
+        "Wrong" to listOf(R.drawable.dialog_wrong_anwser_1, R.drawable.dialog_wrong_anwser_2, R.drawable.dialog_wrong_anwser_3)
     )
 
     fun showResultDialog(
@@ -73,39 +37,33 @@ object DialogUtils {
         onContinue: () -> Unit
     ) {
         val binding = DialogResultBinding.inflate(inflater)
-
-        // Vibrate on show
         VibrationUtils.vibrate(context, 150)
 
-        // Get a random message and drawable for the grade
         val messageRes = appreciationDict[grade]?.random() ?: R.string.wrong_answer
-        val drawableRes = appreciationDrawables[grade]?.random()
-            ?: appreciationDrawables["Wrong"]!!.random()
-
+        val drawableRes = appreciationDrawables[grade]?.random() ?: appreciationDrawables["Wrong"]!!.random()
         val message = context.getString(messageRes)
-
-        // Speak message
         ttsUtility.speak(message)
 
-        // Show drawable (GIF)
-        Glide.with(context)
-            .asGif()
-            .load(drawableRes)
-            .into(binding.gifImageView)
-
-        // Set message text
+        Glide.with(context).asGif().load(drawableRes).into(binding.gifImageView)
         binding.messageTextView.text = message
 
-        // Show dialog
-        AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { dialog, _ ->
-                dialog.dismiss()
+            .setPositiveButton(R.string.continue_text) { d, _ ->
+                d.dismiss()
                 onContinue()
             }
             .create()
-            .show()
+
+        dialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (dialog.isShowing) {
+                dialog.dismiss()
+                onContinue()
+            }
+        }, 4000)
     }
 
     fun showRetryDialog(
@@ -116,34 +74,32 @@ object DialogUtils {
         onContinue: () -> Unit
     ) {
         val binding = DialogResultBinding.inflate(inflater)
-
-        // Vibrate on show
         VibrationUtils.vibrate(context, 300)
 
         ttsUtility.speak(message)
 
-        Glide.with(context)
-            .asGif()
-            .load(R.drawable.wrong)
-            .into(binding.gifImageView)
-
+        Glide.with(context).asGif().load(R.drawable.wrong).into(binding.gifImageView)
         binding.messageTextView.text = message
 
-        AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { dialog, _ ->
-                dialog.dismiss()
+            .setPositiveButton(R.string.continue_text) { d, _ ->
+                d.dismiss()
                 onContinue()
             }
             .create()
-            .show()
+
+        dialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (dialog.isShowing) {
+                dialog.dismiss()
+                onContinue()
+            }
+        }, 4000)
     }
 
-    /**
-     * Shows a dialog with the correct answer message,
-     * plays animation, vibrates and auto dismisses after 4 seconds.
-     */
     fun showCorrectAnswerDialog(
         context: Context,
         inflater: LayoutInflater,
@@ -152,31 +108,32 @@ object DialogUtils {
         onContinue: () -> Unit
     ) {
         val binding = DialogResultBinding.inflate(inflater)
-
-        // Vibrate on show
         VibrationUtils.vibrate(context, 400)
 
-        // Speak the correct answer text
         ttsUtility.speak(correctAnswerText)
 
-        // Load a correct answer animation GIF - make sure this drawable exists
-        Glide.with(context)
-            .asGif()
-            .load(R.drawable.dialog_wrong_anwser_repeted_1) // Replace with your drawable resource
+        Glide.with(context).asGif()
+            .load(R.drawable.dialog_wrong_anwser_repeted_1)
             .into(binding.gifImageView)
 
-        // Set the message text
         binding.messageTextView.text = correctAnswerText
 
-        AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { dialog, _ ->
-                dialog.dismiss()
+            .setPositiveButton(R.string.continue_text) { d, _ ->
+                d.dismiss()
                 onContinue()
             }
             .create()
-            .show()
-    }
-    }
 
+        dialog.show()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (dialog.isShowing) {
+                dialog.dismiss()
+                onContinue()
+            }
+        }, 4000)
+    }
+}

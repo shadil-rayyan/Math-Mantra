@@ -22,6 +22,7 @@ import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.RandomValueGenerator
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.common.DialogUtils
+import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.viewModel.NumberLineViewModel
@@ -59,6 +60,8 @@ class NumberLineFragment : Fragment(), Hintable {
 
     // Track question start time for grading
     private var questionStartTime: Long = 0L
+    private var fullyFailedQuestionCount = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -176,11 +179,18 @@ class NumberLineFragment : Fragment(), Hintable {
                     DialogUtils.showCorrectAnswerDialog(ctx, inflater, tts!!, correctAnswerText) {
                         when {
                             totalWrongAttemptsForCurrentQuestion < 6 -> {
-                                // Allow user to retry same question
+                                // Allow retry same question
                                 wrongAttemptsForCurrentQuestion = 0
                             }
                             else -> {
-                                // After 6 total wrong attempts, move to next question
+                                fullyFailedQuestionCount++
+
+                                if (fullyFailedQuestionCount >= 3) {
+                                    endGameWithScore()
+                                    return@showCorrectAnswerDialog
+                                }
+
+                                // Otherwise move to new question
                                 wrongAttemptsForCurrentQuestion = 0
                                 totalWrongAttemptsForCurrentQuestion = 0
                                 correctAnswerDialogCount = 0
@@ -188,6 +198,7 @@ class NumberLineFragment : Fragment(), Hintable {
                                 correctAnswerDesc = askNewQuestion(answer)
                             }
                         }
+
                     }
                 }
             }
