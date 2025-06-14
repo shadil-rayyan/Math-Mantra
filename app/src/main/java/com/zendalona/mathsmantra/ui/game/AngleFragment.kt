@@ -31,6 +31,10 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
     private lateinit var angleUpdateHandler: Handler
     private var angleUpdateRunnable: Runnable? = null
 
+    private var holdStartTime: Long = 0
+    private var holdRunnable: Runnable? = null
+    private var isHolding = false
+
     override fun onCreateView(
             @NonNull inflater: LayoutInflater,
              container: ViewGroup?,
@@ -71,16 +75,33 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         }
     }
 
+
     private fun checkIfCorrect(currentAngle: Float) {
         if (questionAnswered) return
 
-                val isCorrect = Math.abs(targetRotation - currentAngle) <= 10
-        if (isCorrect) {
-            questionAnswered = true
-            angleUpdateRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
-            showResultDialog(true)
+        val withinRange = Math.abs(targetRotation - currentAngle) <= 5
+
+        if (withinRange) {
+            if (!isHolding) {
+                isHolding = true
+                holdStartTime = System.currentTimeMillis()
+
+                holdRunnable = Runnable {
+                    if (isHolding) {
+                        questionAnswered = true
+                        showResultDialog(true)
+                    }
+                }
+                angleUpdateHandler.postDelayed(holdRunnable!!, 3000)
+            }
+        } else {
+            if (isHolding) {
+                isHolding = false
+                holdRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
+            }
         }
     }
+
 
     private fun showResultDialog(isCorrect: Boolean) {
         val messageResId = if (isCorrect) R.string.right_answer else R.string.wrong_answer
