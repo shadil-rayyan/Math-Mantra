@@ -15,7 +15,6 @@ import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.FragmentNavigation
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.ui.LandingPageFragment
-import com.zendalona.mathsmantra.utility.HintVisibilityUtil
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.PermissionManager
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper

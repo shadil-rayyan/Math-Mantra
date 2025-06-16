@@ -9,14 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.annotation.Nullable
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.model.RotationSensorUtility
+import com.zendalona.mathsmantra.utility.game.angle.RotationSensorUtility
 import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import java.util.Random
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
@@ -140,20 +140,24 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
 
         val question = getString(R.string.turn_to_angle_template, targetRotation.toInt())
         questionTextView.text = question
-        questionTextView.announceForAccessibility(question)
+
+        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+            questionTextView.announceForAccessibility(question)
+        }
 
         if (angleUpdateRunnable == null) {
-            angleUpdateRunnable = Runnable {
-                if (!questionAnswered) {
-                    val spokenAngle = rotationTextView.text.toString()
-                    rotationTextView.announceForAccessibility(
-                            getString(R.string.current_angle_announcement, spokenAngle)
-                    )
-                    angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 2000)
+            angleUpdateRunnable = object : Runnable {
+                override fun run() {
+                    if (!questionAnswered && isAdded && AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                        val spokenAngle = rotationTextView.text.toString()
+                        val announcement = getString(R.string.current_angle_announcement, spokenAngle)
+                        rotationTextView.announceForAccessibility(announcement)
+                        angleUpdateHandler.postDelayed(this, 3000)
+                    }
                 }
             }
         }
-        angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 2000)
+        angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 3000)
     }
 
     override fun showHint() {

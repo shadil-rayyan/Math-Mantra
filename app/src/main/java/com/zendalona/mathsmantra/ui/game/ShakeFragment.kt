@@ -1,6 +1,5 @@
 package com.zendalona.mathsmantra.ui.game
 
-import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +15,7 @@ import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.AccelerometerUtility
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.mathsmantra.utility.common.*
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
@@ -138,8 +138,12 @@ class ShakeFragment : Fragment(), Hintable {
         binding?.ringCount?.text = count.toString()
 
         tts.stop()
-        val countText = getString(R.string.shake_count_announcement, count)
-        tts.speak(countText)
+        if(AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext()))
+        {
+            val countText = getString(R.string.shake_count_announcement, count)
+            tts.speak(countText)
+        }
+
 
         if (firstShakeTime == 0L) {
             firstShakeTime = System.currentTimeMillis()
@@ -160,7 +164,7 @@ class ShakeFragment : Fragment(), Hintable {
     private fun checkAnswer(forceWrong: Boolean = false) {
         if (answerChecked) return
 
-        val question = parsedShakeList[index]
+        val question = parsedShakeList[index % parsedShakeList.size]
         answerChecked = true
 
         // If forced wrong or count > target → wrong answer

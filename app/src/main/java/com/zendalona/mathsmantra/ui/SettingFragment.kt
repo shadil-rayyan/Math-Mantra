@@ -21,7 +21,6 @@ import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
 import com.zendalona.mathsmantra.model.HintIconVisibilityController
-import com.zendalona.mathsmantra.utility.HintVisibilityUtil
 
 class SettingFragment : Fragment(),HintIconVisibilityController {
 

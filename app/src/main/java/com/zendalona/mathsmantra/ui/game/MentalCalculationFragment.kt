@@ -1,7 +1,6 @@
 // Updated MentalCalculationFragment.kt
 package com.zendalona.mathsmantra.ui.game
 
-import android.app.AlertDialog
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler

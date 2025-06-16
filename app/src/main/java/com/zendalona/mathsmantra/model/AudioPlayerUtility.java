@@ -1,10 +1,6 @@
 package com.zendalona.mathsmantra.model;
 
 import android.content.Context;
-import android.media.AudioAttributes;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
 import android.speech.tts.TextToSpeech;
 
 import java.util.Locale;

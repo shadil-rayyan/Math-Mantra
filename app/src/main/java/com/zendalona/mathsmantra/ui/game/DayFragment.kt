@@ -14,7 +14,6 @@ import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
-import kotlin.math.log
 import kotlin.random.Random
 
 class DayFragment : Fragment(), Hintable {

@@ -1,21 +1,18 @@
 package com.zendalona.mathsmantra.ui
 
 import android.media.MediaPlayer
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentQuickPlayBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
-import com.zendalona.mathsmantra.utility.common.ScorePageFragment
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility

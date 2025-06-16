@@ -1,6 +1,5 @@
 package com.zendalona.mathsmantra.ui.game
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
