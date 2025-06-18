@@ -300,11 +300,9 @@ class NumberLineFragment : Fragment(), Hintable {
     }
     override fun onResume() {
         super.onResume()
-        binding?.numberLineView?.onResume()
     }
 
     override fun onPause() {
-        binding?.numberLineView?.onPause()
         super.onPause()
     }
 

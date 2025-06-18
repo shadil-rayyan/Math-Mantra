@@ -6,12 +6,14 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 
 import com.zendalona.mathsmantra.R;
-import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
-import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
 
 public class NumberLineView extends View {
 
@@ -55,6 +57,19 @@ public class NumberLineView extends View {
 
         mascotPaint = new Paint();
         mascotPaint.setTextSize(200f);
+
+        // Set accessibility delegate to customize accessibility behavior locally for this view
+        ViewCompat.setAccessibilityDelegate(this, new AccessibilityDelegateCompat() {
+            @Override
+            public boolean dispatchPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
+                if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED) {
+                    // Announce current position when view receives accessibility focus
+                    announceForAccessibility("Number line current position is " + currentPosition);
+                    return true;
+                }
+                return super.dispatchPopulateAccessibilityEvent(host, event);
+            }
+        });
     }
 
     @Override
@@ -97,25 +112,21 @@ public class NumberLineView extends View {
         this.numberRangeEnd = end;
         this.currentPosition = position;
         invalidate();
+
+        // Announce position only locally for this view
         announcePosition();
     }
 
     private void announcePosition() {
-        boolean talkBackEnabled = AccessibilityUtils.isMathsManthraAccessibilityServiceEnabled(getContext());
-        if (talkBackEnabled) {
-            announceForAccessibility("Current position: " + currentPosition);
-        }
-
+        // Announce for accessibility: only when this view updates
+        announceForAccessibility("Current position: " + currentPosition);
     }
-//    public void onResume() {
-//        Log.d(TAG, "DrawingView onResume called: disabling Explore-by-Touch");
-//        // Disable Explore-by-Touch passthrough region so touch events work properly
-//        AccessibilityHelper.disableExploreByTouch(AccessibilityHelper.getAccessibilityService());
-//    }
-//
-//    public void onPause() {
-//        Log.d(TAG, "DrawingView onPause called: resetting Explore-by-Touch");
-//        // Reset Explore-by-Touch passthrough region
-//        AccessibilityHelper.resetExploreByTouch(AccessibilityHelper.getAccessibilityService());
-//    }
+
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(info);
+        String desc = "Number line from " + numberRangeStart + " to " + numberRangeEnd + ", current position is " + currentPosition;
+        info.setContentDescription(desc);
+    }
 }
