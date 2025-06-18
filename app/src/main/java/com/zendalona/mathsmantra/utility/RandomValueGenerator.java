@@ -53,7 +53,7 @@ public class RandomValueGenerator {
 
     public int[] generateSubtractionValues() {
         int[] values = new int[3];
-        values[0] = random.nextInt(10) + 1;
+        values[0] = random.nextInt(5) + 1;
         values[1] = random.nextInt(10) + 1;
         values[2] = values[0] - values[1];
         return values;

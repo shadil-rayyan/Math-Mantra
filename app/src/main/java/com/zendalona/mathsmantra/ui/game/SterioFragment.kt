@@ -63,7 +63,7 @@ class SterioFragment : Fragment(), Hintable {
         val numbers = random!!.generateSubtractionValues()
         num1 = numbers[0]
         num2 = numbers[1]
-        correctAnswer = num1 - num2
+        correctAnswer = num2- num1
 
         binding?.answerEt?.setText("")
         announce("A new question is ready. Tap 'Read the Question' to listen.")
