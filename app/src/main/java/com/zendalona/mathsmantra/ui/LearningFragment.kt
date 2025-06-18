@@ -22,8 +22,7 @@ class LearningFragment: Fragment(), HintIconVisibilityController {
     private var binding : FragmentLearningmodeBinding? = null
     private var navigationListener : FragmentNavigation? = null
 
-    val lang = LocaleHelper.getLanguage(context)?: "en"
-    val difficulty = DifficultyPreferences.getDifficulty(context)
+
 
 
     override fun onAttach(context: Context)
@@ -46,6 +45,8 @@ class LearningFragment: Fragment(), HintIconVisibilityController {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLearningmodeBinding.inflate(inflater,container, false)
+        val lang = LocaleHelper.getLanguage(context)?: "en"
+        val difficulty = DifficultyPreferences.getDifficulty(context)
 
         binding!!.cardTime.setOnClickListener {
             val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
@@ -71,14 +72,7 @@ class LearningFragment: Fragment(), HintIconVisibilityController {
             }
 
         }
-        binding!!.cardAddition.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
 
-        }
         binding!!.cardAddition.setOnClickListener {
             val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
             Log.d("LearningPageFragment", "card time clicked ")
@@ -112,8 +106,30 @@ class LearningFragment: Fragment(), HintIconVisibilityController {
 
         }
         binding!!.cardTilerFrame.setOnClickListener {
-            Log.d("LandingPageFragment", "Tilerframe clicked. Finishing activity.")
+            val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
+            Log.d("LearningPageFragment", "card time clicked ")
+            QuickPlayFragment.newInstance(filePath).apply {
+                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            }
         }
+
+        binding!!.cardPercentage.setOnClickListener {
+            val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
+            Log.d("LearningPageFragment", "card time clicked ")
+            QuickPlayFragment.newInstance(filePath).apply {
+                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            }
+        }
+
+
+        binding!!.cardRemainder.setOnClickListener {
+            val filePath = "numbers/landingpage/quickplay/${difficulty.lowercase(Locale.ROOT)}.txt"
+            Log.d("LearningPageFragment", "card time clicked ")
+            QuickPlayFragment.newInstance(filePath).apply {
+                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            }
+        }
+
 
 
         return binding!!.getRoot()

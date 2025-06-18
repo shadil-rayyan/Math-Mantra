@@ -4,7 +4,6 @@
     <string name="rotate_your_phone">Rotate Your Phone</string>
     <string name="turn_phone_90_degrees">Turn your phone 90 degrees</string>
     <string name="rotation_angle_default">Rotation Angle: 0°</string>
-    <string name="angle_description">Screen showing phone rotation instructions</string>
     <!-- shake -->
     <string name="shake_target_expression">Shake %1$s times!</string>
     <string name="shake_count_announcement">Shake count: %1$d</string>

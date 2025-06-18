@@ -92,16 +92,33 @@
                     android:text="Division"
                     android:textSize="18sp"/>
             </com.google.android.material.card.MaterialCardView>
-
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
-                android:id="@+id/cardTilerFrame"
+                android:id="@+id/cardPercentage"
                 android:contentDescription="Open Tiler Frame Activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Tiler Frame"/>
+                    android:text="Percentage"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-
+    <LinearLayout style="@style/RowStyle">
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardRemainder"
+                android:contentDescription="Open Tiler Frame Activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="Remainder"/>
+            </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            style="@style/LearningCardStyle"
+            android:id="@+id/cardTilerFrame"
+            android:contentDescription="Open Tiler Frame Activities">
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/CardText"
+                android:text="Story"/>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
+        </LinearLayout>
+
 </FrameLayout>

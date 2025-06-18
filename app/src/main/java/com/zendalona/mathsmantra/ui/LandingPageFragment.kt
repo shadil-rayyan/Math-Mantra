@@ -60,10 +60,10 @@ class LandingPageFragment : Fragment(),HintIconVisibilityController {
                 navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             }
         }
-//        binding.learningButton.setOnClickListener {
-//            Log.d("LandingPageFragment", "Learning button clicked")
-//            navigationListener?.loadFragment(UserGuideFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//        }
+        binding.learningButton.setOnClickListener {
+            Log.d("LandingPageFragment", "Learning button clicked")
+            navigationListener?.loadFragment(LearningFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        }
         binding.GameButton.setOnClickListener {
             Log.d("LandingPageFragment", "Game button clicked")
             navigationListener?.loadFragment(GameFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
