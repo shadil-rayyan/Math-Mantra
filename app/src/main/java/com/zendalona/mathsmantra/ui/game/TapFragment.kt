@@ -15,6 +15,7 @@ import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.mathsmantra.utility.common.*
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
@@ -137,7 +138,11 @@ class TapFragment : Fragment(), Hintable {
         VibrationUtils.vibrate(requireContext(), 100)
 
         tts.stop()
-        tts.speak(getString(R.string.tap_count_announcement, count))
+        if(AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext()))
+        {
+            tts.speak(getString(R.string.tap_count_announcement, count))
+
+        }
 
         val question = questions[index]
 

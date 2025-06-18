@@ -19,7 +19,6 @@ import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.ui.HintFragment
-import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
@@ -53,26 +52,10 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     private lateinit var compassDirections: Array<String>
 
-    // TTS and handler for speaking direction every 3 seconds if TalkBack enabled
-    private lateinit var tts: TTSUtility
-    private val speechHandler = Handler(Looper.getMainLooper())
-    private val speechRunnable = object : Runnable {
-        override fun run() {
-            if (isAdded && AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-                val direction = getCompassDirection(currentAzimuth)
-                if (direction != null) {
-                    tts.speak("Current direction is $direction")
-                }
-                speechHandler.postDelayed(this, 3000)
-            }
-        }
-    }
     private var currentAzimuth = 0f
 
-    // Handler and Runnable for 3-second hold check
     private val holdHandler = Handler(Looper.getMainLooper())
     private val holdRunnable = Runnable {
-        // User held correct direction for 3 seconds
         questionAnswered = true
         showResultDialog()
     }
@@ -80,9 +63,9 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
-        if (sensorManager != null) {
-            magnetometer = sensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-            accelerometer = sensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager?.let {
+            magnetometer = it.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+            accelerometer = it.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         }
     }
 
@@ -94,10 +77,8 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         binding = FragmentGameCompassBinding.inflate(inflater, container, false)
         compassDirections = requireContext().resources.getStringArray(R.array.compass_directions)
 
-        tts = TTSUtility(requireContext())
-
         loadQuestionsFromAssets()
-        generateNewQuestion() // start first
+        generateNewQuestion()
 
         return binding!!.root
     }
@@ -105,7 +86,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private fun loadQuestionsFromAssets() {
         rawQuestions.clear()
         val difficulty = getDifficulty(requireContext()).lowercase(Locale.getDefault())
-        val lang = LocaleHelper.getLanguage(context) ?: "en" // fallback to English
+        val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         val fileName = "$lang/game/compass/$difficulty.txt"
         Log.d("Compass", "Language: $lang, File: $fileName")
@@ -149,9 +130,9 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         }
 
         val raw = rawQuestions[currentIndex]
-        val parts: Array<String?> =
-            raw.replace("compass?", "").split("===".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
+        val parts = raw.replace("compass?", "")
+            .split("===".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
 
         if (parts.isNotEmpty()) currentTargetDirection = parts[0]!!.trim()
         if (parts.size >= 2) currentTimeLimit = parts[1]!!.trim().toInt()
@@ -159,7 +140,6 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         targetDirection = directionToDegrees(currentTargetDirection)
         questionAnswered = false
 
-        // Cancel any ongoing hold checks for new question
         holdHandler.removeCallbacks(holdRunnable)
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
@@ -183,23 +163,13 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     override fun onResume() {
         super.onResume()
-        if (sensorManager != null) {
-            sensorManager!!.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
-            sensorManager!!.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
-        }
-        // Start speech if TalkBack enabled
-        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            speechHandler.post(speechRunnable)
-        }
+        sensorManager?.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
+        sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
     }
 
     override fun onPause() {
         super.onPause()
-        if (sensorManager != null) {
-            sensorManager!!.unregisterListener(this)
-        }
-        tts.stop()
-        speechHandler.removeCallbacks(speechRunnable)
+        sensorManager?.unregisterListener(this)
         holdHandler.removeCallbacks(holdRunnable)
     }
 
@@ -242,17 +212,9 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
         binding!!.questionTv.text = questionText
-        binding!!.questionTv.announceForAccessibility(questionText)
+//        binding!!.questionTv.announceForAccessibility(questionText)
 
         checkIfHoldingCorrectDirection(actualAzimuth)
-
-        // Start or continue speech announcements if TalkBack enabled
-        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            speechHandler.removeCallbacks(speechRunnable)
-            speechHandler.post(speechRunnable)
-        } else {
-            speechHandler.removeCallbacks(speechRunnable)
-        }
     }
 
     private fun checkIfHoldingCorrectDirection(currentDegrees: Float) {
@@ -262,12 +224,10 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         if (diff > 180) diff = 360 - diff
 
         if (diff <= 22.5) {
-            // Start or continue the 3-second hold timer
             if (!holdHandler.hasCallbacks(holdRunnable)) {
                 holdHandler.postDelayed(holdRunnable, 3000)
             }
         } else {
-            // Outside tolerance, cancel timer if running
             holdHandler.removeCallbacks(holdRunnable)
         }
     }
@@ -317,8 +277,6 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        tts.shutdown()
-        speechHandler.removeCallbacks(speechRunnable)
         holdHandler.removeCallbacks(holdRunnable)
     }
 }
