@@ -71,16 +71,10 @@ class NumberLineFragment : Fragment(), Hintable {
 
         random = RandomValueGenerator()
 
-        gestureDetector = GestureDetector(requireContext(), SwipeGestureListener())
+//        gestureDetector = GestureDetector(requireContext(), SwipeGestureListener())
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.reset()
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.disableExploreByTouch(it)
-        }
-    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,27 +122,23 @@ class NumberLineFragment : Fragment(), Hintable {
     }
 
     private fun checkAnswer(start: Int, end: Int, position: Int) {
-        val questionKey = "$start-$end-$answer"
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0 // seconds
-        val totalTime = 15.0 // Set your question time limit here
+        val totalTime = 15.0 // question time limit
 
         if (position == answer) {
-            // Correct answer: reset counters and show dialog then new question
-            wrongAttemptsForCurrentQuestion = 0
-            lastQuestionKey = null
-            correctAnswerDialogCount = 0
-
+            // Correct answer: show result dialog and ask new question
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, true)
             context?.let { ctx ->
                 activity?.layoutInflater?.let { inflater ->
-                    DialogUtils.showResultDialog(ctx, inflater, tts!!, grade) {
+                    DialogUtils.showResultDialog(ctx, inflater, tts!!,grade) {
                         correctAnswerDesc = askNewQuestion(answer)
                     }
                 }
             }
         } else {
-            // Wrong answer: process wrong attempts and possible dialogs
-            onWrongAttempt(questionKey)
+            // Wrong answer: do nothing, no dialogs, no retries
+            // You may log or silently ignore
+            Log.d(TAG, "Wrong answer detected, ignoring without dialogs.")
         }
     }
 
@@ -266,36 +256,36 @@ class NumberLineFragment : Fragment(), Hintable {
     }
 
 
-    private inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
-
-        override fun onDown(e: MotionEvent): Boolean = true
-
-        override fun onFling(
-            e1: MotionEvent?,
-            e2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
-            if (e1 == null || e2 == null) return false
-
-            val diffX = e2.x - e1.x
-            val diffY = e2.y - e1.y
-
-            if (kotlin.math.abs(diffX) > kotlin.math.abs(diffY)) {
-                if (kotlin.math.abs(diffX) > SWIPE_THRESHOLD && kotlin.math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffX > 0) {
-                        Log.d(TAG, "Swipe Right detected in Fragment")
-                        viewModel.moveRight()
-                    } else {
-                        Log.d(TAG, "Swipe Left detected in Fragment")
-                        viewModel.moveLeft()
-                    }
-                    return true
-                }
-            }
-            return false
-        }
-    }
+//    private inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
+//
+//        override fun onDown(e: MotionEvent): Boolean = true
+//
+//        override fun onFling(
+//            e1: MotionEvent?,
+//            e2: MotionEvent,
+//            velocityX: Float,
+//            velocityY: Float
+//        ): Boolean {
+//            if (e1 == null || e2 == null) return false
+//
+//            val diffX = e2.x - e1.x
+//            val diffY = e2.y - e1.y
+//
+//            if (kotlin.math.abs(diffX) > kotlin.math.abs(diffY)) {
+//                if (kotlin.math.abs(diffX) > SWIPE_THRESHOLD && kotlin.math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+//                    if (diffX > 0) {
+//                        Log.d(TAG, "Swipe Right detected in Fragment")
+//                        viewModel.moveRight()
+//                    } else {
+//                        Log.d(TAG, "Swipe Left detected in Fragment")
+//                        viewModel.moveLeft()
+//                    }
+//                    return true
+//                }
+//            }
+//            return false
+//        }
+//    }
 
     override fun showHint() {
         val bundle = Bundle().apply {
@@ -308,17 +298,16 @@ class NumberLineFragment : Fragment(), Hintable {
             .addToBackStack(null)
             .commit()
     }
+    override fun onResume() {
+        super.onResume()
+        binding?.numberLineView?.onResume()
+    }
 
     override fun onPause() {
+        binding?.numberLineView?.onPause()
         super.onPause()
-        // Cancel any pending answer checks on pause
-        answerCheckRunnable?.let {
-            handler.removeCallbacks(it)
-        }
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.resetExploreByTouch(it)
-        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

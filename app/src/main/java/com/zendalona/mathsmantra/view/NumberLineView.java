@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 
 import com.zendalona.mathsmantra.R;
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper;
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils;
 
 public class NumberLineView extends View {
@@ -104,5 +105,17 @@ public class NumberLineView extends View {
         if (talkBackEnabled) {
             announceForAccessibility("Current position: " + currentPosition);
         }
+
     }
+//    public void onResume() {
+//        Log.d(TAG, "DrawingView onResume called: disabling Explore-by-Touch");
+//        // Disable Explore-by-Touch passthrough region so touch events work properly
+//        AccessibilityHelper.disableExploreByTouch(AccessibilityHelper.getAccessibilityService());
+//    }
+//
+//    public void onPause() {
+//        Log.d(TAG, "DrawingView onPause called: resetting Explore-by-Touch");
+//        // Reset Explore-by-Touch passthrough region
+//        AccessibilityHelper.resetExploreByTouch(AccessibilityHelper.getAccessibilityService());
+//    }
 }
