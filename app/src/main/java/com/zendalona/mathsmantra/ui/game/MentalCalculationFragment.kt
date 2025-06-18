@@ -1,4 +1,3 @@
-// Updated MentalCalculationFragment.kt
 package com.zendalona.mathsmantra.ui.game
 
 import android.media.MediaPlayer
@@ -20,8 +19,10 @@ import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
-import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.utility.common.TTSHelper
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
+import com.zendalona.mathsmantra.ui.HintFragment
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -99,7 +100,9 @@ class MentalCalculationFragment : Fragment(), Hintable {
 
     private fun loadNextQuestion() {
         if (currentQuestionIndex >= questionList.size) {
-            tts.speak(getString(R.string.shake_game_over))
+            if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                tts.speak(getString(R.string.shake_game_over))
+            }
             endGameWithScore()
             return
         }
@@ -107,6 +110,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
         wrongAttempts = 0
         val question = questionList[currentQuestionIndex]
         correctAnswer = question.answer
+
         binding?.answerEt?.setText("")
         binding?.mentalCalculation?.text = ""
         binding?.answerEt?.isEnabled = false
@@ -115,7 +119,14 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val tokens = question.expression.split(" ")
         startTime = System.currentTimeMillis()
 
-//        tts.speak("Solve " + question.expression.replace("+", " plus").replace("-", " minus").replace("*", " times").replace("/", " divided by"))
+        // ✨ Speak full question after 1s if TalkBack is on
+        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+            val spokenText = TTSHelper.formatMathText(question.expression)
+            handler.postDelayed({
+                tts.speak("Solve $spokenText")
+            }, 1000)  // 1 second delay
+        }
+
         revealTokens(tokens, 0)
     }
 
@@ -130,13 +141,14 @@ class MentalCalculationFragment : Fragment(), Hintable {
         }
 
         val token = tokens[index].replace("/", "÷")
+
+        // ⛔️ Do NOT announce via accessibility
         binding?.mentalCalculation?.apply {
             text = token
-            contentDescription = token
-            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
-            isFocusable = true
-            isFocusableInTouchMode = true
-            postDelayed({ requestFocus(); announceForAccessibility(token) }, 200)
+            contentDescription = null
+            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_NONE
+            isFocusable = false
+            isFocusableInTouchMode = false
         }
 
         handler.postDelayed({
@@ -160,7 +172,9 @@ class MentalCalculationFragment : Fragment(), Hintable {
             val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
 
             if (isCorrect) {
-                tts.speak("Correct")
+                if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                    tts.speak("Correct")
+                }
                 if (question.celebration) {
                     MediaPlayer.create(context, R.raw.bell_ring)?.start()
                 }
@@ -171,7 +185,9 @@ class MentalCalculationFragment : Fragment(), Hintable {
             } else {
                 wrongAttempts++
                 if (wrongAttempts >= 3) {
-//                    tts.speak(getString(R.string.shake_game_over))
+                    if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                        tts.speak(getString(R.string.shake_game_over))
+                    }
                     endGameWithScore()
                 } else {
                     DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
