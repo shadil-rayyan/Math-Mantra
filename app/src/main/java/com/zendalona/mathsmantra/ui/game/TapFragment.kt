@@ -118,7 +118,7 @@ class TapFragment : Fragment(), Hintable {
         questionStartTime = System.currentTimeMillis()
 
         val instructionText = getString(R.string.tap_target_expression, question.expression)
-        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")} times"
+        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")} "
 
         binding?.tapMeTv?.apply {
             text = instructionText

@@ -114,7 +114,7 @@ class ShakeFragment : Fragment(), Hintable {
         // Visual + TTS Instruction
         val instruction = getString(R.string.shake_target_expression, question.expression)
         val speakText = question.expression.replace("+", " plus ")
-        val speakInstruction = "Shake $speakText times"
+        val speakInstruction = "Shake $speakText "
 
         binding?.ringMeTv?.apply {
             text = instruction
