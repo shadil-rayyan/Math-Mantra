@@ -11,6 +11,8 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -76,11 +78,15 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     ): View? {
         binding = FragmentGameCompassBinding.inflate(inflater, container, false)
         compassDirections = requireContext().resources.getStringArray(R.array.compass_directions)
-
+        setHasOptionsMenu(true)
         loadQuestionsFromAssets()
         generateNewQuestion()
 
         return binding!!.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun loadQuestionsFromAssets() {

@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -40,6 +42,8 @@ class SterioFragment : Fragment(), Hintable {
         ttsUtility = TTSUtility(requireContext())
         audioPlayerUtility = AudioPlayerUtility()
         random = RandomValueGenerator()
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+
 
         setAccessibilityDescriptions()
         generateNewQuestion()
@@ -57,6 +61,10 @@ class SterioFragment : Fragment(), Hintable {
         }
 
         return binding!!.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun generateNewQuestion() {

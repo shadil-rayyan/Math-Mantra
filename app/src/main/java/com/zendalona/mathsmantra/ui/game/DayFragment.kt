@@ -2,6 +2,8 @@ package com.zendalona.mathsmantra.ui.game
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -36,9 +38,12 @@ class DayFragment : Fragment(), Hintable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
-
-
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
         return binding.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

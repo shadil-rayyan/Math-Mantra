@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +68,8 @@ class TapFragment : Fragment(), Hintable {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentGameTapBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+
 
         binding?.root?.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -76,6 +80,10 @@ class TapFragment : Fragment(), Hintable {
 
         startGame()
         return binding!!.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun loadQuestionsFromAssets(lang: String, difficulty: String): List<TapQuestion> {

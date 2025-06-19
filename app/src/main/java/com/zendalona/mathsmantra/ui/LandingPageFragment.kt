@@ -23,9 +23,8 @@ interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
 }
 
-class LandingPageFragment : Fragment(),HintIconVisibilityController {
+class LandingPageFragment : Fragment() {
 
-    override fun shouldShowHintIcon() = false
 
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!

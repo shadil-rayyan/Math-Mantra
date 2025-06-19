@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.accessibility.AccessibilityManager
@@ -40,6 +42,7 @@ class DrawingFragment : Fragment(), Hintable {
     ): View? {
         binding = FragmentGameDrawingBinding.inflate(inflater, container, false)
         val context = requireContext()
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
 
         accessibilityManager =
             context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
@@ -59,6 +62,10 @@ class DrawingFragment : Fragment(), Hintable {
         loadNextShape()
 
         return binding!!.getRoot()
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun loadShapesFromAssets(lang: String?, difficulty: String): MutableList<String?> {

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +55,8 @@ class TouchScreenFragment : Fragment(), Hintable {
         lang = LocaleHelper.getLanguage(requireContext())
         difficulty = DifficultyPreferences.getDifficulty(requireContext())
         parsedTouchList = loadTouchQuestionsFromAssets(lang, difficulty)
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+
     }
 
     override fun onCreateView(
@@ -63,6 +67,11 @@ class TouchScreenFragment : Fragment(), Hintable {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
         startGame()
         return binding!!.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun loadTouchQuestionsFromAssets(lang: String, difficulty: String): List<TouchQuestion> {

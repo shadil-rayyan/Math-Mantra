@@ -22,7 +22,7 @@ import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
 import com.zendalona.mathsmantra.model.HintIconVisibilityController
 
-class SettingFragment : Fragment(),HintIconVisibilityController {
+class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -51,6 +51,7 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         prefsEditor = prefs.edit()
 
@@ -59,6 +60,8 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
 
         val toolbar = requireActivity().findViewById<MaterialToolbar>(R.id.toolbar)
         (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        toolbar?.menu?.findItem(R.id.action_hint)?.isVisible = false
+
 
         // Show the back arrow (up button)
         val supportActionBar = (requireActivity() as AppCompatActivity).supportActionBar
@@ -252,7 +255,5 @@ class SettingFragment : Fragment(),HintIconVisibilityController {
         ttsUtility.shutdown()
     }
 
-    override fun shouldShowHintIcon(): Boolean {
-        return false // or true, depending on your logic
-    }
+
 }

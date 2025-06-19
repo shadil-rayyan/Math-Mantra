@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -72,7 +74,14 @@ class MentalCalculationFragment : Fragment(), Hintable {
             } else false
         }
 
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+
+
         return binding!!.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun loadQuestionsFromAssets(lang: String, difficulty: String): List<MentalQuestion> {

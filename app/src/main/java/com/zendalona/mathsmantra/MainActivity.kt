@@ -86,10 +86,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
 
 
     // Inflate toolbar menu
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.top_menu, menu)
-        return true
-    }
+
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 

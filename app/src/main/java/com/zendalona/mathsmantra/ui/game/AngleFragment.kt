@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -47,10 +49,14 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
 
         rotationSensorUtility = RotationSensorUtility(requireContext(), this)
         angleUpdateHandler = Handler(Looper.getMainLooper())
-
-        
+        setHasOptionsMenu(true)
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     override fun onDestroyView() {

@@ -6,6 +6,8 @@ import android.os.Looper
 import android.util.Log
 import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -82,6 +84,7 @@ class NumberLineFragment : Fragment(), Hintable {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameNumberLineBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
         setupObservers()
         setupUI()
         correctAnswerDesc = askNewQuestion(0)
@@ -93,6 +96,10 @@ class NumberLineFragment : Fragment(), Hintable {
         }
 
         return binding!!.root
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
     private fun setupObservers() {
