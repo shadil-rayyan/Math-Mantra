@@ -8,7 +8,6 @@ Launching the Game:
 
 Once you start the game, you will be asked to rotate your device. The game uses the rotation sensor of your device to track the angle you're facing.
 
-
 Initial Instructions:
 
 After launching the game, you will hear an announcement saying something like, "Rotate your device to the target angle."
@@ -36,7 +35,7 @@ Correcting Your Angle:
 
 The game will check if the angle you are currently holding matches the target angle.
 
-If your current angle is within 10 degrees of the target angle, you will hear a message like:
+If your current angle is within 5 degrees of the target angle, you will hear a message like:
 "Correct! You’ve reached the target angle!"
 
 The game will then show you a result dialog with a celebratory sound (such as a cheering or a correct answer sound) if you are successful.

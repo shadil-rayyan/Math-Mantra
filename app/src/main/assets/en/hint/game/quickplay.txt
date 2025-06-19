@@ -1,10 +1,7 @@
-"QuickPay - How to Play
-How to Play the QuickPay Number Game
-
-Welcome to the QuickPay Number Game! This game helps you practice adding numbers with clear spoken questions.
+Welcome to the  This Mode ! This game helps you practice adding numbers with clear spoken questions.
 
 Objective of the Game
-You will hear or see a story problem involving QuickPay. Your task is to find the total sum of two numbers and enter the correct answer.
+You will hear or see a story problem . Your task is to find the total sum of two numbers and enter the correct answer.
 
 Gameplay Instructions
 

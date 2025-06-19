@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.zendalona.mathsmatra"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -47,7 +47,9 @@ dependencies {
     implementation(libs.androidx.core.ktx.v1101)
     implementation(libs.androidx.lifecycle.runtime.ktx.v261)
     implementation(libs.androidx.activity)
-    implementation("com.google.mlkit:digital-ink-recognition:18.0.0")
+    implementation ("org.apache.poi:poi:5.2.3")
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
+
 
 
     implementation(libs.androidx.constraintlayout)

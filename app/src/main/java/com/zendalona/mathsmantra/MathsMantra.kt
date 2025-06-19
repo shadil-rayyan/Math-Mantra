@@ -7,6 +7,10 @@ import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 class MathsMantra : Application() {
     override fun onCreate() {
         super.onCreate()
+        System.setProperty("javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl")
+        System.setProperty("javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl")
+        System.setProperty("javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl")
+
 
         // Apply saved locale before anything else
         LocaleHelper.onAttach(this)

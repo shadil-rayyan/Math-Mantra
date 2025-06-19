@@ -33,11 +33,11 @@ You will hear:
 This lets you try again if you make a mistake or want to improve your drawing.
 
 ✅ Submitting Your Drawing
-When you finish your drawing, press the Submit button.
+When you finish your drawing, press the next button.
 
 The game will confirm your submission with a message like:
 
-“Correct!”
+“moving to the next question!”
 
 A celebratory animation or sound may also play.
 
@@ -70,7 +70,6 @@ After each submission, the game provides spoken feedback.
 Make sure your device’s volume is up, or use headphones for the best experience.
 
 👨‍🦯 Accessibility Features
-The game supports screen readers and announces all instructions and results.
 
 Buttons are large and easy to find by touch.
 

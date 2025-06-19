@@ -48,6 +48,8 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         rotationSensorUtility = RotationSensorUtility(requireContext(), this)
         angleUpdateHandler = Handler(Looper.getMainLooper())
 
+        
+
         return view
     }
 

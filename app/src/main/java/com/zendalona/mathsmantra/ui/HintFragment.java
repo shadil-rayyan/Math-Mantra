@@ -14,26 +14,18 @@ import com.zendalona.mathsmantra.databinding.FragmentHintBinding;
 import com.zendalona.mathsmantra.model.HintIconVisibilityController;
 import com.zendalona.mathsmantra.utility.common.TTSUtility;
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import com.zendalona.mathsmantra.utility.excel.ExcelHintReader;
 
 public class HintFragment extends Fragment implements HintIconVisibilityController {
 
     private FragmentHintBinding binding;
     private TTSUtility tts;
-    private ArrayList<String> theoryContents;
-    private int currentIndex = 0;
-    private String lang;
-    private String filepath;
 
     public HintFragment() {}
 
     @Override
     public boolean shouldShowHintIcon() {
-        return false;  // Hint icon hidden for this fragment
+        return false;
     }
 
     @Override
@@ -47,53 +39,22 @@ public class HintFragment extends Fragment implements HintIconVisibilityControll
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHintBinding.inflate(inflater, container, false);
 
-        Bundle args = getArguments();
-        filepath = (args != null) ? args.getString("filepath", "en/hint/default.txt") : "en/hint/default.txt";
+        String mode = getArguments() != null ? getArguments().getString("mode", "default") : "default";
+        String language = LocaleHelper.getLanguage(requireContext());
+        if (TextUtils.isEmpty(language)) language = "en";
 
-        String fullHintText = loadHintFileAsText(filepath);
-        binding.theoryText.setText(fullHintText);
-        tts.speak(fullHintText);
-
-        updateTheoryContent();
-
-        binding.repeatButton.setOnClickListener(v -> tts.speak(binding.theoryText.getText().toString()));
-
-        return binding.getRoot();
-    }
-
-    private void updateTheoryContent() {
-        if (theoryContents == null || theoryContents.isEmpty()) return;
-        String content = theoryContents.get(currentIndex);
-        binding.theoryText.setText(content);
-        tts.speak(content);
-    }
-
-    private String loadHintFileAsText(String filepath) {
-        lang = LocaleHelper.getLanguage(requireContext());
-        if (TextUtils.isEmpty(lang)) lang = "en";
-
-        String fullPath = lang + "/" + filepath;
-        StringBuilder builder = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(requireContext().getAssets().open(fullPath)))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                builder.append(line).append("\n");  // preserve line breaks
-            }
-
-        } catch (IOException e) {
-            showToast("Failed to load hints from: " + fullPath);
-            e.printStackTrace();
-            return getString(R.string.hint_fallback);
+        String hintText = ExcelHintReader.getHintFromExcel(requireContext(), language, mode);
+        if (TextUtils.isEmpty(hintText)) {
+            hintText = getString(R.string.hint_fallback);
         }
 
-        return builder.toString().trim();
-    }
+        binding.theoryText.setText(hintText);
+        tts.speak(hintText);
 
-    private void showToast(String msg) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+        binding.repeatButton.setOnClickListener(v ->
+                tts.speak(binding.theoryText.getText().toString()));
+
+        return binding.getRoot();
     }
 
     @Override
