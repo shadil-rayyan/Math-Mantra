@@ -155,7 +155,7 @@ class DrawingFragment : Fragment(), Hintable {
     }
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/drawing.txt")
+            putString("mode", "drawing") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

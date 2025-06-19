@@ -140,7 +140,7 @@ class DayFragment : Fragment(), Hintable {
     }
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/day.txt")
+            putString("mode", "day") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

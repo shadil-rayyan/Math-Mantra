@@ -164,7 +164,7 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/angle.txt")
+            putString("mode", "angle") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

@@ -262,7 +262,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/compass.txt")
+            putString("mode", "compass") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

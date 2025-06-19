@@ -233,7 +233,7 @@ class TapFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/tap.txt")
+            putString("mode", "tap") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
@@ -242,7 +242,6 @@ class TapFragment : Fragment(), Hintable {
             .addToBackStack(null)
             .commit()
     }
-
     override fun onResume() {
         super.onResume()
         AccessibilityHelper.getAccessibilityService()?.let {

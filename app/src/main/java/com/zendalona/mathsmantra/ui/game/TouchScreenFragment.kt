@@ -176,11 +176,9 @@ class TouchScreenFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/touch.txt")
+            putString("mode", "touch") // Pass only the mode
         }
-        val hintFragment = HintFragment().apply {
-            arguments = bundle
-        }
+        val hintFragment = HintFragment().apply { arguments = bundle }
 
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)

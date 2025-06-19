@@ -203,7 +203,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("filepath", "hint/game/mentalcalculation.txt")
+            putString("mode", "mental") // Pass only the mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
