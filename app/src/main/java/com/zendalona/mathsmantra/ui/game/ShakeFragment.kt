@@ -4,41 +4,37 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameShakeBinding
 import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.ui.HintFragment
 import com.zendalona.mathsmantra.utility.AccelerometerUtility
-import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.mathsmantra.utility.common.*
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.util.*
 
 class ShakeFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameShakeBinding? = null
     private lateinit var accelerometerUtility: AccelerometerUtility
     private lateinit var tts: TTSUtility
+
     private var count = 0
     private var target = 0
     private var isShakingAllowed = true
     private val shakeHandler = Handler()
     private val gameHandler = Handler(Looper.getMainLooper())
-    private var index = 0
 
+    private var index = 0
     private var retryCount = 0
     private var failCountOnQuestion = 0
     private var totalFailedQuestions = 0
@@ -48,67 +44,53 @@ class ShakeFragment : Fragment(), Hintable {
     private lateinit var lang: String
     private lateinit var difficulty: String
 
-    private data class ShakeQuestion(
-        val expression: String,
-        val answer: Int,
-        val timeLimit: Int = 20,
-        val celebration: Boolean = false
-    )
-
-    private var parsedShakeList: List<ShakeQuestion> = emptyList()
+    private var parsedShakeList: List<GameQuestion> = emptyList()
     private var questionStartTime: Long = 0
+
+    companion object {
+        private const val TAG = "ShakeFragment"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate called")
+
         lang = LocaleHelper.getLanguage(requireContext())
         difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        Log.d(TAG, "Language: $lang, Difficulty: $difficulty")
 
         tts = TTSUtility(requireContext())
         accelerometerUtility = AccelerometerUtility(requireContext())
-        parsedShakeList = loadShakeQuestionsFromAssets(lang, difficulty)
-        if (parsedShakeList.isEmpty()) {
-            parsedShakeList = listOf(
-                ShakeQuestion("2+1", 3),
-                ShakeQuestion("1+2+3", 6)
-            )
-        }
+        parsedShakeList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "shake", difficulty)
+        Log.d(TAG, "Loaded ${parsedShakeList.size} questions")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        Log.d(TAG, "onCreateView called")
         binding = FragmentGameShakeBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+        setHasOptionsMenu(true)
         startGame()
         return binding!!.root
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
-    }
-
-    private fun loadShakeQuestionsFromAssets(lang: String, difficulty: String): List<ShakeQuestion> {
-        val questions = mutableListOf<ShakeQuestion>()
-        val fileName = "$lang/game/shake/${difficulty.lowercase(Locale.ROOT)}.txt"
-
-        try {
-            val reader = BufferedReader(InputStreamReader(requireContext().assets.open(fileName)))
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                line?.trim()?.takeIf { it.isNotEmpty() }?.let {
-                    val parts = it.split("→")
-                    val (questionText, answer) = QuestionParser.parseExpression(parts[0])
-                    val timeLimit = parts.getOrNull(1)?.toIntOrNull() ?: 20
-                    val celebration = parts.getOrNull(2)?.toIntOrNull() == 1
-                    questions.add(ShakeQuestion(questionText, answer, timeLimit, celebration))
-                }
-            }
-        } catch (e: IOException) {
-            Toast.makeText(context, "Error loading shake questions: $fileName", Toast.LENGTH_SHORT).show()
-        }
-
-        return questions
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun startGame() {
+        Log.d(TAG, "Starting game at index: $index")
+
+        if (parsedShakeList.isEmpty()) {
+            Log.w(TAG, "No questions available")
+            Toast.makeText(requireContext(), "No questions available", Toast.LENGTH_LONG).show()
+            tts.speak("No questions available.")
+            Handler(Looper.getMainLooper()).post {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+            return
+        }
+
         count = 0
         firstShakeTime = 0L
         answerChecked = false
@@ -117,18 +99,17 @@ class ShakeFragment : Fragment(), Hintable {
         val question = parsedShakeList[index % parsedShakeList.size]
         target = question.answer
         questionStartTime = System.currentTimeMillis()
+        Log.d(TAG, "Question: ${question.expression}, Target: $target")
 
-        // Visual + TTS Instruction
         val instruction = getString(R.string.shake_target_expression, question.expression)
         val speakText = question.expression.replace("+", " plus ")
-        val speakInstruction = "Shake $speakText "
+        val speakInstruction = "Shake $speakText"
 
         binding?.ringMeTv?.apply {
             text = instruction
             contentDescription = speakInstruction
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
             isFocusable = true
-            isFocusableInTouchMode = true
             postDelayed({ requestFocus(); announceForAccessibility(speakInstruction) }, 500)
         }
 
@@ -136,90 +117,53 @@ class ShakeFragment : Fragment(), Hintable {
     }
 
     private fun onShakeDetected() {
-        if (!isShakingAllowed) return
+        if (!isShakingAllowed) {
+            Log.d(TAG, "Shake ignored, not allowed yet")
+            return
+        }
 
         isShakingAllowed = false
         shakeHandler.postDelayed({ isShakingAllowed = true }, 500)
 
         count++
+        Log.d(TAG, "Shake detected. Count: $count")
         binding?.ringCount?.text = count.toString()
-
         tts.stop()
-        if(AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext()))
-        {
-            val countText = getString(R.string.shake_count_announcement, count)
-            tts.speak(countText)
+
+        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+            tts.speak(getString(R.string.shake_count_announcement, count))
         }
 
-
         if (firstShakeTime == 0L) {
+            Log.d(TAG, "First shake. Starting timer to check answer")
             firstShakeTime = System.currentTimeMillis()
             answerChecked = false
 
-            // Schedule 2-second timer to evaluate answer
-            gameHandler.postDelayed({
-                checkAnswer()
-            }, 3000)
         }
 
-        // If count already above target and answer not checked, force wrong answer immediately
-        if (count > target && !answerChecked) {
-            checkAnswer(forceWrong = true)
+        // Immediately fail if count exceeds target
+        if (count == target && !answerChecked) {
+            Log.d(TAG, "Target reached. Checking answer immediately")
+            checkAnswer()
         }
+
     }
 
     private fun checkAnswer(forceWrong: Boolean = false) {
-        if (answerChecked) return
+        if (answerChecked) {
+            Log.d(TAG, "Answer already checked")
+            return
+        }
 
-        val question = parsedShakeList[index % parsedShakeList.size]
         answerChecked = true
+        val question = parsedShakeList[index % parsedShakeList.size]
 
-        // If forced wrong or count > target → wrong answer
-        if (forceWrong || count > target) {
-            retryCount++
-            failCountOnQuestion++
+        // Correct only if count == target and no forced wrong
+        val isCorrect = !forceWrong && count == target
 
-            if (failCountOnQuestion >= 6) {
-                // Move to next question after 6 fails on current question
-                totalFailedQuestions++
-                retryCount = 0
-                failCountOnQuestion = 0
+        if (isCorrect) {
+            Log.d(TAG, "Correct answer")
 
-
-                if (totalFailedQuestions >= 3) {
-                    tts.speak(getString(R.string.shake_game_over))
-                    endGameWithScore()
-                    return
-                } else {
-                    val nextMessage = getString(R.string.moving_to_next_question)
-                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, nextMessage) {
-                        // ...
-                    }
-                    return
-                }
-            }
-
-            if (retryCount >= 3) {
-                // Show correct answer dialog but DO NOT reload question or move next
-                retryCount = 0
-                val correctAnswerMessage = "${question.answer}"
-                DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, correctAnswerMessage) {}
-            } else {
-                // Show retry dialog to allow another attempt
-                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
-                    // Reset for retry
-                    count = 0
-                    firstShakeTime = 0L
-                    answerChecked = false
-                    binding?.ringCount?.text = getString(R.string.shake_count_initial)
-                    val speakText = question.expression.replace("+", " plus ")
-                    val speakInstruction = "Shake $speakText times"
-                    tts.speak(speakInstruction)
-                }
-            }
-
-        } else if (count == target) {
-            // Correct answer
             retryCount = 0
             failCountOnQuestion = 0
             totalFailedQuestions = 0
@@ -233,27 +177,59 @@ class ShakeFragment : Fragment(), Hintable {
 
             val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
             val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), true)
+            Log.d(TAG, "Answered in $elapsedSeconds seconds. Grade: $grade")
 
             DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
                 nextOrEnd()
             }
         } else {
-            // count < target, do nothing (allow user to keep shaking)
-            // Reset answerChecked to false so checkAnswer can be called again later if needed
-            answerChecked = false
+            Log.w(TAG, "Wrong answer. Count: $count, Target: $target, ForceWrong: $forceWrong")
+
+            retryCount++
+            failCountOnQuestion++
+
+            if (failCountOnQuestion >= 6) {
+                totalFailedQuestions++
+                Log.w(TAG, "6 failures on question. Total failed: $totalFailedQuestions")
+
+                if (totalFailedQuestions >= 3) {
+                    Log.e(TAG, "Game over due to too many failures")
+                    tts.speak(getString(R.string.shake_game_over))
+                    endGameWithScore()
+                    return
+                } else {
+                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, getString(R.string.moving_to_next_question)) {}
+                    return
+                }
+            }
+
+            if (retryCount >= 3) {
+                Log.d(TAG, "Showing correct answer after 3 retries: ${question.answer}")
+                DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, "${question.answer}") {}
+            } else {
+                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
+                    Log.d(TAG, "Retrying current question")
+                    count = 0
+                    firstShakeTime = 0L
+                    answerChecked = false
+                    binding?.ringCount?.text = getString(R.string.shake_count_initial)
+                    tts.speak("Shake ${question.expression.replace("+", " plus ")} times")
+                }
+            }
         }
 
-        // Reset count and timers only if answer is correct or forced wrong
         if (answerChecked) {
             count = 0
             firstShakeTime = 0L
         }
     }
 
-
     private fun nextOrEnd() {
         index++
+        Log.d(TAG, "Next or end. New index: $index")
+
         if (index >= parsedShakeList.size) {
+            Log.d(TAG, "All questions done. Ending game.")
             tts.speak(getString(R.string.shake_game_over))
             endGameWithScore()
         } else {
@@ -263,9 +239,8 @@ class ShakeFragment : Fragment(), Hintable {
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "shake") // Pass only the mode
-        }
+        Log.d(TAG, "Hint requested")
+        val bundle = Bundle().apply { putString("mode", "shake") }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
         requireActivity().supportFragmentManager.beginTransaction()
@@ -274,11 +249,12 @@ class ShakeFragment : Fragment(), Hintable {
             .commit()
     }
 
-
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume")
         accelerometerUtility.registerListener()
         isShakingAllowed = true
+
         shakeHandler.postDelayed(object : Runnable {
             override fun run() {
                 if (isVisible && accelerometerUtility.isDeviceShaken()) {
@@ -291,6 +267,7 @@ class ShakeFragment : Fragment(), Hintable {
 
     override fun onPause() {
         super.onPause()
+        Log.d(TAG, "onPause")
         accelerometerUtility.unregisterListener()
         shakeHandler.removeCallbacksAndMessages(null)
         gameHandler.removeCallbacksAndMessages(null)
@@ -299,6 +276,7 @@ class ShakeFragment : Fragment(), Hintable {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Log.d(TAG, "onDestroyView")
         binding = null
         tts.shutdown()
     }

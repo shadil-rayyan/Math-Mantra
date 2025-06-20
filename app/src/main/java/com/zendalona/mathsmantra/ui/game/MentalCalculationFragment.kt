@@ -128,7 +128,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val tokens = question.expression.split(" ")
         startTime = System.currentTimeMillis()
 
-        // ✨ Speak full question after 1s if TalkBack is on
+        // ✨ Speak full questions after 1s if TalkBack is on
         if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
             val spokenText = TTSHelper.formatMathText(question.expression)
             handler.postDelayed({

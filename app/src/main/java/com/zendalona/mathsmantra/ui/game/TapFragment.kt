@@ -178,7 +178,7 @@ class TapFragment : Fragment(), Hintable {
         val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
 
         if (isCorrect) {
-//            if (question.celebration) {
+//            if (questions.celebration) {
 //                MediaPlayer.create(requireContext(), R.raw.bell_ring)?.apply {
 //                    setOnCompletionListener { release() }
 //                    start()

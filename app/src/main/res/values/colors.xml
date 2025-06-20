@@ -5,7 +5,7 @@
     <color name="light_purple_button">#6C5DD3</color> <!-- Used in Quick Play, Learning, Game Mode buttons -->
     <color name="light_purple_button_text">#FFFFFF</color>
 
-    <!-- secondary colour  activity bar top and text for question insdie the surface -->
+    <!-- secondary colour  activity bar top and text for questions insdie the surface -->
     <color name="light_activity_bar">#FFFFFF</color>
     <color name="light_activity_bar_text">#FFFFFF</color>
 

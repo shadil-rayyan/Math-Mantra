@@ -74,7 +74,7 @@ class SterioFragment : Fragment(), Hintable {
         correctAnswer = num2- num1
 
         binding?.answerEt?.setText("")
-        announce("A new question is ready. Tap 'Read the Question' to listen.")
+        announce("A new questions is ready. Tap 'Read the Question' to listen.")
     }
 
     private fun readQuestionAloud() {
@@ -150,7 +150,7 @@ class SterioFragment : Fragment(), Hintable {
     }
 
     private fun setAccessibilityDescriptions() {
-        binding?.readQuestionBtn?.contentDescription = "Read question aloud."
+        binding?.readQuestionBtn?.contentDescription = "Read questions aloud."
         binding?.answerEt?.contentDescription = "Answer input field."
         binding?.submitAnswerBtn?.contentDescription = "Submit your answer."
     }

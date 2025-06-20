@@ -105,7 +105,7 @@ class QuickPlayFragment : Fragment(), Hintable {
                 if (line.isNotBlank() && line.split("===").size >= 3) {
                     rawQuestions.add(line.trim())
                 } else {
-                    Log.d("QuickPlayFragment", "Skipping invalid question line: $line")
+                    Log.d("QuickPlayFragment", "Skipping invalid questions line: $line")
                 }
             }
             Log.d("QuickPlayFragment", "Loaded ${rawQuestions.size} valid questions")
@@ -131,11 +131,11 @@ class QuickPlayFragment : Fragment(), Hintable {
         }
 
         val rawLine = rawQuestions[currentIndex]
-        Log.d("QuickPlayFragment", "Loading question $currentIndex: rawLine=$rawLine")
+        Log.d("QuickPlayFragment", "Loading questions $currentIndex: rawLine=$rawLine")
 
         val parts = rawLine.split("===")
         if (parts.size < 3) {
-            Log.w("QuickPlayFragment", "Invalid question format at index $currentIndex")
+            Log.w("QuickPlayFragment", "Invalid questions format at index $currentIndex")
             loadNextQuestion()
             return
         }
@@ -143,10 +143,10 @@ class QuickPlayFragment : Fragment(), Hintable {
         val metadata = parts[0].trim()   // e.g. "add:4+3"
         val timeLimit = parts[1].trim().toIntOrNull() ?: 20
 
-        // Generate story question text and get correct answer
+        // Generate story questions text and get correct answer
         val (questionText, correctAnswer) = StoryQuestionGenerator.generateStoryQuestion(requireContext(), metadata)
 
-        Log.d("QuickPlayFragment", "Generated story question: $questionText, correctAnswer: $correctAnswer")
+        Log.d("QuickPlayFragment", "Generated story questions: $questionText, correctAnswer: $correctAnswer")
 
         if (questionList.size > currentIndex) {
             questionList[currentIndex] = questionText to correctAnswer
@@ -156,8 +156,8 @@ class QuickPlayFragment : Fragment(), Hintable {
 
         binding.questionTv.text = questionText
         val spokenQuestion = TTSHelper.formatMathText(questionText)
-        ttsUtility.speak(spokenQuestion)
-        Log.d("QuickPlayFragment", "Spoke question")
+//        ttsUtility.speak(spokenQuestion)
+        Log.d("QuickPlayFragment", "Spoke questions")
 
         binding.answerEt.text?.clear()
 
@@ -215,7 +215,7 @@ class QuickPlayFragment : Fragment(), Hintable {
             } else {
                 totalScore += GradingUtils.getPointsForGrade("Wrong Answer")
                 wrongQuestionsSet.add(currentIndex)
-                Log.d("QuickPlayFragment", "Max attempts reached for question $currentIndex. Correct answer: $correctAnswer")
+                Log.d("QuickPlayFragment", "Max attempts reached for questions $currentIndex. Correct answer: $correctAnswer")
 
                 val msg = "Wrong! The correct answer is $correctAnswer"
                 DialogUtils.showRetryDialog(

@@ -23,7 +23,7 @@ object StoryQuestionGenerator {
      * - Return Pair(questionText, correctAnswer)
      */
     fun generateStoryQuestion(context: Context, rawLine: String): Pair<String, Int> {
-        Log.d(TAG, "Generating question for rawLine: $rawLine")
+        Log.d(TAG, "Generating questions for rawLine: $rawLine")
 
         val parts = rawLine.split("?")
         if (parts.size < 2) {
@@ -74,7 +74,7 @@ object StoryQuestionGenerator {
             Log.e(TAG, "Error formatting story template with numbers: $numbers", e)
             "$parsedExpression = ?"
         }
-        Log.d(TAG, "Final question text: $questionText")
+        Log.d(TAG, "Final questions text: $questionText")
 
         return questionText to correctAnswer
     }

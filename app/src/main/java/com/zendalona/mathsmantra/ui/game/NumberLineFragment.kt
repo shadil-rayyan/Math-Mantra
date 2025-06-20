@@ -50,14 +50,14 @@ class NumberLineFragment : Fragment(), Hintable {
 
     private var answerCheckRunnable: Runnable? = null
 
-    // Track wrong attempts per question key (e.g. start-end-answer string)
+    // Track wrong attempts per questions key (e.g. start-end-answer string)
     private var wrongAttemptsForCurrentQuestion = 0
     private var lastQuestionKey: String? = null
 
-    // Track how many times the correct answer dialog was shown for the current question
+    // Track how many times the correct answer dialog was shown for the current questions
     private var correctAnswerDialogCount = 0
 
-    // Track question start time for grading
+    // Track questions start time for grading
     private var questionStartTime: Long = 0L
     private var fullyFailedQuestionCount = 0
 
@@ -130,10 +130,10 @@ class NumberLineFragment : Fragment(), Hintable {
 
     private fun checkAnswer(start: Int, end: Int, position: Int) {
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0 // seconds
-        val totalTime = 15.0 // question time limit
+        val totalTime = 15.0 // questions time limit
 
         if (position == answer) {
-            // Correct answer: show result dialog and ask new question
+            // Correct answer: show result dialog and ask new questions
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, true)
             context?.let { ctx ->
                 activity?.layoutInflater?.let { inflater ->
@@ -173,7 +173,7 @@ class NumberLineFragment : Fragment(), Hintable {
                     DialogUtils.showCorrectAnswerDialog(ctx, inflater, tts!!, correctAnswerText) {
                         when {
                             totalWrongAttemptsForCurrentQuestion < 6 -> {
-                                // Allow retry same question
+                                // Allow retry same questions
                                 wrongAttemptsForCurrentQuestion = 0
                             }
                             else -> {
@@ -184,7 +184,7 @@ class NumberLineFragment : Fragment(), Hintable {
                                     return@showCorrectAnswerDialog
                                 }
 
-                                // Otherwise move to new question
+                                // Otherwise move to new questions
                                 wrongAttemptsForCurrentQuestion = 0
                                 totalWrongAttemptsForCurrentQuestion = 0
                                 correctAnswerDialogCount = 0
