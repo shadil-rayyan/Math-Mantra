@@ -60,7 +60,8 @@ class ShakeFragment : Fragment(), Hintable {
         Log.d(TAG, "onCreate called")
 
         lang = LocaleHelper.getLanguage(requireContext())
-        difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())  // returns Int, e.g. 1, 2, 3
+        val difficulty = difficultyNum.toString()  // convert to "1", "2", "3"
         Log.d(TAG, "Language: $lang, Difficulty: $difficulty")
 
         tts = TTSUtility(requireContext())

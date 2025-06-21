@@ -11,7 +11,7 @@ object DifficultyPreferences {
         prefs.edit().putInt(KEY_DIFFICULTY, level).apply()
     }
 
-    fun getDifficulty(context: Context): Int {
+    fun getDifficulty(context: Context?): Int {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         return prefs.getInt(KEY_DIFFICULTY, 1) // default is SIMPLE = 1
     }

@@ -16,7 +16,6 @@ import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentLandingPageBinding
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-import java.util.Locale
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
@@ -52,7 +51,7 @@ class LandingPageFragment : Fragment() {
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
         binding.quickplay.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty.}.txt"
+            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
             Log.d("LandingPageFragment", "Quickplay button clicked, loading file: $filePath")
             QuickPlayFragment.newInstance(filePath).apply {
                 navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

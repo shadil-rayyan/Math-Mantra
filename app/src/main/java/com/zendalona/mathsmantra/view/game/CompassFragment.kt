@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
@@ -90,7 +91,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     private fun loadQuestionsFromAssets() {
         rawQuestions.clear()
-        val difficulty = getDifficulty(requireContext()).lowercase(Locale.getDefault())
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         val fileName = "$lang/game/compass/$difficulty.txt"

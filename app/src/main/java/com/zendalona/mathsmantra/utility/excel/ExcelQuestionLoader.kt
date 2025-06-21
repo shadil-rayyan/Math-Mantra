@@ -136,7 +136,7 @@ object ExcelQuestionLoader {
                             Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
                         } else {
                             val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
-                            val rowDifficulty = rowDifficultyNum.toString()
+                            val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
                             val timeLimit = timeLimitNum.toInt()
 
                             Log.d(TAG, "Row $row rowMode=$rowMode, rowDifficulty=$rowDifficulty")

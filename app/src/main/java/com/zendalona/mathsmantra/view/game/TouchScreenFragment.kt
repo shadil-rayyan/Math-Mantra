@@ -4,27 +4,20 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameTouchScreenBinding
-import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.view.HintFragment
-import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.common.*
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.util.*
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.mathsmantra.view.HintFragment
+import com.zendalona.mathsmantra.model.Hintable
 
 class TouchScreenFragment : Fragment(), Hintable {
 
@@ -39,31 +32,21 @@ class TouchScreenFragment : Fragment(), Hintable {
     private var inputLocked = false
 
     private lateinit var lang: String
-    private lateinit var difficulty: String
-    private lateinit var parsedTouchList: List<TouchQuestion>
-
-    data class TouchQuestion(
-        val expression: String,
-        val answer: Int,
-        val timeLimit: Int,
-        val celebration: Boolean
-    )
+    private lateinit var questionList: List<GameQuestion>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tts = TTSUtility(requireContext())
         lang = LocaleHelper.getLanguage(requireContext())
-        difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        parsedTouchList = loadTouchQuestionsFromAssets(lang, difficulty)
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
-
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
+        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "touch", difficulty)
+        if (questionList.isEmpty()) {
+            Toast.makeText(requireContext(), "No questions found for selected difficulty and language.", Toast.LENGTH_LONG).show()
+        }
+        setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
         startGame()
         return binding!!.root
@@ -71,41 +54,18 @@ class TouchScreenFragment : Fragment(), Hintable {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
-    }
-
-    private fun loadTouchQuestionsFromAssets(lang: String, difficulty: String): List<TouchQuestion> {
-        val questions = mutableListOf<TouchQuestion>()
-        val fileName = "$lang/game/touchTheScreen/${difficulty.lowercase(Locale.ROOT)}.txt"
-
-        try {
-            val reader = BufferedReader(InputStreamReader(requireContext().assets.open(fileName)))
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                line?.trim()?.takeIf { it.isNotEmpty() }?.let {
-                    val parts = it.split("→")
-                    val (expression, answer) = QuestionParser.parseExpression(parts[0])
-                    val timeLimit = parts.getOrNull(1)?.toIntOrNull() ?: 10
-                    val celebration = parts.getOrNull(2)?.toIntOrNull() == 1
-                    questions.add(TouchQuestion(expression, answer, timeLimit, celebration))
-                }
-            }
-        } catch (e: Exception) {
-            Toast.makeText(context, "Error loading touch questions: $fileName", Toast.LENGTH_SHORT).show()
-        }
-
-        return questions
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun startGame() {
-        if (index >= parsedTouchList.size) {
+        if (index >= questionList.size) {
             tts.speak(getString(R.string.shake_game_over))
             endGameWithScore()
             return
         }
 
         inputLocked = false
-        val question = parsedTouchList[index]
+        val question = questionList[index]
         correctAnswer = question.answer
         questionStartTime = System.currentTimeMillis()
 
@@ -140,13 +100,14 @@ class TouchScreenFragment : Fragment(), Hintable {
                 inputLocked = true
                 evaluateGameResult(success = false)
             }
+
             true
         }
     }
 
     private fun evaluateGameResult(success: Boolean) {
         handler.postDelayed({
-            val question = parsedTouchList[index]
+            val question = questionList[index]
             val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
             val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), success)
 
@@ -185,7 +146,7 @@ class TouchScreenFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "touch") // Pass only the mode
+            putString("mode", "touch")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
@@ -197,18 +158,15 @@ class TouchScreenFragment : Fragment(), Hintable {
 
     override fun onResume() {
         super.onResume()
-
-        val service = AccessibilityHelper.getAccessibilityService()
-        if (service != null) {
-            AccessibilityHelper.disableExploreByTouch(service)
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.disableExploreByTouch(it)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        val service = AccessibilityHelper.getAccessibilityService()
-        if (service != null) {
-            AccessibilityHelper.resetExploreByTouch(service)
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.resetExploreByTouch(it)
         }
         handler.removeCallbacksAndMessages(null)
         tts.stop()

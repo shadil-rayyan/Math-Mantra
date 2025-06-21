@@ -58,7 +58,7 @@ class QuickPlayFragment : Fragment(), Hintable {
 
         context?.let {
             ttsUtility = TTSUtility(it)
-            difficulty = DifficultyPreferences.getDifficulty(it)
+            val difficulty = DifficultyPreferences.getDifficulty(requireContext())
             lang = LocaleHelper.getLanguage(it) ?: "en"
             Log.d("QuickPlayFragment", "Initialized ttsUtility, difficulty: $difficulty, language: $lang")
             loadRawQuestionsFromAssets(questionCategory!!)

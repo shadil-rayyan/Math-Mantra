@@ -4,16 +4,13 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameMentalCalculationBinding
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
@@ -21,14 +18,10 @@ import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
-import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.mathsmantra.view.HintFragment
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.util.*
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 
 class MentalCalculationFragment : Fragment(), Hintable {
 
@@ -36,18 +29,11 @@ class MentalCalculationFragment : Fragment(), Hintable {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var tts: TTSUtility
 
-    private var questionList: List<MentalQuestion> = emptyList()
+    private var questionList: List<GameQuestion> = emptyList()
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
     private var wrongAttempts = 0
     private var startTime: Long = 0
-
-    private data class MentalQuestion(
-        val expression: String,
-        val answer: Int,
-        val celebration: Boolean = false,
-        val timeLimit: Int = 30
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,10 +44,11 @@ class MentalCalculationFragment : Fragment(), Hintable {
 
         val lang = LocaleHelper.getLanguage(requireContext())
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        questionList = loadQuestionsFromAssets(lang, difficulty)
+
+        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "mental", difficulty.toString())
 
         if (questionList.isEmpty()) {
-            questionList = listOf(MentalQuestion("1 + 2", 3))
+            questionList = listOf(GameQuestion("1 + 2", 3))
         }
 
         loadNextQuestion()
@@ -74,37 +61,13 @@ class MentalCalculationFragment : Fragment(), Hintable {
             } else false
         }
 
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
-
-
+        setHasOptionsMenu(true)
         return binding!!.root
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
-    }
-
-    private fun loadQuestionsFromAssets(lang: String, difficulty: String): List<MentalQuestion> {
-        val list = mutableListOf<MentalQuestion>()
-        val fileName = "$lang/game/mentalcalculation/${difficulty.lowercase(Locale.ROOT)}.txt"
-        try {
-            val reader = BufferedReader(InputStreamReader(requireContext().assets.open(fileName)))
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                line?.trim()?.takeIf { it.isNotEmpty() }?.let {
-                    val parts = it.split("===")
-                    if (parts.isNotEmpty()) {
-                        val (expression, answer) = QuestionParser.parseExpression(parts[0])
-                        val timeLimit = parts.getOrNull(1)?.toIntOrNull() ?: 20
-                        val celebration = parts.getOrNull(2)?.toIntOrNull() == 1
-                        list.add(MentalQuestion(expression, answer, celebration, timeLimit))
-                    }
-                }
-            }
-        } catch (e: IOException) {
-            Toast.makeText(context, "Error loading questions: $fileName", Toast.LENGTH_SHORT).show()
-        }
-        return list
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun loadNextQuestion() {
@@ -128,12 +91,11 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val tokens = question.expression.split(" ")
         startTime = System.currentTimeMillis()
 
-        // ✨ Speak full questions after 1s if TalkBack is on
         if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
             val spokenText = TTSHelper.formatMathText(question.expression)
             handler.postDelayed({
                 tts.speak("Solve $spokenText")
-            }, 1000)  // 1 second delay
+            }, 1000)
         }
 
         revealTokens(tokens, 0)
@@ -151,13 +113,10 @@ class MentalCalculationFragment : Fragment(), Hintable {
 
         val token = tokens[index].replace("/", "÷")
 
-        // ⛔️ Do NOT announce via accessibility
         binding?.mentalCalculation?.apply {
             text = token
             contentDescription = null
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_NONE
-            isFocusable = false
-            isFocusableInTouchMode = false
         }
 
         handler.postDelayed({
@@ -212,7 +171,7 @@ class MentalCalculationFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "mental") // Pass only the mode
+            putString("mode", "mental")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
