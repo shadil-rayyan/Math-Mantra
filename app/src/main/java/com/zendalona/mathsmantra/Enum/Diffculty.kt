@@ -1,7 +1,9 @@
 package com.zendalona.mathsmantra.Enum
 
 object Difficulty {
-    const val EASY = "easy"
-    const val MEDIUM = "medium"
-    const val HARD = "hard"
+    const val SIMPLE = 1
+    const val EASY = 2
+    const val MEDIUM = 3
+    const val HARD = 4
+    const val CHALLENGING = 5
 }

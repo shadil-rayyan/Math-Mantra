@@ -249,10 +249,19 @@
             android:layout_marginTop="8dp">
 
             <RadioButton
-                android:id="@+id/difficulty_easy"
+                android:id="@+id/difficulty_simple"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingRight="100dp"
+                android:text="@string/difficulty_simple"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/difficulty_simple_desc"/>
+            <RadioButton
+                android:id="@+id/difficulty_easy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/difficulty_easy"
                 android:textSize="16sp"
                 android:textColor="?attr/colorOnPrimary"
@@ -281,6 +290,16 @@
                 android:textColor="?attr/colorOnPrimary"
                 android:background="?attr/colorPrimary"
                 android:contentDescription="@string/difficulty_hard_desc"/>
+            <RadioButton
+                android:id="@+id/difficulty_challenging"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="@string/difficulty_challenging"
+                android:textSize="16sp"
+                android:textColor="?attr/colorOnPrimary"
+                android:background="?attr/colorPrimary"
+                android:contentDescription="@string/difficulty_challenging_desc"/>
         </RadioGroup>
 
         <!-- Language Label -->

@@ -141,19 +141,23 @@ class SettingFragment : Fragment() {
     private fun setupDifficultyRadioButtons() {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         when (difficulty) {
+            Difficulty.SIMPLE -> binding.difficultySimple.isChecked = true
             Difficulty.EASY -> binding.difficultyEasy.isChecked = true
             Difficulty.MEDIUM -> binding.difficultyMedium.isChecked = true
             Difficulty.HARD -> binding.difficultyHard.isChecked = true
+            Difficulty.CHALLENGING -> binding.difficultyChallenging.isChecked = true
         }
 
         binding.difficultyRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            val selectedDifficulty = when (checkedId) {
+            val selectedLevel = when (checkedId) {
+                R.id.difficulty_simple -> Difficulty.SIMPLE
                 R.id.difficulty_easy -> Difficulty.EASY
                 R.id.difficulty_medium -> Difficulty.MEDIUM
                 R.id.difficulty_hard -> Difficulty.HARD
-                else -> Difficulty.EASY
+                R.id.difficulty_challenging -> Difficulty.CHALLENGING
+                else -> Difficulty.SIMPLE
             }
-            DifficultyPreferences.setDifficulty(requireContext(), selectedDifficulty)
+            DifficultyPreferences.setDifficulty(requireContext(), selectedLevel)
         }
     }
 
@@ -223,7 +227,6 @@ class SettingFragment : Fragment() {
             prefsEditor.putFloat("tts_speed", 1.0f)
             prefsEditor.putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             prefsEditor.remove("Locale.Helper.Selected.Language")
-            DifficultyPreferences.setDifficulty(requireContext(), Difficulty.EASY)
             prefsEditor.apply()
 
             binding.backgroundMusicToggle.isChecked = false
@@ -236,7 +239,8 @@ class SettingFragment : Fragment() {
             binding.languageSpinner.setSelection(0)
             languageSpinnerInitialized = false
 
-            binding.difficultyEasy.isChecked = true
+            DifficultyPreferences.setDifficulty(requireContext(), Difficulty.SIMPLE)
+            binding.difficultySimple.isChecked = true
 
             BackgroundMusicPlayer.pauseMusic()
 

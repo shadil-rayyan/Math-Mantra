@@ -4,17 +4,15 @@ import android.content.Context
 import android.preference.PreferenceManager
 
 object DifficultyPreferences {
-    private const val KEY_DIFFICULTY = "pref_difficulty"
+    private const val KEY_DIFFICULTY = "pref_difficulty_level"
 
-    @JvmStatic
-    fun setDifficulty(context: Context, difficulty: String) {
+    fun setDifficulty(context: Context, level: Int) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        prefs.edit().putString(KEY_DIFFICULTY, difficulty).apply()
+        prefs.edit().putInt(KEY_DIFFICULTY, level).apply()
     }
 
-    @JvmStatic
-    fun getDifficulty(context: Context?): String {
+    fun getDifficulty(context: Context): Int {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        return prefs.getString(KEY_DIFFICULTY, "medium") ?: "medium"
+        return prefs.getInt(KEY_DIFFICULTY, 1) // default is SIMPLE = 1
     }
 }
