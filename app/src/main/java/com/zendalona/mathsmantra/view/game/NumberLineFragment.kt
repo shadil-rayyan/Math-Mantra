@@ -4,25 +4,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.GestureDetector
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.zendalona.mathsmantra.Enum.Topic
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameNumberLineBinding
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.view.HintFragment
-import com.zendalona.mathsmantra.utility.RandomValueGenerator
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.viewModel.NumberLineViewModel
+import java.util.*
 
 private val handler = Handler(Looper.getMainLooper())
 
@@ -30,51 +26,47 @@ class NumberLineFragment : Fragment(), Hintable {
 
     companion object {
         private const val TAG = "NumberLineFragment"
-        private const val SWIPE_THRESHOLD = 100
-        private const val SWIPE_VELOCITY_THRESHOLD = 100
         private const val MAX_WRONG_ATTEMPTS = 3
     }
 
     private var binding: FragmentGameNumberLineBinding? = null
     private lateinit var viewModel: NumberLineViewModel
     private var tts: TTSUtility? = null
-    private var random: RandomValueGenerator? = null
-    private var CURRENT_POSITION: String? = null
+
     private var answer = 0
     private var questionDesc = ""
     private var correctAnswerDesc = ""
-
-    private lateinit var gestureDetector: GestureDetector
+    private var questionStartTime: Long = 0L
 
     private var answerCheckRunnable: Runnable? = null
 
-    // Track wrong attempts per questions key (e.g. start-end-answer string)
-    private var wrongAttemptsForCurrentQuestion = 0
     private var lastQuestionKey: String? = null
-
-    // Track how many times the correct answer dialog was shown for the current questions
+    private var wrongAttemptsForCurrentQuestion = 0
     private var correctAnswerDialogCount = 0
-
-    // Track questions start time for grading
-    private var questionStartTime: Long = 0L
+    private var totalWrongAttemptsForCurrentQuestion = 0
     private var fullyFailedQuestionCount = 0
 
+    private var CURRENT_POSITION: String? = null
+
+    // ✅ Excel-based questions
+    private var excelQuestions: List<GameQuestion> = emptyList()
+    private var currentExcelQuestionIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[NumberLineViewModel::class.java]
         CURRENT_POSITION = getString(R.string.current_position_label)
 
-        tts = TTSUtility(requireContext()).apply {
-            setSpeechRate(0.8f)
-        }
+        tts = TTSUtility(requireContext()).apply { setSpeechRate(0.8f) }
 
-        random = RandomValueGenerator()
-
-//        gestureDetector = GestureDetector(requireContext(), SwipeGestureListener())
+        // ✅ Load Excel questions for mode = numberline, difficulty = 1
+        excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            requireContext(),
+            lang = "en",
+            mode = "numberline",
+            difficulty = "1"
+        )
     }
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,22 +74,17 @@ class NumberLineFragment : Fragment(), Hintable {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameNumberLineBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+        setHasOptionsMenu(true)
         setupObservers()
         setupUI()
-        correctAnswerDesc = askNewQuestion(0)
-
-        // Detect swipe on fragment root
-        binding?.root?.setOnTouchListener { _, event ->
-            gestureDetector.onTouchEvent(event)
-            true
-        }
+        correctAnswerDesc = askNewQuestion()
 
         return binding!!.root
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun setupObservers() {
@@ -109,15 +96,10 @@ class NumberLineFragment : Fragment(), Hintable {
             binding?.numberLineView?.updateNumberLine(start, end, position)
             binding?.currentPositionTv?.text = "$CURRENT_POSITION $position"
 
-            // Cancel previous answer check runnable safely
-            answerCheckRunnable?.let {
-                handler.removeCallbacks(it)
-            }
+            // Cancel previous
+            answerCheckRunnable?.let { handler.removeCallbacks(it) }
 
-            // Schedule new answer check after 2 seconds
-            answerCheckRunnable = Runnable {
-                checkAnswer(start, end, position)
-            }
+            answerCheckRunnable = Runnable { checkAnswer(start, end, position) }
             handler.postDelayed(answerCheckRunnable!!, 2000)
         }
 
@@ -127,27 +109,22 @@ class NumberLineFragment : Fragment(), Hintable {
     }
 
     private fun checkAnswer(start: Int, end: Int, position: Int) {
-        val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0 // seconds
-        val totalTime = 15.0 // questions time limit
+        val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
+        val totalTime = 15.0
 
         if (position == answer) {
-            // Correct answer: show result dialog and ask new questions
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, true)
             context?.let { ctx ->
                 activity?.layoutInflater?.let { inflater ->
-                    DialogUtils.showResultDialog(ctx, inflater, tts!!,grade) {
-                        correctAnswerDesc = askNewQuestion(answer)
+                    DialogUtils.showResultDialog(ctx, inflater, tts!!, grade) {
+                        correctAnswerDesc = askNewQuestion()
                     }
                 }
             }
         } else {
-            // Wrong answer: do nothing, no dialogs, no retries
-            // You may log or silently ignore
-            Log.d(TAG, "Wrong answer detected, ignoring without dialogs.")
+            Log.d(TAG, "Wrong answer detected, ignoring silently")
         }
     }
-
-    private var totalWrongAttemptsForCurrentQuestion = 0
 
     private fun onWrongAttempt(questionKey: String) {
         if (lastQuestionKey == questionKey) {
@@ -165,46 +142,32 @@ class NumberLineFragment : Fragment(), Hintable {
 
             context?.let { ctx ->
                 activity?.layoutInflater?.let { inflater ->
-
                     val correctAnswerText = "The correct answer is $answer."
-
                     DialogUtils.showCorrectAnswerDialog(ctx, inflater, tts!!, correctAnswerText) {
-                        when {
-                            totalWrongAttemptsForCurrentQuestion < 6 -> {
-                                // Allow retry same questions
-                                wrongAttemptsForCurrentQuestion = 0
+                        if (totalWrongAttemptsForCurrentQuestion < 6) {
+                            wrongAttemptsForCurrentQuestion = 0
+                        } else {
+                            fullyFailedQuestionCount++
+                            if (fullyFailedQuestionCount >= 3) {
+                                endGameWithScore()
+                                return@showCorrectAnswerDialog
                             }
-                            else -> {
-                                fullyFailedQuestionCount++
 
-                                if (fullyFailedQuestionCount >= 3) {
-                                    endGameWithScore()
-                                    return@showCorrectAnswerDialog
-                                }
-
-                                // Otherwise move to new questions
-                                wrongAttemptsForCurrentQuestion = 0
-                                totalWrongAttemptsForCurrentQuestion = 0
-                                correctAnswerDialogCount = 0
-                                lastQuestionKey = null
-                                correctAnswerDesc = askNewQuestion(answer)
-                            }
+                            wrongAttemptsForCurrentQuestion = 0
+                            totalWrongAttemptsForCurrentQuestion = 0
+                            correctAnswerDialogCount = 0
+                            lastQuestionKey = null
+                            correctAnswerDesc = askNewQuestion()
                         }
-
                     }
                 }
             }
-
-            return // ❗ Prevent retry dialog from showing
+            return
         }
 
-        // Show retry dialog if not yet reached threshold
-        val message = getString(R.string.wrong_answer)
         context?.let { ctx ->
             activity?.layoutInflater?.let { inflater ->
-                DialogUtils.showRetryDialog(ctx, inflater, tts!!, message) {
-                    // Retry dialog dismissed
-                }
+                DialogUtils.showRetryDialog(ctx, inflater, tts!!, getString(R.string.wrong_answer)) {}
             }
         }
     }
@@ -223,79 +186,32 @@ class NumberLineFragment : Fragment(), Hintable {
         }
     }
 
-    private fun askNewQuestion(position: Int): String {
-        questionStartTime = System.currentTimeMillis()
-
-        val topic = if (random!!.generateNumberLineQuestion()) Topic.ADDITION else Topic.SUBTRACTION
-        val units = random!!.generateNumberForCountGame()
-        val operator: String
-        val direction: String
-
-        answer = when (topic) {
-            Topic.ADDITION -> {
-                operator = getString(R.string.plus)
-                direction = getString(R.string.right)
-                position + units
-            }
-            Topic.SUBTRACTION -> {
-                operator = getString(R.string.minus)
-                direction = getString(R.string.left)
-                position - units
-            }
-            else -> {
-                operator = "?"
-                direction = "?"
-                position
-            }
+    private fun askNewQuestion(): String {
+        // End the game if all questions are completed
+        if (currentExcelQuestionIndex >= excelQuestions.size) {
+            endGameWithScore()
+            return ""
         }
 
-        val questionBrief = getString(R.string.what_is, position.toString(), operator, units.toString())
-        questionDesc = getString(R.string.standing_on, position.toString()) +
-                getString(R.string.what_is, position.toString(), operator, units.toString()) +
-                getString(R.string.units_to_direction, units.toString(), direction)
+        questionStartTime = System.currentTimeMillis()
 
+        val question = excelQuestions[currentExcelQuestionIndex++]
+        questionDesc = question.expression
+        answer = question.answer
+
+        val questionBrief = question.expression.take(40)
         binding?.numberLineQuestion?.text = questionBrief
         tts?.speak(questionDesc)
 
-        return "$position $operator $units equals $answer"
+        return "${question.expression} = ${question.answer}"
     }
 
 
-//    private inner class SwipeGestureListener : GestureDetector.SimpleOnGestureListener() {
-//
-//        override fun onDown(e: MotionEvent): Boolean = true
-//
-//        override fun onFling(
-//            e1: MotionEvent?,
-//            e2: MotionEvent,
-//            velocityX: Float,
-//            velocityY: Float
-//        ): Boolean {
-//            if (e1 == null || e2 == null) return false
-//
-//            val diffX = e2.x - e1.x
-//            val diffY = e2.y - e1.y
-//
-//            if (kotlin.math.abs(diffX) > kotlin.math.abs(diffY)) {
-//                if (kotlin.math.abs(diffX) > SWIPE_THRESHOLD && kotlin.math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-//                    if (diffX > 0) {
-//                        Log.d(TAG, "Swipe Right detected in Fragment")
-//                        viewModel.moveRight()
-//                    } else {
-//                        Log.d(TAG, "Swipe Left detected in Fragment")
-//                        viewModel.moveLeft()
-//                    }
-//                    return true
-//                }
-//            }
-//            return false
-//        }
-//    }
-
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "numberline") // Pass only the mode
+            putString("mode", "numberline")
         }
+
         val hintFragment = HintFragment().apply { arguments = bundle }
 
         requireActivity().supportFragmentManager.beginTransaction()
@@ -303,19 +219,18 @@ class NumberLineFragment : Fragment(), Hintable {
             .addToBackStack(null)
             .commit()
     }
-    override fun onResume() {
-        super.onResume()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+        tts?.stop()
     }
 
     override fun onPause() {
         super.onPause()
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
-        tts?.stop()
-
+    override fun onResume() {
+        super.onResume()
     }
 }
