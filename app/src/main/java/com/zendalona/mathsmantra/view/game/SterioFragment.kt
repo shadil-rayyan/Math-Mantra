@@ -31,8 +31,8 @@ class SterioFragment : Fragment(), Hintable {
     private var audioPlayerUtility: AudioPlayerUtility? = null
     private var random: RandomValueGenerator? = null
 
-    private var num1 = 0
-    private var num2 = 0
+    private var numA = 0
+    private var numB = 0
     private var correctAnswer = 0
 
     override fun onCreateView(
@@ -42,8 +42,7 @@ class SterioFragment : Fragment(), Hintable {
         ttsUtility = TTSUtility(requireContext())
         audioPlayerUtility = AudioPlayerUtility()
         random = RandomValueGenerator()
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
-
+        setHasOptionsMenu(true) // Show menu with hint
 
         setAccessibilityDescriptions()
         generateNewQuestion()
@@ -62,19 +61,24 @@ class SterioFragment : Fragment(), Hintable {
 
         return binding!!.root
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun generateNewQuestion() {
-        val numbers = random!!.generateSubtractionValues()
-        num1 = numbers[0]
-        num2 = numbers[1]
-        correctAnswer = num2- num1
+        // Generate numA and numB between 1 and 9 (matching a1:9*, b1:9*)
+        numA = (1..9).random()
+        numB = (1..9).random()
+
+        // Subtraction is b - a as per your example {a}-{b} with correctAnswer = b - a
+        correctAnswer = numB - numA
 
         binding?.answerEt?.setText("")
-        announce("A new questions is ready. Tap 'Read the Question' to listen.")
+        announce("A new question is ready. Tap 'Read the Question' to listen.")
+
+        // Update UI question text if you have a textview (optional)
     }
 
     private fun readQuestionAloud() {
@@ -83,7 +87,7 @@ class SterioFragment : Fragment(), Hintable {
 
         if (isAbove23 && isHeadphoneConnected) {
             Handler(Looper.getMainLooper()).postDelayed({
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), num1, true)
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numA, true)
             }, 0)
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -91,14 +95,13 @@ class SterioFragment : Fragment(), Hintable {
             }, 3000)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), num2, false)
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numB, false)
             }, 6000)
         } else {
-            ttsUtility?.speak("substract First number is $num1  from second number  $num2")
+            ttsUtility?.speak("Subtract first number $numA from second number $numB")
         }
     }
 
-    // ✅ Only one definition
     private fun isHeadphoneConnected(): Boolean {
         val audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
@@ -150,7 +153,7 @@ class SterioFragment : Fragment(), Hintable {
     }
 
     private fun setAccessibilityDescriptions() {
-        binding?.readQuestionBtn?.contentDescription = "Read questions aloud."
+        binding?.readQuestionBtn?.contentDescription = "Read question aloud."
         binding?.answerEt?.contentDescription = "Answer input field."
         binding?.submitAnswerBtn?.contentDescription = "Submit your answer."
     }
@@ -158,9 +161,10 @@ class SterioFragment : Fragment(), Hintable {
     private fun announce(message: String) {
         binding?.answerEt?.announceForAccessibility(message)
     }
+
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "sterio") // Pass only the mode
+            putString("mode", "sterio") // pass mode
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
@@ -169,12 +173,6 @@ class SterioFragment : Fragment(), Hintable {
             .addToBackStack(null)
             .commit()
     }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
