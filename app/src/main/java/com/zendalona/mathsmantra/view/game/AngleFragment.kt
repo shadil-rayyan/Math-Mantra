@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -17,7 +17,7 @@ import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.utility.game.angle.RotationSensorUtility
-import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
 import java.util.Random
 

@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -8,11 +8,12 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameShakeBinding
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.model.GameQuestion
-import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.AccelerometerUtility
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
@@ -21,6 +22,9 @@ import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ShakeFragment : Fragment(), Hintable {
 
@@ -61,15 +65,25 @@ class ShakeFragment : Fragment(), Hintable {
 
         tts = TTSUtility(requireContext())
         accelerometerUtility = AccelerometerUtility(requireContext())
-        parsedShakeList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "shake", difficulty)
-        Log.d(TAG, "Loaded ${parsedShakeList.size} questions")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                parsedShakeList = ExcelQuestionLoader.loadQuestionsFromExcel(
+                    requireContext(),
+                    lang,
+                    "shake",
+                    difficulty
+                )
+            }
+            Log.d(TAG, "Loaded ${parsedShakeList.size} questions")
+            startGame()
+
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "onCreateView called")
         binding = FragmentGameShakeBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        startGame()
         return binding!!.root
     }
 

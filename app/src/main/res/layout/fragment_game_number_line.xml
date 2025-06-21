@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    tools:context=".ui.game.NumberLineFragment"
+    tools:context=".view.game.NumberLineFragment"
     android:contentDescription="@string/number_line_description">
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_marginBottom="10dp" />
 
         <!-- Number Line View -->
-        <com.zendalona.mathsmantra.view.NumberLineView
+        <com.zendalona.mathsmantra.customView.NumberLineView
             android:id="@+id/number_line_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"

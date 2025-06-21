@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.ui.FragmentNavigation
-import com.zendalona.mathsmantra.ui.HintFragment
-import com.zendalona.mathsmantra.ui.LandingPageFragment
+import com.zendalona.mathsmantra.view.FragmentNavigation
+import com.zendalona.mathsmantra.view.HintFragment
+import com.zendalona.mathsmantra.view.LandingPageFragment
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.mathsmantra.utility.PermissionManager
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper

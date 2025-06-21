@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.content.Context
 import android.os.Bundle
@@ -16,12 +16,12 @@ import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper.getLanguage
-import com.zendalona.mathsmantra.view.DrawingView
+import com.zendalona.mathsmantra.customView.DrawingView
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

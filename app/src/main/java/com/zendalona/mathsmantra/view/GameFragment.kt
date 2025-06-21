@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui
+package com.zendalona.mathsmantra.view
 
 import android.content.Context
 import android.os.Bundle
@@ -9,16 +9,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zendalona.mathsmantra.databinding.FragmentGamePageBinding
 import com.zendalona.mathsmantra.model.HintIconVisibilityController
-import com.zendalona.mathsmantra.ui.game.AngleFragment
-import com.zendalona.mathsmantra.ui.game.CompassFragment
-import com.zendalona.mathsmantra.ui.game.DayFragment
-import com.zendalona.mathsmantra.ui.game.DrawingFragment
-import com.zendalona.mathsmantra.ui.game.MentalCalculationFragment
-import com.zendalona.mathsmantra.ui.game.NumberLineFragment
-import com.zendalona.mathsmantra.ui.game.ShakeFragment
-import com.zendalona.mathsmantra.ui.game.SterioFragment
-import com.zendalona.mathsmantra.ui.game.TapFragment
-import com.zendalona.mathsmantra.ui.game.TouchScreenFragment
+import com.zendalona.mathsmantra.view.game.AngleFragment
+import com.zendalona.mathsmantra.view.game.CompassFragment
+import com.zendalona.mathsmantra.view.game.DayFragment
+import com.zendalona.mathsmantra.view.game.DrawingFragment
+import com.zendalona.mathsmantra.view.game.MentalCalculationFragment
+import com.zendalona.mathsmantra.view.game.NumberLineFragment
+import com.zendalona.mathsmantra.view.game.ShakeFragment
+import com.zendalona.mathsmantra.view.game.SterioFragment
+import com.zendalona.mathsmantra.view.game.TapFragment
+import com.zendalona.mathsmantra.view.game.TouchScreenFragment
 
 class GameFragment : Fragment() ,HintIconVisibilityController {
 

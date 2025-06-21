@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.app.AlertDialog
 import android.content.Context
@@ -20,8 +20,7 @@ import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.ui.HintFragment
-import com.zendalona.mathsmantra.utility.common.TTSUtility
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import java.io.BufferedReader

@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.app.AlertDialog
 import android.content.Context
@@ -20,7 +20,7 @@ import com.zendalona.mathsmantra.databinding.DialogResultBinding
 import com.zendalona.mathsmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.mathsmantra.model.AudioPlayerUtility
 import com.zendalona.mathsmantra.model.Hintable
-import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.RandomValueGenerator
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 

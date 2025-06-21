@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui
+package com.zendalona.mathsmantra.view
 
 import android.content.Context
 import android.os.Bundle
@@ -14,7 +14,6 @@ import com.zendalona.mathsmantra.utility.settings.BackgroundMusicPlayer
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentLandingPageBinding
-import com.zendalona.mathsmantra.model.HintIconVisibilityController
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import java.util.Locale

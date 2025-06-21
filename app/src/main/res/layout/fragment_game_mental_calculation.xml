@@ -7,7 +7,7 @@
     android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ui.game.MentalCalculationFragment"
+    tools:context=".view.game.MentalCalculationFragment"
     android:contentDescription="@string/mental_description">
 
     <LinearLayout

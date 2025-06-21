@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui
+package com.zendalona.mathsmantra.view
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -20,7 +20,6 @@ import com.zendalona.mathsmantra.utility.settings.LocaleHelper
 import com.zendalona.mathsmantra.utility.common.TTSUtility
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentSettingsBinding
-import com.zendalona.mathsmantra.model.HintIconVisibilityController
 
 class SettingFragment : Fragment() {
 

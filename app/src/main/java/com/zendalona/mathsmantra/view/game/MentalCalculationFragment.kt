@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui.game
+package com.zendalona.mathsmantra.view.game
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -24,7 +24,7 @@ import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.QuestionParser.QuestionParser
 import com.zendalona.mathsmantra.utility.common.TTSHelper
 import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.mathsmantra.ui.HintFragment
+import com.zendalona.mathsmantra.view.HintFragment
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader

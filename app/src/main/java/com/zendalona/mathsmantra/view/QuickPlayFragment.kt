@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.ui
+package com.zendalona.mathsmantra.view
 
 import android.media.MediaPlayer
 import android.os.Bundle

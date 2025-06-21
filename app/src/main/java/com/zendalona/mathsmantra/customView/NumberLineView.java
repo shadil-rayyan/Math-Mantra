@@ -1,4 +1,4 @@
-package com.zendalona.mathsmantra.view;
+package com.zendalona.mathsmantra.customView;
 
 import android.content.Context;
 import android.graphics.Canvas;
