@@ -10,12 +10,14 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameDayBinding
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.model.Hintable
 import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.common.DialogUtils
 import com.zendalona.mathsmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.mathsmantra.utility.common.GradingUtils
 import com.zendalona.mathsmantra.utility.common.TTSUtility
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import kotlin.random.Random
 
 class DayFragment : Fragment(), Hintable {
@@ -24,10 +26,8 @@ class DayFragment : Fragment(), Hintable {
     private val binding get() = _binding!!
 
     private val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
-    private var startDayIndex = 0
-    private var addDays = 0
-    private var correctDay = ""
 
+    private var correctDay = ""
     private var attemptCount = 0
     private var totalWrongQuestions = 0
 
@@ -35,19 +35,29 @@ class DayFragment : Fragment(), Hintable {
     private var questionStartTime: Long = 0L
     private val totalTime: Double = 30.0 // seconds
 
+    private var dayQuestions: List<GameQuestion> = emptyList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)  // Tell system this Fragment wants menu callbacks
+        setHasOptionsMenu(true)
         return binding.root
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ttsUtility = TTSUtility(requireContext())
+
+        // Load Excel day questions once
+        dayQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            requireContext(),
+            lang = "en",       // Change to dynamic locale if needed
+            mode = "day",
+            difficulty = "1"
+        )
 
         val buttons = listOf(
             binding.btnMonday, binding.btnTuesday, binding.btnWednesday,
@@ -63,32 +73,34 @@ class DayFragment : Fragment(), Hintable {
         generateQuestion()
     }
 
-    private fun getDayStringRes(day: String): Int {
-        return when (day) {
-            "Monday" -> R.string.monday
-            "Tuesday" -> R.string.tuesday
-            "Wednesday" -> R.string.wednesday
-            "Thursday" -> R.string.thursday
-            "Friday" -> R.string.friday
-            "Saturday" -> R.string.saturday
-            "Sunday" -> R.string.sunday
-            else -> throw IllegalArgumentException("Unknown day: $day")
-        }
-    }
-
     private fun generateQuestion() {
-        startDayIndex = Random.nextInt(days.size)
-        addDays = Random.nextInt(1, 14)
-        correctDay = days[(startDayIndex + addDays) % 7]
-        attemptCount = 0
+        if (dayQuestions.isEmpty()) {
+            binding.questionText.text = getString(R.string.no_questions_available)
+            return
+        }
 
+        val randomQuestion = dayQuestions.random()
+        val operand = randomQuestion.answer // This is the number of days to add/subtract
+
+        val startDayIndex = Random.nextInt(days.size)
         val startDay = days[startDayIndex]
+
+        val correctIndex = (startDayIndex + operand) % 7
+        correctDay = days[correctIndex]
+        attemptCount = 0
+        questionStartTime = System.currentTimeMillis()
+
         val startDayLocalized = getString(getDayStringRes(startDay))
 
-        binding.questionText.text = getString(R.string.question_text_template, startDayLocalized, addDays)
+        // Use a specific string for this style of question
+        val questionText = getString(
+            R.string.question_day_offset_template,
+            startDayLocalized,
+            operand
+        )
 
+        binding.questionText.text = questionText
         enableAllButtons()
-        questionStartTime = System.currentTimeMillis()
     }
 
     private fun checkAnswer(selected: String, buttons: List<Button>) {
@@ -133,6 +145,19 @@ class DayFragment : Fragment(), Hintable {
         }
     }
 
+    private fun getDayStringRes(day: String): Int {
+        return when (day) {
+            "Monday" -> R.string.monday
+            "Tuesday" -> R.string.tuesday
+            "Wednesday" -> R.string.wednesday
+            "Thursday" -> R.string.thursday
+            "Friday" -> R.string.friday
+            "Saturday" -> R.string.saturday
+            "Sunday" -> R.string.sunday
+            else -> throw IllegalArgumentException("Unknown day: $day")
+        }
+    }
+
     private fun disableAllButtons(buttons: List<Button>) {
         buttons.forEach { it.isEnabled = false }
     }
@@ -143,9 +168,10 @@ class DayFragment : Fragment(), Hintable {
             binding.btnThursday, binding.btnFriday, binding.btnSaturday, binding.btnSunday
         ).forEach { it.isEnabled = true }
     }
+
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "day") // Pass only the mode
+            putString("mode", "day")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

@@ -129,6 +129,9 @@
     <string name="move_right_description">Move right button. Moves one step right on the number line.</string>
     <string name="use_to_move"><![CDATA[<< Use -/+ to move >>]]></string>
 
+    <string name="question_day_offset_template">If today is %1$s, what day is after %2$d days?</string>
+    <string name="no_questions_available">No questions available. Please check your Excel file.</string>
+
 
 
 </resources>
