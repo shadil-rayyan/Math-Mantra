@@ -4,22 +4,19 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.DialogResultBinding
+import com.zendalona.mathsmantra.model.GameQuestion
 import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.mathsmantra.utility.game.angle.RotationSensorUtility
 import com.zendalona.mathsmantra.view.HintFragment
-import com.zendalona.mathsmantra.utility.accessibility.AccessibilityUtils
-import java.util.Random
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
 
@@ -37,10 +34,13 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
     private var holdRunnable: Runnable? = null
     private var isHolding = false
 
+    private var angleQuestions: List<GameQuestion> = emptyList()
+    private var currentAngleQuestionIndex = 0
+
     override fun onCreateView(
-            @NonNull inflater: LayoutInflater,
-             container: ViewGroup?,
-             savedInstanceState: Bundle?
+        @NonNull inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_game_angle, container, false)
 
@@ -51,12 +51,20 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         angleUpdateHandler = Handler(Looper.getMainLooper())
         setHasOptionsMenu(true)
 
+        // ✅ Load angle questions from Excel
+        angleQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            requireContext(),
+            lang = "en",
+            mode = "angle",
+            difficulty = "1"
+        )
+
         return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     override fun onDestroyView() {
@@ -82,7 +90,6 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
             }
         }
     }
-
 
     private fun checkIfCorrect(currentAngle: Float) {
         if (questionAnswered) return
@@ -110,7 +117,6 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         }
     }
 
-
     private fun showResultDialog(isCorrect: Boolean) {
         val messageResId = if (isCorrect) R.string.right_answer else R.string.wrong_answer
         val gifResId = if (isCorrect) R.drawable.right else R.drawable.wrong
@@ -119,38 +125,42 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         val dialogView = dialogBinding.root
 
         Glide.with(this)
-                .asGif()
-                .load(gifResId)
-                .into(dialogBinding.gifImageView)
+            .asGif()
+            .load(gifResId)
+            .into(dialogBinding.gifImageView)
 
         dialogBinding.messageTextView.text = getString(messageResId)
         dialogView.announceForAccessibility(getString(messageResId))
 
         val dialog = AlertDialog.Builder(requireContext())
-                .setView(dialogView)
-                .setCancelable(false)
-                .create()
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
 
         dialog.show()
 
         Handler(Looper.getMainLooper()).postDelayed({
-        if (dialog.isShowing) {
-            dialog.dismiss()
-            generateNewQuestion()
-        }
+            if (dialog.isShowing) {
+                dialog.dismiss()
+                generateNewQuestion()
+            }
         }, 4000)
     }
 
     private fun generateNewQuestion() {
-        val validAngles = intArrayOf(45, 90, 120, 180, 270)
-        targetRotation = validAngles[Random().nextInt(validAngles.size)].toFloat()
+        if (currentAngleQuestionIndex >= angleQuestions.size) {
+            questionTextView.text = getString(R.string.game_finished)
+            return
+        }
+
+        val question = angleQuestions[currentAngleQuestionIndex++]
+        targetRotation = question.answer.toFloat()
         questionAnswered = false
 
-        val question = getString(R.string.turn_to_angle_template, targetRotation.toInt())
-        questionTextView.text = question
+        questionTextView.text = question.expression
 
         if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            questionTextView.announceForAccessibility(question)
+            questionTextView.announceForAccessibility(question.expression)
         }
 
         if (angleUpdateRunnable == null) {
@@ -165,12 +175,13 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
                 }
             }
         }
+
         angleUpdateHandler.postDelayed(angleUpdateRunnable!!, 3000)
     }
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "angle") // Pass only the mode
+            putString("mode", "angle")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
