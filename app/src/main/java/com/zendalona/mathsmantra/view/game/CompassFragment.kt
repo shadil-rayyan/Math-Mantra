@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import com.zendalona.mathsmantra.R
 import com.zendalona.mathsmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.mathsmantra.model.Hintable
+import com.zendalona.mathsmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences
 import com.zendalona.mathsmantra.view.HintFragment
 import com.zendalona.mathsmantra.utility.settings.DifficultyPreferences.getDifficulty
@@ -79,8 +80,9 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         binding = FragmentGameCompassBinding.inflate(inflater, container, false)
         compassDirections = requireContext().resources.getStringArray(R.array.compass_directions)
         setHasOptionsMenu(true)
-        loadQuestionsFromAssets()
+        loadQuestionsFromExcel()
         generateNewQuestion()
+
 
         return binding!!.root
     }
@@ -89,42 +91,25 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
     }
 
-    private fun loadQuestionsFromAssets() {
-        rawQuestions.clear()
+    private fun loadQuestionsFromExcel() {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
-        val fileName = "$lang/game/compass/$difficulty.txt"
-        Log.d("Compass", "Language: $lang, File: $fileName")
+        val loadedQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            requireContext(),
+            lang = lang,
+            mode = "direction",
+            difficulty = "1"
+        )
 
-        try {
-            val reader = BufferedReader(
-                InputStreamReader(requireContext().assets.open(fileName))
-            )
-            var line: String?
-            while (reader.readLine().also { line = it } != null) {
-                if (line!!.trim().startsWith("compass?")) {
-                    rawQuestions.add(line!!.trim())
-                }
-            }
-            reader.close()
+        if (loadedQuestions.isEmpty()) {
+            Toast.makeText(requireContext(), "No compass questions found", Toast.LENGTH_LONG).show()
+        }
 
-            Log.d("Compass", "Questions loaded: ${rawQuestions.size}")
-
-            if (rawQuestions.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "No valid questions found in $fileName",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        } catch (e: IOException) {
-            Toast.makeText(
-                requireContext(),
-                "Failed to load questions: $fileName",
-                Toast.LENGTH_LONG
-            ).show()
-            e.printStackTrace()
+        rawQuestions.clear()
+        for (q in loadedQuestions) {
+            // Save in format: question===time
+            rawQuestions.add("${q.expression}===${q.timeLimit}")
         }
     }
 
