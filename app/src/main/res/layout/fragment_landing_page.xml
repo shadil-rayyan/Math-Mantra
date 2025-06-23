@@ -18,11 +18,13 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/landing_app_icon"
-        android:contentDescription="@string/logo_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="32dp" />
+        android:layout_marginTop="32dp"
+        android:importantForAccessibility="no"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 
     <!-- Title -->
     <TextView
@@ -33,12 +35,15 @@
         android:textAppearance="?attr/textAppearanceHeadlineMedium"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
-        android:importantForAccessibility="yes"
         android:accessibilityHeading="true"
         app:layout_constraintTop_toBottomOf="@id/logoImage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
     <!-- Subtitle -->
     <TextView
         android:id="@+id/subtitleText"
@@ -53,6 +58,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
         />
 
     <!-- Button Container -->
@@ -166,6 +175,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 <resources>
     <!-- ആപ്പ് നാമം -->
-    <string name="app_name">മാത്ത്‌സ് മന്ത്ര</string>
-    <string name="app_title">മാത്ത്‌സ് മന്ത്ര</string>
+    <string name="app_name">സ്ഡ്‌മന്ത്ര</string>
+    <string name="app_title">സ്ഡ്‌മന്ത്ര</string>
     <string name="logo_description">ആപ്പ് ലോഗോ</string>
     <string name="accessibility_dialog_title">ആക്സസിബിലിറ്റി സേവനം പ്രവർത്തനക്ഷമമാക്കുക</string>
     <string name="accessibility_dialog_message">MathsManthra ശരിയായി പ്രവർത്തിക്കാൻ ആക്സസിബിലിറ്റി സേവനം ആവശ്യമാണ്. ക്രമീകരണങ്ങളിൽ ഇത് പ്രവർത്തനക്ഷമമാക്കുക.</string>
