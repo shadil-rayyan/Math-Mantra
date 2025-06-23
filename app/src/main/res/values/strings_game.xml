@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="mental_description">Mental math screen, math question and input</string>
+    <string name="math_question_description">This is a math question. How much is 2 plus 2 times 2 minus 5? Double tap to repeat the question.</string>
+
     <!-- angle -->
     <string name="rotate_your_phone">Rotate Your Phone</string>
     <string name="turn_phone_90_degrees">Turn your phone 90 degrees</string>
@@ -7,6 +11,7 @@
     <!-- shake -->
     <string name="shake_target_expression">Shake %1$s times!</string>
     <string name="shake_count_announcement">Shake count: %1$d</string>
+    <string name="shake_count_description">Current shake count, starts at 0</string>
     <string name="shake_target_instruction">Shake the device %1$d times</string>
     <string name="shake_success">Well done!</string>
     <string name="shake_failure">Try again!</string>

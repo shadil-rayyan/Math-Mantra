@@ -4,10 +4,10 @@
     <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
     <string name="turn_phone_90_degrees">ഫോൺ 90 ഡിഗ്രി തിരിക്കുക</string>
     <string name="rotation_angle_default">ഭ്രമണ കോണം: 0°</string>
-    <string name="angle_description">ഫോണിന്റെ തിരിവ് കാണിക്കുന്ന സ്ക്രീൻ</string>
     <!-- shake -->
     <string name="shake_target_expression">%1$s തവണ ഫോണിനെ കുലുക്കുക!</string>
     <string name="shake_count_announcement">കുലുക്കൽ എണ്ണം: %1$d</string>
+    <string name="shake_count_description">നിലവിലെ കുലുക്കൽ എണ്ണം, ആരംഭത്തിൽ 0</string>
     <string name="shake_target_instruction">ഫോൺ %1$d തവണ കുലുക്കുക</string>
     <string name="shake_success">ശബാഷ്!</string>
     <string name="shake_failure">മറുപടി തെറ്റാണ്! വീണ്ടും ശ്രമിക്കുക!</string>
@@ -15,7 +15,6 @@
     <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
     <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
     <string name="shake_count_initial">0</string>
-    <string name="shake_count_description">നിലവിലെ കുലുക്കൽ എണ്ണം, ആരംഭത്തിൽ 0</string>
     <string name="shake_instruction">ഫോൺ കുലുക്കി തുടങ്ങുക</string>
     <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഫോൺ കുലുക്കാൻ നിർദ്ദേശം</string>
 
@@ -25,7 +24,6 @@
     <string name="tap_failure">ടാപ്പ് എണ്ണം തെറ്റാണ്. വീണ്ടും ശ്രമിക്കുക!</string>
     <string name="tap_game_over">ഗെയിം അവസാനിച്ചു! നിങ്ങൾ 3 തവണ ശ്രമിച്ചു.</string>
     <string name="tap_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
-    <string name="tap_screen_description">ഇത് ടാപ്പ് എണ്ണം സ്ക്രീനാണ്. എണ്ണം വർദ്ധിപ്പിക്കാൻ എവിടെയും ടാപ്പ് ചെയ്യുക.</string>
     <string name="tap_count_description">ടാപ്പ് എണ്ണം: 0</string>
     <string name="initial_tap_count">0</string>
     <string name="tap_instruction">%1$d° തവണ ടാപ്പ് ചെയ്യുക</string>
@@ -34,7 +32,6 @@
     <string name="touchscreen_question_expression">%1$s</string>
     <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിക്കുക)</string>
     <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരലുകൾ: %1$d</string>
-    <string name="touch_screen_description">ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിച്ച് ടച്ച് ചെയ്യുക</string>
     <string name="touch_instruction">സ്ക്രീനിൽ 2 വിരലുകൾ വെക്കുക</string>
     <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ ടച്ച് ചെയ്യുന്ന ചിത്രം</string>
 
@@ -50,7 +47,6 @@
     <string name="wrong_answer_reveal">തെറ്റാണ്! ശരിയായ ഉത്തരം %1$s ആയിരുന്നു</string>
 
     <!-- drawing -->
-    <string name="drawing_description">ആകൃതിയുള്ള ഡ്രോയിംഗ് സ്ക്രീൻ, ഇൻപുട്ടും നിയന്ത്രണ ബട്ടണുകളും</string>
     <string name="draw_shape">ഒരു ആകൃതി വരയ്ക്കുക</string>
     <string name="draw_instruction">നിർദ്ദേശം: ആവശ്യമായ ആകൃതി വരയ്ക്കുക</string>
     <string name="drawing_canvas_description">ഡ്രോയിംഗ് കാൻവാസ്. ടച്ച് ജസ്റ്ററുകൾ ഉപയോഗിച്ച് ആകൃതി വരയ്ക്കുക.</string>
@@ -63,7 +59,6 @@
     <!-- compass -->
     <string name="turn_to_angle">%1$d° ലേക്ക് തിരിക്കുക</string>
     <string name="degree_placeholder">0°</string>
-    <string name="compassdescription">കമ്പസ്: ചോദ്യത്തിൽ പറയുന്ന ദിശയിലേക്ക് ഫോൺ തിരിക്കുക</string>
     <string name="turn_to_angle_template">നിങ്ങളുടെ നിലവിലെ ദിശയിൽ നിന്ന് %1$d° ലേക്ക് തിരിക്കുക</string>
     <string name="relative_angle_template">സംബന്ധിക ഭ്രമണ കോണം: %1$d°</string>
     <string name="current_angle_announcement">%1$s</string>
@@ -114,7 +109,6 @@
     <string name="standing_on">നിങ്ങൾ %1$s ൽ നിൽക്കുന്നു.</string>
     <string name="what_is">%1$s %2$s %3$s എത്ര?</string>
     <string name="units_to_direction">നമ്പർ ലൈൻ ൽ %1$s യൂണിറ്റ് %2$s നീക്കുക.</string>
-    <string name="number_line_description">നമ്പർ ലൈൻ പ്രവർത്തനം. ഗണിത ചോദ്യത്തെ പരിഹരിക്കാൻ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തോ വലത്തോ നീങ്ങുക.</string>
     <string name="number_line_question">0 + 12 എത്ര?</string>
     <string name="number_line_question_description">ചോദ്യമാണ്. 0 പ്ലസ് 12 എത്ര? ഡബിൾ ടാപ്പ് ചെയ്ത് ചോദ്യം ആവർത്തിക്കുക.</string>
     <string name="number_line_visual_description">ദൃശ്യ നമ്പർ ലൈൻ. താഴെ ബട്ടണുകൾ ഉപയോഗിച്ച് ഇടത്തോ വലത്തോ നീങ്ങുക.</string>
