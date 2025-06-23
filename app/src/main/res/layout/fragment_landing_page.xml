@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     tools:context="com.zendalona.mathsmantra.MathsMantra"
+    android:contentDescription="@string/landing_page_desc"
     >
 
 

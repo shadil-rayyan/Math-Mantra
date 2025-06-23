@@ -1,6 +1,67 @@
-<resources>
-<string name="angle_description">
-    This is the angle game page. Swipe twice to see which angle you need to turn. The text-to-speech will speak the current angle you are at based on your facing direction when the mode starts. The starting direction is considered zero degrees. Turning to the right goes from 0 to 45 degrees, and turning left goes from 360 to 275 degrees. Stay within the correct angle for 3 seconds to win the game.
-</string>
 
+<resources>
+    <string name="landing_page_desc">
+        This is the landing page. On this screen, you will find six buttons arranged vertically: Quick Play, Learning Mode, Game Mode, User Guide, Settings, and Quit. Each button can be accessed by swiping or navigating using custom accessibility gestures. Double-tap on any button to activate it.
+    </string>
+
+    <string name="quickplay_page_desc">
+        This is the Quick Play page. Swipe right once to hear the question. Swipe right again to reach the input box. Double-tap on the input box to open the numeric keypad. After entering your answer, you can tap the "Done" button to automatically submit. If not submitted, swipe right one more time to find the Submit button. The top-left corner of the screen has a Back button, and the top-right corner has a Hint icon.
+    </string>
+
+    <string name="learning_page_desc">
+        This is the Learning Mode page. The screen is arranged in two columns, with each row containing two buttons representing different game modes. Swipe right to navigate through the rows. Double-tap on any button to enter the corresponding learning activity.
+    </string>
+
+    <string name="game_page_desc">
+        This is the Game Mode page. The layout is similar to the Learning Mode page, with two columns and rows containing two buttons each. Swipe right to explore the game modes. Double-tap a button to start playing the selected game.
+    </string>
+
+    <string name="settings_page_desc">
+        This is the Settings page. Here, you can customize your experience. You will find options to adjust music volume, speech rate, background music, visual contrast, difficulty level, language settings, and a button to reset all settings to default. Swipe right to navigate through each setting option.
+    </string>
+
+    <string name="hint_page_desc">
+        This is the Hint page. Swipe left to go back to the previous screen. Swipe right to hear the hint associated with the current task or question.
+    </string>
+
+    <string name="shake_page_desc">
+        This is the Shake Mode page. Swipe right once to hear how many shakes you have performed. Swipe right two times to hear the current question. Swipe left once to hear a hint. Swipe left two times to find the Back button.
+    </string>
+
+    <string name="tap_page_desc">
+        This is the Tap Mode page. Custom accessibility features are enabled here, so TalkBack is not supported. The screen will use Text-to-Speech (TTS) to read the question aloud. When you tap the screen, TTS will speak the tap count. The Back button is located at the top left, and the Hint icon is at the top right.
+    </string>
+
+    <string name="day_page_desc">
+        This is the Day Selection page. Swipe right once to hear the question. Swipe right two more times to reach the day selector, which is arranged in a 3-by-2 grid, with Sunday in the center of the third row. Swipe left once to access the Hint icon, and swipe left twice to find the Back button.
+    </string>
+
+    <string name="number_line_page_desc">
+        This is the Number Line page. Swipe right once to hear the question. Swipe two more times to learn the direction you're currently facing on the number line. Swipe right three more times to find the minus (-) button, which moves you backwards on the number line. For example, pressing it five times from number 5 will bring you to 0. Swipe four more times to reach the plus (+) button, which moves you forward. Swipe left once for the Hint icon, and swipe left twice to find the Back button.
+    </string>
+
+    <string name="mental_page_desc">
+        This is the Mental Math page. Swipe right once to hear the question. Swipe right two more times to reach the input box. Double-tap to open the numeric keypad, enter your answer, then swipe right three more times to reach the Submit button. Tap it multiple times to confirm submission. Swipe left once for the Hint icon, and swipe left twice to go back.
+    </string>
+
+    <string name="angle_page_desc">
+        This is the Angle Game page. Swipe right once to hear the angle you need to turn to. Swipe right twice to hear the angle you are currently facing. The default facing direction is 0 degrees. Turning right increases the angle from 0 to 45, while turning left increases from 0 to 270 degrees, and so on. Swipe left once to find the Hint icon, and swipe left twice to go back.
+    </string>
+
+    <string name="sterio_page_desc">
+        This is the Stereo Sound page. Swipe right once to hear instructions. Swipe right twice more to reach the Question button. Double-tap to hear the question spoken aloud. Swipe right three more times to reach the input box. Swipe right again to find the Submit button. Swipe left once for the Hint icon, and swipe left twice to access the Back button.
+    </string>
+
+    <string name="drawing_page_desc">
+        This is the Drawing page. Custom accessibility is enabled, so TalkBack is not supported. The top-right corner has a Hint icon, and the top-left has a Back button. The Reset button is located both at the top and bottom left corners. The Submit button is located at the bottom right corner.
+    </string>
+
+    <string name="compass_page_desc">
+        This is the Compass Game page. Swipe right once to hear the direction you need to turn toward. Swipe right again to hear your current facing direction. To win, you must stay within the correct direction range for two seconds. The Hint icon is at the top right, and the Back button is at the top left.
+    </string>
+
+    <string name="touch_screen_page_desc">
+        This is the Touch Screen page. Custom accessibility is enabled here, and TalkBack is not supported. The Back button is at the top left, and the Hint icon is at the top right. The question is located slightly above the bottom center of the screen. The question will be read aloud using TTS.
+    </string>
 </resources>
+

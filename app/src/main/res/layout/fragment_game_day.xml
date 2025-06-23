@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     android:padding="14dp"
-    android:contentDescription="@string/mental_description"
+    android:contentDescription="@string/day_page_desc"
     tools:context=".view.game.DayFragment">
 
     <LinearLayout

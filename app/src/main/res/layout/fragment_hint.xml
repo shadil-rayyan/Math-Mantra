@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    tools:context=".view.HintFragment">
+    tools:context=".view.HintFragment"
+    android:contentDescription="@string/hint_page_desc">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

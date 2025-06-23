@@ -14,7 +14,6 @@
     <string name="shake_next_question">Next question</string>
     <string name="shake_game_over">Shake game over.</string>
     <string name="shake_count_initial">0</string>
-    <string name="shake_count_description">Current shake count, starts at 0</string>
     <string name="shake_instruction">Shake the device to start</string>
     <string name="shake_instruction_description">Instruction to shake the device to start the game</string>
 
@@ -24,7 +23,6 @@
     <string name="tap_failure">Incorrect tap count. Try again!</string>
     <string name="tap_game_over">Game Over! You tried 3 times.</string>
     <string name="tap_next_question">Next question</string>
-    <string name="tap_screen_description">This is the Tap Count Screen. Tap anywhere to increase the count.</string>
     <string name="tap_count_description">Tap count: 0</string>
     <string name="initial_tap_count">0</string>
     <string name="tap_instruction">Tap  %1$d° times  </string>
@@ -33,7 +31,6 @@
     <string name="touchscreen_question_expression">%1$s</string>
     <string name="touchscreen_question_format">%1$d + %2$d = ? (Use fingers to answer)</string>
     <string name="touchscreen_fingers_on_screen">Fingers on screen: %1$d</string>
-    <string name="touch_screen_description">Touch your finger game answer with your fingers</string>
     <string name="touch_instruction">Put 2 fingers on the screen</string>
     <string name="touch_image_description">Illustration of two fingers touching the screen</string>
 
@@ -49,7 +46,6 @@
     <string name="wrong_answer_reveal">Wrong! The correct answer was %1$s</string>
 
     <!-- drawing -->
-    <string name="drawing_description">Drawing screen with shape input and control buttons</string>
     <string name="draw_shape">Draw a shape</string>
     <string name="draw_instruction">Instruction: Draw the required shape</string>
     <string name="drawing_canvas_description">Canvas for drawing. Use touch gestures to draw your shape.</string>
@@ -62,7 +58,6 @@
     <!-- compass -->
     <string name="turn_to_angle">Turn to %1$d°</string>
     <string name="degree_placeholder">0°</string>
-    <string name="compassdescription">compass turn the phone in the direction as asked in teh question </string>
     <string name="turn_to_angle_template">Turn to %1$d° from your current direction</string>
     <string name="relative_angle_template">Relative Angle: %1$d°</string>
     <string name="current_angle_announcement"> %1$s</string>
@@ -100,10 +95,8 @@
 
     <!-- Mental calcuation-->
 
-    <string name="mental_description">Mental calculation screen with math question and input</string>
     <string name="calculate_prompt">Calculate the value of:</string>
     <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
-    <string name="math_question_description">Math question. What is 2 plus 2 times 2 minus 5? Double tap to repeat the question.</string>
     <string name="answer_input_description">Enter your answer here</string>
     <string name="answer_hint">Your Answer Here</string>
 
@@ -118,7 +111,6 @@
     <string name="standing_on">You re standing on %1$s. </string>
     <string name="what_is">What is %1$s %2$s %3$s? </string>
     <string name="units_to_direction">Move %1$s units to the %2$s of Number line.</string>
-    <string name="number_line_description">Number Line Activity. Use the buttons to move left or right on the number line to solve the math question.</string>
     <string name="number_line_question">What is 0 + 12?</string>
     <string name="number_line_question_description">Question. What is 0 plus 12? Double tap to repeat the question.</string>
     <string name="number_line_visual_description">Visual number line. Use the buttons below to move left or right.</string>
