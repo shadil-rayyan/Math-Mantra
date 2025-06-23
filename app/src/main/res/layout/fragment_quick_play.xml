@@ -83,5 +83,9 @@
         android:textSize="12sp"
         android:gravity="center"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 </FrameLayout>
