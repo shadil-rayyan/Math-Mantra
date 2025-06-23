@@ -24,7 +24,11 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_gravity="center"
-        android:src="@drawable/game_compass" />
+        android:src="@drawable/game_compass"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 
     <!-- Degree Display -->
     <TextView
