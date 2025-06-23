@@ -54,7 +54,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/angle_question" />
+        app:layout_constraintTop_toBottomOf="@id/angle_question"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false" />
 
     <!-- Rotation Angle Text -->
     <TextView
