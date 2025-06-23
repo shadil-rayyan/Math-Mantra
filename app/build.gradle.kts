@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.zendalona.mathsmantra"
+    namespace = "com.zendalona.zmantra"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.zendalona.mathsmatra"
+        applicationId = "com.zendalona.zmantra"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

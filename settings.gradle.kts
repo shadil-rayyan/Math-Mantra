@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MathsMathra"
+rootProject.name = "ZMantra"
 include(":app")
  
