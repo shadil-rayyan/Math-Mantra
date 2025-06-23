@@ -13,11 +13,11 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:name=".MathsMantra"
+        android:name=".ZMantra"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MathsMantra"
+        android:theme="@style/Theme.ZMantra"
         tools:targetApi="31">
         <meta-data
             android:name="com.google.firebase.ml.model.manager"
@@ -27,7 +27,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.MathsMantra">
+            android:theme="@style/Theme.ZMantra">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
