@@ -1,141 +1,83 @@
 package com.zendalona.zmantra.view
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
+import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentLearningmodeBinding
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
 
-class LearningFragment: Fragment() {
+class LearningFragment : Fragment() {
 
-    private var binding : FragmentLearningmodeBinding? = null
-    private var navigationListener : FragmentNavigation? = null
-
-
-
-
-    override fun onAttach(context: Context)
-    {
-        super.onAttach(context)
-        if (context is FragmentNavigation)
-        {
-            navigationListener = context as FragmentNavigation
-
-        }
-        else
-        {
-            throw RuntimeException(context.toString()+ "must implement Fragemention Naviagation ")
-        }
-    }
+    private var _binding: FragmentLearningmodeBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentLearningmodeBinding.inflate(inflater,container, false)
-        setHasOptionsMenu(true) // 🔥 This is required!
+    ): View {
+        _binding = FragmentLearningmodeBinding.inflate(inflater, container, false)
 
+        setupCategoryButtons()
 
-        val lang = LocaleHelper.getLanguage(context)?: "en"
-
-        val difficulty = DifficultyPreferences.getDifficulty(context)
-
-        binding!!.cardTime.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardCurrency.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardDistance.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-
-        binding!!.cardAddition.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardSubtraction.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardMultiplication.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardDivision.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-
-        }
-        binding!!.cardTilerFrame.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-        }
-
-        binding!!.cardPercentage.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-        }
-
-
-        binding!!.cardRemainder.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LearningPageFragment", "card time clicked ")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
-        }
-
-
-
-        return binding!!.getRoot()
+        return binding.root
     }
 
+    private fun setupCategoryButtons() {
+        // Example category buttons - make sure these IDs exist in fragment_landing.xml
 
+        binding.cardTime.setOnClickListener {
+            launchQuickPlay("time")  // Excel mode = "math"
+        }
 
+        binding.cardCurrency.setOnClickListener {
+            launchQuickPlay("currency")
+        }
 
+        binding.cardDistance.setOnClickListener {
+            launchQuickPlay("distance")
+        }
 
+        binding.cardAddition.setOnClickListener {
+            launchQuickPlay("addition")
+        }
+        binding.cardSubtraction.setOnClickListener {
+            launchQuickPlay("subtraction")
+        }
+
+        binding.cardMultiplication.setOnClickListener {
+            launchQuickPlay("multiplication")
+        }
+
+        binding.cardDivision.setOnClickListener {
+            launchQuickPlay("division")
+        }
+
+        binding.cardPercentage.setOnClickListener {
+            launchQuickPlay("percentage")
+        }
+        binding.cardRemainder.setOnClickListener {
+            launchQuickPlay("remainder")
+        }
+        binding.cardStory.setOnClickListener {
+            launchQuickPlay("story")
+        }
+
+    }
+
+    private fun launchQuickPlay(category: String) {
+        val quickPlayFragment = QuickPlayFragment.newInstance(category)
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, quickPlayFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

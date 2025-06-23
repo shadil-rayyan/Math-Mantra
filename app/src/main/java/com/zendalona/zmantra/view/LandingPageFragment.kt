@@ -23,7 +23,6 @@ interface FragmentNavigation {
 
 class LandingPageFragment : Fragment() {
 
-
     private var _binding: FragmentLandingPageBinding? = null
     private val binding get() = _binding!!
 
@@ -50,13 +49,13 @@ class LandingPageFragment : Fragment() {
             Log.d("LandingPageFragment", "Settings button clicked")
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+
         binding.quickplay.setOnClickListener {
-            val filePath = "numbers/landingpage/quickplay/${difficulty}.txt"
-            Log.d("LandingPageFragment", "Quickplay button clicked, loading file: $filePath")
-            QuickPlayFragment.newInstance(filePath).apply {
-                navigationListener?.loadFragment(this, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            }
+            Log.d("LandingPageFragment", "Quickplay button clicked")
+            val fragment = QuickPlayFragment.newInstance("quickplay")
+            navigationListener?.loadFragment(fragment, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+
         binding.learningButton.setOnClickListener {
             Log.d("LandingPageFragment", "Learning button clicked")
             navigationListener?.loadFragment(LearningFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

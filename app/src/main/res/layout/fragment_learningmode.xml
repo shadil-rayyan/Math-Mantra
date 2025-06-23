@@ -112,7 +112,7 @@
             </com.google.android.material.card.MaterialCardView>
         <com.google.android.material.card.MaterialCardView
             style="@style/LearningCardStyle"
-            android:id="@+id/cardTilerFrame"
+            android:id="@+id/cardStory"
             android:contentDescription="Open Tiler Frame Activities">
             <com.google.android.material.textview.MaterialTextView
                 style="@style/CardText"

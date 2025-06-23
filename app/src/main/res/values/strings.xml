@@ -9,6 +9,8 @@
     <string name="accessibility_service_description">
         Maths Mantra Accessibility Service helps provide better learning experience by observing screen content and providing spoken feedback.
     </string>
+    <string name="back_button_label">Back Button</string>
+
 
     <!-- hint page -->
     <string name="hint_fallback">something went wrong</string>

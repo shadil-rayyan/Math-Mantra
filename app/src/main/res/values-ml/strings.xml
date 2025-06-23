@@ -10,6 +10,9 @@
     <string name="accessibility_service_description">
         മാത്ത്‌സ് മന്ത്ര ആക്സസിബിലിറ്റി സേവനം സ്ക്രീൻ ഉള്ളടക്കം നിരീക്ഷിച്ച് സംസാരിക്കുന്ന പ്രതികരണം നൽകുന്നതിലൂടെ മികച്ച പഠനാനുഭവം നൽകാൻ സഹായിക്കുന്നു.
     </string>
+    <string name="back_button_label">മടങ്ങുന്നതിനുള്ള ബട്ടൺ</string>
+
+
 
     <!-- ഹിന്റ് പേജ് -->
     <string name="hint_fallback">എന്തോ തെറ്റ് സംഭവിച്ചു</string>

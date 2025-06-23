@@ -64,7 +64,7 @@ class QuickPlayFragment : Fragment(), Hintable {
                 ExcelQuestionLoader.loadQuestionsFromExcel(
                     context = it,
                     lang = lang,
-                    mode = "addition",
+                    mode = questionCategory ?: "default",
                     difficulty = difficulty
                 )
             )

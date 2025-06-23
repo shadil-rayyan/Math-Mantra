@@ -35,12 +35,16 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-
-        // Enable back arrow depending on stack
+// Enable back arrow depending on stack
         supportFragmentManager.addOnBackStackChangedListener {
             val canGoBack = supportFragmentManager.backStackEntryCount > 0
             supportActionBar?.setDisplayHomeAsUpEnabled(canGoBack)
+            supportActionBar?.setDisplayShowHomeEnabled(canGoBack)
+
+            // Set localized content description (for accessibility)
+            supportActionBar?.setHomeActionContentDescription(R.string.back_button_label)
         }
+
 
         // Initial fragment
         if (savedInstanceState == null) {
