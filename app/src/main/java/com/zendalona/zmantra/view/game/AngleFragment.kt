@@ -16,6 +16,8 @@ import com.zendalona.zmantra.model.Hintable
 import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.game.angle.RotationSensorUtility
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
@@ -51,12 +53,15 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         angleUpdateHandler = Handler(Looper.getMainLooper())
         setHasOptionsMenu(true)
 
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val lang = LocaleHelper.getLanguage(context) ?: "en"
+
         // ✅ Load angle questions from Excel
         angleQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
             requireContext(),
-            lang = "en",
+            lang = lang,
             mode = "angle",
-            difficulty = "1"
+            difficulty = difficulty.toString()
         )
 
         return view

@@ -94,7 +94,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
             requireContext(),
             lang = lang,
             mode = "direction",
-            difficulty = "1"
+            difficulty = difficulty.toString()
         )
 
         if (loadedQuestions.isEmpty()) {

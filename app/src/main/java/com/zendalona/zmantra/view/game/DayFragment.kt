@@ -18,6 +18,8 @@ import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.zmantra.utility.common.GradingUtils
 import com.zendalona.zmantra.utility.common.TTSUtility
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.utility.settings.LocaleHelper
 import kotlin.random.Random
 
 class DayFragment : Fragment(), Hintable {
@@ -51,12 +53,15 @@ class DayFragment : Fragment(), Hintable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         ttsUtility = TTSUtility(requireContext())
 
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val lang = LocaleHelper.getLanguage(context) ?: "en"
+
         // Load Excel day questions once
         dayQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
             requireContext(),
-            lang = "en",       // Change to dynamic locale if needed
+            lang = lang,       // Change to dynamic locale if needed
             mode = "day",
-            difficulty = "1"
+            difficulty = difficulty.toString()
         )
 
         val buttons = listOf(
