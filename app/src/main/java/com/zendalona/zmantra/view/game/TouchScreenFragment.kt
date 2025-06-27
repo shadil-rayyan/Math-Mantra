@@ -37,16 +37,29 @@ class TouchScreenFragment : Fragment(), Hintable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         tts = TTSUtility(requireContext())
-        lang = LocaleHelper.getLanguage(requireContext())
+        lang = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
         val difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
-        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "touch", difficulty)
+
+        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
+            requireContext(), lang, "touch", difficulty
+        ).shuffled()
+
         if (questionList.isEmpty()) {
-            Toast.makeText(requireContext(), "No questions found for selected difficulty and language.", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                "No touch questions found in Excel for $lang / $difficulty.",
+                Toast.LENGTH_LONG
+            ).show()
         }
+
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
         startGame()
         return binding!!.root
@@ -69,6 +82,7 @@ class TouchScreenFragment : Fragment(), Hintable {
         correctAnswer = question.answer
         questionStartTime = System.currentTimeMillis()
 
+        // Say and display the instruction
         val readableExpr = question.expression.replace("+", " plus ").replace("-", " minus ")
         val speakText = "Touch the screen with $readableExpr fingers"
 
@@ -109,7 +123,9 @@ class TouchScreenFragment : Fragment(), Hintable {
         handler.postDelayed({
             val question = questionList[index]
             val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-            val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), success)
+            val grade = GradingUtils.getGrade(
+                elapsedSeconds, question.timeLimit.toDouble(), success
+            )
 
             if (success) {
                 wrongAttempts = 0
@@ -119,6 +135,7 @@ class TouchScreenFragment : Fragment(), Hintable {
                         start()
                     }
                 }
+
                 DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
                     index++
                     startGame()
@@ -131,16 +148,13 @@ class TouchScreenFragment : Fragment(), Hintable {
                     endGameWithScore()
                 } else {
                     DialogUtils.showRetryDialog(
-                        requireContext(),
-                        layoutInflater,
-                        tts,
+                        requireContext(), layoutInflater, tts,
                         getString(R.string.shake_failure)
                     ) {
                         startGame()
                     }
                 }
             }
-
         }, 500)
     }
 

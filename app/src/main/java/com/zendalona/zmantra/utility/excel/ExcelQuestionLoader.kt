@@ -50,33 +50,45 @@ object ExcelQuestionLoader {
     private fun parseSingleOperand(input: String, mode: String): Any {
         return try {
             if (mode in listOf("direction", "drawing")) {
-                // Extract values after the letter prefix (like aRed,Blue)
-                val parts = input.drop(1) // Drop the variable (e.g., 'a')
+                val parts = input.drop(1)
                 val options = parts.split(",").map { it.trim() }
                 options.random()
             } else {
                 val cleanedInput = input.filter { it.isDigit() || it == ',' || it == ':' || it == ';' }
 
-                when {
-                    cleanedInput.contains(",") -> {
-                        val options = cleanedInput.split(",").map { it.trim().toInt() }
-                        options.random()
-                    }
-                    cleanedInput.contains(":") -> {
-                        val (start, end) = cleanedInput.split(":").map { it.trim().toInt() }
-                        Random.nextInt(start, end + 1)
-                    }
-                    cleanedInput.contains(";") -> {
-                        val parts = cleanedInput.split(";").map { it.trim().toInt() }
-                        if (parts.size == 3) {
-                            val (a, b, c) = parts
-                            a * Random.nextInt(b, c + 1)
+                if (cleanedInput.contains(";")) {
+                    // Split by semicolon
+                    val parts = cleanedInput.split(";").map { it.trim() }
+                    if (parts.size == 2) {
+                        // Left part: parse range or fixed number
+                        val leftValue = if (parts[0].contains(":")) {
+                            val (start, end) = parts[0].split(":").map { it.toInt() }
+                            Random.nextInt(start, end + 1)
+                        } else if (parts[0].contains(",")) {
+                            parts[0].split(",").map { it.toInt() }.random()
                         } else {
-                            Log.w(TAG, "Invalid format for semicolon input: $cleanedInput")
-                            0
+                            parts[0].toInt()
                         }
+
+                        // Right part: parse fixed number or random from commas
+                        val rightValue = if (parts[1].contains(",")) {
+                            parts[1].split(",").map { it.toInt() }.random()
+                        } else {
+                            parts[1].toInt()
+                        }
+
+                        leftValue * rightValue
+                    } else {
+                        Log.w(TAG, "Invalid semicolon input (expect 2 parts): $cleanedInput")
+                        0
                     }
-                    else -> cleanedInput.trim().toIntOrNull() ?: 0
+                } else if (cleanedInput.contains(",")) {
+                    cleanedInput.split(",").map { it.toInt() }.random()
+                } else if (cleanedInput.contains(":")) {
+                    val (start, end) = cleanedInput.split(":").map { it.toInt() }
+                    Random.nextInt(start, end + 1)
+                } else {
+                    cleanedInput.toIntOrNull() ?: 0
                 }
             }
         } catch (e: Exception) {

@@ -1,67 +1,79 @@
 package com.zendalona.zmantra.view.game
 
-import android.media.MediaPlayer
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.app.AlertDialog
+import android.content.Context
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.os.*
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentGameTouchScreenBinding
+import com.zendalona.zmantra.databinding.DialogResultBinding
+import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.utility.common.*
-import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.view.HintFragment
+import com.zendalona.zmantra.model.AudioPlayerUtility
 import com.zendalona.zmantra.model.Hintable
+import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
+import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.zmantra.view.HintFragment
+import java.util.*
 
-class TouchScreenFragment : Fragment(), Hintable {
+class SterioFragment : Fragment(), Hintable {
 
-    private var binding: FragmentGameTouchScreenBinding? = null
-    private lateinit var tts: TTSUtility
-    private val handler = Handler(Looper.getMainLooper())
+    private var binding: FragmentGameSteroBinding? = null
+    private var ttsUtility: TTSUtility? = null
+    private var audioPlayerUtility: AudioPlayerUtility? = null
 
-    private var index = 0
-    private var wrongAttempts = 0
-    private var questionStartTime = 0L
+    private var questions: List<GameQuestion> = emptyList()
+    private var currentIndex = 0
+
+    private var numA = 0
+    private var numB = 0
     private var correctAnswer = 0
-    private var inputLocked = false
-
-    private lateinit var lang: String
-    private lateinit var questionList: List<GameQuestion>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tts = TTSUtility(requireContext())
-        lang = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
-
-        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(), lang, "touch", difficulty
-        ).shuffled()
-
-        if (questionList.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "No touch questions found in Excel for $lang / $difficulty.",
-                Toast.LENGTH_LONG
-            ).show()
-        }
-
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
-        startGame()
+        binding = FragmentGameSteroBinding.inflate(inflater, container, false)
+        ttsUtility = TTSUtility(requireContext())
+        audioPlayerUtility = AudioPlayerUtility()
+        setHasOptionsMenu(true)
+
+        // Load questions from Excel
+        val lang = getLanguage(requireContext()).ifEmpty { "en" }
+        val difficulty = getDifficulty(requireContext()).toString()
+
+        questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            context = requireContext(),
+            lang = lang,
+            mode = "sterio",
+            difficulty = difficulty
+        ).shuffled()
+
+        if (questions.isEmpty()) {
+            Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
+            return binding!!.root
+        }
+
+        setAccessibilityDescriptions()
+        loadNextQuestion()
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding?.readQuestionBtn?.requestFocus()
+            readQuestionAloud()
+        }, 500)
+
+        binding?.readQuestionBtn?.setOnClickListener { readQuestionAloud() }
+        binding?.submitAnswerBtn?.setOnClickListener { submitAnswer() }
+        binding?.answerEt?.setOnEditorActionListener { _, _, _ ->
+            submitAnswer()
+            true
+        }
+
         return binding!!.root
     }
 
@@ -70,97 +82,115 @@ class TouchScreenFragment : Fragment(), Hintable {
         menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
-    private fun startGame() {
-        if (index >= questionList.size) {
-            tts.speak(getString(R.string.shake_game_over))
-            endGameWithScore()
+    private fun loadNextQuestion() {
+        if (currentIndex >= questions.size) {
+            Toast.makeText(requireContext(), "All questions completed!", Toast.LENGTH_SHORT).show()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
             return
         }
 
-        inputLocked = false
-        val question = questionList[index]
+        val question = questions[currentIndex++]
         correctAnswer = question.answer
-        questionStartTime = System.currentTimeMillis()
+        binding?.answerEt?.setText("")
 
-        // Say and display the instruction
-        val readableExpr = question.expression.replace("+", " plus ").replace("-", " minus ")
-        val speakText = "Touch the screen with $readableExpr fingers"
-
-        binding?.angleQuestion?.apply {
-            text = speakText
-            contentDescription = speakText
-            announceForAccessibility(speakText)
+        // Extract numbers from expression string (e.g., "8 - 5")
+        val match = Regex("""(\d+)\s*[-+*/]\s*(\d+)""").find(question.expression)
+        if (match != null && match.groupValues.size == 3) {
+            numA = match.groupValues[1].toInt()
+            numB = match.groupValues[2].toInt()
+        } else {
+            numA = 0
+            numB = 0
         }
 
-        tts.speak(speakText)
-        setupTouchListener()
+        announce("A new question is ready. Tap 'Read the Question' to listen.")
     }
 
-    private fun setupTouchListener() {
-        binding?.root?.setOnTouchListener { _, event ->
-            val pointerCount = event.pointerCount
+    private fun readQuestionAloud() {
+        val isHeadphoneConnected = isHeadphoneConnected()
+        val isAbove23 = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
 
-            if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
-                binding?.angleQuestion?.text =
-                    getString(R.string.touchscreen_fingers_on_screen, pointerCount)
+        if (isAbove23 && isHeadphoneConnected) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                // First number on LEFT
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numA, false)
+            }, 0)
 
-                if (pointerCount == correctAnswer && !inputLocked) {
-                    inputLocked = true
-                    evaluateGameResult(success = true)
-                }
-            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                ttsUtility?.speak("minus")
+            }, 3000)
 
-            if (event.action == MotionEvent.ACTION_UP && !inputLocked) {
-                inputLocked = true
-                evaluateGameResult(success = false)
-            }
-
-            true
+            Handler(Looper.getMainLooper()).postDelayed({
+                // Second number on RIGHT
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numB, true)
+            }, 6000)
+        } else {
+            ttsUtility?.speak("Subtract second number $numB from first number $numA")
         }
     }
 
-    private fun evaluateGameResult(success: Boolean) {
-        handler.postDelayed({
-            val question = questionList[index]
-            val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-            val grade = GradingUtils.getGrade(
-                elapsedSeconds, question.timeLimit.toDouble(), success
-            )
-
-            if (success) {
-                wrongAttempts = 0
-                if (question.celebration) {
-                    MediaPlayer.create(context, R.raw.bell_ring)?.apply {
-                        setOnCompletionListener { release() }
-                        start()
-                    }
-                }
-
-                DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                    index++
-                    startGame()
-                }
-
-            } else {
-                wrongAttempts++
-                if (wrongAttempts >= 3) {
-                    tts.speak(getString(R.string.shake_game_over))
-                    endGameWithScore()
-                } else {
-                    DialogUtils.showRetryDialog(
-                        requireContext(), layoutInflater, tts,
-                        getString(R.string.shake_failure)
-                    ) {
-                        startGame()
-                    }
-                }
+    private fun isHeadphoneConnected(): Boolean {
+        val audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
+            devices.any {
+                it.type == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
+                        it.type == AudioDeviceInfo.TYPE_WIRED_HEADSET ||
+                        it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
             }
-        }, 500)
+        } else {
+            @Suppress("DEPRECATION")
+            audioManager.isWiredHeadsetOn
+        }
+    }
+
+    private fun submitAnswer() {
+        val userInput = binding?.answerEt?.text.toString()
+        if (userInput.isEmpty()) {
+            announce("Please enter an answer before submitting.")
+            Toast.makeText(requireContext(), "Please enter an answer!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val isCorrect = userInput.toIntOrNull() == correctAnswer
+        showResultDialog(isCorrect)
+    }
+
+    private fun showResultDialog(isCorrect: Boolean) {
+        val message = if (isCorrect) "Right Answer!" else "Wrong Answer. Try again."
+        val gifResource = if (isCorrect) R.drawable.right else R.drawable.wrong
+
+        val dialogBinding = DialogResultBinding.inflate(layoutInflater)
+        Glide.with(this).asGif().load(gifResource).into(dialogBinding.gifImageView)
+        dialogBinding.messageTextView.text = message
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        dialog.show()
+        dialogBinding.root.announceForAccessibility(message)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            dialog.dismiss()
+            loadNextQuestion()
+        }, 2000)
+    }
+
+    private fun setAccessibilityDescriptions() {
+        binding?.readQuestionBtn?.contentDescription = "Read question aloud."
+        binding?.answerEt?.contentDescription = "Answer input field."
+        binding?.submitAnswerBtn?.contentDescription = "Submit your answer."
+    }
+
+    private fun announce(message: String) {
+        binding?.answerEt?.announceForAccessibility(message)
     }
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "touch")
+            putString("mode", "sterio")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
@@ -170,25 +200,9 @@ class TouchScreenFragment : Fragment(), Hintable {
             .commit()
     }
 
-    override fun onResume() {
-        super.onResume()
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.disableExploreByTouch(it)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.resetExploreByTouch(it)
-        }
-        handler.removeCallbacksAndMessages(null)
-        tts.stop()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        tts.shutdown()
+        ttsUtility?.shutdown()
         binding = null
     }
 }
