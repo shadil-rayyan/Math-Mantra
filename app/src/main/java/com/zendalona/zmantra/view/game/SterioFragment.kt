@@ -4,32 +4,32 @@ import android.app.AlertDialog
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.*
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.DialogResultBinding
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
+import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.model.AudioPlayerUtility
 import com.zendalona.zmantra.model.Hintable
-import com.zendalona.zmantra.view.HintFragment
-import com.zendalona.zmantra.utility.RandomValueGenerator
 import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
+import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.zmantra.view.HintFragment
+import java.util.*
 
 class SterioFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameSteroBinding? = null
     private var ttsUtility: TTSUtility? = null
     private var audioPlayerUtility: AudioPlayerUtility? = null
-    private var random: RandomValueGenerator? = null
+
+    private var questions: List<GameQuestion> = emptyList()
+    private var currentIndex = 0
 
     private var numA = 0
     private var numB = 0
@@ -41,11 +41,26 @@ class SterioFragment : Fragment(), Hintable {
         binding = FragmentGameSteroBinding.inflate(inflater, container, false)
         ttsUtility = TTSUtility(requireContext())
         audioPlayerUtility = AudioPlayerUtility()
-        random = RandomValueGenerator()
-        setHasOptionsMenu(true) // Show menu with hint
+        setHasOptionsMenu(true)
+
+        // Load questions from Excel
+        val lang = getLanguage(requireContext()).ifEmpty { "en" }
+        val difficulty = getDifficulty(requireContext()).toString()
+
+        questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+            context = requireContext(),
+            lang = lang,
+            mode = "sterio",
+            difficulty = difficulty
+        ).shuffled()
+
+        if (questions.isEmpty()) {
+            Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
+            return binding!!.root
+        }
 
         setAccessibilityDescriptions()
-        generateNewQuestion()
+        loadNextQuestion()
 
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.readQuestionBtn?.requestFocus()
@@ -67,18 +82,28 @@ class SterioFragment : Fragment(), Hintable {
         menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
-    private fun generateNewQuestion() {
-        // Generate numA and numB between 1 and 9 (matching a1:9*, b1:9*)
-        numA = (1..9).random()
-        numB = (1..9).random()
+    private fun loadNextQuestion() {
+        if (currentIndex >= questions.size) {
+            Toast.makeText(requireContext(), "All questions completed!", Toast.LENGTH_SHORT).show()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+            return
+        }
 
-        // Subtraction is b - a as per your example {a}-{b} with correctAnswer = b - a
-        correctAnswer = numB - numA
-
+        val question = questions[currentIndex++]
+        correctAnswer = question.answer
         binding?.answerEt?.setText("")
-        announce("A new question is ready. Tap 'Read the Question' to listen.")
 
-        // Update UI question text if you have a textview (optional)
+        // Extract numbers from expression string (e.g., "8 - 5")
+        val match = Regex("""(\d+)\s*[-+*/]\s*(\d+)""").find(question.expression)
+        if (match != null && match.groupValues.size == 3) {
+            numA = match.groupValues[1].toInt()
+            numB = match.groupValues[2].toInt()
+        } else {
+            numA = 0
+            numB = 0
+        }
+
+        announce("A new question is ready. Tap 'Read the Question' to listen.")
     }
 
     private fun readQuestionAloud() {
@@ -87,7 +112,8 @@ class SterioFragment : Fragment(), Hintable {
 
         if (isAbove23 && isHeadphoneConnected) {
             Handler(Looper.getMainLooper()).postDelayed({
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), numA, true)
+                // First number on LEFT
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numA, false)
             }, 0)
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -95,16 +121,16 @@ class SterioFragment : Fragment(), Hintable {
             }, 3000)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), numB, false)
+                // Second number on RIGHT
+                audioPlayerUtility?.playNumberWithStereo(requireContext(), numB, true)
             }, 6000)
         } else {
-            ttsUtility?.speak("Subtract first number $numA from second number $numB")
+            ttsUtility?.speak("Subtract second number $numB from first number $numA")
         }
     }
 
     private fun isHeadphoneConnected(): Boolean {
         val audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
             devices.any {
@@ -148,7 +174,7 @@ class SterioFragment : Fragment(), Hintable {
 
         Handler(Looper.getMainLooper()).postDelayed({
             dialog.dismiss()
-            generateNewQuestion()
+            loadNextQuestion()
         }, 2000)
     }
 
@@ -164,7 +190,7 @@ class SterioFragment : Fragment(), Hintable {
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "sterio") // pass mode
+            putString("mode", "sterio")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

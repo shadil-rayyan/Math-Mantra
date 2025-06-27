@@ -16,6 +16,8 @@ import com.zendalona.zmantra.utility.common.DialogUtils
 import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.zmantra.utility.common.GradingUtils
 import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.viewModel.NumberLineViewModel
 import java.util.*
@@ -58,13 +60,14 @@ class NumberLineFragment : Fragment(), Hintable {
         CURRENT_POSITION = getString(R.string.current_position_label)
 
         tts = TTSUtility(requireContext()).apply { setSpeechRate(0.8f) }
-
+        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val lang = LocaleHelper.getLanguage(context) ?: "en"
         // ✅ Load Excel questions for mode = numberline, difficulty = 1
         excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
             requireContext(),
-            lang = "en",
+            lang = lang,
             mode = "numberline",
-            difficulty = "1"
+            difficulty = difficulty.toString()
         )
     }
 
