@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">Zமந்திரா</string>
+    <string name="app_title">Zமந்திரா</string>
+    <string name="logo_description">செயலி லோகோ</string>
+    <string name="accessibility_dialog_title">அணுகல் சேவையை இயக்குக</string>
+    <string name="accessibility_dialog_message">MathsManthra சரியாக இயங்க அணுகல் சேவை தேவையானது. தயவுசெய்து அமைப்புகளில் அதை இயக்கவும்.</string>
+    <string name="accessibility_enable_button">இயக்கு</string>
+    <string name="accessibility_cancel_button">ரத்துசெய்</string>
+    <string name="accessibility_service_description">
+        Maths மந்திரா அணுகல் சேவை திரை உள்ளடக்கத்தை கண்காணித்து பேச்சுவழி பின்னூட்டத்தை வழங்குவதன் மூலம் சிறந்த கற்றல் அனுபவத்தை வழங்க உதவுகிறது.
+    </string>
+    <string name="back_button_label">மீண்டும் பட்டன்</string>
+
+    <!-- hint page -->
+    <string name="hint_fallback">ஏதோ தவறு ஏற்பட்டுள்ளது</string>
+
+    <!-- Landing page-->
+    <string name="quick_play">துரித விளையாட்டு</string>
+    <string name="learning_mode">கற்றல் முறையில்</string>
+    <string name="game_mode">விளையாட்டு முறையில்</string>
+    <string name="userguide">பயனர் கையேடு</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="quit">வெளியேறு</string>
+    <string name="footer">© 2025 Maths மந்திரா அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை</string>
+    <string name="subtitle">ஒரு பிரச்சனையை ஒரே நேரத்தில் தீர்த்து உங்கள் கணித திறன்களை மேம்படுத்துங்கள்.</string>
+    <!-- Landing page description-->
+    <string name="quick_play_desc">துரித கணித சவாலை தொடங்கவும்</string>
+    <string name="learning_mode_desc">கற்றல் முறையில் நுழையவும்</string>
+    <string name="game_mode_desc">விளையாட்டு முறையில் நுழையவும்</string>
+    <string name="userguide_desc">பயனர் கையேட்டை திறக்கவும்</string>
+    <string name="settings_desc">அமைப்புகளைத் திறக்கவும்</string>
+    <string name="quit_desc">செயலியை நிறுத்தவும்</string>
+
+    <!-- Quick play -->
+    <string name="sample_story_question">அர்ஜுனுக்கு %1$d ஆப்பிள்கள், மித்ராவுக்கு %2$d ஆப்பிள்கள் உள்ளன. அவர்களுக்கு மொத்தம் எத்தனை ஆப்பிள்கள் உள்ளன?</string>
+    <string name="hint_enter_answer">உங்கள் பதிலை உள்ளிடவும்</string>
+    <string name="content_submit_button">உங்கள் பதிலை சமர்ப்பிக்கவும்</string>
+    <string name="content_answer_field">பதில் உள்ளீடு புலம்</string>
+
+    <!-- game page-->
+    <string name="shake_button">அசைக்க சவால்</string>
+    <string name="tap_button">தட்டுதல் சவால்</string>
+    <string name="day">நாள் ஓட்டம்</string>
+    <string name="number_line">எண் கோடு குதிப்பு</string>
+    <string name="mental_calculation">மன நுட்பம்</string>
+    <string name="angle">கோணம் மாஸ்டர்</string>
+    <string name="stereo_sound">ஒலிக்கோல் ஆராய்ச்சி</string>
+    <string name="drawing">வரை மற்றும் தீர்க்க</string>
+    <string name="direction">திசை கண்டுபிடி</string>
+    <string name="touch_the_screen">திரை தொடும் சாகசம்</string>
+
+    <string name="submit">சமர்ப்பி</string>
+    <string name="next">அடுத்து</string>
+
+    <string name="right_answer">சரி பதில்!</string>
+    <string name="wrong_answer">தவறு பதில்! மீண்டும் முயற்சி செய்யவும்</string>
+    <string name="correct_answer">சரி பதில்</string>
+    <string name="task_completed">பணி முடிந்தது</string>
+    <string name="appreciation_message">நன்று செய்கிறீர்கள்</string>
+    <string name="continue_button">தொடர்க</string>
+    <string name="continue_text">தொடர்க</string>
+
+    <!-- Excellent -->
+    <string name="excellent_1">அற்புதமான வேலை!</string>
+    <string name="excellent_2">நீங்கள் ஒரு புதுமைப்புள்ளி!</string>
+    <string name="excellent_3">மிக சிறந்தது!</string>
+    <string name="excellent_4">முழுமையாக சரி!</string>
+    <string name="excellent_5">நீங்கள் அதிரடி செய்தீர்கள்!</string>
+    <!-- Very Good -->
+    <string name="very_good_1">மிக நல்ல வேலை!</string>
+    <string name="very_good_2">நன்றாக செய்தீர்கள்!</string>
+    <string name="very_good_3">நீங்கள் மேம்பட்டு வருகிறீர்கள்!</string>
+    <string name="very_good_4">அது சரி!</string>
+    <string name="very_good_5">அற்புதம்!</string>
+    <!-- Good -->
+    <string name="good_1">நல்ல வேலை!</string>
+    <string name="good_2">அது நல்லது!</string>
+    <string name="good_3">தொடரவும்!</string>
+    <string name="good_4">சரி பதில்!</string>
+    <string name="good_5">நன்றாக யோசித்தீர்கள்!</string>
+    <!-- Not Bad -->
+    <string name="not_bad_1">சரியாவில்லை!</string>
+    <string name="not_bad_2">மிகவும் நெருக்கமாக!</string>
+    <string name="not_bad_3">மேலும் மேம்படுத்தவும்!</string>
+    <string name="not_bad_4">சரி தான்!</string>
+    <string name="not_bad_5">அது போதுமானது!</string>
+    <!-- Okay -->
+    <string name="okay_1">நீங்கள் முன்னேறி வருகிறீர்கள்!</string>
+    <string name="okay_2">நல்ல முயற்சி!</string>
+    <string name="okay_3">சரி பதில்!</string>
+    <string name="okay_4">மேலும் வேகமாக முயற்சி செய்யுங்கள்!</string>
+    <string name="okay_5">நல்ல பதில்!</string>
+
+    <!-- nextquestoindialog-->
+    <string name="moving_to_next_question">அடுத்த கேள்விக்கு செல்கிறோம்</string>
+
+    <string name="game_finished">விளையாட்டு முடிந்தது!</string>
+
+</resources>

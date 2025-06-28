@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">الإعدادات</string>
+    <string name="music_volume_label">مستوى صوت الموسيقى</string>
+    <string name="music_volume_decrease_desc">خفض مستوى صوت الموسيقى</string>
+    <string name="music_volume_increase_desc">زيادة مستوى صوت الموسيقى</string>
+    <string name="music_volume_value_desc">مستوى صوت الموسيقى الحالي</string>
+
+    <string name="speech_volume_label">مستوى صوت الكلام</string>
+    <string name="speech_volume_decrease_desc">خفض مستوى صوت الكلام</string>
+    <string name="speech_volume_increase_desc">زيادة مستوى صوت الكلام</string>
+    <string name="speech_volume_value_desc">مستوى صوت الكلام الحالي</string>
+
+    <string name="speech_rate_label">سرعة الكلام</string>
+    <string name="speech_rate_decrease_desc">خفض سرعة الكلام</string>
+    <string name="speech_rate_increase_desc">زيادة سرعة الكلام</string>
+    <string name="speech_rate_value_desc">سرعة الكلام الحالية</string>
+
+    <string name="background_music_toggle_label">الموسيقى الخلفية</string>
+    <string name="background_music_toggle_desc">تشغيل أو إيقاف الموسيقى الخلفية</string>
+
+    <string name="choose_contrast">اختر التباين</string>
+    <string name="choose_contrast_desc">اختر خيار تباين الشاشة</string>
+    <string name="contrast_default">التباين الافتراضي</string>
+    <string name="contrast_default_desc">استخدام تباين الألوان الافتراضي</string>
+    <string name="contrast_white_on_black">أبيض على أسود</string>
+    <string name="contrast_white_on_black_desc">استخدام نص أبيض على خلفية سوداء</string>
+    <string name="contrast_black_on_white">أسود على أبيض</string>
+    <string name="contrast_black_on_white_desc">استخدام نص أسود على خلفية بيضاء</string>
+
+    <string name="difficulty_label">الصعوبة</string>
+    <string name="difficulty_options_desc">اختر مستوى صعوبة اللعبة</string>
+    <string name="difficulty_simple">بسيط</string>
+    <string name="difficulty_simple_desc">مستوى صعوبة بسيط</string>
+    <string name="difficulty_easy">سهل</string>
+    <string name="difficulty_easy_desc">مستوى صعوبة سهل</string>
+    <string name="difficulty_medium">متوسط</string>
+    <string name="difficulty_medium_desc">مستوى صعوبة متوسط</string>
+    <string name="difficulty_hard">صعب</string>
+    <string name="difficulty_hard_desc">مستوى صعوبة صعب</string>
+    <string name="difficulty_challenging">تحدي</string>
+    <string name="difficulty_challenging_desc">مستوى صعوبة تحدي</string>
+
+    <string name="choose_language">اختر اللغة</string>
+    <string name="choose_language_desc">اختر لغتك المفضلة</string>
+
+    <string name="reset_settings">إعادة ضبط الإعدادات</string>
+    <string name="reset_settings_desc">إعادة جميع الإعدادات إلى القيم الافتراضية</string>
+
+    <string name="language_default">افتراضي</string>
+    <string name="language_english">الإنجليزية</string>
+    <string name="language_hindi">الهندية</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_tamil">التاميل</string>
+    <string name="language_sanskrit">السانسكريتية</string>
+    <string name="language_malayalam">المالايالامية</string>
+</resources>

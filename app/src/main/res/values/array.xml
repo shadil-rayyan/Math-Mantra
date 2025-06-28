@@ -3,6 +3,13 @@
         <item>@string/language_default</item>
         <item>@string/language_english</item>
         <item>@string/language_malayalam</item>
+        <item>@string/language_hindi</item>
+        <item>@string/language_arabic</item>
+        <item>@string/language_sanskrit</item>
+        <item>@string/language_tamil</item>
+
+
+
 
         <!-- Add more languages as needed -->
     </string-array>

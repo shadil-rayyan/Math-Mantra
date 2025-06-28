@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">زي مانترا</string>
+    <string name="app_title">زي مانترا</string>
+    <string name="logo_description">شعار التطبيق</string>
+    <string name="accessibility_dialog_title">تفعيل خدمة إمكانية الوصول</string>
+    <string name="accessibility_dialog_message">يتطلب MathsManthra خدمة إمكانية الوصول للعمل بشكل صحيح. يرجى تفعيلها في الإعدادات.</string>
+    <string name="accessibility_enable_button">تفعيل</string>
+    <string name="accessibility_cancel_button">إلغاء</string>
+    <string name="accessibility_service_description">
+        تساعد خدمة إمكانية الوصول لـ Maths Mantra في توفير تجربة تعليمية أفضل من خلال مراقبة محتوى الشاشة وتقديم تعليقات صوتية.
+    </string>
+    <string name="back_button_label">زر الرجوع</string>
+
+    <!-- hint page -->
+    <string name="hint_fallback">حدث خطأ ما</string>
+
+    <!-- Landing page-->
+    <string name="quick_play">اللعب السريع</string>
+    <string name="learning_mode">وضع التعلم</string>
+    <string name="game_mode">وضع اللعبة</string>
+    <string name="userguide">دليل المستخدم</string>
+    <string name="settings">الإعدادات</string>
+    <string name="quit">خروج</string>
+    <string name="footer">© 2025 Maths Manthra جميع الحقوق محفوظة</string>
+    <string name="subtitle">حسّن مهاراتك في الرياضيات، مسألة واحدة في كل مرة.</string>
+    <!-- Landing page description-->
+    <string name="quick_play_desc">ابدأ تحدي رياضي سريع</string>
+    <string name="learning_mode_desc">ادخل وضع التعلم</string>
+    <string name="game_mode_desc">ادخل وضع اللعبة</string>
+    <string name="userguide_desc">افتح دليل المستخدم</string>
+    <string name="settings_desc">افتح الإعدادات</string>
+    <string name="quit_desc">اخرج من التطبيق</string>
+
+    <!-- Quick play -->
+    <string name="sample_story_question">لدى أرجون %1$d تفاحة ولدى ميثرا %2$d تفاحات. كم عدد التفاحات التي لديهم؟</string>
+    <string name="hint_enter_answer">أدخل إجابتك</string>
+    <string name="content_submit_button">أرسل إجابتك</string>
+    <string name="content_answer_field">حقل إدخال الإجابة</string>
+
+    <!-- game page-->
+    <string name="shake_button">تحدي الهز</string>
+    <string name="tap_button">تحدي اللمس</string>
+    <string name="day">سباق الأيام</string>
+    <string name="number_line">قافز الخط الرقمي</string>
+    <string name="mental_calculation">السباق الذهني</string>
+    <string name="angle">ماستر الزوايا</string>
+    <string name="stereo_sound">مستكشف الصوت الاستيريو</string>
+    <string name="drawing">الرسم والحل</string>
+    <string name="direction">كاشف الاتجاه</string>
+    <string name="touch_the_screen">مغامرة اللمس</string>
+
+    <string name="submit">إرسال</string>
+    <string name="next">التالي</string>
+
+    <string name="right_answer">إجابة صحيحة!</string>
+    <string name="wrong_answer">إجابة خاطئة! حاول مرة أخرى</string>
+    <string name="correct_answer">إجابة صحيحة</string>
+    <string name="task_completed">تم إكمال المهمة</string>
+    <string name="appreciation_message">عمل جيد</string>
+    <string name="continue_button">متابعة</string>
+    <string name="continue_text">متابعة</string>
+
+    <!-- Excellent -->
+    <string name="excellent_1">عمل رائع!</string>
+    <string name="excellent_2">أنت عبقري!</string>
+    <string name="excellent_3">متميز!</string>
+    <string name="excellent_4">صحيح تمامًا!</string>
+    <string name="excellent_5">أحسنت!</string>
+    <!-- Very Good -->
+    <string name="very_good_1">عمل جيد جدًا!</string>
+    <string name="very_good_2">أحسنت!</string>
+    <string name="very_good_3">أنت تتحسن!</string>
+    <string name="very_good_4">هذا صحيح!</string>
+    <string name="very_good_5">مثير للإعجاب!</string>
+    <!-- Good -->
+    <string name="good_1">عمل لطيف!</string>
+    <string name="good_2">هذا جيد!</string>
+    <string name="good_3">استمر!</string>
+    <string name="good_4">إجابة صحيحة!</string>
+    <string name="good_5">تفكير جيد!</string>
+    <!-- Not Bad -->
+    <string name="not_bad_1">ليس سيئًا!</string>
+    <string name="not_bad_2">شبه مثالي!</string>
+    <string name="not_bad_3">واصل التحسن!</string>
+    <string name="not_bad_4">مقبول!</string>
+    <string name="not_bad_5">هذا جيد!</string>
+    <!-- Okay -->
+    <string name="okay_1">أنت في الطريق الصحيح!</string>
+    <string name="okay_2">محاولة جيدة!</string>
+    <string name="okay_3">إجابة مقبولة!</string>
+    <string name="okay_4">حاول أن تكون أسرع!</string>
+    <string name="okay_5">إجابة جيدة!</string>
+
+    <!-- nextquestoindialog-->
+    <string name="moving_to_next_question">الانتقال إلى السؤال التالي</string>
+
+    <string name="game_finished">انتهت اللعبة!</string>
+
+</resources>

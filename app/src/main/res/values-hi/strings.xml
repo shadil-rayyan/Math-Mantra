@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">ZMantra</string>
+    <string name="app_title">ZMantra</string>
+    <string name="logo_description">ऐप लोगो</string>
+    <string name="accessibility_dialog_title">एक्सेसिबिलिटी सेवा सक्षम करें</string>
+    <string name="accessibility_dialog_message">MathsManthra ठीक से काम करने के लिए एक्सेसिबिलिटी सेवा की आवश्यकता है। कृपया इसे सेटिंग्स में सक्षम करें।</string>
+    <string name="accessibility_enable_button">सक्षम करें</string>
+    <string name="accessibility_cancel_button">रद्द करें</string>
+    <string name="accessibility_service_description">
+        Maths Mantra एक्सेसिबिलिटी सेवा स्क्रीन सामग्री को देखती है और बोले गए प्रतिक्रिया प्रदान करके बेहतर सीखने का अनुभव प्रदान करती है।
+    </string>
+    <string name="back_button_label">बैक बटन</string>
+
+    <!-- hint page -->
+    <string name="hint_fallback">कुछ गलत हो गया</string>
+
+    <!-- Landing page-->
+
+    <string name="quick_play">क्विक प्ले</string>
+    <string name="learning_mode">लर्निंग मोड</string>
+    <string name="game_mode">गेम मोड</string>
+    <string name="userguide">यूजर गाइड</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="quit">बाहर निकलें</string>
+    <string name="footer">\u00A9 2025 Maths Manthra सभी अधिकार सुरक्षित</string>
+    <string name="subtitle">अपने गणित कौशल को तेज़ करें, एक समस्या एक बार में।</string>
+    <!-- Landing page description-->
+    <string name="quick_play_desc">एक त्वरित गणित चुनौती शुरू करें</string>
+    <string name="learning_mode_desc">लर्निंग मोड में प्रवेश करें</string>
+    <string name="game_mode_desc">गेम मोड में प्रवेश करें</string>
+    <string name="userguide_desc">यूजर गाइड खोलें</string>
+    <string name="settings_desc">सेटिंग्स खोलें</string>
+    <string name="quit_desc">ऐप से बाहर निकलें</string>
+
+    <!-- Quick play -->
+    <string name="sample_story_question">अर्जुन के पास %1$d सेब हैं और मित्रा के पास %2$d सेब हैं। उनके पास कुल कितने सेब हैं?</string>
+    <string name="hint_enter_answer">अपना उत्तर दर्ज करें</string>
+    <string name="content_submit_button">अपना उत्तर सबमिट करें</string>
+    <string name="content_answer_field">उत्तर इनपुट फ़ील्ड</string>
+
+    <!-- game page-->
+    <string name="shake_button">शेक क्वेस्ट</string>
+    <string name="tap_button">टैप चुनौती</string>
+    <string name="day">डे डैश</string>
+    <string name="number_line">लाइन जम्पर</string>
+    <string name="mental_calculation">माइंड स्प्रिंट</string>
+    <string name="angle">एंगल मास्टर</string>
+    <string name="stereo_sound">इको एक्सप्लोरर</string>
+    <string name="drawing">स्केच और हल करें</string>
+    <string name="direction">पाथ फाइंडर</string>
+    <string name="touch_the_screen">टच एडवेंचर</string>
+
+    <string name="submit">सबमिट</string>
+    <string name="next">अगला</string>
+
+    <string name="right_answer">सही उत्तर!</string>
+    <string name="wrong_answer">गलत उत्तर! फिर कोशिश करें</string>
+    <string name="correct_answer">सही उत्तर</string>
+    <string name="task_completed">कार्य पूरा हुआ</string>
+    <string name="appreciation_message">अच्छा काम जारी रखें</string>
+    <string name="continue_button">जारी रखें</string>
+    <string name="continue_text">जारी रखें</string>
+
+    <!-- Excellent -->
+    <string name="excellent_1">शानदार काम!</string>
+    <string name="excellent_2">आप प्रतिभाशाली हैं!</string>
+    <string name="excellent_3">अद्भुत!</string>
+    <string name="excellent_4">बिल्कुल सही!</string>
+    <string name="excellent_5">आपने कमाल कर दिया!</string>
+    <!-- Very Good -->
+    <string name="very_good_1">बहुत बढ़िया!</string>
+    <string name="very_good_2">शाबाश!</string>
+    <string name="very_good_3">आप बेहतर हो रहे हैं!</string>
+    <string name="very_good_4">यह सही है!</string>
+    <string name="very_good_5">प्रभावशाली!</string>
+    <!-- Good -->
+    <string name="good_1">अच्छा काम!</string>
+    <string name="good_2">यह अच्छा है!</string>
+    <string name="good_3">इस तरह जारी रखें!</string>
+    <string name="good_4">सही उत्तर!</string>
+    <string name="good_5">अच्छा सोच!</string>
+    <!-- Not Bad -->
+    <string name="not_bad_1">खराब नहीं!</string>
+    <string name="not_bad_2">लगभग परफेक्ट!</string>
+    <string name="not_bad_3">बेहतर होते रहें!</string>
+    <string name="not_bad_4">ठीक है!</string>
+    <string name="not_bad_5">यह ठीक है!</string>
+    <!-- Okay -->
+    <string name="okay_1">आप आगे बढ़ रहे हैं!</string>
+    <string name="okay_2">अच्छी कोशिश!</string>
+    <string name="okay_3">ठीक उत्तर!</string>
+    <string name="okay_4">थोड़ा तेज़ होने की कोशिश करें!</string>
+    <string name="okay_5">ठीक उत्तर!</string>
+
+    <!-- nextquestoindialog-->
+    <string name="moving_to_next_question">अगले प्रश्न पर जा रहे हैं</string>
+
+    <string name="game_finished">खेल समाप्त!</string>
+
+</resources>

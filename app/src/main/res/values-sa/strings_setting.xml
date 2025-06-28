@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">सेटिङ्ग्स्</string>
+    <string name="music_volume_label">संगीतध्वनिः</string>
+    <string name="music_volume_decrease_desc">संगीतध्वनिमात्रां न्यूनयतु</string>
+    <string name="music_volume_increase_desc">संगीतध्वनिमात्रां वृद्धयतु</string>
+    <string name="music_volume_value_desc">वर्तमानः संगीतध्वनिमात्रा स्तरः</string>
+
+    <string name="speech_volume_label">वाक्‌ध्वनिः</string>
+    <string name="speech_volume_decrease_desc">वाक्‌ध्वनिमात्रां न्यूनयतु</string>
+    <string name="speech_volume_increase_desc">वाक्‌ध्वनिमात्रां वृद्धयतु</string>
+    <string name="speech_volume_value_desc">वर्तमानः वाक्‌ध्वनिमात्रा स्तरः</string>
+
+    <string name="speech_rate_label">वाक्‌गति</string>
+    <string name="speech_rate_decrease_desc">वाक्‌गतिमात्रां न्यूनयतु</string>
+    <string name="speech_rate_increase_desc">वाक्‌गतिमात्रां वृद्धयतु</string>
+    <string name="speech_rate_value_desc">वर्तमानः वाक्‌गति स्तरः</string>
+
+    <string name="background_music_toggle_label">पृष्ठभूमिसंगीतः</string>
+    <string name="background_music_toggle_desc">पृष्ठभूमिसंगीतं चलितं वा स्थगितं कर्तुं</string>
+
+    <string name="choose_contrast">विरोधस्य विकल्पः</string>
+    <string name="choose_contrast_desc">पटलस्य विरोध विकल्पं चयतु</string>
+    <string name="contrast_default">पूर्वनिर्धारितविरोधः</string>
+    <string name="contrast_default_desc">पूर्वनिर्धारितं वर्णविरोधं योजयतु</string>
+    <string name="contrast_white_on_black">श्येतः कृष्णपृष्ठे</string>
+    <string name="contrast_white_on_black_desc">कृष्णपृष्ठे श्वेतवर्णलेखं योजयतु</string>
+    <string name="contrast_black_on_white">कृष्णः श्वेतपृष्ठे</string>
+    <string name="contrast_black_on_white_desc">श्वेतपृष्ठे कृष्णवर्णलेखं योजयतु</string>
+
+    <string name="difficulty_label">क्लेशस्तरः</string>
+    <string name="difficulty_options_desc">क्रीडाक्लेशस्तरं चयतु</string>
+    <string name="difficulty_simple">साधारणः</string>
+    <string name="difficulty_simple_desc">साधारणक्लेशस्तरः</string>
+    <string name="difficulty_easy">सुलभः</string>
+    <string name="difficulty_easy_desc">सुलभक्लेशस्तरः</string>
+    <string name="difficulty_medium">मध्यमः</string>
+    <string name="difficulty_medium_desc">मध्यमक्लेशस्तरः</string>
+    <string name="difficulty_hard">कठिनः</string>
+    <string name="difficulty_hard_desc">कठिनक्लेशस्तरः</string>
+    <string name="difficulty_challenging">साहसिकः</string>
+    <string name="difficulty_challenging_desc">साहसिकक्लेशस्तरः</string>
+
+    <string name="choose_language">भाषां चयतु</string>
+    <string name="choose_language_desc">आस्वादितभाषां चयनं कुरुत</string>
+
+    <string name="reset_settings">सेटिङ्ग्स् पुनःस्थापयतु</string>
+    <string name="reset_settings_desc">सर्वे सेटिङ्ग्स् पूर्वनिर्धारितमूल्ये पुनःस्थापयतु</string>
+
+    <string name="language_default">पूर्वनिर्धारितम्</string>
+    <string name="language_english">आङ्ग्लम्</string>
+    <string name="language_hindi">हिन्दी</string>
+    <string name="language_arabic">अरबी</string>
+    <string name="language_tamil">तमिळ्</string>
+    <string name="language_sanskrit">संस्कृतम्</string>
+    <string name="language_malayalam">मल्यालम्</string>
+</resources>

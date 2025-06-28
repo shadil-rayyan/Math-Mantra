@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- angle -->
+    <string name="rotate_your_phone">अपना फ़ोन घुमाएँ</string>
+    <string name="turn_phone_90_degrees">फ़ोन को 90 डिग्री घुमाएँ</string>
+    <string name="rotation_angle_default">घूर्णन कोण: 0°</string>
+
+    <!-- shake -->
+    <string name="shake_target_expression">%1$s बार फ़ोन को हिलाएं!</string>
+    <string name="shake_count_announcement">हिलाने की गिनती: %1$d</string>
+    <string name="shake_count_description">वर्तमान हिलाने की गिनती, शुरुआत में 0</string>
+    <string name="shake_target_instruction">फ़ोन को %1$d बार हिलाएं</string>
+    <string name="shake_success">शाबाश!</string>
+    <string name="shake_failure">उत्तर गलत है! फिर से प्रयास करें!</string>
+    <string name="shake_continue">जारी रखें</string>
+    <string name="shake_next_question">अगले प्रश्न पर जाएं</string>
+    <string name="shake_game_over">शेक गेम समाप्त हुआ।</string>
+    <string name="shake_count_initial">0</string>
+    <string name="shake_instruction">फ़ोन हिला कर शुरू करें</string>
+    <string name="shake_instruction_description">खेल शुरू करने के लिए फ़ोन हिलाएं</string>
+
+    <!-- Tap -->
+    <string name="tap_target_expression">%1$s बार टैप करें</string>
+    <string name="tap_count_announcement">टैप की गिनती: %1$d</string>
+    <string name="tap_failure">टैप की संख्या गलत है। फिर से प्रयास करें!</string>
+    <string name="tap_game_over">खेल समाप्त! आपने 3 बार प्रयास किया।</string>
+    <string name="tap_next_question">अगले प्रश्न पर जाएं</string>
+    <string name="tap_count_description">टैप की गिनती: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">%1$d° बार टैप करें</string>
+    <string name="tap_instruction_description">निर्देश: संख्या बढ़ाने के लिए कहीं भी टैप करें।</string>
+
+    <!-- touch the screen -->
+    <string name="touchscreen_question_expression">%1$s</string>
+    <string name="touchscreen_question_format">%1$d + %2$d = ? (उत्तर देने के लिए उंगलियाँ उपयोग करें)</string>
+    <string name="touchscreen_fingers_on_screen">स्क्रीन पर उंगलियाँ: %1$d</string>
+    <string name="touch_instruction">स्क्रीन पर 2 उंगलियाँ रखें</string>
+    <string name="touch_image_description">स्क्रीन पर दो उंगलियों को छूते हुए चित्र</string>
+
+    <!-- Days -->
+    <string name="monday">सोमवार</string>
+    <string name="tuesday">मंगलवार</string>
+    <string name="wednesday">बुधवार</string>
+    <string name="thursday">गुरुवार</string>
+    <string name="friday">शुक्रवार</string>
+    <string name="saturday">शनिवार</string>
+    <string name="sunday">रविवार</string>
+    <string name="question_text_template">अगर आज %1$s है, तो %2$d दिनों के बाद कौन सा दिन होगा?</string>
+    <string name="wrong_answer_reveal">गलत है! सही उत्तर %1$s था</string>
+
+    <!-- drawing -->
+    <string name="draw_shape">एक आकृति बनाएं</string>
+    <string name="draw_instruction">निर्देश: वांछित आकृति बनाएं</string>
+    <string name="drawing_canvas_description">ड्राइंग कैनवास। टच इशारों से आकृति बनाएं।</string>
+    <string name="canvas_cleared">कैनवास साफ़ किया गया। फिर से बनाएं।</string>
+    <string name="drawing_task">%1$s बनाएं।</string>
+    <string name="reset">रीसेट करें</string>
+    <string name="reset_description">ड्राइंग साफ़ करें और फिर से शुरू करें</string>
+    <string name="submit_description">अपनी ड्राइंग मूल्यांकन के लिए सबमिट करें</string>
+
+    <!-- compass -->
+    <string name="turn_to_angle">%1$d° की ओर मुड़ें</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="turn_to_angle_template">वर्तमान दिशा से %1$d° की ओर मुड़ें</string>
+    <string name="relative_angle_template">सापेक्ष घूर्णन कोण: %1$d°</string>
+    <string name="current_angle_announcement">%1$s</string>
+    <string name="compass_turn_to">%1$s की ओर मुड़ें</string>
+    <string name="compass_correct">सही है!</string>
+    <string name="compass_correct_msg">आपने सही दिशा में मुड़ लिया!</string>
+    <string name="current_direction_accessibility">वर्तमान दिशा: %1$s</string>
+
+    <string-array name="compass_directions">
+        <item>उत्तर</item>
+        <item>उत्तर-उत्तर-पूर्व</item>
+        <item>उत्तर-पूर्व</item>
+        <item>पूर्व-उत्तर-पूर्व</item>
+        <item>पूर्व</item>
+        <item>पूर्व-दक्षिण-पूर्व</item>
+        <item>दक्षिण-पूर्व</item>
+        <item>दक्षिण-दक्षिण-पूर्व</item>
+        <item>दक्षिण</item>
+        <item>दक्षिण-दक्षिण-पश्चिम</item>
+        <item>दक्षिण-पश्चिम</item>
+        <item>पश्चिम-दक्षिण-पश्चिम</item>
+        <item>पश्चिम</item>
+        <item>उत्तर-पश्चिम</item>
+    </string-array>
+
+    <!-- Stereo Sound-->
+    <string name="audio_instruction">ध्यान से सुनें, पहली संख्या में से दूसरी संख्या घटाएं।</string>
+    <string name="audio_instruction_description">निर्देश: ध्यान से सुनें। संख्याएँ सुनने के लिए "प्रश्न पढ़ें" बटन का उपयोग करें।</string>
+    <string name="read_question">प्रश्न पढ़ें</string>
+    <string name="read_question_description">संख्याएँ सुनने के लिए "प्रश्न पढ़ें" बटन का उपयोग करें। डबल टैप करके सुनें।</string>
+    <string name="enter_answer_hint">अपना उत्तर दर्ज करें</string>
+    <string name="your_answer_here">अपना उत्तर यहाँ लिखें</string>
+
+    <!-- Mental calculation-->
+    <string name="mental_description">मानसिक गणित स्क्रीन, गणितीय प्रश्न और इनपुट</string>
+    <string name="calculate_prompt">इसका मान निकालिए:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
+    <string name="math_question_description">गणितीय प्रश्न है। 2 प्लस 2 गुना 2 माइनस 5 कितना? डबल टैप करके प्रश्न दोहराएं।</string>
+    <string name="answer_input_description">अपना उत्तर यहां दर्ज करें</string>
+    <string name="answer_hint">अपना उत्तर यहां दर्ज करें</string>
+
+    <!-- number line -->
+    <string name="current_position_label">आप जिस संख्या पर खड़े हैं:\n</string>
+    <string name="plus">प्लस</string>
+    <string name="minus">माइनस</string>
+    <string name="right">दायाँ</string>
+    <string name="left">बायाँ</string>
+    <string name="standing_on">आप %1$s पर खड़े हैं।</string>
+    <string name="what_is">%1$s %2$s %3$s कितना?</string>
+    <string name="units_to_direction">संख्या रेखा पर %1$s यूनिट %2$s जाएं।</string>
+    <string name="number_line_question">0 + 12 कितना?</string>
+    <string name="number_line_question_description">प्रश्न है। 0 प्लस 12 कितना? डबल टैप करके प्रश्न दोहराएं।</string>
+    <string name="number_line_visual_description">दृश्य संख्या रेखा। नीचे दिए गए बटन का उपयोग करके दाएँ या बाएँ जाएं।</string>
+    <string name="current_position_description">संख्या रेखा पर वर्तमान स्थिति। बाएँ या दाएँ जाने के लिए बटन का उपयोग करें।</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">बाएँ जाने का बटन। संख्या रेखा पर एक स्थान बाएँ ले जाएं।</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">दाएँ जाने का बटन। संख्या रेखा पर एक स्थान दाएँ ले जाएं।</string>
+    <string name="use_to_move"><![CDATA[<< चलने के लिए -/+ का उपयोग करें >>]]></string>
+
+    <string name="question_day_offset_template">अगर आज %1$s है, तो %2$d दिनों के बाद कौन सा दिन होगा?</string>
+    <string name="no_questions_available">कोई प्रश्न उपलब्ध नहीं हैं। कृपया अपनी Excel फ़ाइल जांचें।</string>
+</resources>
