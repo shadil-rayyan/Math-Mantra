@@ -42,7 +42,7 @@ object DialogUtils {
         val messageRes = appreciationDict[grade]?.random() ?: R.string.wrong_answer
         val drawableRes = appreciationDrawables[grade]?.random() ?: appreciationDrawables["Wrong"]!!.random()
         val message = context.getString(messageRes)
-        ttsUtility.speak(message)
+//        ttsUtility.speak(message)
 
         Glide.with(context).asGif().load(drawableRes).into(binding.gifImageView)
         binding.messageTextView.text = message
@@ -50,10 +50,10 @@ object DialogUtils {
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { d, _ ->
-                d.dismiss()
-                onContinue()
-            }
+//            .setPositiveButton(R.string.continue_text) { d, _ ->
+//                d.dismiss()
+//                onContinue()
+//            }
             .create()
 
         dialog.show()
@@ -76,7 +76,7 @@ object DialogUtils {
         val binding = DialogResultBinding.inflate(inflater)
         VibrationUtils.vibrate(context, 300)
 
-        ttsUtility.speak(message)
+//        ttsUtility.speak(message)
 
         Glide.with(context).asGif().load(R.drawable.wrong).into(binding.gifImageView)
         binding.messageTextView.text = message
@@ -84,10 +84,10 @@ object DialogUtils {
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { d, _ ->
-                d.dismiss()
-                onContinue()
-            }
+//            .setPositiveButton(R.string.continue_text) { d, _ ->
+//                d.dismiss()
+//                onContinue()
+//            }
             .create()
 
         dialog.show()
@@ -121,10 +121,10 @@ object DialogUtils {
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { d, _ ->
-                d.dismiss()
-                onContinue()
-            }
+//            .setPositiveButton(R.string.continue_text) { d, _ ->
+//                d.dismiss()
+//                onContinue()
+//            }
             .create()
 
         dialog.show()
@@ -146,7 +146,7 @@ object DialogUtils {
         val binding = DialogResultBinding.inflate(inflater)
         VibrationUtils.vibrate(context, 200)  // vibration for feedback
 
-        ttsUtility.speak(message)
+//        ttsUtility.speak(message)
 
         Glide.with(context).asGif()
             .load(R.drawable.dialog_wrong_anwser_repeted_2)  // You need to add this drawable in your resources
@@ -157,10 +157,10 @@ object DialogUtils {
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_text) { d, _ ->
-                d.dismiss()
-                onContinue()
-            }
+//            .setPositiveButton(R.string.continue_text) { d, _ ->
+//                d.dismiss()
+//                onContinue()
+//            }
             .create()
 
         dialog.show()

@@ -84,7 +84,10 @@ class ShakeFragment : Fragment(), Hintable {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "onCreateView called")
         binding = FragmentGameShakeBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
+        // Delay setting the options menu to avoid TalkBack reading the app name
+        Handler(Looper.getMainLooper()).postDelayed({
+            setHasOptionsMenu(true)
+        }, 2000)
         return binding!!.root
     }
 
@@ -117,18 +120,18 @@ class ShakeFragment : Fragment(), Hintable {
         Log.d(TAG, "Question: ${question.expression}, Target: $target")
 
         val instruction = getString(R.string.shake_target_expression, question.expression)
-        val speakText = question.expression.replace("+", " plus ")
-        val speakInstruction = "Shake $speakText"
+//        val speakText = question.expression.replace("+", " plus ")
+//        val speakInstruction = "Shake $speakText"
 
         binding?.ringMeTv?.apply {
             text = instruction
-            contentDescription = speakInstruction
+            contentDescription = instruction
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
             isFocusable = true
-            postDelayed({ requestFocus(); announceForAccessibility(speakInstruction) }, 500)
+            postDelayed({ requestFocus(); announceForAccessibility(instruction) }, 3000)
         }
 
-        tts.speak(speakInstruction)
+//        tts.speak(speakInstruction)
     }
 
     private fun onShakeDetected() {
@@ -227,8 +230,12 @@ class ShakeFragment : Fragment(), Hintable {
                     count = 0
                     firstShakeTime = 0L
                     answerChecked = false
-                    binding?.ringCount?.text = getString(R.string.shake_count_initial)
-                    tts.speak("Shake ${question.expression.replace("+", " plus ")} times")
+                    binding?.ringCount?.apply {
+                        text = getString(R.string.shake_count_initial)
+                        contentDescription = null // Prevents TalkBack reading old values
+                        importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+                    }
+//                    tts.speak("Shake ${question.expression.replace("+", " plus ")} times")
                 }
             }
         }
