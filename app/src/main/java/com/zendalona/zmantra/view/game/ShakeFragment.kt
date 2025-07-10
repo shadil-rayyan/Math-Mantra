@@ -1,12 +1,14 @@
 package com.zendalona.zmantra.view.game
 
+import android.content.Context
 import android.media.MediaPlayer
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.util.Log
 import android.view.*
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
@@ -16,15 +18,21 @@ import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.utility.AccelerometerUtility
 import com.zendalona.zmantra.utility.common.TTSUtility
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.utility.common.*
 import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+
+// Extension function for accessibility announcement
+fun View.announceForAccessibilityCompat(message: String) {
+    contentDescription = message
+    val event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_ANNOUNCEMENT)
+    event.text.add(message)
+    val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    am.sendAccessibilityEvent(event)
+}
 
 class ShakeFragment : Fragment(), Hintable {
 
@@ -44,10 +52,10 @@ class ShakeFragment : Fragment(), Hintable {
     private var totalFailedQuestions = 0
     private var firstShakeTime: Long = 0
     private var answerChecked = false
+    private var isFirstOpen = true
 
     private lateinit var lang: String
     private lateinit var difficulty: String
-
     private var parsedShakeList: List<GameQuestion> = emptyList()
     private var questionStartTime: Long = 0
 
@@ -55,36 +63,37 @@ class ShakeFragment : Fragment(), Hintable {
         private const val TAG = "ShakeFragment"
     }
 
+    private fun logFocusState(tag: String) {
+        val focused = activity?.window?.decorView?.findFocus()
+        Log.d(TAG, "$tag ➜ Focused view: ${focused?.id?.let { resources.getResourceEntryName(it) }}, contentDescription='${focused?.contentDescription}', isFocused=${focused?.isFocused}")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate called")
 
         lang = LocaleHelper.getLanguage(requireContext())
-        val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())  // returns Int, e.g. 1, 2, 3
-        val difficulty = difficultyNum.toString()  // convert to "1", "2", "3"
+        val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())
+        difficulty = difficultyNum.toString()
         Log.d(TAG, "Language: $lang, Difficulty: $difficulty")
 
         tts = TTSUtility(requireContext())
         accelerometerUtility = AccelerometerUtility(requireContext())
+
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 parsedShakeList = ExcelQuestionLoader.loadQuestionsFromExcel(
-                    requireContext(),
-                    lang,
-                    "shake",
-                    difficulty
+                    requireContext(), lang, "shake", difficulty
                 )
             }
             Log.d(TAG, "Loaded ${parsedShakeList.size} questions")
             startGame()
-
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         Log.d(TAG, "onCreateView called")
         binding = FragmentGameShakeBinding.inflate(inflater, container, false)
-        // Delay setting the options menu to avoid TalkBack reading the app name
         Handler(Looper.getMainLooper()).postDelayed({
             setHasOptionsMenu(true)
         }, 2000)
@@ -96,11 +105,45 @@ class ShakeFragment : Fragment(), Hintable {
         menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        logFocusState("onViewCreated")
+
+        if (isFirstOpen) {
+            binding?.rootLayout?.apply {
+                requestFocus()
+                postDelayed({
+                    logFocusState("announceForAccessibility - first open")
+                    announceForAccessibilityCompat(contentDescription?.toString() ?: "")
+                }, 500)
+            }
+            isFirstOpen = false
+        }
+    }
+
     private fun startGame() {
-        Log.d(TAG, "Starting game at index: $index")
+        Log.d(TAG, "🔄 startGame() called at index $index")
+        logFocusState("startGame ENTRY")
+
+        binding?.apply {
+            listOf(rootLayout, ringCount, ringMeTv).forEach {
+                it.clearFocus()
+                it.contentDescription = null
+                it.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }
+
+            // Shift focus temporarily to dummyFocusView to clear old focus
+            dummyFocusView?.apply {
+                contentDescription = ""
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                isFocusable = true
+                visibility = View.VISIBLE
+                requestFocus()
+                logFocusState("dummyFocusView requested focus")
+            }
+        }
 
         if (parsedShakeList.isEmpty()) {
-            Log.w(TAG, "No questions available")
             Toast.makeText(requireContext(), "No questions available", Toast.LENGTH_LONG).show()
             tts.speak("No questions available.")
             Handler(Looper.getMainLooper()).post {
@@ -117,21 +160,23 @@ class ShakeFragment : Fragment(), Hintable {
         val question = parsedShakeList[index % parsedShakeList.size]
         target = question.answer
         questionStartTime = System.currentTimeMillis()
-        Log.d(TAG, "Question: ${question.expression}, Target: $target")
 
         val instruction = getString(R.string.shake_target_expression, question.expression)
-//        val speakText = question.expression.replace("+", " plus ")
-//        val speakInstruction = "Shake $speakText"
 
-        binding?.ringMeTv?.apply {
-            text = instruction
-            contentDescription = instruction
-            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
-            isFocusable = true
-            postDelayed({ requestFocus(); announceForAccessibility(instruction) }, 3000)
-        }
-
-//        tts.speak(speakInstruction)
+        // Delay to allow focus settling on dummy view before announcing
+        binding?.ringMeTv?.postDelayed({
+            binding?.ringMeTv?.apply {
+                text = instruction
+                contentDescription = instruction
+                isFocusable = true
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
+                accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
+                requestFocus()
+                logFocusState("before announceForAccessibility (instruction)")
+                announceForAccessibilityCompat(instruction)
+                logFocusState("after announceForAccessibility (instruction)")
+            }
+        }, 400)
     }
 
     private fun onShakeDetected() {
@@ -148,40 +193,26 @@ class ShakeFragment : Fragment(), Hintable {
         binding?.ringCount?.text = count.toString()
         tts.stop()
 
-        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            tts.speak(getString(R.string.shake_count_announcement, count))
-        }
-
         if (firstShakeTime == 0L) {
             Log.d(TAG, "First shake. Starting timer to check answer")
             firstShakeTime = System.currentTimeMillis()
             answerChecked = false
-
         }
 
-        // Immediately fail if count exceeds target
         if (count == target && !answerChecked) {
             Log.d(TAG, "Target reached. Checking answer immediately")
             checkAnswer()
         }
-
     }
 
     private fun checkAnswer(forceWrong: Boolean = false) {
-        if (answerChecked) {
-            Log.d(TAG, "Answer already checked")
-            return
-        }
+        if (answerChecked) return
 
         answerChecked = true
         val question = parsedShakeList[index % parsedShakeList.size]
-
-        // Correct only if count == target and no forced wrong
         val isCorrect = !forceWrong && count == target
 
         if (isCorrect) {
-            Log.d(TAG, "Correct answer")
-
             retryCount = 0
             failCountOnQuestion = 0
             totalFailedQuestions = 0
@@ -195,47 +226,35 @@ class ShakeFragment : Fragment(), Hintable {
 
             val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
             val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), true)
-            Log.d(TAG, "Answered in $elapsedSeconds seconds. Grade: $grade")
-
             DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
                 nextOrEnd()
             }
         } else {
-            Log.w(TAG, "Wrong answer. Count: $count, Target: $target, ForceWrong: $forceWrong")
-
             retryCount++
             failCountOnQuestion++
 
             if (failCountOnQuestion >= 6) {
                 totalFailedQuestions++
-                Log.w(TAG, "6 failures on question. Total failed: $totalFailedQuestions")
-
                 if (totalFailedQuestions >= 3) {
-                    Log.e(TAG, "Game over due to too many failures")
                     tts.speak(getString(R.string.shake_game_over))
                     endGameWithScore()
                     return
                 } else {
-                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, getString(R.string.moving_to_next_question)) {}
+                    DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, getString(R.string.moving_to_next_question)) {
+                        binding?.ringCount?.text = getString(R.string.shake_count_initial)
+                    }
                     return
                 }
             }
 
             if (retryCount >= 3) {
-                Log.d(TAG, "Showing correct answer after 3 retries: ${question.answer}")
                 DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, "${question.answer}") {}
             } else {
                 DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
-                    Log.d(TAG, "Retrying current question")
                     count = 0
                     firstShakeTime = 0L
                     answerChecked = false
-                    binding?.ringCount?.apply {
-                        text = getString(R.string.shake_count_initial)
-                        contentDescription = null // Prevents TalkBack reading old values
-                        importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-                    }
-//                    tts.speak("Shake ${question.expression.replace("+", " plus ")} times")
+                    binding?.ringCount?.text = getString(R.string.shake_count_initial)
                 }
             }
         }
@@ -248,20 +267,23 @@ class ShakeFragment : Fragment(), Hintable {
 
     private fun nextOrEnd() {
         index++
-        Log.d(TAG, "Next or end. New index: $index")
+        Log.d(TAG, "➡️ nextOrEnd to index: $index")
+        logFocusState("nextOrEnd ENTRY")
 
         if (index >= parsedShakeList.size) {
-            Log.d(TAG, "All questions done. Ending game.")
             tts.speak(getString(R.string.shake_game_over))
             endGameWithScore()
         } else {
-            tts.speak(getString(R.string.shake_next_question))
-            gameHandler.postDelayed({ startGame() }, 1000)
+            binding?.ringMeTv?.apply {
+                contentDescription = null
+                isFocusable = false
+            }
+            logFocusState("before startGame in nextOrEnd")
+            startGame()
         }
     }
 
     override fun showHint() {
-        Log.d(TAG, "Hint requested")
         val bundle = Bundle().apply { putString("mode", "shake") }
         val hintFragment = HintFragment().apply { arguments = bundle }
 

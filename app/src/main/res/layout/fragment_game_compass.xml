@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
+    android:importantForAccessibility="yes"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:contentDescription="@string/compass_page_desc">
 
     <!-- Instructional Text -->
@@ -12,9 +16,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_gravity="center|top"
+        android:text="@string/turn_to_angle"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:text="@string/turn_to_angle"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="24sp" />
 
@@ -27,8 +31,8 @@
         android:src="@drawable/game_compass"
         android:importantForAccessibility="no"
         android:contentDescription="@null"
-        android:focusableInTouchMode="false"
-        android:focusable="false" />
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
 
     <!-- Degree Display -->
     <TextView
@@ -38,6 +42,11 @@
         android:layout_marginBottom="60dp"
         android:layout_gravity="center|bottom"
         android:text="@string/degree_placeholder"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:textColor="?attr/colorOnSecondary"
         android:textSize="24sp" />
+
+
+
 </FrameLayout>

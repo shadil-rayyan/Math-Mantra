@@ -1,6 +1,5 @@
 package com.zendalona.zmantra.view.game
 
-import android.app.AlertDialog
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -9,21 +8,19 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.zmantra.model.Hintable
+import com.zendalona.zmantra.utility.common.DialogUtils
+import com.zendalona.zmantra.utility.common.GradingUtils
+import com.zendalona.zmantra.utility.common.TTSUtility
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.utility.settings.LocaleHelper
-import java.util.Locale
+import com.zendalona.zmantra.view.HintFragment
 import kotlin.math.abs
 
 class CompassFragment : Fragment(), SensorEventListener, Hintable {
@@ -42,49 +39,70 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     private var targetDirection = 0f
     private var questionAnswered = false
+    private var questionStartTime: Long = 0L
 
     private val rawQuestions: MutableList<String> = ArrayList()
     private var currentIndex = -1
     private var currentTargetDirection = "North"
     private var currentTimeLimit = 30
-
+    private var isFirstOpen = true
+    private lateinit var ttsUtility: TTSUtility
     private lateinit var compassDirections: Array<String>
-
     private var currentAzimuth = 0f
 
     private val holdHandler = Handler(Looper.getMainLooper())
     private val holdRunnable = Runnable {
         questionAnswered = true
-        showResultDialog()
+        val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+        val grade = GradingUtils.getGrade(elapsedSeconds, currentTimeLimit.toDouble(), true)
+        DialogUtils.showResultDialog(requireContext(), layoutInflater, ttsUtility, grade) {
+            generateNewQuestion()
+        }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager?
-        sensorManager?.let {
-            magnetometer = it.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
-            accelerometer = it.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        }
+        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        magnetometer = sensorManager?.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+        accelerometer = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        ttsUtility = TTSUtility(requireContext())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentGameCompassBinding.inflate(inflater, container, false)
         compassDirections = requireContext().resources.getStringArray(R.array.compass_directions)
         setHasOptionsMenu(true)
         loadQuestionsFromExcel()
         generateNewQuestion()
-
-
         return binding!!.root
     }
+
+
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true  // Show hint here
+        menu.findItem(R.id.action_hint)?.isVisible = true
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (isFirstOpen) {
+            binding?.rootLayout?.apply {
+                requestFocus()
+                postDelayed({
+                    announceForAccessibility(contentDescription)
+                }, 500)
+            }
+            isFirstOpen = false
+        }
+    }
+
+
 
     private fun loadQuestionsFromExcel() {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
@@ -103,25 +121,21 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
         rawQuestions.clear()
         for (q in loadedQuestions) {
-            // Save in format: question===time
             rawQuestions.add("${q.expression}===${q.timeLimit}")
         }
     }
 
     private fun generateNewQuestion() {
+        questionStartTime = System.currentTimeMillis()
         currentIndex++
         if (currentIndex >= rawQuestions.size) {
             endGame()
             return
         }
 
-        val raw = rawQuestions[currentIndex]
-        val parts = raw.replace("compass?", "")
-            .split("===".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-
-        if (parts.isNotEmpty()) currentTargetDirection = parts[0]!!.trim()
-        if (parts.size >= 2) currentTimeLimit = parts[1]!!.trim().toInt()
+        val parts = rawQuestions[currentIndex].split("===")
+        if (parts.isNotEmpty()) currentTargetDirection = parts[0].trim()
+        if (parts.size >= 2) currentTimeLimit = parts[1].trim().toInt()
 
         targetDirection = directionToDegrees(currentTargetDirection)
         questionAnswered = false
@@ -130,21 +144,12 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
         binding!!.questionTv.text = questionText
-        binding!!.questionTv.announceForAccessibility(questionText)
     }
 
     private fun directionToDegrees(dir: String): Float {
-        return when (dir.lowercase(Locale.getDefault())) {
-            "north" -> 0f
-            "northeast" -> 45f
-            "east" -> 90f
-            "southeast" -> 135f
-            "south" -> 180f
-            "southwest" -> 225f
-            "west" -> 270f
-            "northwest" -> 315f
-            else -> 0f
-        }
+        val directions = resources.getStringArray(R.array.compass_directions)
+        val index = directions.indexOfFirst { it.equals(dir, ignoreCase = true) }
+        return if (index != -1) index * 22.5f else 0f
     }
 
     override fun onResume() {
@@ -172,12 +177,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         }
 
         if (lastAccelerometerSet && lastMagnetometerSet) {
-            SensorManager.getRotationMatrix(
-                rotationMatrix,
-                null,
-                lastAccelerometer,
-                lastMagnetometer
-            )
+            SensorManager.getRotationMatrix(rotationMatrix, null, lastAccelerometer, lastMagnetometer)
             SensorManager.getOrientation(rotationMatrix, orientation)
 
             val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
@@ -188,17 +188,13 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     }
 
     private fun updateCompassUI(rotationDegrees: Float, actualAzimuth: Float) {
-        if (binding == null) return
-
-        binding!!.compass.rotation = rotationDegrees
-
+        binding?.compass?.rotation = rotationDegrees
         currentAzimuth = actualAzimuth
         val directionText = getCompassDirection(actualAzimuth)
-        binding!!.degreeText.text = directionText
+        binding?.degreeText?.text = directionText
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
-        binding!!.questionTv.text = questionText
-//        binding!!.questionTv.announceForAccessibility(questionText)
+        binding?.questionTv?.text = questionText
 
         checkIfHoldingCorrectDirection(actualAzimuth)
     }
@@ -206,10 +202,13 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private fun checkIfHoldingCorrectDirection(currentDegrees: Float) {
         if (questionAnswered) return
 
-        var diff = abs((targetDirection - ((currentDegrees + 360) % 360)).toDouble()).toFloat()
+        val normalizedTarget = (targetDirection + 360) % 360
+        val normalizedCurrent = (currentDegrees + 360) % 360
+
+        var diff = abs(normalizedTarget - normalizedCurrent)
         if (diff > 180) diff = 360 - diff
 
-        if (diff <= 22.5) {
+        if (diff <= 22.5f) {
             if (!holdHandler.hasCallbacks(holdRunnable)) {
                 holdHandler.postDelayed(holdRunnable, 3000)
             }
@@ -218,37 +217,19 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         }
     }
 
-    private fun showResultDialog() {
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.compass_correct))
-            .setMessage(getString(R.string.compass_correct_msg))
-            .setCancelable(false)
-            .create()
-
-        dialog.show()
-        binding!!.root.announceForAccessibility(getString(R.string.compass_correct_msg))
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (dialog.isShowing) {
-                dialog.dismiss()
-                generateNewQuestion()
-            }
-        }, 3000)
-    }
-
     private fun endGame() {
         Toast.makeText(requireContext(), "Game Over!", Toast.LENGTH_LONG).show()
-        binding!!.questionTv.text = "Game Over"
+        binding?.questionTv?.text = "Game Over"
     }
 
-    private fun getCompassDirection(degrees: Float): String? {
+    private fun getCompassDirection(degrees: Float): String {
         val index = ((degrees + 11.25) / 22.5).toInt() % 16
         return compassDirections[index]
     }
 
     override fun showHint() {
         val bundle = Bundle().apply {
-            putString("mode", "compass") // Pass only the mode
+            putString("mode", "compass")
         }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
