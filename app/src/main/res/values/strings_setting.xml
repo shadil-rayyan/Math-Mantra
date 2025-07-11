@@ -4,7 +4,7 @@
     <string name="music_volume_label">Music Volume</string>
     <string name="music_volume_decrease_desc">Decrease music volume</string>
     <string name="music_volume_increase_desc">Increase music volume</string>
-    <string name="music_volume_value_desc">Current music volume level</string>
+    <string name="music_volume_value_desc">Current music volume level %.1f</string>
 
     <string name="speech_volume_label">Speech Volume</string>
     <string name="speech_volume_decrease_desc">Decrease speech volume</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">Speech Rate</string>
     <string name="speech_rate_decrease_desc">Decrease speech volume</string>
     <string name="speech_rate_increase_desc">Increase speech volume</string>
-    <string name="speech_rate_value_desc">Current speech volume level</string>
+    <string name="speech_rate_value_desc">Current speech rate: %.1f</string>
 
     <string name="background_music_toggle_label">Background Music</string>
     <string name="background_music_toggle_desc">Toggle background music on or off</string>

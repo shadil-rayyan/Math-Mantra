@@ -4,7 +4,7 @@
     <string name="music_volume_label">مستوى صوت الموسيقى</string>
     <string name="music_volume_decrease_desc">خفض مستوى صوت الموسيقى</string>
     <string name="music_volume_increase_desc">زيادة مستوى صوت الموسيقى</string>
-    <string name="music_volume_value_desc">مستوى صوت الموسيقى الحالي</string>
+    <string name="music_volume_value_desc">مستوى صوت الموسيقى الحالي %.1f</string>
 
     <string name="speech_volume_label">مستوى صوت الكلام</string>
     <string name="speech_volume_decrease_desc">خفض مستوى صوت الكلام</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">سرعة الكلام</string>
     <string name="speech_rate_decrease_desc">خفض سرعة الكلام</string>
     <string name="speech_rate_increase_desc">زيادة سرعة الكلام</string>
-    <string name="speech_rate_value_desc">سرعة الكلام الحالية</string>
+    <string name="speech_rate_value_desc">"  عدل سرعة الكلام الحالي: %.1f"</string>
 
     <string name="background_music_toggle_label">الموسيقى الخلفية</string>
     <string name="background_music_toggle_desc">تشغيل أو إيقاف الموسيقى الخلفية</string>

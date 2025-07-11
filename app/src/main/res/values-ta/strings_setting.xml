@@ -4,7 +4,7 @@
     <string name="music_volume_label">இசை அளவு</string>
     <string name="music_volume_decrease_desc">இசை அளவை குறைக்கவும்</string>
     <string name="music_volume_increase_desc">இசை அளவை அதிகரிக்கவும்</string>
-    <string name="music_volume_value_desc">தற்போதைய இசை அளவு நிலை</string>
+    <string name="music_volume_value_desc">தற்போதைய இசை ஒலி நிலை %.1f</string>
 
     <string name="speech_volume_label">பேச்சு அளவு</string>
     <string name="speech_volume_decrease_desc">பேச்சு அளவை குறைக்கவும்</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">பேச்சு வேகம்</string>
     <string name="speech_rate_decrease_desc">பேச்சு வேகத்தை குறைக்கவும்</string>
     <string name="speech_rate_increase_desc">பேச்சு வேகத்தை அதிகரிக்கவும்</string>
-    <string name="speech_rate_value_desc">தற்போதைய பேச்சு வேகம்</string>
+    <string name="speech_rate_value_desc">" தற்போதைய பேச்சு விகிதம்: %.1f"</string>
 
     <string name="background_music_toggle_label">பின்னணி இசை</string>
     <string name="background_music_toggle_desc">பின்னணி இசையை இயக்கு அல்லது நிறுத்தவும்</string>

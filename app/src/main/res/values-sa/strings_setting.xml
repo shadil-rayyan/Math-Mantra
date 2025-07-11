@@ -4,7 +4,7 @@
     <string name="music_volume_label">संगीतध्वनिः</string>
     <string name="music_volume_decrease_desc">संगीतध्वनिमात्रां न्यूनयतु</string>
     <string name="music_volume_increase_desc">संगीतध्वनिमात्रां वृद्धयतु</string>
-    <string name="music_volume_value_desc">वर्तमानः संगीतध्वनिमात्रा स्तरः</string>
+    <string name="music_volume_value_desc">वर्तमान संगीत ध्वनि स्तर %.1f</string>
 
     <string name="speech_volume_label">वाक्‌ध्वनिः</string>
     <string name="speech_volume_decrease_desc">वाक्‌ध्वनिमात्रां न्यूनयतु</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">वाक्‌गति</string>
     <string name="speech_rate_decrease_desc">वाक्‌गतिमात्रां न्यूनयतु</string>
     <string name="speech_rate_increase_desc">वाक्‌गतिमात्रां वृद्धयतु</string>
-    <string name="speech_rate_value_desc">वर्तमानः वाक्‌गति स्तरः</string>
+    <string name="speech_rate_value_desc">वर्तमान भाषण दर: %.1f</string>
 
     <string name="background_music_toggle_label">पृष्ठभूमिसंगीतः</string>
     <string name="background_music_toggle_desc">पृष्ठभूमिसंगीतं चलितं वा स्थगितं कर्तुं</string>

@@ -4,7 +4,7 @@
     <string name="music_volume_label">സംഗീത ശബ്ദം</string>
     <string name="music_volume_decrease_desc">സംഗീത ശബ്ദം കുറയ്ക്കൂ</string>
     <string name="music_volume_increase_desc">സംഗീത ശബ്ദം കൂട്ടൂ</string>
-    <string name="music_volume_value_desc">ഇപ്പോഴുള്ള സംഗീത ശബ്ദം</string>
+    <string name="music_volume_value_desc">നിലവിലുള്ള സംഗീത ശബ്ദനിരക്ക് %.1f</string>
 
     <string name="speech_volume_label">വാക്കിന്റെ ശബ്ദം</string>
     <string name="speech_volume_decrease_desc">വാക്കിന്റെ ശബ്ദം കുറയ്ക്കൂ</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">വാക്ക് വേഗം</string>
     <string name="speech_rate_decrease_desc">വാക്ക് വേഗം കുറയ്ക്കൂ</string>
     <string name="speech_rate_increase_desc">വാക്ക് വേഗം കൂട്ടൂ</string>
-    <string name="speech_rate_value_desc">ഇപ്പോഴുള്ള വാക്ക് വേഗം</string>
+    <string name="speech_rate_value_desc">നിലവിലുള്ള സംസാര വേഗം: %.1f</string>
 
     <string name="background_music_toggle_label">പിന്നണി സംഗീതം</string>
     <string name="background_music_toggle_desc">പിന്നണി സംഗീതം ഓണാക്കൂ അല്ലെങ്കിൽ ഓഫ് ആക്കൂ</string>

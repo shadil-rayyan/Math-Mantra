@@ -171,6 +171,12 @@ class SettingFragment : Fragment() {
         binding.speechRateValue.text = String.format("%.1f", speechRate)
         ttsUtility.setSpeechRate(speechRate)
 
+        // Set content description initially with formatted speech rate
+        binding.speechRateValue.contentDescription = getString(R.string.speech_rate_value_desc, speechRate)
+
+        // Announce the initial speech rate value for accessibility
+        binding.speechRateValue.announceForAccessibility(getString(R.string.speech_rate_value_desc, speechRate))
+
         binding.speechRateIncrease.setOnClickListener {
             if (speechRate < 3.0f) {
                 speechRate += 0.1f
@@ -179,6 +185,12 @@ class SettingFragment : Fragment() {
                 binding.speechRateValue.text = String.format("%.1f", speechRate)
                 ttsUtility.setSpeechRate(speechRate)
                 Log.d("SettingFragment", "Speech rate increased to $speechRate")
+
+                // Update content description with new speech rate
+                binding.speechRateValue.contentDescription = getString(R.string.speech_rate_value_desc, speechRate)
+
+                // Announce the updated speech rate for accessibility
+                binding.speechRateValue.announceForAccessibility(getString(R.string.speech_rate_value_desc, speechRate))
             }
         }
 
@@ -190,10 +202,15 @@ class SettingFragment : Fragment() {
                 binding.speechRateValue.text = String.format("%.1f", speechRate)
                 ttsUtility.setSpeechRate(speechRate)
                 Log.d("SettingFragment", "Speech rate decreased to $speechRate")
+
+                // Update content description with new speech rate
+                binding.speechRateValue.contentDescription = getString(R.string.speech_rate_value_desc, speechRate)
+
+                // Announce the updated speech rate for accessibility
+                binding.speechRateValue.announceForAccessibility(getString(R.string.speech_rate_value_desc, speechRate))
             }
         }
     }
-
     private fun setupMusicToggle() {
         val musicSwitch = binding.backgroundMusicToggle
         musicSwitch.isChecked = prefs.getBoolean("music_enabled", false)
@@ -213,16 +230,34 @@ class SettingFragment : Fragment() {
         var currentVolume = BackgroundMusicPlayer.getVolume()
         binding.musicVolumeValue.text = String.format("%.1f", currentVolume)
 
+        // Set content description initially with formatted volume value
+        binding.musicVolumeValue.contentDescription = getString(R.string.music_volume_value_desc, currentVolume)
+
+        // Announce the initial value for accessibility
+        binding.musicVolumeValue.announceForAccessibility(getString(R.string.music_volume_value_desc, currentVolume))
+
         binding.musicVolumeDecrease.setOnClickListener {
             currentVolume = (currentVolume - 0.1f).coerceAtLeast(0.1f)
             BackgroundMusicPlayer.setVolume(currentVolume)
             binding.musicVolumeValue.text = String.format("%.1f", currentVolume)
+
+            // Update content description with new volume value
+            binding.musicVolumeValue.contentDescription = getString(R.string.music_volume_value_desc, currentVolume)
+
+            // Announce the updated value for accessibility
+            binding.musicVolumeValue.announceForAccessibility(getString(R.string.music_volume_value_desc, currentVolume))
         }
 
         binding.musicVolumeIncrease.setOnClickListener {
             currentVolume = (currentVolume + 0.1f).coerceAtMost(1.0f)
             BackgroundMusicPlayer.setVolume(currentVolume)
             binding.musicVolumeValue.text = String.format("%.1f", currentVolume)
+
+            // Update content description with new volume value
+            binding.musicVolumeValue.contentDescription = getString(R.string.music_volume_value_desc, currentVolume)
+
+            // Announce the updated value for accessibility
+            binding.musicVolumeValue.announceForAccessibility(getString(R.string.music_volume_value_desc, currentVolume))
         }
     }
 

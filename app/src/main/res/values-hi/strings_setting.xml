@@ -4,7 +4,7 @@
     <string name="music_volume_label">म्यूज़िक वॉल्यूम</string>
     <string name="music_volume_decrease_desc">म्यूज़िक वॉल्यूम कम करें</string>
     <string name="music_volume_increase_desc">म्यूज़िक वॉल्यूम बढ़ाएँ</string>
-    <string name="music_volume_value_desc">वर्तमान म्यूज़िक वॉल्यूम स्तर</string>
+    <string name="music_volume_value_desc">वर्तमान संगीत ध्वनि स्तर %.1f</string>
 
     <string name="speech_volume_label">स्पीच वॉल्यूम</string>
     <string name="speech_volume_decrease_desc">स्पीच वॉल्यूम कम करें</string>
@@ -14,7 +14,7 @@
     <string name="speech_rate_label">स्पीच की गति</string>
     <string name="speech_rate_decrease_desc">स्पीच की गति कम करें</string>
     <string name="speech_rate_increase_desc">स्पीच की गति बढ़ाएँ</string>
-    <string name="speech_rate_value_desc">वर्तमान स्पीच की गति</string>
+    <string name="speech_rate_value_desc">वर्तमान भाषण दर: %.1f</string>
 
     <string name="background_music_toggle_label">बैकग्राउंड म्यूज़िक</string>
     <string name="background_music_toggle_desc">बैकग्राउंड म्यूज़िक चालू या बंद करें</string>
