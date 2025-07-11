@@ -28,7 +28,11 @@
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="20dp"
                 app:cardElevation="10dp"
-                app:cardBackgroundColor="?attr/colorPrimary">
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                app:cardBackgroundColor="?attr/colorPrimary"
+                >
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

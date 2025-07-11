@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">झन्मन्त्रः</string>
     <string name="app_title">झन्मन्त्रः</string>
+    <string name="hint">सुझाव</string>
     <string name="logo_description">अनुप्रयोगस्य चिन्हं</string>
     <string name="accessibility_dialog_title">सुलभतासेवां सक्रिययतु</string>
     <string name="accessibility_dialog_message">गणितमन्त्रः सम्यक् कार्याय सुलभतासेवां आवश्यकतां याचते। कृपया सेटिङ्ग्स् मध्ये तं सक्रिययतु।</string>

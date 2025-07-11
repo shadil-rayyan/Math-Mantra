@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_hint"
-        android:title="Hint"
+        android:title="@string/hint"
         android:icon="@drawable/hinticon"
         app:showAsAction="always" />
 </menu>

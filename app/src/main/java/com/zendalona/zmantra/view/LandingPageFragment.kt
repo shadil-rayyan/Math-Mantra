@@ -16,6 +16,7 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
+import android. view. ViewTreeObserver
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
@@ -45,6 +46,7 @@ class LandingPageFragment : Fragment() {
 
         _binding = FragmentLandingPageBinding.inflate(inflater, container, false)
 
+
         binding.settings.setOnClickListener {
             Log.d("LandingPageFragment", "Settings button clicked")
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -73,6 +75,8 @@ class LandingPageFragment : Fragment() {
             activity?.finish()
         }
 
+
+
         return binding.root
     }
 
@@ -99,10 +103,6 @@ class LandingPageFragment : Fragment() {
         } else {
             BackgroundMusicPlayer.pauseMusic()
             Log.d("LandingPageFragment", "Background music paused")
-        }
-
-        binding!!.quickplay.post {
-            binding!!.quickplay.requestFocus() // This ensures TalkBack will focus on the button
         }
 
 

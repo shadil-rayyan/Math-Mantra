@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Zமந்திரா</string>
     <string name="app_title">Zமந்திரா</string>
+    <string name="hint">குறிப்பு</string>
     <string name="logo_description">செயலி லோகோ</string>
     <string name="accessibility_dialog_title">அணுகல் சேவையை இயக்குக</string>
     <string name="accessibility_dialog_message">MathsManthra சரியாக இயங்க அணுகல் சேவை தேவையானது. தயவுசெய்து அமைப்புகளில் அதை இயக்கவும்.</string>

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ZMantra</string>
     <string name="app_title">ZMantra</string>
+    <string name="hint">सुझाव</string>
     <string name="logo_description">ऐप लोगो</string>
     <string name="accessibility_dialog_title">एक्सेसिबिलिटी सेवा सक्षम करें</string>
     <string name="accessibility_dialog_message">MathsManthra ठीक से काम करने के लिए एक्सेसिबिलिटी सेवा की आवश्यकता है। कृपया इसे सेटिंग्स में सक्षम करें।</string>

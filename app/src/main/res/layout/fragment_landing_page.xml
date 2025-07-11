@@ -90,6 +90,7 @@
             android:gravity="start|center_vertical"
             android:text="@string/quick_play"
             android:textAlignment="viewStart"
+
             android:textColor="?attr/colorOnPrimary" />
 
         <Button

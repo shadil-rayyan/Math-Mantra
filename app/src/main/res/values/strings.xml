@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ZMantra</string>
     <string name="app_title">ZMantra</string>
+    <string name="hint">Hint</string>
     <string name="logo_description">App logo</string>
     <string name="accessibility_dialog_title">Enable Accessibility Service</string>
     <string name="accessibility_dialog_message">MathsManthra requires Accessibility Service to function properly. Please enable it in the settings.</string>

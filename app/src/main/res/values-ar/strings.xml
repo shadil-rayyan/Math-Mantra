@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">زي مانترا</string>
     <string name="app_title">زي مانترا</string>
+    <string name="hint">تلميح</string>
     <string name="logo_description">شعار التطبيق</string>
     <string name="accessibility_dialog_title">تفعيل خدمة إمكانية الوصول</string>
     <string name="accessibility_dialog_message">يتطلب MathsManthra خدمة إمكانية الوصول للعمل بشكل صحيح. يرجى تفعيلها في الإعدادات.</string>
