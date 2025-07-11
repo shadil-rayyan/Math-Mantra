@@ -101,8 +101,11 @@ class LandingPageFragment : Fragment() {
             Log.d("LandingPageFragment", "Background music paused")
         }
 
-//        ttsUtility.speak("Welcome to the landing page")
-        Log.d("LandingPageFragment", "TTS spoke welcome message")
+        binding!!.quickplay.post {
+            binding!!.quickplay.requestFocus() // This ensures TalkBack will focus on the button
+        }
+
+
     }
 
     override fun onPause() {
