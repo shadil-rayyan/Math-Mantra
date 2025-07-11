@@ -126,4 +126,13 @@ class GameFragment : Fragment() ,HintIconVisibilityController {
 
         return binding!!.getRoot()
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set the focus to the shakeButton when the fragment's view is ready
+        binding!!.shakeButton.post {
+            binding!!.shakeButton.requestFocus() // This ensures TalkBack will focus on the button
+        }
+    }
 }

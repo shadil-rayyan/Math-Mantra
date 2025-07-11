@@ -117,31 +117,11 @@ class ShakeFragment : Fragment(), Hintable {
                     announceForAccessibilityCompat(contentDescription?.toString() ?: "")
                 }, 500)
             }
-            isFirstOpen = false
         }
     }
-
     private fun startGame() {
         Log.d(TAG, "🔄 startGame() called at index $index")
         logFocusState("startGame ENTRY")
-
-        binding?.apply {
-            listOf(rootLayout, ringCount, ringMeTv).forEach {
-                it.clearFocus()
-                it.contentDescription = null
-                it.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
-            }
-
-            // Shift focus temporarily to dummyFocusView to clear old focus
-            dummyFocusView?.apply {
-                contentDescription = ""
-                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-                isFocusable = true
-                visibility = View.VISIBLE
-                requestFocus()
-                logFocusState("dummyFocusView requested focus")
-            }
-        }
 
         if (parsedShakeList.isEmpty()) {
             Toast.makeText(requireContext(), "No questions available", Toast.LENGTH_LONG).show()
@@ -155,6 +135,7 @@ class ShakeFragment : Fragment(), Hintable {
         count = 0
         firstShakeTime = 0L
         answerChecked = false
+
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
 
         val question = parsedShakeList[index % parsedShakeList.size]
@@ -162,21 +143,21 @@ class ShakeFragment : Fragment(), Hintable {
         questionStartTime = System.currentTimeMillis()
 
         val instruction = getString(R.string.shake_target_expression, question.expression)
+        binding?.ringMeTv?.text = instruction
 
-        // Delay to allow focus settling on dummy view before announcing
-        binding?.ringMeTv?.postDelayed({
+        if (!isFirstOpen) {
             binding?.ringMeTv?.apply {
-                text = instruction
-                contentDescription = instruction
                 isFocusable = true
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-                accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
                 requestFocus()
-                logFocusState("before announceForAccessibility (instruction)")
-                announceForAccessibilityCompat(instruction)
-                logFocusState("after announceForAccessibility (instruction)")
+                post {
+                    announceForAccessibilityCompat(instruction)
+                    logFocusState("announceForAccessibility on startGame")
+                }
             }
-        }, 400)
+        }
+        if (isFirstOpen) isFirstOpen = false
+
     }
 
     private fun onShakeDetected() {
