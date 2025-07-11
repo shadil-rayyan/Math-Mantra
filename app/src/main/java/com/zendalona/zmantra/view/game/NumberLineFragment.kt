@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameNumberLineBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -20,6 +21,7 @@ import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.viewModel.NumberLineViewModel
+import kotlinx.coroutines.launch
 import java.util.*
 
 private val handler = Handler(Looper.getMainLooper())
@@ -63,12 +65,15 @@ class NumberLineFragment : Fragment(), Hintable {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
         // ✅ Load Excel questions for mode = numberline, difficulty = 1
-        excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(),
-            lang = lang,
-            mode = "numberline",
-            difficulty = difficulty.toString()
-        )
+        lifecycleScope.launch {
+
+            excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang = lang,
+                mode = "numberline",
+                difficulty = difficulty.toString()
+            )
+        }
     }
 
     override fun onCreateView(

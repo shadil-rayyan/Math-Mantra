@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTouchScreenBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -18,6 +19,7 @@ import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.model.Hintable
+import kotlinx.coroutines.launch
 
 class TouchScreenFragment : Fragment(), Hintable {
 
@@ -40,9 +42,11 @@ class TouchScreenFragment : Fragment(), Hintable {
         lang = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
         val difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
 
-        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(), lang, "touch", difficulty
-        ).shuffled()
+        lifecycleScope.launch {
+            questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(), lang, "touch", difficulty
+            ).shuffled()
+        }
 
         if (questionList.isEmpty()) {
             Toast.makeText(

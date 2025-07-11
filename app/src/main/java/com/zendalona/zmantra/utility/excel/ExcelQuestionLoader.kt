@@ -3,6 +3,10 @@ package com.zendalona.zmantra.utility.excel
 import android.content.Context
 import android.util.Log
 import com.zendalona.zmantra.model.GameQuestion
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 import net.objecthunter.exp4j.ExpressionBuilder
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.util.*
@@ -121,8 +125,8 @@ object ExcelQuestionLoader {
         }
     }
 
-    // Main loader function
-    fun loadQuestionsFromExcel(
+    // Main loader function (returns the first question immediately, others load in the background)
+    suspend fun loadQuestionsFromExcel(
         context: Context,
         lang: String,
         mode: String,
@@ -137,47 +141,17 @@ object ExcelQuestionLoader {
                 val workbook = WorkbookFactory.create(inputStream)
                 val sheet = workbook.getSheetAt(0)
 
-                for (row in sheet) {
-                    if (row.rowNum == 0) continue
+                // Load the first question immediately (non-blocking)
+                val firstQuestion = loadFirstQuestion(sheet, mode, difficulty)
+                questions.add(firstQuestion)
 
-                    val questionTemplate = row.getCell(0)?.toString()
-                    val rowModeRaw = row.getCell(1)?.toString()
-                    val operandRaw = row.getCell(2)?.toString()
-                    val rowDifficultyNum = row.getCell(3)?.toString()
-                    val answerExpressionTemplate = row.getCell(4)?.toString()
-                    val timeLimitNum = row.getCell(5)?.numericCellValue ?: 20.0
-
-                    if (questionTemplate == null || rowModeRaw == null || operandRaw == null ||
-                        rowDifficultyNum == null || answerExpressionTemplate == null
-                    ) {
-                        Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
-                        continue
-                    }
-
-                    val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
-                    val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
-                    val timeLimit = timeLimitNum.toInt()
-
-                    if (rowMode == mode.lowercase(Locale.ROOT) && rowDifficulty == difficulty) {
-                        Log.d(TAG, "✅ Matching row found at rowNum=${row.rowNum}")
-
-                        val variables = extractVariables(operandRaw)
-                        val operands = parseInputRange(operandRaw, mode)
-
-                        if (variables.size != operands.size) {
-                            Log.w(TAG, "Variable and operand count mismatch at row ${row.rowNum}: variables=${variables.size}, operands=${operands.size}")
-                            continue
-                        }
-
-                        val renderedQuestion = replaceVariables(questionTemplate, variables, operands)
-                        val renderedEquation = replaceVariables(answerExpressionTemplate, variables, operands)
-
-                        val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedEquation)
-
-                        questions.add(GameQuestion(renderedQuestion, answer, timeLimit))
-                        Log.d(TAG, "➕ Added question from row ${row.rowNum}")
-                    }
+                // Load the rest of the questions in the background
+                val backgroundQuestions = withContext(Dispatchers.IO) {
+                    loadRemainingQuestions(sheet, mode, difficulty)
                 }
+
+                // Add remaining questions after the background task finishes
+                questions.addAll(backgroundQuestions)
 
                 workbook.close()
                 Log.d(TAG, "Loaded total ${questions.size} valid questions")
@@ -186,6 +160,94 @@ object ExcelQuestionLoader {
             Log.e(TAG, "Error loading questions from Excel", e)
         }
 
+        return questions
+    }
+
+    // Load the first question
+    private fun loadFirstQuestion(sheet: org.apache.poi.ss.usermodel.Sheet, mode: String, difficulty: String): GameQuestion {
+        for (row in sheet) {
+            if (row.rowNum == 0) continue
+            // Add checks for mode and difficulty and return the first matching question
+            val questionTemplate = row.getCell(0)?.toString()
+            val rowModeRaw = row.getCell(1)?.toString()
+            val operandRaw = row.getCell(2)?.toString()
+            val rowDifficultyNum = row.getCell(3)?.toString()
+            val answerExpressionTemplate = row.getCell(4)?.toString()
+            val timeLimitNum = row.getCell(5)?.numericCellValue ?: 20.0
+
+            if (questionTemplate == null || rowModeRaw == null || operandRaw == null ||
+                rowDifficultyNum == null || answerExpressionTemplate == null
+            ) {
+                Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
+                continue
+            }
+
+            val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
+            val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
+            val timeLimit = timeLimitNum.toInt()
+
+            if (rowMode == mode.lowercase(Locale.ROOT) && rowDifficulty == difficulty) {
+                Log.d(TAG, "✅ Matching row found at rowNum=${row.rowNum}")
+                val variables = extractVariables(operandRaw)
+                val operands = parseInputRange(operandRaw, mode)
+
+                if (variables.size != operands.size) {
+                    Log.w(TAG, "Variable and operand count mismatch at row ${row.rowNum}: variables=${variables.size}, operands=${operands.size}")
+                    continue
+                }
+
+                val renderedQuestion = replaceVariables(questionTemplate, variables, operands)
+                val renderedEquation = replaceVariables(answerExpressionTemplate, variables, operands)
+
+                val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedEquation)
+
+                return GameQuestion(renderedQuestion, answer, timeLimit)
+            }
+        }
+        return GameQuestion("No valid question found", 0, 20)
+    }
+
+    // Load remaining questions in the background
+    private fun loadRemainingQuestions(sheet: org.apache.poi.ss.usermodel.Sheet, mode: String, difficulty: String): List<GameQuestion> {
+        val questions = mutableListOf<GameQuestion>()
+        for (row in sheet) {
+            if (row.rowNum == 0) continue
+            val questionTemplate = row.getCell(0)?.toString()
+            val rowModeRaw = row.getCell(1)?.toString()
+            val operandRaw = row.getCell(2)?.toString()
+            val rowDifficultyNum = row.getCell(3)?.toString()
+            val answerExpressionTemplate = row.getCell(4)?.toString()
+            val timeLimitNum = row.getCell(5)?.numericCellValue ?: 20.0
+
+            if (questionTemplate == null || rowModeRaw == null || operandRaw == null ||
+                rowDifficultyNum == null || answerExpressionTemplate == null
+            ) {
+                Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
+                continue
+            }
+
+            val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
+            val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
+            val timeLimit = timeLimitNum.toInt()
+
+            if (rowMode == mode.lowercase(Locale.ROOT) && rowDifficulty == difficulty) {
+                Log.d(TAG, "✅ Matching row found at rowNum=${row.rowNum}")
+                val variables = extractVariables(operandRaw)
+                val operands = parseInputRange(operandRaw, mode)
+
+                if (variables.size != operands.size) {
+                    Log.w(TAG, "Variable and operand count mismatch at row ${row.rowNum}: variables=${variables.size}, operands=${operands.size}")
+                    continue
+                }
+
+                val renderedQuestion = replaceVariables(questionTemplate, variables, operands)
+                val renderedEquation = replaceVariables(answerExpressionTemplate, variables, operands)
+
+                val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedEquation)
+
+                questions.add(GameQuestion(renderedQuestion, answer, timeLimit))
+            }
+        }
         return questions
     }
 }

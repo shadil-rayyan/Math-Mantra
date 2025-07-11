@@ -11,8 +11,10 @@ import android.os.Looper
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
+import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.model.Hintable
 import com.zendalona.zmantra.utility.common.DialogUtils
 import com.zendalona.zmantra.utility.common.GradingUtils
@@ -21,6 +23,7 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class CompassFragment : Fragment(), SensorEventListener, Hintable {
@@ -108,20 +111,29 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
-        val loadedQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(),
-            lang = lang,
-            mode = "direction",
-            difficulty = difficulty.toString()
-        )
+        // Declare loadedQuestions outside the coroutine
+        val loadedQuestions = mutableListOf<GameQuestion>()
 
-        if (loadedQuestions.isEmpty()) {
-            Toast.makeText(requireContext(), "No compass questions found", Toast.LENGTH_LONG).show()
-        }
+        lifecycleScope.launch {
+            // Now load the questions inside the coroutine
+            val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang = lang,
+                mode = "direction",
+                difficulty = difficulty.toString()
+            )
 
-        rawQuestions.clear()
-        for (q in loadedQuestions) {
-            rawQuestions.add("${q.expression}===${q.timeLimit}")
+            // Once the questions are loaded, assign them to loadedQuestions
+            loadedQuestions.addAll(questions)
+
+            if (loadedQuestions.isEmpty()) {
+                Toast.makeText(requireContext(), "No compass questions found", Toast.LENGTH_LONG).show()
+            }
+
+            rawQuestions.clear()
+            for (q in loadedQuestions) {
+                rawQuestions.add("${q.expression}===${q.timeLimit}")
+            }
         }
     }
 

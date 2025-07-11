@@ -8,6 +8,7 @@ import android.os.*
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.DialogResultBinding
@@ -20,6 +21,7 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.launch
 import java.util.*
 
 class SterioFragment : Fragment(), Hintable {
@@ -46,13 +48,14 @@ class SterioFragment : Fragment(), Hintable {
         // Load questions from Excel
         val lang = getLanguage(requireContext()).ifEmpty { "en" }
         val difficulty = getDifficulty(requireContext()).toString()
-
-        questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            context = requireContext(),
-            lang = lang,
-            mode = "sterio",
-            difficulty = difficulty
-        ).shuffled()
+        lifecycleScope.launch {
+            questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                context = requireContext(),
+                lang = lang,
+                mode = "sterio",
+                difficulty = difficulty
+            ).shuffled()
+        }
 
         if (questions.isEmpty()) {
             Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()

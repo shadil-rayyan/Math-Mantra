@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentQuickPlayBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -19,6 +20,7 @@ import com.zendalona.zmantra.utility.common.VibrationUtils
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
+import kotlinx.coroutines.launch
 import java.util.*
 
 class QuickPlayFragment : Fragment(), Hintable {
@@ -60,16 +62,33 @@ class QuickPlayFragment : Fragment(), Hintable {
             Log.d("QuickPlayFragment", "Loading questions [lang=$lang, difficulty=$difficulty, category=$questionCategory]")
 
             questionList.clear()
-            questionList.addAll(
-                ExcelQuestionLoader.loadQuestionsFromExcel(
-                    context = it,
-                    lang = lang,
-                    mode = questionCategory ?: "default",
-                    difficulty = difficulty
-                )
-            )
 
-            Log.d("QuickPlayFragment", "Loaded ${questionList.size} questions from Excel")
+            // Load questions asynchronously using lifecycleScope
+            lifecycleScope.launch {
+                try {
+                    questionList.addAll(
+                        ExcelQuestionLoader.loadQuestionsFromExcel(
+                            context = it,
+                            lang = lang,
+                            mode = questionCategory ?: "default",
+                            difficulty = difficulty
+                        )
+                    )
+                    // Now that questions are loaded, check if it's successful
+                    Log.d("QuickPlayFragment", "Loaded ${questionList.size} questions from Excel")
+                    if (questionList.isNotEmpty()) {
+                        loadNextQuestion()  // Now load the first question
+                    } else {
+                        Log.e("QuickPlayFragment", "No questions loaded!")
+                        Toast.makeText(context, "No questions available.", Toast.LENGTH_SHORT).show()
+                        endGame()  // Ends the game if no questions were loaded
+                    }
+                } catch (e: Exception) {
+                    Log.e("QuickPlayFragment", "Error loading questions: ${e.message}")
+                    Toast.makeText(context, "Error loading questions", Toast.LENGTH_SHORT).show()
+                    endGame()
+                }
+            }
         } ?: run {
             difficulty = "easy"
             lang = "en"
@@ -91,17 +110,25 @@ class QuickPlayFragment : Fragment(), Hintable {
         }
 
         setHasOptionsMenu(true)
-        loadNextQuestion()
+
+        // Only attempt to load the next question if the list is not empty
+        if (questionList.isNotEmpty()) {
+            loadNextQuestion()
+        } else {
+            Log.d("QuickPlayFragment", "Question list is empty on view creation")
+        }
 
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
-    }
-
     private fun loadNextQuestion() {
+        // Ensure the list is loaded
+        if (questionList.isEmpty()) {
+            Log.e("QuickPlayFragment", "No questions available to load.")
+            endGame()
+            return
+        }
+
         currentIndex++
         currentQuestionAttempts = 0
 

@@ -8,6 +8,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.DialogResultBinding
@@ -19,6 +20,7 @@ import com.zendalona.zmantra.utility.game.angle.RotationSensorUtility
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.launch
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
 
@@ -57,12 +59,14 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         // ✅ Load angle questions from Excel
-        angleQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(),
-            lang = lang,
-            mode = "angle",
-            difficulty = difficulty.toString()
-        )
+        lifecycleScope.launch {
+            angleQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang = lang,
+                mode = "angle",
+                difficulty = difficulty.toString()
+            )
+        }
 
         return view
     }

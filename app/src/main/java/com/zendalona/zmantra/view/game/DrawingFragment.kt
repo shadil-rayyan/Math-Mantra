@@ -9,6 +9,7 @@ import android.view.*
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -20,6 +21,7 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.zmantra.customView.DrawingView
+import kotlinx.coroutines.launch
 
 class DrawingFragment : Fragment(), Hintable {
 
@@ -50,8 +52,10 @@ class DrawingFragment : Fragment(), Hintable {
         lang = getLanguage(context)
         if (TextUtils.isEmpty(lang)) lang = "en"
 
-        questions = ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, "drawing", difficulty)
-
+        lifecycleScope.launch {
+            questions =
+                ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, "drawing", difficulty)
+        }
         setupListeners()
         loadNextShape()
 

@@ -21,6 +21,8 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import kotlin.random.Random
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class DayFragment : Fragment(), Hintable {
 
@@ -57,12 +59,16 @@ class DayFragment : Fragment(), Hintable {
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         // Load Excel day questions once
-        dayQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(),
-            lang = lang,       // Change to dynamic locale if needed
-            mode = "day",
-            difficulty = difficulty.toString()
-        )
+        lifecycleScope.launch {
+
+                // You can call the suspend function here
+                val dayQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                    requireContext(),
+                    lang = "en",       // Change to dynamic locale if needed
+                    mode = "day",
+                    difficulty = "medium"
+                )
+        }
 
         val buttons = listOf(
             binding.btnMonday, binding.btnTuesday, binding.btnWednesday,

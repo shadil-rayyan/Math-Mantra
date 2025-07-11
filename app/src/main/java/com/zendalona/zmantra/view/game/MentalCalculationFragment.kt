@@ -8,6 +8,7 @@ import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameMentalCalculationBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -22,6 +23,7 @@ import com.zendalona.zmantra.utility.common.TTSHelper
 import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import kotlinx.coroutines.launch
 
 class MentalCalculationFragment : Fragment(), Hintable {
 
@@ -45,8 +47,14 @@ class MentalCalculationFragment : Fragment(), Hintable {
         val lang = LocaleHelper.getLanguage(requireContext())
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
 
-        questionList = ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, "mental", difficulty.toString())
-
+        lifecycleScope.launch {
+            questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang,
+                "mental",
+                difficulty.toString()
+            )
+        }
         if (questionList.isEmpty()) {
             questionList = listOf(GameQuestion("1 + 2", 3))
         }

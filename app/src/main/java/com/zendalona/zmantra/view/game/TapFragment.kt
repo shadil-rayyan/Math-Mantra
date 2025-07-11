@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.*
 import android.view.MotionEvent
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -19,6 +20,7 @@ import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.launch
 
 class TapFragment : Fragment(), Hintable {
 
@@ -43,12 +45,15 @@ class TapFragment : Fragment(), Hintable {
         val lang = LocaleHelper.getLanguage(requireContext())
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
 
-        questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-            requireContext(),
-            lang,
-            "tap",
-            difficulty.toString()
-        )
+        lifecycleScope.launch {
+
+            questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang,
+                "tap",
+                difficulty.toString()
+            )
+        }
 
 //        if (questions.isEmpty()) {
 //            questions = listOf(
