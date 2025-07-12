@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.Enum.Difficulty
@@ -85,19 +87,33 @@ class SettingFragment : Fragment() {
         val currentLang = LocaleHelper.getLanguage(requireContext())
         val selectedIndex = languageCodeMap.entries.find { it.value == currentLang }?.key ?: 0
 
-        ArrayAdapter.createFromResource(
+        // Create the ArrayAdapter
+        val adapter = ArrayAdapter.createFromResource(
             requireContext(),
-            R.array.language_levels,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.languageSpinner.adapter = adapter
-        }
+            R.array.language_levels, // This is your string array in strings.xml
+            android.R.layout.simple_spinner_item // Using the default spinner item layout
+        )
 
+        // Set drop-down view resource
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        // Set the spinner adapter
+        binding.languageSpinner.adapter = adapter
+
+        // Set the selection based on current language
         binding.languageSpinner.setSelection(selectedIndex)
 
+        // Set custom text color for the selected item and dropdown items
+        val spinnerTextColor = ContextCompat.getColor(requireContext(), R.color.light_activity_bar) // Customize color here
+
+        // Set color for the selected item (avoid null check here)
         binding.languageSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                // Check if the view is not null before casting
+                view?.let {
+                    (it as? TextView)?.setTextColor(spinnerTextColor)
+                }
+
                 if (!languageSpinnerInitialized) {
                     languageSpinnerInitialized = true
                     return
@@ -119,7 +135,16 @@ class SettingFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+
+        // Update the color of the initially selected item in the spinner after it's set
+        binding.languageSpinner.post {
+            val selectedItemView = binding.languageSpinner.selectedView
+            selectedItemView?.let {
+                (it as? TextView)?.setTextColor(spinnerTextColor)
+            }
+        }
     }
+
 
     private fun setupContrastRadioButtons() {
         val currentContrast = prefs.getInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_NO)
