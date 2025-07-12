@@ -20,7 +20,9 @@ import com.zendalona.zmantra.utility.game.angle.RotationSensorUtility
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintable {
 
@@ -55,20 +57,28 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
         angleUpdateHandler = Handler(Looper.getMainLooper())
         setHasOptionsMenu(true)
 
+        // ✅ Load angle questions asynchronously
+        loadQuestionsAsync()
+
+        return view
+    }
+
+    // Load questions asynchronously using coroutine
+    private fun loadQuestionsAsync() {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
-        // ✅ Load angle questions from Excel
         lifecycleScope.launch {
-            angleQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(),
-                lang = lang,
-                mode = "angle",
-                difficulty = difficulty.toString()
-            )
-        }
 
-        return view
+            angleQuestions = withContext(Dispatchers.IO) {
+                ExcelQuestionLoader.loadQuestionsFromExcel(
+                    requireContext(),
+                    lang = lang,
+                    mode = "angle",
+                    difficulty = difficulty.toString()
+                )
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -199,4 +209,6 @@ class AngleFragment : Fragment(), RotationSensorUtility.RotationListener, Hintab
             .addToBackStack(null)
             .commit()
     }
+
+
 }

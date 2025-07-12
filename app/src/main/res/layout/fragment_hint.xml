@@ -12,27 +12,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Wrap the text in a ScrollView -->
-        <ScrollView
-            android:id="@+id/theory_scroll"
+        <!-- Add a WebView for better accessibility (for HTML content) -->
+        <WebView
+            android:id="@+id/webView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="16dp"
-            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@id/goBackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Go Back Button -->
+        <Button
+            android:id="@+id/goBackButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Go Back"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/theory_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:lineSpacingExtra="8dp"
-                android:text="Loading..."
-                android:textColor="?attr/colorOnSecondary"
-                android:textSize="20sp" />
-        </ScrollView>
+            app:layout_constraintTop_toBottomOf="@id/webView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -49,6 +49,8 @@ class QuickPlayFragment : Fragment(), Hintable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("QuickPlayFragment", "onCreate called")
+        setHasOptionsMenu(true)
+
 
         questionCategory = arguments?.getString(ARG_CATEGORY) ?: "default"
         Log.d("QuickPlayFragment", "Question category: $questionCategory")
@@ -104,12 +106,12 @@ class QuickPlayFragment : Fragment(), Hintable {
         Log.d("QuickPlayFragment", "onCreateView called")
         _binding = FragmentQuickPlayBinding.inflate(inflater, container, false)
 
+
         binding.submitAnswerBtn.setOnClickListener {
             Log.d("QuickPlayFragment", "Submit Answer button clicked")
             checkAnswer()
         }
 
-        setHasOptionsMenu(true)
 
         // Only attempt to load the next question if the list is not empty
         if (questionList.isNotEmpty()) {
@@ -120,6 +122,13 @@ class QuickPlayFragment : Fragment(), Hintable {
 
         return binding.root
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.top_menu, menu)
+        menu.findItem(R.id.action_hint)?.isVisible = true  // Ensure the hint item is visible
+    }
+
 
     private fun loadNextQuestion() {
         // Ensure the list is loaded

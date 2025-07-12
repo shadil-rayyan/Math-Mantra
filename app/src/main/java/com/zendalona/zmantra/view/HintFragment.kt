@@ -14,11 +14,8 @@ import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
 class HintFragment : Fragment() {
     private var binding: FragmentHintBinding? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onCreateView(
@@ -28,27 +25,65 @@ class HintFragment : Fragment() {
     ): View? {
         binding = FragmentHintBinding.inflate(inflater, container, false)
 
-
-
-        val mode =
-            if (getArguments() != null) requireArguments().getString("mode", "default") else "default"
+        // Get mode and language
+        val mode = if (arguments != null) requireArguments().getString("mode", "default") else "default"
         var language = getLanguage(requireContext())
         if (TextUtils.isEmpty(language)) language = "en"
 
+        // Get the hint from Excel or fallback
         var hintText = ExcelHintReader.getHintFromExcel(requireContext(), language, mode)
         if (TextUtils.isEmpty(hintText)) {
             hintText = getString(R.string.hint_fallback)
         }
 
-        binding!!.theoryText.setText(hintText)
+        // Convert the hint text into HTML
+        val hintHtml = convertHintToHtml(hintText)
 
+        // Load the generated HTML into the WebView
+        binding!!.webView.loadDataWithBaseURL(null, hintHtml, "text/html", "UTF-8", null)
 
+        // Set up the "Go Back" button click listener
+        binding!!.goBackButton.setOnClickListener {
 
-        return binding!!.getRoot()
+            requireActivity().onBackPressed()
+        }
+
+        return binding!!.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
+    }
+
+    // Convert hint text to HTML format
+    fun convertHintToHtml(hintText: String): String {
+        val lines = hintText.split("\n").filter { it.isNotEmpty() }
+
+        val htmlBuilder = StringBuilder()
+        htmlBuilder.append("<html><body style='font-size:18px; font-family: Arial, sans-serif;'>")
+
+        lines.forEach { line ->
+            when {
+                line.contains("Objective", ignoreCase = true) -> {
+                    htmlBuilder.append("<h2><strong>Objective of the Game</strong></h2>")
+                    htmlBuilder.append("<p>$line</p>")
+                }
+                line.contains("Tips", ignoreCase = true) -> {
+                    htmlBuilder.append("<h2><strong>Tips</strong></h2>")
+                    htmlBuilder.append("<ul><li>$line</li></ul>")
+                }
+                line.contains("Accessibility Features", ignoreCase = true) -> {
+                    htmlBuilder.append("<h2><strong>Accessibility Features</strong></h2>")
+                    htmlBuilder.append("<p>$line</p>")
+                }
+                else -> {
+                    htmlBuilder.append("<p>$line</p>")
+                }
+            }
+        }
+
+        htmlBuilder.append("</body></html>")
+        return htmlBuilder.toString()
     }
 }
