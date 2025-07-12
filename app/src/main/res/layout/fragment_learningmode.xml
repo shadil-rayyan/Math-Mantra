@@ -13,49 +13,47 @@
 
         <!-- Repeating rows with helper method -->
         <!-- Row 1 -->
-        <LinearLayout
-            style="@style/RowStyle">
+        <LinearLayout style="@style/RowStyle">
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardTime"
-                android:contentDescription="Open Time mode">
+                android:contentDescription="@string/open_time_mode">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Time"/>
+                    android:text="@string/time"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardCurrency"
-                android:contentDescription="Open Currency Activities">
+                android:contentDescription="@string/open_currency_activities">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Currency"/>
+                    android:text="@string/currency"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
-        <!-- Repeat same structure for rows 2–4 -->
         <!-- Row 2 -->
         <LinearLayout style="@style/RowStyle">
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardDistance"
-                android:contentDescription="Open Distance Activities">
+                android:contentDescription="@string/open_distance_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Distance"/>
+                    android:text="@string/distance"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardAddition"
-                android:contentDescription="Open Addition Activities">
+                android:contentDescription="@string/open_addition_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Addition"/>
+                    android:text="@string/addition"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
@@ -64,20 +62,20 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardSubtraction"
-                android:contentDescription="Open Subtraction Activities">
+                android:contentDescription="@string/open_subtraction_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Subtraction"
+                    android:text="@string/subtraction"
                     android:textSize="18sp"/>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardMultiplication"
-                android:contentDescription="Open Multiplication Activities">
+                android:contentDescription="@string/open_multiplication_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Multiplication"/>
+                    android:text="@string/multiplication"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
 
@@ -86,39 +84,42 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardDivision"
-                android:contentDescription="Open Division Activities">
+                android:contentDescription="@string/open_division_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Division"
+                    android:text="@string/division"
                     android:textSize="18sp"/>
             </com.google.android.material.card.MaterialCardView>
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardPercentage"
-                android:contentDescription="Open Tiler Frame Activities">
+                android:contentDescription="@string/open_tiler_frame_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Percentage"/>
+                    android:text="@string/percentage"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-    <LinearLayout style="@style/RowStyle">
+
+        <!-- Row 5 -->
+        <LinearLayout style="@style/RowStyle">
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardRemainder"
-                android:contentDescription="Open Tiler Frame Activities">
+                android:contentDescription="@string/open_tiler_frame_activities">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
-                    android:text="Remainder"/>
+                    android:text="@string/remainder"/>
             </com.google.android.material.card.MaterialCardView>
-        <com.google.android.material.card.MaterialCardView
-            style="@style/LearningCardStyle"
-            android:id="@+id/cardStory"
-            android:contentDescription="Open Tiler Frame Activities">
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/CardText"
-                android:text="Story"/>
-        </com.google.android.material.card.MaterialCardView>
-    </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/LearningCardStyle"
+                android:id="@+id/cardStory"
+                android:contentDescription="@string/open_tiler_frame_activities">
+                <com.google.android.material.textview.MaterialTextView
+                    style="@style/CardText"
+                    android:text="@string/story"/>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+    </LinearLayout>
 
 </FrameLayout>

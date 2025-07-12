@@ -39,6 +39,26 @@
     <string name="content_submit_button">अपना उत्तर सबमिट करें</string>
     <string name="content_answer_field">उत्तर इनपुट फ़ील्ड</string>
 
+        <string name="open_time_mode">समय मोड खोलें</string>
+        <string name="time">समय</string>
+        <string name="open_currency_activities">मुद्रा गतिविधियाँ खोलें</string>
+        <string name="currency">मुद्रा</string>
+        <string name="open_distance_activities">दूरी गतिविधियाँ खोलें</string>
+        <string name="distance">दूरी</string>
+        <string name="open_addition_activities">जोड़ गतिविधियाँ खोलें</string>
+        <string name="addition">जोड़</string>
+        <string name="open_subtraction_activities">घटाव गतिविधियाँ खोलें</string>
+        <string name="subtraction">घटाव</string>
+        <string name="open_multiplication_activities">गुणा गतिविधियाँ खोलें</string>
+        <string name="multiplication">गुणा</string>
+        <string name="open_division_activities">विभाजन गतिविधियाँ खोलें</string>
+        <string name="division">विभाजन</string>
+        <string name="open_tiler_frame_activities">टाइलर फ्रेम गतिविधियाँ खोलें</string>
+        <string name="percentage">प्रतिशत</string>
+        <string name="remainder">बाकी</string>
+        <string name="story">कहानी</string>
+
+
     <!-- game page-->
     <string name="shake_button">शेक क्वेस्ट</string>
     <string name="tap_button">टैप चुनौती</string>

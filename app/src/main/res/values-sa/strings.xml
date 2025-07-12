@@ -38,6 +38,26 @@
     <string name="content_submit_button">उत्तरं समर्पयतु</string>
     <string name="content_answer_field">उत्तरप्रवेशक्षेत्रम्</string>
 
+        <string name="open_time_mode">समय मोड उद्घाटयतु</string>
+        <string name="time">समय</string>
+        <string name="open_currency_activities">मुद्रा क्रियायाः उद्घाटयतु</string>
+        <string name="currency">मुद्रा</string>
+        <string name="open_distance_activities">दूरी क्रियायाः उद्घाटयतु</string>
+        <string name="distance">दूरी</string>
+        <string name="open_addition_activities">योग क्रियायाः उद्घाटयतु</string>
+        <string name="addition">योग</string>
+        <string name="open_subtraction_activities">वियोग क्रियायाः उद्घाटयतु</string>
+        <string name="subtraction">वियोग</string>
+        <string name="open_multiplication_activities">गुणन क्रियायाः उद्घाटयतु</string>
+        <string name="multiplication">गुणन</string>
+        <string name="open_division_activities">विभाजन क्रियायाः उद्घाटयतु</string>
+        <string name="division">विभाजन</string>
+        <string name="open_tiler_frame_activities">टाइलर फ्रेम क्रियायाः उद्घाटयतु</string>
+        <string name="percentage">प्रतिशत</string>
+        <string name="remainder">शेष</string>
+        <string name="story">कथा</string>
+
+
     <!-- game page-->
     <string name="shake_button">कम्पनप्रश्नः</string>
     <string name="tap_button">स्पर्शप्रश्नः</string>

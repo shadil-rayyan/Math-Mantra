@@ -38,6 +38,26 @@
     <string name="content_submit_button">أرسل إجابتك</string>
     <string name="content_answer_field">حقل إدخال الإجابة</string>
 
+        <string name="open_time_mode">افتح وضع الوقت</string>
+        <string name="time">الوقت</string>
+        <string name="open_currency_activities">افتح أنشطة العملة</string>
+        <string name="currency">العملة</string>
+        <string name="open_distance_activities">افتح أنشطة المسافة</string>
+        <string name="distance">المسافة</string>
+        <string name="open_addition_activities">افتح أنشطة الجمع</string>
+        <string name="addition">الجمع</string>
+        <string name="open_subtraction_activities">افتح أنشطة الطرح</string>
+        <string name="subtraction">الطرح</string>
+        <string name="open_multiplication_activities">افتح أنشطة الضرب</string>
+        <string name="multiplication">الضرب</string>
+        <string name="open_division_activities">افتح أنشطة القسمة</string>
+        <string name="division">القسمة</string>
+        <string name="open_tiler_frame_activities">افتح أنشطة إطار التايلر</string>
+        <string name="percentage">النسبة المئوية</string>
+        <string name="remainder">الباقي</string>
+        <string name="story">القصة</string>
+
+
     <!-- game page-->
     <string name="shake_button">تحدي الهز</string>
     <string name="tap_button">تحدي اللمس</string>

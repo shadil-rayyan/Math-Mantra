@@ -38,6 +38,26 @@
     <string name="content_submit_button">உங்கள் பதிலை சமர்ப்பிக்கவும்</string>
     <string name="content_answer_field">பதில் உள்ளீடு புலம்</string>
 
+        <string name="open_time_mode">நேரம் முறையை திறக்கவும்</string>
+        <string name="time">நேரம்</string>
+        <string name="open_currency_activities">நாணய செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="currency">நாணயம்</string>
+        <string name="open_distance_activities">தூர செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="distance">தூரம்</string>
+        <string name="open_addition_activities">கூட்டல் செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="addition">கூட்டல்</string>
+        <string name="open_subtraction_activities">கழித்தல் செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="subtraction">கழித்தல்</string>
+        <string name="open_multiplication_activities">பெருக்கல் செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="multiplication">பெருக்கல்</string>
+        <string name="open_division_activities">பிரிப்புத் செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="division">பிரிப்பு</string>
+        <string name="open_tiler_frame_activities">டைலர் கேடயம் செயல்பாடுகளைத் திறக்கவும்</string>
+        <string name="percentage">பதிகரம்</string>
+        <string name="remainder">மிச்சம்</string>
+        <string name="story">கதை</string>
+
+
     <!-- game page-->
     <string name="shake_button">அசைக்க சவால்</string>
     <string name="tap_button">தட்டுதல் சவால்</string>
