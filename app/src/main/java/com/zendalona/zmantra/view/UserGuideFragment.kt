@@ -54,8 +54,9 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
             binding.llUserGuideContent.addView(textView)
         }
 
-        binding.btnGoToTop.setOnClickListener {
-            binding.scrollView.smoothScrollTo(0, 0)
+        binding!!.goBackButton.setOnClickListener {
+
+            requireActivity().onBackPressed()
         }
     }
 
