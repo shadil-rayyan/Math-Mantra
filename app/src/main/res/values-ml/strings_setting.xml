@@ -30,16 +30,17 @@
 
     <string name="difficulty_label">കഠിനത</string>
     <string name="difficulty_options_desc">ഗെയിം എളുപ്പമോ കഠിനമോ എന്ന് തിരഞ്ഞെടുക്കൂ</string>
-    <string name="difficulty_simple">Simple</string>
-    <string name="difficulty_simple_desc">Simple diffuclty level</string>
+    <string name="difficulty_simple">പലവക</string>
+    <string name="difficulty_simple_desc">പലവക സങ്കീർണതായ നില</string>
     <string name="difficulty_easy">എളുപ്പം</string>
     <string name="difficulty_easy_desc">എളുപ്പമായ നില</string>
     <string name="difficulty_medium">സാധാരണം</string>
     <string name="difficulty_medium_desc">മധ്യനില</string>
     <string name="difficulty_hard">കഠിനം</string>
     <string name="difficulty_hard_desc">കഠിനമായ നില</string>
-    <string name="difficulty_challenging">challenging</string>
-    <string name="difficulty_challenging_desc">challenging diffuclty level</string>
+    <string name="difficulty_challenging">ചലഞ്ചിംഗ്</string>
+    <string name="difficulty_challenging_desc">ചലഞ്ചിംഗ് സങ്കീർണതാ നില</string>
+
 
     <string name="choose_language">ഭാഷ തിരഞ്ഞെടുക്കൂ</string>
     <string name="choose_language_desc">നിങ്ങളുടെ ഇഷ്ടംപോലെ ഭാഷ എടുക്കൂ</string>
