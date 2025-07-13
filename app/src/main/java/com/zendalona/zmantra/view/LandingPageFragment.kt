@@ -16,7 +16,7 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
-import android. view. ViewTreeObserver
+import java.io.File
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
@@ -25,9 +25,9 @@ interface FragmentNavigation {
 class LandingPageFragment : Fragment() {
 
     private var _binding: FragmentLandingPageBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
-    private var navigationListener: FragmentNavigation? = null
+    var navigationListener: FragmentNavigation? = null
 
     private lateinit var ttsUtility: TTSUtility
 
@@ -80,7 +80,7 @@ class LandingPageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    fun onViewCreated(view: File, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("LandingPageFragment", "onViewCreated called")
 

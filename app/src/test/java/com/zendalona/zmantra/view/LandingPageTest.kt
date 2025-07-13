@@ -1,143 +1,154 @@
-package com.zendalona.zmantra.view
-
-import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.platform.app.InstrumentationRegistry
+import android.content.Context
+import androidx.fragment.app.FragmentTransaction
+import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.view.LandingPageFragment
-import org.junit.Rule
+import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.utility.common.TTSUtility
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.CoreMatchers.not
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.MockitoAnnotations
+import org.junit.Assert.*
+import android.content.SharedPreferences
+import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
+import com.zendalona.zmantra.view.FragmentNavigation
 
+class LandingPageFragmentTest {
 
-@RunWith(AndroidJUnit4::class)
-class LandingPageTest {
+    @Mock
+    private lateinit var mockContext: Context
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java) // Use the correct main activity
+    @Mock
+    private lateinit var mockNavigationListener: FragmentNavigation
 
-    // Helper function to launch the LandingPageFragment
-    private fun launchLandingPageFragment() {
-        val landingFragment = LandingPageFragment()
-        activityRule.scenario.onActivity { activity ->
-            activity.supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, landingFragment)
-                .commitNow()
-        }
+    @Mock
+    private lateinit var mockTTSUtility: TTSUtility
+
+    @Mock
+    private lateinit var mockBackgroundMusicPlayer: BackgroundMusicPlayer
+
+    @Mock
+    private lateinit var mockPrefs: SharedPreferences
+
+    @Mock
+    private lateinit var mockBinding: FragmentLandingPageBinding
+
+    private lateinit var landingPageFragment: LandingPageFragment
+
+    @Before
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)  // For older Mockito versions (prior to 3.x)
+        landingPageFragment = LandingPageFragment()
+
+        // Mock the context and preferences
+        Mockito.`when`(mockContext.getSharedPreferences("default", Context.MODE_PRIVATE)).thenReturn(mockPrefs)
+
+        // Inject dependencies
+        landingPageFragment = LandingPageFragment()
+
+        // Simulate FragmentNavigation listener attachment
+        landingPageFragment.onAttach(mockContext)
+        landingPageFragment.navigationListener = mockNavigationListener
+
+        // Mock the preferences for TTS and music settings
+        Mockito.`when`(mockPrefs.getFloat("tts_speed", 1.0f)).thenReturn(1.2f)
+        Mockito.`when`(mockPrefs.getBoolean("music_enabled", false)).thenReturn(true)
     }
 
     @Test
-    fun testLandingPageButtonsDisplayed() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
+    fun testOnCreateView_SetupCorrectly() {
+        // Verify that the `navigationListener` is correctly set when the fragment is attached.
+        assertNotNull(landingPageFragment.navigationListener)
 
-        // Verify that all buttons are visible
-        onView(withId(R.id.quickplay)).check(matches(isDisplayed()))
-        onView(withId(R.id.learningButton)).check(matches(isDisplayed()))
-        onView(withId(R.id.GameButton)).check(matches(isDisplayed()))
-        onView(withId(R.id.userGuide)).check(matches(isDisplayed()))
-        onView(withId(R.id.settings)).check(matches(isDisplayed()))
-        onView(withId(R.id.quitbutton)).check(matches(isDisplayed()))
-    }
+        // Test that the TTS utility is set up with correct speech rate.
+        landingPageFragment.onViewCreated(mockBinding.root, null)
+        Mockito.verify(mockTTSUtility).setSpeechRate(1.2f)
 
-    @Test
-    fun testQuickplayButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
-
-        // Click the "Quickplay" button
-        onView(withId(R.id.quickplay)).perform(click())
-
-        // Verify that the navigation happens, i.e., QuickPlayFragment is loaded
-        // Assuming we use FragmentTransaction.TRANSIT_FRAGMENT_OPEN for the transition
-        // You would want to assert that the fragment has been loaded
-        onView(withId(R.id.quickplay)).check(matches(isDisplayed()))  // This is a placeholder
-    }
-
-    @Test
-    fun testLearningButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
-
-        // Click the "Learning" button
-        onView(withId(R.id.learningButton)).perform(click())
-
-        // Verify that the navigation happens to LearningFragment
-        // Check for the expected content of the LearningFragment here (e.g., a unique view)
-        onView(withId(R.id.learningButton)).check(matches(isDisplayed()))  // This is a placeholder
-    }
-
-    @Test
-    fun testGameButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
-
-        // Click the "Game" button
-        onView(withId(R.id.GameButton)).perform(click())
-
-        // Verify that the navigation happens to GameFragment
-        onView(withId(R.id.GameButton)).check(matches(isDisplayed()))  // This is a placeholder
-    }
-
-    @Test
-    fun testUserGuideButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
-
-        // Click the "User Guide" button
-        onView(withId(R.id.userGuide)).perform(click())
-
-        // Verify that the navigation happens to UserGuideFragment
-        onView(withId(R.id.userGuide)).check(matches(isDisplayed()))  // This is a placeholder
+        // Verify that the background music is started if `music_enabled` is true.
+        landingPageFragment.onViewCreated(mockBinding.root, null)
+        Mockito.verify(mockBackgroundMusicPlayer).startMusic()
     }
 
     @Test
     fun testSettingsButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
+        // Simulate Settings button click
+        landingPageFragment.binding.settings.performClick()
 
-        // Click the "Settings" button
-        onView(withId(R.id.settings)).perform(click())
+        // Verify that the correct fragment is loaded
+        Mockito.verify(mockNavigationListener).loadFragment(Mockito.any(), Mockito.eq(FragmentTransaction.TRANSIT_FRAGMENT_OPEN))
+    }
 
-        // Verify that the navigation happens to SettingFragment
-        onView(withId(R.id.settings)).check(matches(isDisplayed()))  // This is a placeholder
+    @Test
+    fun testQuickplayButtonClick() {
+        // Simulate Quickplay button click
+        landingPageFragment.binding.quickplay.performClick()
+
+        // Verify that the QuickPlayFragment is loaded
+        Mockito.verify(mockNavigationListener).loadFragment(Mockito.any(), Mockito.eq(FragmentTransaction.TRANSIT_FRAGMENT_OPEN))
+    }
+
+    @Test
+    fun testLearningButtonClick() {
+        // Simulate Learning button click
+        landingPageFragment.binding.learningButton.performClick()
+
+        // Verify that the LearningFragment is loaded
+        Mockito.verify(mockNavigationListener).loadFragment(Mockito.any(), Mockito.eq(FragmentTransaction.TRANSIT_FRAGMENT_OPEN))
+    }
+
+    @Test
+    fun testGameButtonClick() {
+        // Simulate Game button click
+        landingPageFragment.binding.GameButton.performClick()
+
+        // Verify that the GameFragment is loaded
+        Mockito.verify(mockNavigationListener).loadFragment(Mockito.any(), Mockito.eq(FragmentTransaction.TRANSIT_FRAGMENT_OPEN))
+    }
+
+    @Test
+    fun testUserGuideButtonClick() {
+        // Simulate User Guide button click
+        landingPageFragment.binding.userGuide.performClick()
+
+        // Verify that the UserGuideFragment is loaded
+        Mockito.verify(mockNavigationListener).loadFragment(Mockito.any(), Mockito.eq(FragmentTransaction.TRANSIT_FRAGMENT_OPEN))
     }
 
     @Test
     fun testQuitButtonClick() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
+        // Simulate Quit button click
+        landingPageFragment.binding.quitbutton.performClick()
 
-        // Click the "Quit" button
-        onView(withId(R.id.quitbutton)).perform(click())
-
-        // Verify that the activity finishes
-        // You might need to check that the activity has been closed by asserting that
-        // the app's package is no longer running or by using a mock for the activity
-        // and verifying that `finish()` has been called
+        // Verify that the activity finishes when the quit button is clicked
+        Mockito.verify(mockContext).finish()
     }
 
     @Test
-    fun testFooterTextDisplayed() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
+    fun testOnPause_CleanUp() {
+        landingPageFragment.onPause()
 
-        // Check that the footer text is displayed
-        onView(withId(R.id.footerText)).check(matches(isDisplayed()))
+        // Verify that music is paused and TTS is stopped
+        Mockito.verify(mockBackgroundMusicPlayer).pauseMusic()
+        Mockito.verify(mockTTSUtility).stop()
     }
 
     @Test
-    fun testToolbarHiddenOnLandingPage() {
-        // Launch the LandingPageFragment
-        launchLandingPageFragment()
+    fun testOnDestroyView_CleanUp() {
+        landingPageFragment.onDestroyView()
 
-        // Check if the toolbar is hidden on this fragment
-        onView(withId(R.id.toolbar)).check(matches(not(isDisplayed())))
+        // Verify that music is stopped and TTS is shut down
+        Mockito.verify(mockBackgroundMusicPlayer).stopMusic()
+        Mockito.verify(mockTTSUtility).shutdown()
+
+        // Verify that the toolbar is made visible again
+        Mockito.verify(mockContext).findViewById<MaterialToolbar>(R.id.toolbar)
+    }
+
+    @Test
+    fun testOnDetach_ClearNavigationListener() {
+        // Ensure that navigationListener is cleared in onDetach
+        landingPageFragment.onDetach()
+        assertNull(landingPageFragment.navigationListener)
     }
 }

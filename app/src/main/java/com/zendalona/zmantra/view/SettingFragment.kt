@@ -26,7 +26,7 @@ import com.zendalona.zmantra.databinding.FragmentSettingsBinding
 class SettingFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
-    private val binding get() = _binding!!
+    val binding get() = _binding!!
 
     private lateinit var ttsUtility: TTSUtility
     private lateinit var prefs: SharedPreferences

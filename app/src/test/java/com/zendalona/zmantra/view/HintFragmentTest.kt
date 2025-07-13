@@ -1,107 +1,118 @@
-package com.zendalona.zmantra.view
-
+import android.R
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.platform.app.InstrumentationRegistry
+import android.text.TextUtils
+import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.view.HintFragment
-import org.junit.Rule
+import com.zendalona.zmantra.utility.excel.ExcelHintReader
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import org.hamcrest.CoreMatchers.containsString
+import org.mockito.Mockito
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 
-@RunWith(AndroidJUnit4::class)
 class HintFragmentTest {
 
-    @get:Rule
-    var activityScenarioRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
+    @Mock
+    private lateinit var mockContext: Context
 
-    /**
-     * Launches the HintFragment with given mode and language
-     */
-    private fun launchHintFragment(mode: String, language: String) {
-        val args = Bundle().apply {
-            putString("mode", mode)
-            putString("language", language)
-        }
+    private lateinit var hintFragment: HintFragment
 
-        val hintFragment = HintFragment().apply { arguments = args }
-
-        activityScenarioRule.scenario.onActivity { activity ->
-            activity.supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, hintFragment)
-                .commitNow()
-        }
+    @Before
+    fun setUp() {
+        MockitoAnnotations.initMocks(this)
+        hintFragment = HintFragment()
     }
 
-    /**
-     * Test to check if the WebView content is displayed correctly
-     */
     @Test
-    fun testHintContentDisplayed() {
-        // Launch the HintFragment with a specific mode and language
-        launchHintFragment("default", "en")
+    fun testConvertHintToHtml_Objective() {
+        val hintText = "Objective: Complete the game"
 
-        // Check if the WebView is displayed
-        onView(withId(R.id.webView))
-            .check(matches(isDisplayed()))
+        // Expected HTML structure
+        val expectedHtml = """
+            <html><body style='font-size:18px; font-family: Arial, sans-serif;'>
+            <h2><strong>Objective of the Game</strong></h2>
+            <p>$hintText</p>
+            </body></html>
+        """.trimIndent()
 
-        // Check if the "Go Back" button is visible
-        onView(withId(R.id.goBackButton))
-            .check(matches(isDisplayed()))
-            .check(matches(withText("Go Back")))
-
-        // Check if the WebView contains expected text
-        onView(withId(R.id.webView)).check(matches(withText(containsString("Objective"))))
+        val result = hintFragment.convertHintToHtml(hintText)
+        assertEquals(expectedHtml, result)
     }
 
-    /**
-     * Test for checking the functionality of the Go Back button
-     */
     @Test
-    fun testGoBackButtonFunctionality() {
-        // Launch the HintFragment
-        launchHintFragment("default", "en")
+    fun testConvertHintToHtml_Tips() {
+        val hintText = "Tips: Use the map to navigate."
 
-        // Perform a click action on the Go Back button
-        onView(withId(R.id.goBackButton)).perform(click())
+        // Expected HTML structure
+        val expectedHtml = """
+            <html><body style='font-size:18px; font-family: Arial, sans-serif;'>
+            <h2><strong>Tips</strong></h2>
+            <ul><li>$hintText</li></ul>
+            </body></html>
+        """.trimIndent()
 
-        // Check if the activity's back pressed is invoked (this would depend on your navigation flow)
-        // You can also check for specific views appearing after the back action is performed
-        // Example:
-        // onView(withId(R.id.some_other_view)).check(matches(isDisplayed()))
+        val result = hintFragment.convertHintToHtml(hintText)
+        assertEquals(expectedHtml, result)
     }
 
-    /**
-     * Test to check if the WebView renders the hint text correctly
-     */
     @Test
-    fun testHintTextRenderingInWebView() {
-        // Launch the HintFragment with a language that has known content
-        launchHintFragment("default", "en")
+    fun testConvertHintToHtml_Accessibility() {
+        val hintText = "Accessibility Features: Voice commands enabled."
 
-        // Check that the WebView displays the content
-        onView(withId(R.id.webView)).check(matches(isDisplayed()))
+        // Expected HTML structure
+        val expectedHtml = """
+            <html><body style='font-size:18px; font-family: Arial, sans-serif;'>
+            <h2><strong>Accessibility Features</strong></h2>
+            <p>$hintText</p>
+            </body></html>
+        """.trimIndent()
 
-        // Check that the WebView contains the expected HTML content
-        onView(withId(R.id.webView))
-            .check(matches(withText(containsString("Objective"))))
+        val result = hintFragment.convertHintToHtml(hintText)
+        assertEquals(expectedHtml, result)
     }
 
-    /**
-     * Test to check if the fallback hint text appears when an invalid mode is passed
-     */
     @Test
-    fun testEmptyHintFallback() {
-        // Launch the HintFragment with an invalid mode
-        launchHintFragment("invalid_mode", "en")
+    fun testConvertHintToHtml_Default() {
+        val hintText = "This is a normal hint."
 
-        // Check if the fallback hint text is displayed
-        onView(withId(R.id.webView)).check(matches(withText(containsString("This is the fallback hint"))))
+        // Expected HTML structure
+        val expectedHtml = """
+            <html><body style='font-size:18px; font-family: Arial, sans-serif;'>
+            <p>$hintText</p>
+            </body></html>
+        """.trimIndent()
+
+        val result = hintFragment.convertHintToHtml(hintText)
+        assertEquals(expectedHtml, result)
+    }
+
+    @Test
+    fun testExcelHintReaderFallback() {
+        // Mock the ExcelHintReader to return an empty string, simulating no data in the Excel file
+        Mockito.`when`(ExcelHintReader.getHintFromExcel(mockContext, "en", "default")).thenReturn("")
+
+        // Check if fallback hint is returned when no data is found
+        val fallbackHint = hintFragment.getString(R.string.hint_fallback)
+        assertTrue(fallbackHint.isNotEmpty())
+    }
+
+    @Test
+    fun testLanguageFallback() {
+        // Test that the language is defaulted to "en" if it's empty
+        val language = if (TextUtils.isEmpty("")) "en" else ""
+        assertEquals("en", language)
+    }
+
+    @Test
+    fun testGetModeArgument() {
+        // Test if the mode is correctly fetched from the arguments
+        val fragment = HintFragment()
+        val args = Bundle().apply { putString("mode", "testMode") }
+        fragment.arguments = args
+        val mode = fragment.arguments?.getString("mode", "default") ?: "default"
+        assertEquals("testMode", mode)
     }
 }

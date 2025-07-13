@@ -130,7 +130,7 @@ class QuickPlayFragment : Fragment(), Hintable {
     }
 
 
-    private fun loadNextQuestion() {
+    fun loadNextQuestion() {
         // Ensure the list is loaded
         if (questionList.isEmpty()) {
             Log.e("QuickPlayFragment", "No questions available to load.")
@@ -231,14 +231,14 @@ class QuickPlayFragment : Fragment(), Hintable {
         }
     }
 
-    private fun endGame() {
+    fun endGame() {
         val spokenEnd = TTSHelper.formatMathText("Quiz over! Your final score is $totalScore")
         ttsUtility.speak(spokenEnd)
 
         endGameWithScore()
     }
 
-    private fun playSound(name: String) {
+    fun playSound(name: String) {
         val resId = when (name) {
             "correct" -> R.raw.correct_sound
             "wrong" -> R.raw.wrong_sound

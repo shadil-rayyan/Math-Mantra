@@ -23,7 +23,7 @@ import com.zendalona.zmantra.view.game.TouchScreenFragment
 class GameFragment : Fragment() ,HintIconVisibilityController {
 
     override fun shouldShowHintIcon() = false
-    private var binding: FragmentGamePageBinding? = null
+    var binding: FragmentGamePageBinding? = null
     private var navigationListener: FragmentNavigation? = null
 
     override fun onAttach(context: Context) {

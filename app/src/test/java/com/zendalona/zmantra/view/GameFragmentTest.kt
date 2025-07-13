@@ -1,139 +1,158 @@
-package com.zendalona.zmantra.view
-
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentTransaction
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
-import com.zendalona.zmantra.R
+import com.zendalona.zmantra.view.GameFragment
+import com.zendalona.zmantra.view.FragmentNavigation
 import com.zendalona.zmantra.view.game.*
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.rule.ActivityTestRule
-import androidx.fragment.app.FragmentActivity
-import com.zendalona.zmantra.view.GameFragment
-import com.zendalona.zmantra.databinding.FragmentGamePageBinding
-import androidx.test.espresso.IdlingResource
-import androidx.test.espresso.IdlingRegistry
-import com.zendalona.zmantra.MainActivity
-import org.junit.Rule
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
 
-@RunWith(AndroidJUnit4::class)
-@LargeTest
 class GameFragmentTest {
 
-    @get:Rule
-    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+    @Mock
+    private lateinit var mockNavigationListener: FragmentNavigation
 
-    private lateinit var activity: FragmentActivity
+    private lateinit var gameFragment: GameFragment
 
     @Before
     fun setUp() {
-        // Initialize the activity using the ActivityTestRule
-        activity = activityRule.activity
+        MockitoAnnotations.initMocks(this)  // For older Mockito versions (prior to 3.x)
+        gameFragment = GameFragment()
 
-        // Replace the content with GameFragment
-        activity.supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, GameFragment())
-            .commitAllowingStateLoss()
-
-        // Optionally add a delay or use IdlingResource to wait for fragment loading
-        Thread.sleep(500)  // You can replace this with IdlingResource if needed
+        // Simulate onAttach to set the mock navigation listener
+        gameFragment.onAttach(mock(Context::class.java).apply {
+            Mockito.`when`(this is FragmentNavigation).thenReturn(true)
+        })
+        gameFragment.onAttach(mockNavigationListener as Activity)
     }
 
     @Test
-    fun testShakeButtonLoadsShakeFragment() {
-        onView(withId(R.id.shakeButton)).perform(click())
-
-        // Use Thread.sleep for now to wait until the fragment loads
-        Thread.sleep(500) // This can be replaced with IdlingResource for synchronization
-
-        // Check if the ShakeFragment is displayed (replace with an actual view in ShakeFragment)
-//         onView(withId(R.id.shakeFragmentViewId)).check(matches(isDisplayed()))
+    fun testShouldShowHintIcon() {
+        // Test that hint icon visibility is false
+        assert(!gameFragment.shouldShowHintIcon())
     }
 
     @Test
-    fun testTapButtonLoadsTapFragment() {
-        onView(withId(R.id.tapButton)).perform(click())
-        Thread.sleep(500)  // Replace with synchronization method
+    fun testShakeButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.shakeButton.performClick()
 
-        // Check if the TapFragment is displayed
-        // onView(withId(R.id.tapFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            ShakeFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testAngleButtonLoadsAngleFragment() {
-        onView(withId(R.id.angleButton)).perform(click())
-        Thread.sleep(500)
+    fun testTapButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.tapButton.performClick()
 
-        // Check if the AngleFragment is displayed
-        // onView(withId(R.id.angleFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            TapFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testDrawingButtonLoadsDrawingFragment() {
-        onView(withId(R.id.drawingButton)).perform(click())
-        Thread.sleep(500)
+    fun testAngleButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.angleButton.performClick()
 
-        // Check if the DrawingFragment is displayed
-        // onView(withId(R.id.drawingFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            AngleFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testDirectionButtonLoadsCompassFragment() {
-        onView(withId(R.id.directionButton)).perform(click())
-        Thread.sleep(500)
+    fun testDrawingButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.drawingButton.performClick()
 
-        // Check if the CompassFragment is displayed
-        // onView(withId(R.id.compassFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            DrawingFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testNumberLineButtonLoadsNumberLineFragment() {
-        onView(withId(R.id.numberlineButton)).perform(click())
-        Thread.sleep(500)
+    fun testDirectionButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.directionButton.performClick()
 
-        // Check if the NumberLineFragment is displayed
-        // onView(withId(R.id.numberLineFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            CompassFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testStereoSoundButtonLoadsStereoFragment() {
-        onView(withId(R.id.stereoSoundButton)).perform(click())
-        Thread.sleep(500)
+    fun testNumberLineButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.numberlineButton.performClick()
 
-        // Check if the SterioFragment is displayed
-        // onView(withId(R.id.stereoFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            NumberLineFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testMentalCalculationButtonLoadsMentalCalculationFragment() {
-        onView(withId(R.id.mentalCalculationButton)).perform(click())
-        Thread.sleep(500)
+    fun testStereoSoundButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.stereoSoundButton.performClick()
 
-        // Check if the MentalCalculationFragment is displayed
-        // onView(withId(R.id.mentalCalculationFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            SterioFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testTouchTheScreenButtonLoadsTouchScreenFragment() {
-        onView(withId(R.id.touch_the_screen_colorPrimary)).perform(click())
-        Thread.sleep(500)
+    fun testMentalCalculationButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.mentalCalculationButton.performClick()
 
-        // Check if the TouchScreenFragment is displayed
-        // onView(withId(R.id.touchScreenFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            MentalCalculationFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 
     @Test
-    fun testDayButtonLoadsDayFragment() {
-        onView(withId(R.id.dayButton)).perform(click())
-        Thread.sleep(500)
+    fun testTouchTheScreenButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.touchTheScreenColorPrimary.performClick()
 
-        // Check if the DayFragment is displayed
-        // onView(withId(R.id.dayFragmentViewId)).check(matches(isDisplayed()))
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            TouchScreenFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
+    }
+
+    @Test
+    fun testDayButtonClick() {
+        // Simulate button click
+        gameFragment.binding!!.dayButton.performClick()
+
+        // Verify if correct fragment was loaded
+        Mockito.verify(mockNavigationListener).loadFragment(
+            DayFragment(),
+            FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        )
     }
 }

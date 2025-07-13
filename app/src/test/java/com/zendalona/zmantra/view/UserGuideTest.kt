@@ -1,46 +1,78 @@
 package com.zendalona.zmantra.view
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import org.junit.Rule
+import android.os.Build
+import android.text.Html
+import android.util.Config
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.test.core.app.ApplicationProvider
+import com.zendalona.zmantra.R
+import com.zendalona.zmantra.databinding.FragmentUserguideBinding
+import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
+import org.robolectric.Robolectric
+import org.robolectric.annotation.Config
 
-@RunWith(AndroidJUnit4::class)
+@Config(manifest = Config.NONE)
 class UserGuideFragmentTest {
 
-    @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    private lateinit var userGuideFragment: UserGuideFragment
+    private lateinit var mockBinding: FragmentUserguideBinding
+    private lateinit var mockActivity: FragmentActivity
 
-    // Test to check if the User Guide content is displayed
-    @Test
-    fun testUserGuideContentDisplayed() {
-        // Verify that the content is displayed correctly
-        onView(withId(R.id.llUserGuideContent))
-            .check(matches(isDisplayed()))
+    @Before
+    fun setup() {
+        mockActivity = Robolectric.buildActivity(FragmentActivity::class.java).create().get()
 
-        // Verify that some expected text (from `user_guide_text` resource) is displayed in the User Guide
-        onView(withText("Sample Guide Text")).check(matches(isDisplayed()))
+        // Mocking the Fragment and binding
+        userGuideFragment = UserGuideFragment()
+        mockBinding = Mockito.mock(FragmentUserguideBinding::class.java)
+        userGuideFragment._binding = mockBinding
+
+        // Mocking getString() to return a specific HTML string
+        Mockito.`when`(mockActivity.getString(R.string.user_guide_text)).thenReturn("<p>Welcome to the User Guide!</p><br/><br/><p>Instructions here.</p>")
     }
 
-    // Test to check if the Go Back button is displayed
     @Test
-    fun testGoBackButtonDisplayed() {
-        // Verify that the Go Back button is visible
-        onView(withId(R.id.goBackButton)).check(matches(isDisplayed()))
+    fun `test onCreateView should split text into paragraphs and add TextViews`() {
+        // Set up the mock fragment lifecycle
+        val rawHtml = "<p>Welcome to the User Guide!</p><br/><br/><p>Instructions here.</p>"
+        val paragraphs = rawHtml.split("<br/><br/>").map { it.trim() }.filter { it.isNotEmpty() }
+
+        // Simulate onViewCreated method
+        userGuideFragment.onViewCreated(userGuideFragment.view!!, null)
+
+        // Verify that TextViews are created for each paragraph
+        paragraphs.forEach { paragraph ->
+            val textView = TextView(mockActivity)
+            val spannedText = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(paragraph, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                Html.fromHtml(paragraph)
+            }
+            textView.text = spannedText
+
+            verify(mockBinding.llUserGuideContent).addView(any(TextView::class.java))
+        }
     }
 
-    // Test to check the functionality of the Go Back button
     @Test
-    fun testGoBackButtonClick() {
-        // Click on the Go Back button
-        onView(withId(R.id.goBackButton)).perform(click())
+    fun `test goBackButton should call onBackPressed`() {
+        // Simulate clicking the "go back" button
+        userGuideFragment.binding.goBackButton.performClick()
 
-        // You can add assertions here to verify that the fragment is popped or the activity is closed
-        // Example: Verify that the fragment is removed or the previous activity is shown.
+        // Verify that onBackPressed is called on the activity
+        verify(mockActivity).onBackPressed()
+    }
+
+    @Test
+    fun `test shouldShowHintIcon returns false`() {
+        // Verify that the method shouldShowHintIcon() returns false
+        assert(userGuideFragment.shouldShowHintIcon() == false)
     }
 }

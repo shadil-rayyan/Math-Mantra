@@ -17,8 +17,8 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
     override fun shouldShowHintIcon() = false
 
-    private var _binding: FragmentUserguideBinding? = null
-    private val binding get() = _binding!!
+    var _binding: FragmentUserguideBinding? = null
+    val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,

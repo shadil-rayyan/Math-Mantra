@@ -1,132 +1,150 @@
-import androidx.fragment.app.testing.FragmentScenario
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import com.zendalona.zmantra.view.SettingFragment
+package com.zendalona.zmantra.view
+
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.utility.common.TTSUtility
 import com.zendalona.zmantra.R
-import org.hamcrest.CoreMatchers.not
+import com.zendalona.zmantra.Enum.Difficulty
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+import org.robolectric.Robolectric
+import org.robolectric.annotation.Config
+import androidx.test.core.app.ApplicationProvider
+import android.content.Context
+import org.apache.xmlbeans.impl.xb.xmlconfig.ConfigDocument.Config
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.verify
 
-@RunWith(AndroidJUnit4::class)
-class SettingsFragmentTest {
+@Config(manifest=Config.NONE) // Robolectric does not need the full Android Manifest
+class SettingFragmentTest {
 
-    private lateinit var scenario: FragmentScenario<SettingFragment>
+    private lateinit var settingFragment: SettingFragment
+    private lateinit var mockPrefs: SharedPreferences
+    private lateinit var mockEditor: SharedPreferences.Editor
+    private lateinit var mockTTSUtility: TTSUtility
+    private lateinit var mockMusicPlayer: BackgroundMusicPlayer
+    private lateinit var mockLocaleHelper: LocaleHelper
+    private lateinit var mockDifficultyPreferences: DifficultyPreferences
 
     @Before
-    fun setUp() {
-        // Launch the SettingFragment directly without using @Rule
-        scenario = FragmentScenario.launchInContainer(SettingFragment::class.java)
+    fun setup() {
+        // Create mock dependencies
+        mockPrefs = Mockito.mock(SharedPreferences::class.java)
+        mockEditor = Mockito.mock(SharedPreferences.Editor::class.java)
+        mockTTSUtility = Mockito.mock(TTSUtility::class.java)
+        mockMusicPlayer = Mockito.mock(BackgroundMusicPlayer::class.java)
+        mockLocaleHelper = Mockito.mock(LocaleHelper::class.java)
+        mockDifficultyPreferences = Mockito.mock(DifficultyPreferences::class.java)
+
+        // Simulate application context for the fragment
+        val context = ApplicationProvider.getApplicationContext<Context>()
+
+        // Set up the Fragment and bind mock dependencies
+        settingFragment = SettingFragment().apply {
+            // Attach mock dependencies to the fragment's methods or fields.
+            prefs = mockPrefs
+            prefsEditor = mockEditor
+            ttsUtility = mockTTSUtility
+        }
+
+        // Create Robolectric controller for fragment
+        Robolectric.buildFragment(SettingFragment::class.java).apply {
+            settingFragment = get()
+            settingFragment.onViewCreated(settingFragment.view!!, null)
+        }
     }
 
-    // Test Language Spinner
     @Test
-    fun testLanguageSpinner() {
-        // Open the fragment containing the spinner
-        onView(withId(R.id.language_spinner)).perform(click())
+    fun `test setup language spinner should update language in preferences`() {
+        // Set mock behavior
+        val mockSpinner = Mockito.mock(Spinner::class.java)
+        settingFragment.binding.languageSpinner = mockSpinner
 
-        // Check for a valid language (e.g., "English")
-        onView(withText("English")).perform(click())
+        // Simulate language change
+        settingFragment.binding.languageSpinner.setSelection(1) // Assume "English" is selected
 
-        // Check if the selected language is properly displayed in the spinner
-        onView(withId(R.id.language_spinner)).check(matches(withSpinnerText("English")))
-
-        // Optionally check for an invalid selection if needed
-        // onView(withText("Invalid Language")).check(doesNotExist())  // Example of invalid data handling
+        // Verify that setLocale and preferences are updated correctly
+        verify(mockLocaleHelper).setLocale(any(), "en")
+        verify(mockEditor).putString("Locale.Helper.Selected.Language", "en")
     }
 
-
-    // Test Contrast Radio Buttons
     @Test
-    fun testContrastRadioButtons() {
-        // Check the initial default contrast mode (should be "Follow System")
-        onView(withId(R.id.contrast_default)).check(matches(isChecked()))
+    fun `test setup contrast radio buttons should save contrast mode to preferences`() {
+        // Assume contrast mode is set to white on black
+        settingFragment.binding.contrastWhiteOnBlack.isChecked = true
 
-        // Select "White on Black" mode
-        onView(withId(R.id.contrast_white_on_black)).perform(click())
-        onView(withId(R.id.contrast_white_on_black)).check(matches(isChecked()))
+        // Simulate radio button change listener triggered
+        settingFragment.binding.contrastRadioGroup.check(R.id.contrast_white_on_black)
 
-        // Select "Black on White" mode
-        onView(withId(R.id.contrast_black_on_white)).perform(click())
-        onView(withId(R.id.contrast_black_on_white)).check(matches(isChecked()))
+        // Verify that the contrast mode is saved in preferences
+        verify(mockEditor).putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_YES)
+        verify(mockEditor).apply()
+        verify(mockLocaleHelper).setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
-    // Test Difficulty Radio Buttons
     @Test
-    fun testDifficultyRadioButtons() {
-        // Check the default difficulty (Simple)
-        onView(withId(R.id.difficulty_simple)).check(matches(isChecked()))
+    fun `test difficulty radio buttons should update difficulty preference`() {
+        // Assume medium difficulty is selected
+        settingFragment.binding.difficultyMedium.isChecked = true
 
-        // Select "Medium" difficulty
-        onView(withId(R.id.difficulty_medium)).perform(click())
-        onView(withId(R.id.difficulty_medium)).check(matches(isChecked()))
+        // Simulate radio button change listener triggered
+        settingFragment.binding.difficultyRadioGroup.check(R.id.difficulty_medium)
 
-        // Select "Hard" difficulty
-        onView(withId(R.id.difficulty_hard)).perform(click())
-        onView(withId(R.id.difficulty_hard)).check(matches(isChecked()))
+        // Verify that the difficulty preference is updated correctly
+        verify(mockDifficultyPreferences).setDifficulty(any(), Difficulty.MEDIUM)
     }
 
-    // Test Speech Rate Controls
     @Test
-    fun testSpeechRateControls() {
-        // Check initial speech rate (should be 24)
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
+    fun `test speech rate increase should update preferences and TTS`() {
+        // Initial speech rate
+        val initialRate = 1.0f
+        whenever(mockPrefs.getFloat("tts_speed", 1.0f)).thenReturn(initialRate)
 
-        // Increase speech rate
-        onView(withId(R.id.speech_rate_increase)).perform(click())
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("25")))
+        // Simulate increase in speech rate
+        settingFragment.binding.speechRateIncrease.performClick()
 
-        // Decrease speech rate
-        onView(withId(R.id.speech_rate_decrease)).perform(click())
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
+        // Verify that preferences and TTS utility are updated with new speech rate
+        verify(mockEditor).putFloat("tts_speed", 1.1f)
+        verify(mockTTSUtility).setSpeechRate(1.1f)
     }
 
-    // Test Background Music Toggle
     @Test
-    fun testBackgroundMusicToggle() {
-        // Check initial state of the music toggle (should be off)
-        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
+    fun `test background music toggle should update preferences and start music`() {
+        // Assume music is off initially
+        whenever(mockPrefs.getBoolean("music_enabled", false)).thenReturn(false)
 
-        // Turn on the music
-        onView(withId(R.id.background_music_toggle)).perform(click())
-        onView(withId(R.id.background_music_toggle)).check(matches(isChecked()))
+        // Simulate music toggle change
+        settingFragment.binding.backgroundMusicToggle.isChecked = true
+        settingFragment.binding.backgroundMusicToggle.performClick()
 
-        // Turn off the music
-        onView(withId(R.id.background_music_toggle)).perform(click())
-        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
+        // Verify that music preferences are updated and music is started
+        verify(mockEditor).putBoolean("music_enabled", true)
+        verify(mockMusicPlayer).startMusic()
     }
 
-    // Test Music Volume Controls
     @Test
-    fun testMusicVolumeControls() {
-        // Check initial volume (should be 24)
-        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
+    fun `test reset button should reset all settings to defaults`() {
+        // Simulate pressing the reset button
+        settingFragment.binding.resetSettingsButton.performClick()
 
-        // Decrease volume
-        onView(withId(R.id.music_volume_decrease)).perform(click())
-        onView(withId(R.id.music_volume_value)).check(matches(withText("23")))
+        // Verify that preferences are reset to default values
+        verify(mockEditor).putBoolean("music_enabled", false)
+        verify(mockEditor).putFloat("tts_speed", 1.0f)
+        verify(mockEditor).putInt("app_contrast_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        verify(mockEditor).remove("Locale.Helper.Selected.Language")
+        verify(mockEditor).apply()
 
-        // Increase volume
-        onView(withId(R.id.music_volume_increase)).perform(click())
-        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
-    }
-
-    // Test Reset Settings Button
-    @Test
-    fun testResetButton() {
-        // Change some settings (e.g., difficulty, language, etc.)
-        onView(withId(R.id.difficulty_medium)).perform(click())
-        onView(withId(R.id.language_spinner)).perform(click())
-        onView(withText("English")).perform(click())
-
-        // Click reset button
-        onView(withId(R.id.reset_settings_button)).perform(click())
-
-        // Check if settings are reset to default (e.g., difficulty should be Simple)
-        onView(withId(R.id.difficulty_simple)).check(matches(isChecked()))
-        onView(withId(R.id.language_spinner)).check(matches(withSpinnerText("default")))
+        // Verify other reset actions (e.g., music stop)
+        verify(mockMusicPlayer).pauseMusic()
     }
 }
