@@ -21,7 +21,9 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
 import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.zmantra.view.HintFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class SterioFragment : Fragment(), Hintable {
@@ -48,22 +50,30 @@ class SterioFragment : Fragment(), Hintable {
         // Load questions from Excel
         val lang = getLanguage(requireContext()).ifEmpty { "en" }
         val difficulty = getDifficulty(requireContext()).toString()
+
         lifecycleScope.launch {
-            questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                context = requireContext(),
-                lang = lang,
-                mode = "sterio",
-                difficulty = difficulty
-            ).shuffled()
-        }
+            // Load questions and shuffle them asynchronously
+            questions = withContext(Dispatchers.IO) {
+                ExcelQuestionLoader.loadQuestionsFromExcel(
+                    context = requireContext(),
+                    lang = lang,
+                    mode = "sterio",
+                    difficulty = difficulty
+                ).shuffled()
+            }
 
-        if (questions.isEmpty()) {
-            Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
-            return binding!!.root
-        }
+            // After loading, update UI (ensure fragment is still valid)
+            if (isAdded && isResumed) {
+                if (questions.isEmpty()) {
+                    // No questions available
+                    Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
+                    return@launch
+                }
 
-        setAccessibilityDescriptions()
-        loadNextQuestion()
+                setAccessibilityDescriptions()
+                loadNextQuestion()
+            }
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.readQuestionBtn?.requestFocus()
@@ -78,11 +88,6 @@ class SterioFragment : Fragment(), Hintable {
         }
 
         return binding!!.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
     }
 
     private fun loadNextQuestion() {

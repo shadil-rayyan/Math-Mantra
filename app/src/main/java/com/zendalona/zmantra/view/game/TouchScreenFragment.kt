@@ -20,7 +20,6 @@ import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.model.Hintable
 import kotlinx.coroutines.launch
-
 class TouchScreenFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameTouchScreenBinding? = null
@@ -34,7 +33,7 @@ class TouchScreenFragment : Fragment(), Hintable {
     private var inputLocked = false
 
     private lateinit var lang: String
-    private lateinit var questionList: List<GameQuestion>
+    private var questionList: List<GameQuestion> = emptyList() // Make it safely initialized
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,17 +42,21 @@ class TouchScreenFragment : Fragment(), Hintable {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
 
         lifecycleScope.launch {
+            // Load questions asynchronously and shuffle them
             questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(), lang, "touch", difficulty
             ).shuffled()
-        }
 
-        if (questionList.isEmpty()) {
-            Toast.makeText(
-                requireContext(),
-                "No touch questions found in Excel for $lang / $difficulty.",
-                Toast.LENGTH_LONG
-            ).show()
+            if (questionList.isNotEmpty()) {
+                startGame()  // Start the game once data is ready
+            } else {
+                // Handle empty question list scenario
+                Toast.makeText(
+                    requireContext(),
+                    "No touch questions found in Excel for $lang / $difficulty.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
 
         setHasOptionsMenu(true)
@@ -65,7 +68,6 @@ class TouchScreenFragment : Fragment(), Hintable {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
-        startGame()
         return binding!!.root
     }
 

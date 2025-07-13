@@ -53,14 +53,11 @@ class TapFragment : Fragment(), Hintable {
                 "tap",
                 difficulty.toString()
             )
+            startGame()
+
         }
 
-//        if (questions.isEmpty()) {
-//            questions = listOf(
-//                GameQuestion("2+1", 3),
-//                GameQuestion("1+2+3", 6)
-//            )
-//        }
+//
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -74,7 +71,6 @@ class TapFragment : Fragment(), Hintable {
             true
         }
 
-        startGame()
         return binding!!.root
     }
 

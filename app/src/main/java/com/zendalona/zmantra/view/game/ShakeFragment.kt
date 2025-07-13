@@ -81,14 +81,18 @@ class ShakeFragment : Fragment(), Hintable {
         accelerometerUtility = AccelerometerUtility(requireContext())
 
         lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                parsedShakeList = ExcelQuestionLoader.loadQuestionsFromExcel(
+            // Use withContext to make sure the Excel loading happens in the IO thread.
+            parsedShakeList = withContext(Dispatchers.IO) {
+                ExcelQuestionLoader.loadQuestionsFromExcel(
                     requireContext(), lang, "shake", difficulty
                 )
             }
-            Log.d(TAG, "Loaded ${parsedShakeList.size} questions")
-            startGame()
+            // Make sure UI updates are done on the main thread
+            if (isAdded && isResumed) {
+                startGame() // Safely update UI
+            }
         }
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
