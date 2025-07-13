@@ -55,9 +55,10 @@ class DrawingFragment : Fragment(), Hintable {
         lifecycleScope.launch {
             questions =
                 ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, "drawing", difficulty)
+                loadNextShape()
+
         }
         setupListeners()
-        loadNextShape()
 
         return binding!!.root
     }

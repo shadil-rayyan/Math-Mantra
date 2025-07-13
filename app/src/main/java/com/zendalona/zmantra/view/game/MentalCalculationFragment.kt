@@ -54,12 +54,13 @@ class MentalCalculationFragment : Fragment(), Hintable {
                 "mental",
                 difficulty.toString()
             )
+            loadNextQuestion()
+
         }
         if (questionList.isEmpty()) {
             questionList = listOf(GameQuestion("1 + 2", 3))
         }
 
-        loadNextQuestion()
 
         binding?.submitAnswerBtn?.setOnClickListener { checkAnswer() }
         binding?.answerEt?.setOnEditorActionListener { _, actionId, _ ->
