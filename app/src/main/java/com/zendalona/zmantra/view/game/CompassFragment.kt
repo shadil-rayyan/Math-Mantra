@@ -63,6 +63,8 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         }
     }
 
+    private var questionsLoaded = false // Boolean flag to track if questions are loaded
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -79,12 +81,10 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         binding = FragmentGameCompassBinding.inflate(inflater, container, false)
         compassDirections = requireContext().resources.getStringArray(R.array.compass_directions)
         setHasOptionsMenu(true)
-        loadQuestionsFromExcel()
-        generateNewQuestion()
+
+        loadQuestionsFromExcel() // Start loading questions asynchronously
         return binding!!.root
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.top_menu, menu)
@@ -93,6 +93,11 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Wait for questions to be loaded before generating the first question
+        if (questionsLoaded) {
+            generateNewQuestion()
+        }
 
         if (isFirstOpen) {
             binding?.rootLayout?.apply {
@@ -105,17 +110,12 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         }
     }
 
-
-
     private fun loadQuestionsFromExcel() {
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
-        // Declare loadedQuestions outside the coroutine
-        val loadedQuestions = mutableListOf<GameQuestion>()
-
         lifecycleScope.launch {
-            // Now load the questions inside the coroutine
+            // Load the questions asynchronously
             val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(),
                 lang = lang,
@@ -123,21 +123,31 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
                 difficulty = difficulty.toString()
             )
 
-            // Once the questions are loaded, assign them to loadedQuestions
-            loadedQuestions.addAll(questions)
-
-            if (loadedQuestions.isEmpty()) {
+            if (questions.isEmpty()) {
                 Toast.makeText(requireContext(), "No compass questions found", Toast.LENGTH_LONG).show()
+            } else {
+                rawQuestions.clear()
+                questions.forEach { q ->
+                    rawQuestions.add("${q.expression}===${q.timeLimit}")
+                }
             }
 
-            rawQuestions.clear()
-            for (q in loadedQuestions) {
-                rawQuestions.add("${q.expression}===${q.timeLimit}")
+            // Set the flag to true once questions are loaded
+            questionsLoaded = true
+
+            // Now, generate a new question (if necessary)
+            if (questionsLoaded) {
+                generateNewQuestion()
             }
         }
     }
 
     private fun generateNewQuestion() {
+        if (rawQuestions.isEmpty()) {
+            endGame()
+            return
+        }
+
         questionStartTime = System.currentTimeMillis()
         currentIndex++
         if (currentIndex >= rawQuestions.size) {
