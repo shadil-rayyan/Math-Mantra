@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v3  # Latest stable version
         with:
           java-version: '17'
-          distribution: 'adoptopenjdk'  # Specify the JDK distribution
+          distribution: 'temurin'  # Updated to use 'temurin' (Adoptium JDK)
 
       # Set up Gradle to ensure the project builds properly
       - name: Set up Gradle
@@ -33,7 +33,7 @@ jobs:
 
       # Upload APK as artifact (useful for later steps or debugging)
       - name: Upload APK as artifact
-        uses: actions/upload-artifact@v4 # Latest stable version
+        uses: actions/upload-artifact@v3 # Use the latest stable version
         with:
           name: debug-apk
           path: app/build/outputs/apk/debug/app-debug.apk
