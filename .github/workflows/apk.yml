@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-java@v3  # Latest stable version
         with:
           java-version: '17'
+          distribution: 'adoptopenjdk'  # Specify the JDK distribution
 
       # Set up Gradle to ensure the project builds properly
       - name: Set up Gradle
