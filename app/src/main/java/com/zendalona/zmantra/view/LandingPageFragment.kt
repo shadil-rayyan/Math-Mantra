@@ -29,7 +29,8 @@ class LandingPageFragment : Fragment() {
 
     var navigationListener: FragmentNavigation? = null
 
-    private lateinit var ttsUtility: TTSUtility
+    // Use nullable type for ttsUtility
+    private var ttsUtility: TTSUtility? = null
 
     private val prefs by lazy { PreferenceManager.getDefaultSharedPreferences(requireContext()) }
 
@@ -46,7 +47,6 @@ class LandingPageFragment : Fragment() {
 
         _binding = FragmentLandingPageBinding.inflate(inflater, container, false)
 
-
         binding.settings.setOnClickListener {
             Log.d("LandingPageFragment", "Settings button clicked")
             navigationListener?.loadFragment(SettingFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -62,26 +62,26 @@ class LandingPageFragment : Fragment() {
             Log.d("LandingPageFragment", "Learning button clicked")
             navigationListener?.loadFragment(LearningFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+
         binding.GameButton.setOnClickListener {
             Log.d("LandingPageFragment", "Game button clicked")
             navigationListener?.loadFragment(GameFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+
         binding.userGuide.setOnClickListener {
             Log.d("LandingPageFragment", "User Guide button clicked")
             navigationListener?.loadFragment(UserGuideFragment(), FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
+
         binding.quitbutton.setOnClickListener {
             Log.d("LandingPageFragment", "Quit button clicked. Finishing activity.")
             activity?.finish()
         }
 
-
-
         return binding.root
     }
 
-    fun onViewCreated(view: File, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("LandingPageFragment", "onViewCreated called")
 
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.GONE
@@ -90,10 +90,13 @@ class LandingPageFragment : Fragment() {
         BackgroundMusicPlayer.initialize(requireContext())
         Log.d("LandingPageFragment", "BackgroundMusicPlayer initialized")
 
-        ttsUtility = TTSUtility(requireContext())
-        val speechRate = prefs.getFloat("tts_speed", 1.0f)
-        ttsUtility.setSpeechRate(speechRate)
-        Log.d("LandingPageFragment", "TTS initialized with speech rate $speechRate")
+        // Initialize TTS only if it is not already initialized
+        if (ttsUtility == null) {
+            ttsUtility = TTSUtility(requireContext())
+            val speechRate = prefs.getFloat("tts_speed", 1.0f)
+            ttsUtility?.setSpeechRate(speechRate)
+            Log.d("LandingPageFragment", "TTS initialized with speech rate $speechRate")
+        }
 
         val musicEnabled = prefs.getBoolean("music_enabled", false)
         Log.d("LandingPageFragment", "music_enabled: $musicEnabled")
@@ -104,15 +107,15 @@ class LandingPageFragment : Fragment() {
             BackgroundMusicPlayer.pauseMusic()
             Log.d("LandingPageFragment", "Background music paused")
         }
-
-
     }
 
     override fun onPause() {
         super.onPause()
         Log.d("LandingPageFragment", "onPause called - pausing music and stopping TTS")
         BackgroundMusicPlayer.pauseMusic()
-        ttsUtility.stop()
+
+        // Safely access ttsUtility by checking if it's initialized
+        ttsUtility?.stop()
     }
 
     override fun onDestroyView() {
@@ -120,7 +123,9 @@ class LandingPageFragment : Fragment() {
         Log.d("LandingPageFragment", "onDestroyView called - stopping music, shutting down TTS, showing toolbar")
         activity?.findViewById<MaterialToolbar>(R.id.toolbar)?.visibility = View.VISIBLE
         BackgroundMusicPlayer.stopMusic()
-        ttsUtility.shutdown()
+
+        // Safely shutdown TTS if initialized
+        ttsUtility?.shutdown()
         _binding = null
     }
 

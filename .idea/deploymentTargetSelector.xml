@@ -30,9 +30,6 @@
       <SelectionState runConfigName="LandingPageFragmentTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SettingsFragmentTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="UserGuideFragmentTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
