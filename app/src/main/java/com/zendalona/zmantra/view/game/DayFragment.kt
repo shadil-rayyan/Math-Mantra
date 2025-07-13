@@ -60,14 +60,18 @@ class DayFragment : Fragment(), Hintable {
 
         // Load Excel day questions once
         lifecycleScope.launch {
+            // You can call the suspend function here
+            val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(),
+                lang = "en",       // Change to dynamic locale if needed
+                mode = "day",
+                difficulty = "medium"
+            )
 
-                // You can call the suspend function here
-                val dayQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                    requireContext(),
-                    lang = "en",       // Change to dynamic locale if needed
-                    mode = "day",
-                    difficulty = "medium"
-                )
+            dayQuestions = questions // Update the dayQuestions after loading
+
+            // Once the questions are loaded, generate the first question
+            generateQuestion()
         }
 
         val buttons = listOf(
@@ -80,8 +84,6 @@ class DayFragment : Fragment(), Hintable {
                 checkAnswer(button.text.toString(), buttons)
             }
         }
-
-        generateQuestion()
     }
 
     private fun generateQuestion() {
@@ -90,6 +92,7 @@ class DayFragment : Fragment(), Hintable {
             return
         }
 
+        // Pick a random question
         val randomQuestion = dayQuestions.random()
         val operand = randomQuestion.answer // This is the number of days to add/subtract
 
