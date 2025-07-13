@@ -27,11 +27,20 @@ import kotlinx.coroutines.*
 
 // Extension function for accessibility announcement
 fun View.announceForAccessibilityCompat(message: String) {
-    contentDescription = message
-    val event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_ANNOUNCEMENT)
-    event.text.add(message)
+    // Check if AccessibilityManager is available and if accessibility is enabled
     val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-    am.sendAccessibilityEvent(event)
+    val isAccessibilityEnabled = am.isEnabled && am.isTouchExplorationEnabled
+
+    if (isAccessibilityEnabled) {
+        // Proceed only if accessibility is enabled
+        contentDescription = message
+        val event = AccessibilityEvent.obtain(AccessibilityEvent.TYPE_ANNOUNCEMENT)
+        event.text.add(message)
+        am.sendAccessibilityEvent(event)
+    } else {
+        // Log a warning or handle this case as needed
+        Log.w("Accessibility", "Accessibility is disabled, cannot announce message: $message")
+    }
 }
 
 class ShakeFragment : Fragment(), Hintable {
