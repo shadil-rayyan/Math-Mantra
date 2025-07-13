@@ -62,19 +62,27 @@ class NumberLineFragment : Fragment(), Hintable {
         CURRENT_POSITION = getString(R.string.current_position_label)
 
         tts = TTSUtility(requireContext()).apply { setSpeechRate(0.8f) }
+
         val difficulty = DifficultyPreferences.getDifficulty(requireContext())
         val lang = LocaleHelper.getLanguage(context) ?: "en"
+
         // ✅ Load Excel questions for mode = numberline, difficulty = 1
         lifecycleScope.launch {
-
+            // Load questions asynchronously
             excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(),
                 lang = lang,
                 mode = "numberline",
                 difficulty = difficulty.toString()
             )
+
+
+
+            // Once questions are loaded, proceed with game
+            correctAnswerDesc = askNewQuestion()
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,7 +93,6 @@ class NumberLineFragment : Fragment(), Hintable {
         setHasOptionsMenu(true)
         setupObservers()
         setupUI()
-        correctAnswerDesc = askNewQuestion()
 
         return binding!!.root
     }
