@@ -20,7 +20,7 @@
             android:id="@+id/ring_count"
             android:layout_width="117dp"
             android:layout_height="96dp"
-            android:layout_marginTop="268dp"
+            android:layout_marginTop="16dp"
             android:clickable="false"
             android:contentDescription="@string/shake_count_description"
             android:focusable="false"
@@ -29,26 +29,44 @@
             android:textColor="?attr/colorOnSecondary"
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.945"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- ImageView (Rotate Phone Animation) -->
+
+        <ImageView
+            android:id="@+id/animated_view"
+            android:layout_width="278dp"
+            android:layout_height="308dp"
+            android:contentDescription="@null"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:importantForAccessibility="no"
+            android:src="@drawable/game_angle_rotateyourphone"
+            app:layout_constraintBottom_toTopOf="@+id/ring_me_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.771" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_me_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="540dp"
+            android:layout_marginTop="580dp"
             android:contentDescription="@string/shake_instruction_description"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:text="@string/shake_instruction"
             android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintHorizontal_bias="0.544"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
