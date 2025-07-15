@@ -194,9 +194,12 @@ class ShakeFragment : Fragment(), Hintable {
         }
 
         if (count == target && !answerChecked) {
-            Log.d(TAG, "Target reached. Checking answer immediately")
-            checkAnswer()
+            Log.d(TAG, "Target reached. Delaying answer check by 3 seconds")
+            gameHandler.postDelayed({
+                checkAnswer()
+            }, 1500) // Delay of 3 seconds (3000ms)
         }
+
     }
 
     private fun checkAnswer(forceWrong: Boolean = false) {
