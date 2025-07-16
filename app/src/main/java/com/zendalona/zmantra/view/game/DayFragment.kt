@@ -63,9 +63,9 @@ class DayFragment : Fragment(), Hintable {
             // You can call the suspend function here
             val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(),
-                lang = "en",       // Change to dynamic locale if needed
+                lang = "$lang",       // Change to dynamic locale if needed
                 mode = "day",
-                difficulty = "medium"
+                difficulty = "$difficulty"
             )
 
             dayQuestions = questions // Update the dayQuestions after loading
