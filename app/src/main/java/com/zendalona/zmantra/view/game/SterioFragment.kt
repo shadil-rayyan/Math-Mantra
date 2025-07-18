@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import android.os.*
+import android.speech.tts.TextToSpeech
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -14,7 +15,6 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.DialogResultBinding
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.model.AudioPlayerUtility
 import com.zendalona.zmantra.model.Hintable
 import com.zendalona.zmantra.utility.common.TTSUtility
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
@@ -30,7 +30,7 @@ class SterioFragment : Fragment(), Hintable {
 
     private var binding: FragmentGameSteroBinding? = null
     private var ttsUtility: TTSUtility? = null
-    private var audioPlayerUtility: AudioPlayerUtility? = null
+    private var ttsStereo: TextToSpeech? = null
 
     private var questions: List<GameQuestion> = emptyList()
     private var currentIndex = 0
@@ -44,15 +44,12 @@ class SterioFragment : Fragment(), Hintable {
     ): View {
         binding = FragmentGameSteroBinding.inflate(inflater, container, false)
         ttsUtility = TTSUtility(requireContext())
-        audioPlayerUtility = AudioPlayerUtility()
         setHasOptionsMenu(true)
 
-        // Load questions from Excel
         val lang = getLanguage(requireContext()).ifEmpty { "en" }
         val difficulty = getDifficulty(requireContext()).toString()
 
         lifecycleScope.launch {
-            // Load questions and shuffle them asynchronously
             questions = withContext(Dispatchers.IO) {
                 ExcelQuestionLoader.loadQuestionsFromExcel(
                     context = requireContext(),
@@ -62,10 +59,8 @@ class SterioFragment : Fragment(), Hintable {
                 ).shuffled()
             }
 
-            // After loading, update UI (ensure fragment is still valid)
             if (isAdded && isResumed) {
                 if (questions.isEmpty()) {
-                    // No questions available
                     Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
                     return@launch
                 }
@@ -101,7 +96,6 @@ class SterioFragment : Fragment(), Hintable {
         correctAnswer = question.answer
         binding?.answerEt?.setText("")
 
-        // Extract numbers from expression string (e.g., "8 - 5")
         val match = Regex("""(\d+)\s*[-+*/]\s*(\d+)""").find(question.expression)
         if (match != null && match.groupValues.size == 3) {
             numA = match.groupValues[1].toInt()
@@ -116,12 +110,11 @@ class SterioFragment : Fragment(), Hintable {
 
     private fun readQuestionAloud() {
         val isHeadphoneConnected = isHeadphoneConnected()
-        val isAbove23 = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
+        val isAbove23 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
         if (isAbove23 && isHeadphoneConnected) {
             Handler(Looper.getMainLooper()).postDelayed({
-                // First number on LEFT
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), numA, false)
+                playNumberWithStereo(requireContext(), numA, isRight = false)
             }, 0)
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -129,19 +122,31 @@ class SterioFragment : Fragment(), Hintable {
             }, 3000)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                // Second number on RIGHT
-                audioPlayerUtility?.playNumberWithStereo(requireContext(), numB, true)
+                playNumberWithStereo(requireContext(), numB, isRight = true)
             }, 6000)
         } else {
             ttsUtility?.speak("Subtract second number $numB from first number $numA")
         }
     }
 
+    private fun playNumberWithStereo(context: Context, number: Int, isRight: Boolean) {
+        if (ttsStereo == null) {
+            ttsStereo = TextToSpeech(context) { status ->
+                if (status == TextToSpeech.SUCCESS) {
+                    ttsStereo?.language = Locale.ENGLISH
+                    // NOTE: No public stereo panning API in TTS. Consider using SoundPool or AudioTrack for actual stereo effects.
+                    ttsStereo?.speak("The number is $number", TextToSpeech.QUEUE_FLUSH, null, "stereo")
+                }
+            }
+        } else {
+            ttsStereo?.speak("The number is $number", TextToSpeech.QUEUE_FLUSH, null, "stereo")
+        }
+    }
+
     private fun isHeadphoneConnected(): Boolean {
         val audioManager = requireContext().getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            val devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS)
-            devices.any {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS).any {
                 it.type == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
                         it.type == AudioDeviceInfo.TYPE_WIRED_HEADSET ||
                         it.type == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP
@@ -197,9 +202,7 @@ class SterioFragment : Fragment(), Hintable {
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "sterio")
-        }
+        val bundle = Bundle().apply { putString("mode", "sterio") }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
         requireActivity().supportFragmentManager.beginTransaction()
@@ -211,6 +214,8 @@ class SterioFragment : Fragment(), Hintable {
     override fun onDestroyView() {
         super.onDestroyView()
         ttsUtility?.shutdown()
+        ttsStereo?.shutdown()
+        ttsStereo = null
         binding = null
     }
 }
