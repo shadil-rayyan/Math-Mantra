@@ -158,6 +158,9 @@ class ShakeFragment : Fragment(), Hintable {
         val instruction = getString(R.string.shake_target_expression, question.expression)
         binding?.ringMeTv?.text = instruction
 
+        binding?.ringMeTv?.text = instruction
+
+
         if (!isFirstOpen) {
             binding?.ringMeTv?.apply {
                 isFocusable = true

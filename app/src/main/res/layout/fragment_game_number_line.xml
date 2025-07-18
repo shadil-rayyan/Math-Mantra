@@ -98,4 +98,18 @@
         </LinearLayout>
 
     </LinearLayout>
+    <TextView
+        android:id="@+id/footer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/footer"
+        android:textColor="?attr/colorOutline"
+        android:layout_marginBottom="20dp"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:layout_gravity="bottom|center_horizontal" />
 </FrameLayout>

@@ -121,5 +121,19 @@
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/footer_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/footer"
+        android:textColor="?attr/colorOutline"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:layout_gravity="bottom|center_horizontal" />
 
 </FrameLayout>

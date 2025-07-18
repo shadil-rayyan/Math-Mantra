@@ -194,8 +194,19 @@ class TapFragment : Fragment(), Hintable {
         binding?.tapCount?.text = "0"
 
         val question = questions[index]
-        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")}"
-        tts.speak(speakInstruction)
+        // Get the localized string for the expression and replace "+" with "plus"
+        val speakInstruction = getString(R.string.tap_target_expression, question.expression.replace("+", " plus "))
+
+// Use announceForAccessibility to make TalkBack announce the instruction
+        binding?.tapMeTv?.apply {
+            contentDescription = speakInstruction // Set the contentDescription for accessibility
+            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE // Make sure it announces on changes
+            requestFocus() // Request focus to ensure accessibility services know which element to read
+            postDelayed({
+                announceForAccessibility(speakInstruction) // Announce the instruction to TalkBack
+            }, 500)
+        }
+
     }
 
     private fun nextQuestion() {

@@ -88,7 +88,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
     }
 
 
-
     // Inflate toolbar menu
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
