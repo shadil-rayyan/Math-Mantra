@@ -123,16 +123,14 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     }
 
     private fun loadQuestionsFromExcel() {
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())
+        var difficulty = difficultyNum.toString()
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         lifecycleScope.launch {
             // Load the questions asynchronously
-            val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(),
-                lang = lang,
-                mode = "direction",
-                difficulty = difficulty.toString()
+            val questions =  ExcelQuestionLoader.loadQuestionsFromExcel(
+                requireContext(), lang, "compass", difficulty
             )
 
             if (questions.isEmpty()) {
