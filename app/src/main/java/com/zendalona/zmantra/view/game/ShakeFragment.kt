@@ -145,35 +145,42 @@ class ShakeFragment : Fragment(), Hintable {
             return
         }
 
+        // Initialize values
         count = 0
         firstShakeTime = 0L
         answerChecked = false
 
+        // Default UI setup
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
 
+        // Load the first question from parsed data
         val question = parsedShakeList[index % parsedShakeList.size]
         target = question.answer
         questionStartTime = System.currentTimeMillis()
 
+        // Create the dynamic instruction based on the loaded question
         val instruction = getString(R.string.shake_target_expression, question.expression)
         binding?.ringMeTv?.text = instruction
 
-        binding?.ringMeTv?.text = instruction
+        // Dynamically update the contentDescription for accessibility
+        binding?.ringMeTv?.contentDescription = instruction
 
-
+        // Only announce after the question is loaded, and ensure it's not the first open
         if (!isFirstOpen) {
             binding?.ringMeTv?.apply {
                 isFocusable = true
                 importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
                 requestFocus()
                 post {
+                    // Announce the dynamic instruction for accessibility
                     announceForAccessibilityCompat(instruction)
                     logFocusState("announceForAccessibility on startGame")
                 }
             }
         }
-        if (isFirstOpen) isFirstOpen = false
 
+        // Handle first-time UI setup (don't repeat instructions on subsequent game starts)
+        if (isFirstOpen) isFirstOpen = false
     }
 
     private fun onShakeDetected() {
@@ -189,6 +196,9 @@ class ShakeFragment : Fragment(), Hintable {
         Log.d(TAG, "Shake detected. Count: $count")
         binding?.ringCount?.text = count.toString()
         tts.stop()
+
+        binding?.rootLayout?.announceForAccessibilityCompat("$count")
+
 
         if (firstShakeTime == 0L) {
             Log.d(TAG, "First shake. Starting timer to check answer")
