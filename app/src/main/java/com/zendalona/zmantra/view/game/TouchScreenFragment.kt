@@ -97,7 +97,7 @@ class TouchScreenFragment : Fragment(), Hintable {
         questionStartTime = System.currentTimeMillis()
 
         // Use the localized touch instruction string
-        val readableExpr = question.expression.replace("+", " plus ").replace("-", " minus ")
+        val readableExpr = question.expression
         val speakText = getString(R.string.touch_instruction, question.answer, readableExpr)
 
         binding?.angleQuestion?.apply {

@@ -36,10 +36,10 @@ class SettingFragment : Fragment() {
         0 to "default",
         1 to "en",     // English
         2 to "ml",     // Malayalam
-        3 to "hi",     // hindi
-        4 to "ar",     // Arabic
-        5 to "sa",     // Sanskrit
-        6 to "ta"      // tamil
+//        3 to "hi",     // hindi
+//        4 to "ar",     // Arabic
+//        5 to "sa",     // Sanskrit
+//        6 to "ta"      // tamil
     )
 
 
