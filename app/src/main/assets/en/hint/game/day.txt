@@ -1,8 +1,0 @@
-How to Play:
-Welcome to the day guessing game!
-Here, you will hear a day of the week, like Monday or Friday, and a number telling you how many days to count forward.
-Your job is to figure out which day comes after adding those days.
-For example, if today is Monday and you add 5 days, what day will it be? You get to choose by tapping one of the big day buttons you hear around you.
-Don’t worry if you make a mistake — you get three chances to try again! If you need help, just listen closely to the friendly voice that guides you through the game.
-Every time you answer correctly, you’ll get a new question to solve.
-Try your best to answer as many questions as you can and watch yourself become a day master! Have fun, keep guessing, and enjoy learning the days of the week in a super fun way!

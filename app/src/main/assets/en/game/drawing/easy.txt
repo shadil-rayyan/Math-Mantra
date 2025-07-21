@@ -1,4 +1,0 @@
-rectangle
-square
-triangle
-circle

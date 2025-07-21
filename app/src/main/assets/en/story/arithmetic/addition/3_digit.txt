@@ -1,1 +1,0 @@
-You have %d mangoes and your friend gives you %d more mangoes and other friend gave you %d as well . How many mangoes do you have in total?

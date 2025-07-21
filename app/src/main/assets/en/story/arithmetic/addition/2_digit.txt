@@ -1,3 +1,0 @@
-You have %d mangoes and your friend gives you %d more mangoes. How many mangoes do you have in total?
-A box contains %d apples. You add %d more. What is the total number of apples?
-There are %d pencils in a box. You add %d more pencils. What is the total?

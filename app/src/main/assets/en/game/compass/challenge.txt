@@ -1,4 +1,0 @@
-compass?East===30===0
-compass?South===30===0
-compass?West===30===0
-compass?North===30===0
