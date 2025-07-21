@@ -63,6 +63,7 @@
     <string name="relative_angle_template">സംബന്ധിക ഭ്രമണ കോണം: %1$d°</string>
     <string name="current_angle_announcement">%1$s</string>
     <string name="compass_turn_to">%1$s ലേക്ക് തിരിക്കുക</string>
+    <string name="compass_current_direction">ഇപ്പോൾ മുമ്പാകെ %1$s </string>
     <string name="compass_correct">ശരിയാണ്!</string>
     <string name="compass_correct_msg">നിങ്ങൾ ശരിയായ ദിശയിലേക്ക് തിരിച്ചു!</string>
     <string name="current_direction_accessibility">നിലവിലെ ദിശ: %1$s</string>

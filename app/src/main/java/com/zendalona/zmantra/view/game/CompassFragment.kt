@@ -25,7 +25,6 @@ import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
 import kotlinx.coroutines.launch
 import kotlin.math.abs
-
 class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     private var binding: FragmentGameCompassBinding? = null
@@ -53,15 +52,15 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private lateinit var compassDirections: Array<String>
     private var currentAzimuth = 0f
 
-    // Handler and Runnable for announcing the direction every 4 seconds
+    // Handler and Runnable for announcing the direction every 5 seconds
     private val directionAnnounceHandler = Handler(Looper.getMainLooper())
     private val directionAnnounceRunnable = object : Runnable {
         override fun run() {
-            // Announce the current compass direction for accessibility
+            // Announce the current compass direction (the direction the device is facing)
             announceCurrentDirection()
 
-            // Repeat every 4 seconds
-            directionAnnounceHandler.postDelayed(this, 4000)
+            // Repeat every 5 seconds
+            directionAnnounceHandler.postDelayed(this, 10000) // 5000ms (5 seconds)
         }
     }
 
@@ -98,11 +97,6 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         return binding!!.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -129,7 +123,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
         lifecycleScope.launch {
             // Load the questions asynchronously
-            val questions =  ExcelQuestionLoader.loadQuestionsFromExcel(
+            val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(), lang, "direction", difficulty
             )
 
@@ -176,6 +170,16 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
         binding!!.questionTv.text = questionText
+
+        // Set contentDescription after the question text is set
+        binding?.questionTv?.contentDescription = questionText
+
+        // Ensure that TalkBack announces the updated content
+        binding?.questionTv?.announceForAccessibility(questionText)
+
+        // Start the periodic direction announcements after a brief delay to allow the first question announcement to finish
+        directionAnnounceHandler.removeCallbacks(directionAnnounceRunnable) // Remove any existing callbacks
+        directionAnnounceHandler.postDelayed(directionAnnounceRunnable, 5000) // Announce after 5 seconds
     }
 
     private fun directionToDegrees(dir: String): Float {
@@ -187,8 +191,8 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     override fun onResume() {
         super.onResume()
 
-        // Start announcing the direction every 4 seconds
-        directionAnnounceHandler.postDelayed(directionAnnounceRunnable, 4000)
+        // Start announcing the direction every 5 seconds
+        directionAnnounceHandler.postDelayed(directionAnnounceRunnable, 5000)
 
         // Register the sensors
         sensorManager?.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
@@ -234,9 +238,6 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         val directionText = getCompassDirection(actualAzimuth)
         binding?.degreeText?.text = directionText
 
-        // Announce the current direction
-        announceCurrentDirection()
-
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
         binding?.questionTv?.text = questionText
 
@@ -276,7 +277,12 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         val directionText = getCompassDirection(currentAzimuth)
 
         // Announce the direction for accessibility
-        binding?.root?.announceForAccessibility("Turn towards $directionText")
+        // Use getString() to format the string with directionText
+        val instruction = getString(R.string.compass_current_direction, directionText)
+
+        // Announce the formatted string for accessibility
+        binding?.root?.announceForAccessibility(instruction)
+
     }
 
     override fun showHint() {

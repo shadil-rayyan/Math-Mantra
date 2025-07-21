@@ -66,7 +66,8 @@
     <string name="turn_to_angle_template">Turn to %1$d° from your current direction</string>
     <string name="relative_angle_template">Relative Angle: %1$d°</string>
     <string name="current_angle_announcement"> %1$s</string>
-    <string name="compass_turn_to">Turn to %1$s </string>
+    <string name="compass_turn_to">Turn toward %1$s </string>
+    <string name="compass_current_direction">Current Facing %1$s </string>
     <string name="compass_correct">Correct!</string>
     <string name="compass_correct_msg">You turned to the correct direction!</string>
     <string name="current_direction_accessibility">Current direction: %1$s </string>
