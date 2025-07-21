@@ -53,6 +53,18 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private lateinit var compassDirections: Array<String>
     private var currentAzimuth = 0f
 
+    // Handler and Runnable for announcing the direction every 4 seconds
+    private val directionAnnounceHandler = Handler(Looper.getMainLooper())
+    private val directionAnnounceRunnable = object : Runnable {
+        override fun run() {
+            // Announce the current compass direction for accessibility
+            announceCurrentDirection()
+
+            // Repeat every 4 seconds
+            directionAnnounceHandler.postDelayed(this, 4000)
+        }
+    }
+
     private val holdHandler = Handler(Looper.getMainLooper())
     private val holdRunnable = Runnable {
         questionAnswered = true
@@ -176,14 +188,23 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
 
     override fun onResume() {
         super.onResume()
+
+        // Start announcing the direction every 4 seconds
+        directionAnnounceHandler.postDelayed(directionAnnounceRunnable, 4000)
+
+        // Register the sensors
         sensorManager?.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI)
         sensorManager?.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI)
     }
 
     override fun onPause() {
         super.onPause()
+
+        // Stop the repeated direction announcements
+        directionAnnounceHandler.removeCallbacks(directionAnnounceRunnable)
+
+        // Unregister the sensors
         sensorManager?.unregisterListener(this)
-        holdHandler.removeCallbacks(holdRunnable)
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -214,6 +235,9 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         currentAzimuth = actualAzimuth
         val directionText = getCompassDirection(actualAzimuth)
         binding?.degreeText?.text = directionText
+
+        // Announce the current direction
+        announceCurrentDirection()
 
         val questionText = getString(R.string.compass_turn_to, currentTargetDirection)
         binding?.questionTv?.text = questionText
@@ -247,6 +271,14 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
     private fun getCompassDirection(degrees: Float): String {
         val index = ((degrees + 11.25) / 22.5).toInt() % 16
         return compassDirections[index]
+    }
+
+    private fun announceCurrentDirection() {
+        // Get the direction text (for TalkBack)
+        val directionText = getCompassDirection(currentAzimuth)
+
+        // Announce the direction for accessibility
+        binding?.root?.announceForAccessibility("Turn towards $directionText")
     }
 
     override fun showHint() {
