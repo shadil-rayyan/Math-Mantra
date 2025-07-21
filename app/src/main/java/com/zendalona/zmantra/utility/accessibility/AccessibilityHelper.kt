@@ -24,12 +24,14 @@ object AccessibilityHelper {
 
         Log.d("AccessibilityHelper", "Service Enabled: $isServiceEnabled, TalkBack On: $isTalkBackOn")
 
+        // If service is not enabled and TalkBack is on, show the dialog
         if (!isServiceEnabled && isTalkBackOn) {
             showAccessibilityDialog(context)
         } else {
             Log.d("AccessibilityHelper", "Accessibility requirement satisfied or TalkBack is off.")
         }
     }
+
 
 
 
@@ -51,7 +53,7 @@ object AccessibilityHelper {
 
 
     // Check if the custom accessibility service is enabled
-    private fun isMathsManthraAccessibilityServiceEnabled(context: Context): Boolean {
+    fun isMathsManthraAccessibilityServiceEnabled(context: Context): Boolean {
         val targetServiceId = "${context.packageName}/${MathsManthraAccessibilityService::class.java.name}"
         Log.d("AccessibilityService", "Target ID: $targetServiceId")
 
@@ -62,12 +64,15 @@ object AccessibilityHelper {
             AccessibilityServiceInfo.FEEDBACK_ALL_MASK
         )
 
+        // Log the enabled services
         enabledServices.forEach {
-            Log.d("AccessibilityService", "Enabled: ${it.id}")
+            Log.d("AccessibilityService", "Enabled service: ${it.id}")
         }
 
+        // Check if your custom service is enabled
         return enabledServices.any { it.id == targetServiceId }
     }
+
 
 
     // Optional: control touch exploration passthrough

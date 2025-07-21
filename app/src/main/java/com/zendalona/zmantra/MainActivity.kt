@@ -17,11 +17,17 @@ import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.view.LandingPageFragment
 import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
 import com.zendalona.zmantra.utility.PermissionManager
+import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 
     private lateinit var permissionManager: PermissionManager
+
+    // SharedPreferences to store whether the accessibility dialog was shown
+    private val prefs by lazy {
+        getSharedPreferences("AccessibilityPrefs", Context.MODE_PRIVATE)
+    }
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(LocaleHelper.onAttach(newBase))
@@ -35,7 +41,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-// Enable back arrow depending on stack
+        // Enable back arrow depending on stack
         supportFragmentManager.addOnBackStackChangedListener {
             val canGoBack = supportFragmentManager.backStackEntryCount > 0
             supportActionBar?.setDisplayHomeAsUpEnabled(canGoBack)
@@ -44,7 +50,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
             // Set localized content description (for accessibility)
             supportActionBar?.setHomeActionContentDescription(R.string.back_button_label)
         }
-
 
         // Initial fragment
         if (savedInstanceState == null) {
@@ -65,10 +70,23 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         })
         permissionManager.requestMicrophonePermission()
 
-        // Accessibility dialog
-        Handler(Looper.getMainLooper()).postDelayed({
-            AccessibilityHelper.enforceAccessibilityRequirement(this)
-        }, 500)
+        // Check if the custom accessibility service is enabled
+        val isServiceEnabled = AccessibilityHelper.isMathsManthraAccessibilityServiceEnabled(this)
+        val isTalkBackEnabled = AccessibilityUtils().isSystemExploreByTouchEnabled(this)
+
+        // If the service or TalkBack is not enabled, prompt the user for action
+        if (!isServiceEnabled || !isTalkBackEnabled) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                AccessibilityHelper.enforceAccessibilityRequirement(this)
+            }, 500)
+        }
+    }
+
+    // This will be called after the dialog is shown, marking the flag
+    fun markDialogAsShown() {
+        val editor = prefs.edit()
+        editor.putBoolean("ACCESSIBILITY_DIALOG_SHOWN", true)
+        editor.apply()
     }
 
     // Handle back button in toolbar
@@ -87,9 +105,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         invalidateOptionsMenu() // 🔄 Ensures menu updates
     }
 
-
     // Inflate toolbar menu
-
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
@@ -102,11 +118,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         menu.findItem(R.id.action_hint)?.isVisible = showHint
         return super.onPrepareOptionsMenu(menu)
     }
-
-
-
-
-
 
     // Handle toolbar icon clicks
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -129,7 +140,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     companion object {
         const val TRANSIT_FRAGMENT_OPEN = androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN

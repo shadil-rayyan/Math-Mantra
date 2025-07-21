@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
@@ -23,24 +24,23 @@ class AccessibilityUtils {
         // ✅ NEW METHOD - Check if MathsManthraAccessibilityService is enabled in Accessibility Settings
         @JvmStatic
         fun isMathsManthraAccessibilityServiceEnabled(context: Context): Boolean {
-            val accessibilityManager =
-                context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager?
-            if (accessibilityManager == null) {
-                return false
+            val targetServiceId = "${context.packageName}/${MathsManthraAccessibilityService::class.java.name}"
+            Log.d("AccessibilityService", "Target ID: $targetServiceId")
+
+            val accessibilityManager = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+                ?: return false
+
+            val enabledServices = accessibilityManager.getEnabledAccessibilityServiceList(
+                AccessibilityServiceInfo.FEEDBACK_ALL_MASK
+            )
+
+            // Log the enabled services
+            enabledServices.forEach {
+                Log.d("AccessibilityService", "Enabled service: ${it.id}")
             }
 
-            val enabledServices =
-                accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
-
-            for (serviceInfo in enabledServices) {
-                // Important: Match your package + service class name
-                if (serviceInfo.getId()
-                        .contains("com.zendalona.mathsmantra/com.zendalona.mathsmantra.utility.accessibility.MathsManthraAccessibilityService")
-                ) {
-                    return true
-                }
-            }
-            return false
+            // Check if your custom service is enabled
+            return enabledServices.any { it.id == targetServiceId }
         }
 
         // ⚠️ Optional - This is less reliable. You can keep or remove this.

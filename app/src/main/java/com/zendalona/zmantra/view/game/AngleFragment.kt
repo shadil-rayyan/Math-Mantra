@@ -74,18 +74,17 @@ class AngleFragment : Fragment(), Hintable {
 
     // Load questions asynchronously using coroutine
     private fun loadQuestionsAsync() {
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
+        val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())
+        var difficulty = difficultyNum.toString()
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         lifecycleScope.launch {
             angleQuestions = withContext(Dispatchers.IO) {
                 ExcelQuestionLoader.loadQuestionsFromExcel(
-                    requireContext(),
-                    lang = lang,
-                    mode = "angle",
-                    difficulty = difficulty.toString()
+                    requireContext(), lang, "angle", difficulty
                 )
             }
+
 
             // Ensure the fragment is still added before updating UI
             if (isAdded) {
