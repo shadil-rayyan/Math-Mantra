@@ -32,7 +32,7 @@
     <string name="touchscreen_question_expression">%1$s</string>
     <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിക്കുക)</string>
     <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരലുകൾ: %1$d</string>
-    <string name="touch_instruction">സ്ക്രീനിൽ 2 വിരലുകൾ വെക്കുക</string>
+    <string name="touch_instruction">സസ്ക്രീനിൽ %1$d കൂടാതെ %2$d വിരലുകൾ നീക്കുക</string>
     <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ ടച്ച് ചെയ്യുന്ന ചിത്രം</string>
 
     <!-- Days -->

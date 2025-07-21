@@ -86,11 +86,19 @@ class TouchScreenFragment : Fragment(), Hintable {
         inputLocked = false
         val question = questionList[index]
         correctAnswer = question.answer
+
+        // Skip the question if the correct answer is 3
+        if (correctAnswer == 3) {
+            index++
+            startGame()  // Skip to the next question
+            return
+        }
+
         questionStartTime = System.currentTimeMillis()
 
-        // Say and display the instruction
+        // Use the localized touch instruction string
         val readableExpr = question.expression.replace("+", " plus ").replace("-", " minus ")
-        val speakText = "Touch the screen with $readableExpr fingers"
+        val speakText = getString(R.string.touch_instruction, question.answer, readableExpr)
 
         binding?.angleQuestion?.apply {
             text = speakText
