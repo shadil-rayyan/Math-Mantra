@@ -130,7 +130,7 @@ class CompassFragment : Fragment(), SensorEventListener, Hintable {
         lifecycleScope.launch {
             // Load the questions asynchronously
             val questions =  ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(), lang, "compass", difficulty
+                requireContext(), lang, "direction", difficulty
             )
 
             if (questions.isEmpty()) {
