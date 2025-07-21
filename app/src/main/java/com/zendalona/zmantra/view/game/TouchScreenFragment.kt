@@ -102,11 +102,11 @@ class TouchScreenFragment : Fragment(), Hintable {
 
         binding?.angleQuestion?.apply {
             text = speakText
+           requestFocus()
             contentDescription = speakText
             announceForAccessibility(speakText)
         }
 
-        tts.speak(speakText)
         setupTouchListener()
     }
 
