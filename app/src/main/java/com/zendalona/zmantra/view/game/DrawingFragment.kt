@@ -94,6 +94,7 @@ class DrawingFragment : Fragment(), Hintable {
 
         binding!!.questionText.apply {
             text = instruction
+            requestFocus()
             contentDescription = instruction
             announceForAccessibility(instruction)
         }

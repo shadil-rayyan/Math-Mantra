@@ -54,7 +54,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/submitButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="8dp"
         android:importantForAccessibility="yes" />
 
@@ -71,7 +71,7 @@
         app:layout_constraintStart_toEndOf="@id/resetButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginStart="8dp"
         android:importantForAccessibility="yes" />
     <TextView
@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:text="@string/footer"
         android:textColor="?attr/colorOutline"
-        android:textSize="12sp"
+        android:textSize="8sp"
         android:gravity="center"
         android:importantForAccessibility="no"
         android:contentDescription="@null"
