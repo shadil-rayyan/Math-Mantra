@@ -120,7 +120,11 @@ class DayFragment : Fragment(), Hintable {
     private fun checkAnswer(selected: String, buttons: List<Button>) {
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
 
-        if (selected == correctDay) {
+        // Get the localized version of the correct day (Malayalam)
+        val correctDayLocalized = getString(getDayStringRes(correctDay))
+
+        // Compare the button text (which is in Malayalam) with the localized correct day
+        if (selected == correctDayLocalized) {
             val grade = GradingUtils.getGrade(elapsedTime, totalTime, isCorrect = true)
             disableAllButtons(buttons)
 

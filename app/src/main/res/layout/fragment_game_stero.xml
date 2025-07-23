@@ -6,26 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:contentDescription="@string/sterio_page_desc">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
         android:padding="16dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="center"
             android:orientation="vertical"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            >
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/instruction_text"

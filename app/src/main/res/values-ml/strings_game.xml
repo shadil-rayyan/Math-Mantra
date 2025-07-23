@@ -95,6 +95,21 @@
     <string name="read_question_description">സംഖ്യകൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കുക ബട്ടൺ ഉപയോഗിക്കുക. ഡബിൾ ടാപ്പ് ചെയ്ത് കേൾക്കാം.</string>
     <string name="enter_answer_hint">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
     <string name="your_answer_here">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
+    <string name="no_stereo_questions">സ്റ്റെറിയോ ചോദ്യങ്ങൾ കണ്ടെത്താനായില്ല.</string>
+    <string name="all_questions_completed">എല്ലാ ചോദ്യങ്ങളും പൂർത്തിയായി!</string>
+    <string name="new_question_ready">പുതിയ ചോദ്യമുണ്ട്. ചോദ്യത്തിന് വായിക്കുക എന്ന ബട്ടൺ തട്ടാൻ അർഹമാണ്.</string>
+    <string name="subtract_numbers">രണ്ടാമത്തെ നമ്പർ %1$d ഒന്നാമത്തെ നമ്പർ %2$d നു subtract ചെയ്യുക</string>
+    <string name="enter_answer_before_submitting">സബ്മിറ്റ് ചെയ്യുന്നതിന് മുൻപ് ഒരു ഉത്തരം നൽകുക.</string>
+    <string name="enter_answer">ദയവായി ഒരു ഉത്തരം നൽകുക!</string>
+    <string name="right_answer">ശരി ഉത്തരം!</string>
+    <string name="wrong_answer">തെറ്റ് ഉത്തരം. വീണ്ടും ശ്രമിക്കുക.</string>
+    <string name="read_question_aloud">ചോദ്യത്തെ വായിക്കുക.</string>
+    <string name="answer_input_field">ഉത്തരം നൽകാനുള്ള ഫീൽഡ്.</string>
+    <string name="number_is">നമ്പർ %1$d ആണ്</string>
+    <string name="submit_your_answer">നിങ്ങളുടെ ഉത്തരം സമർപ്പിക്കുക.</string>
+
+
+
 
     <!-- Mental calcuation-->
     <string name="mental_description">മാനസിക ഗണിത സ്ക്രീൻ, ഗണിത ചോദ്യവും ഇൻപുട്ടും</string>

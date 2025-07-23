@@ -61,7 +61,7 @@ class SterioFragment : Fragment(), Hintable {
 
             if (isAdded && isResumed) {
                 if (questions.isEmpty()) {
-                    Toast.makeText(requireContext(), "No stereo questions found.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), getString(R.string.no_stereo_questions), Toast.LENGTH_LONG).show()
                     return@launch
                 }
 
@@ -70,11 +70,13 @@ class SterioFragment : Fragment(), Hintable {
             }
         }
 
+        // Focus on the "Read Question" button after a slight delay
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.readQuestionBtn?.requestFocus()
             readQuestionAloud()
         }, 500)
 
+        // Buttons
         binding?.readQuestionBtn?.setOnClickListener { readQuestionAloud() }
         binding?.submitAnswerBtn?.setOnClickListener { submitAnswer() }
         binding?.answerEt?.setOnEditorActionListener { _, _, _ ->
@@ -87,7 +89,7 @@ class SterioFragment : Fragment(), Hintable {
 
     private fun loadNextQuestion() {
         if (currentIndex >= questions.size) {
-            Toast.makeText(requireContext(), "All questions completed!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.all_questions_completed), Toast.LENGTH_SHORT).show()
             requireActivity().onBackPressedDispatcher.onBackPressed()
             return
         }
@@ -105,7 +107,7 @@ class SterioFragment : Fragment(), Hintable {
             numB = 0
         }
 
-        announce("A new question is ready. Tap 'Read the Question' to listen.")
+        announce(getString(R.string.new_question_ready))
     }
 
     private fun readQuestionAloud() {
@@ -118,28 +120,30 @@ class SterioFragment : Fragment(), Hintable {
             }, 0)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                ttsUtility?.speak("minus")
+                ttsUtility?.speak(getString(R.string.minus))
             }, 3000)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 playNumberWithStereo(requireContext(), numB, isRight = true)
             }, 6000)
         } else {
-            ttsUtility?.speak("Subtract second number $numB from first number $numA")
+            ttsUtility?.speak(getString(R.string.subtract_numbers, numB, numA))
         }
     }
+
 
     private fun playNumberWithStereo(context: Context, number: Int, isRight: Boolean) {
         if (ttsStereo == null) {
             ttsStereo = TextToSpeech(context) { status ->
                 if (status == TextToSpeech.SUCCESS) {
                     ttsStereo?.language = Locale.ENGLISH
-                    // NOTE: No public stereo panning API in TTS. Consider using SoundPool or AudioTrack for actual stereo effects.
-                    ttsStereo?.speak("The number is $number", TextToSpeech.QUEUE_FLUSH, null, "stereo")
+                    // Use the updated string resource that includes the number dynamically
+                    ttsStereo?.speak(getString(R.string.number_is, number), TextToSpeech.QUEUE_FLUSH, null, "stereo")
                 }
             }
         } else {
-            ttsStereo?.speak("The number is $number", TextToSpeech.QUEUE_FLUSH, null, "stereo")
+            // Reuse the TTS instance and speak the number
+            ttsStereo?.speak(getString(R.string.number_is, number), TextToSpeech.QUEUE_FLUSH, null, "stereo")
         }
     }
 
@@ -160,8 +164,8 @@ class SterioFragment : Fragment(), Hintable {
     private fun submitAnswer() {
         val userInput = binding?.answerEt?.text.toString()
         if (userInput.isEmpty()) {
-            announce("Please enter an answer before submitting.")
-            Toast.makeText(requireContext(), "Please enter an answer!", Toast.LENGTH_SHORT).show()
+            announce(getString(R.string.enter_answer_before_submitting))
+            Toast.makeText(requireContext(), getString(R.string.enter_answer), Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -170,7 +174,7 @@ class SterioFragment : Fragment(), Hintable {
     }
 
     private fun showResultDialog(isCorrect: Boolean) {
-        val message = if (isCorrect) "Right Answer!" else "Wrong Answer. Try again."
+        val message = if (isCorrect) getString(R.string.right_answer) else getString(R.string.wrong_answer)
         val gifResource = if (isCorrect) R.drawable.right else R.drawable.wrong
 
         val dialogBinding = DialogResultBinding.inflate(layoutInflater)
@@ -192,9 +196,9 @@ class SterioFragment : Fragment(), Hintable {
     }
 
     private fun setAccessibilityDescriptions() {
-        binding?.readQuestionBtn?.contentDescription = "Read question aloud."
-        binding?.answerEt?.contentDescription = "Answer input field."
-        binding?.submitAnswerBtn?.contentDescription = "Submit your answer."
+        binding?.readQuestionBtn?.contentDescription = getString(R.string.read_question_aloud)
+        binding?.answerEt?.contentDescription = getString(R.string.answer_input_field)
+        binding?.submitAnswerBtn?.contentDescription = getString(R.string.submit_your_answer)
     }
 
     private fun announce(message: String) {

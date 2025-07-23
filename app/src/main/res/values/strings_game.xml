@@ -94,11 +94,25 @@
 
     <!-- Sterio Sound-->
     <string name="audio_instruction">Listen carefully  substract first number from second number.</string>
-    <string name="audio_instruction_description">Instruction. Listen carefully. Tap Read the Question to hear the numbers before solving.</string>
+    <string name="audio_instruction_description">Instruction. Listen carefully.   Read the Question to hear the numbers before solving.</string>
     <string name="read_question">Read the Question</string>
     <string name="read_question_description">Button to read the math question aloud. Double tap to listen.</string>
     <string name="enter_answer_hint">Enter your answer</string>
     <string name="your_answer_here">Your Answer Here</string>
+    <string name="no_stereo_questions">No stereo questions found.</string>
+    <string name="all_questions_completed">All questions completed!</string>
+    <string name="new_question_ready">A new question is ready. Tap Read the Question to listen.</string>
+    <string name="subtract_numbers">Subtract second number %1$d from first number %2$d</string>
+    <string name="enter_answer_before_submitting">Please enter an answer before submitting.</string>
+    <string name="enter_answer">Please enter an answer!</string>
+    <string name="right_answer">Right Answer!</string>
+    <string name="number_is">The number is %1$d</string>
+    <string name="wrong_answer">Wrong Answer. Try again.</string>
+    <string name="read_question_aloud">Read question aloud.</string>
+    <string name="answer_input_field">Answer input field.</string>
+    <string name="submit_your_answer">Submit your answer.</string>
+
+
 
     <!-- Mental calcuation-->
 

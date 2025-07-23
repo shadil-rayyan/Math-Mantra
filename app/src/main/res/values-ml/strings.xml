@@ -77,8 +77,7 @@
     <string name="submit">സമർപ്പിക്കുക</string>
     <string name="next">അടുത്തത്</string>
 
-    <string name="right_answer">ശരിയായ ഉത്തരം!</string>
-    <string name="wrong_answer">തെറ്റായ ഉത്തരം!</string>
+
     <string name="correct_answer">ശരിയായ ഉത്തരം</string>
     <string name="task_completed">പ്രവൃത്തി പൂർത്തിയായി</string>
     <string name="appreciation_message">ശരിയായി പോകുന്നു</string>
