@@ -27,6 +27,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.util.Log
 
 class AngleFragment : Fragment(), Hintable {
 
@@ -40,7 +41,6 @@ class AngleFragment : Fragment(), Hintable {
     private lateinit var angleUpdateHandler: Handler
     private var angleUpdateRunnable: Runnable? = null
 
-    private var holdStartTime: Long = 0
     private var holdRunnable: Runnable? = null
     private var isHolding = false
 
@@ -48,7 +48,7 @@ class AngleFragment : Fragment(), Hintable {
     private var currentAngleQuestionIndex = 0
 
     override fun onCreateView(
-        @NonNull inflater: LayoutInflater,
+        inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
@@ -66,16 +66,14 @@ class AngleFragment : Fragment(), Hintable {
         angleUpdateHandler = Handler(Looper.getMainLooper())
         setHasOptionsMenu(true)
 
-        // ✅ Load angle questions asynchronously
         loadQuestionsAsync()
 
         return view
     }
 
-    // Load questions asynchronously using coroutine
     private fun loadQuestionsAsync() {
         val difficultyNum = DifficultyPreferences.getDifficulty(requireContext())
-        var difficulty = difficultyNum.toString()
+        val difficulty = difficultyNum.toString()
         val lang = LocaleHelper.getLanguage(context) ?: "en"
 
         lifecycleScope.launch {
@@ -85,8 +83,19 @@ class AngleFragment : Fragment(), Hintable {
                 )
             }
 
+            Log.d("AngleFragment", "Loaded ${angleQuestions.size} questions")
 
-            // Ensure the fragment is still added before updating UI
+            if (angleQuestions.isEmpty()) {
+                questionTextView.text = getString(R.string.no_questions_available)
+                return@launch
+            }
+
+            // Reset index and baseAzimuth when questions are loaded
+            currentAngleQuestionIndex = 0
+            baseAzimuth = -1f
+            questionAnswered = false
+            isHolding = false
+
             if (isAdded) {
                 generateNewQuestion()
             }
@@ -102,6 +111,7 @@ class AngleFragment : Fragment(), Hintable {
         super.onDestroyView()
         rotationSensorUtility.unregisterListener()
         angleUpdateRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
+        holdRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
     }
 
     override fun onStart() {
@@ -115,9 +125,9 @@ class AngleFragment : Fragment(), Hintable {
     }
 
     private fun onRotationChanged(azimuth: Float) {
+        // Set base azimuth only once per question, do not call generateNewQuestion here
         if (baseAzimuth < 0) {
             baseAzimuth = azimuth
-            generateNewQuestion()
             return
         }
 
@@ -137,7 +147,6 @@ class AngleFragment : Fragment(), Hintable {
         if (withinRange) {
             if (!isHolding) {
                 isHolding = true
-                holdStartTime = System.currentTimeMillis()
 
                 holdRunnable = Runnable {
                     if (isHolding) {
@@ -201,6 +210,8 @@ class AngleFragment : Fragment(), Hintable {
         val question = angleQuestions[currentAngleQuestionIndex++]
         targetRotation = question.answer.toFloat()
         questionAnswered = false
+        isHolding = false
+        baseAzimuth = -1f  // Reset base azimuth so relative angle recalculates for this question
 
         questionTextView.text = question.expression
 
@@ -236,21 +247,10 @@ class AngleFragment : Fragment(), Hintable {
             .commit()
     }
 
-    // Rotation Sensor Utility integrated here
     class RotationSensorUtility(context: Context, private val listener: RotationListener) : SensorEventListener {
 
         private val sensorManager: SensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
         private val rotationSensor: Sensor? = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
-
-        init {
-            rotationSensor?.let {
-                sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
-            }
-        }
-
-        interface RotationListener {
-            fun onRotationChanged(azimuth: Float, pitch: Float, roll: Float)
-        }
 
         fun unregisterListener() {
             sensorManager.unregisterListener(this)
@@ -260,6 +260,10 @@ class AngleFragment : Fragment(), Hintable {
             rotationSensor?.let {
                 sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_UI)
             }
+        }
+
+        interface RotationListener {
+            fun onRotationChanged(azimuth: Float, pitch: Float, roll: Float)
         }
 
         override fun onSensorChanged(event: SensorEvent?) {
@@ -278,7 +282,12 @@ class AngleFragment : Fragment(), Hintable {
         }
 
         override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-            // Do nothing
+            // No-op
+        }
+
+        init {
+            registerListener()
         }
     }
 }
+
