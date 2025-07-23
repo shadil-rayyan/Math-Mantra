@@ -93,7 +93,7 @@
 
 
     <!-- Sterio Sound-->
-    <string name="audio_instruction">Listen carefully  substract first number from second number.</string>
+    <string name="audio_instruction">Listen carefully  substract second number from first number.</string>
     <string name="audio_instruction_description">Instruction. Listen carefully.   Read the Question to hear the numbers before solving.</string>
     <string name="read_question">Read the Question</string>
     <string name="read_question_description">Button to read the math question aloud. Double tap to listen.</string>
