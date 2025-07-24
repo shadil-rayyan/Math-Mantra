@@ -1,11 +1,11 @@
 package com.zendalona.zmantra.view.game
 
+import android.content.Context
 import android.media.MediaPlayer
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +24,6 @@ import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import kotlinx.coroutines.launch
-import com.zendalona.zmantra.utility.common.*
 
 class MentalCalculationFragment : Fragment(), Hintable {
 
@@ -59,8 +58,10 @@ class MentalCalculationFragment : Fragment(), Hintable {
         binding?.apply {
             readQuestionBtn.setOnClickListener { onReadQuestionClicked() }
             submitAnswerBtn.setOnClickListener { checkAnswer() }
-            answerEt.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
+            answerEt.setOnEditorActionListener { _, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN)
+                ) {
                     checkAnswer()
                     true
                 } else false
@@ -72,21 +73,16 @@ class MentalCalculationFragment : Fragment(), Hintable {
     }
 
     private fun onReadQuestionClicked() {
-        // Interrupt any ongoing reveal
         if (isRevealing) handler.removeCallbacksAndMessages(null)
+
         val question = questionList.getOrNull(currentQuestionIndex) ?: return
         val expression = question.expression
 
-        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            // TalkBack users: announce full question
-            binding?.mentalCalculation?.announceForAccessibility(expression)
-        } else {
-            // Visual reveal for non-TalkBack users
-            revealTokens = expression.split(" ")
-            revealIndex = 0
-            isRevealing = true
-            revealNextToken()
-        }
+        // 🔄 Always reveal token by token — for everyone
+        revealTokens = expression.split(" ")
+        revealIndex = 0
+        isRevealing = true
+        revealNextToken()
     }
 
     private fun revealNextToken() {
@@ -94,12 +90,19 @@ class MentalCalculationFragment : Fragment(), Hintable {
             isRevealing = false
             return
         }
+
         val token = revealTokens[revealIndex].replace("/", "÷")
+
         binding?.mentalCalculation?.apply {
             text = token
-            contentDescription = null
+            // ✅ Announce for TalkBack users
+            if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                announceForAccessibility(token)
+            }
         }
+
         revealIndex++
+
         handler.postDelayed({
             binding?.mentalCalculation?.text = ""
             revealNextToken()
@@ -113,9 +116,11 @@ class MentalCalculationFragment : Fragment(), Hintable {
             }
             return
         }
+
         wrongAttempts = 0
         val q = questionList[currentQuestionIndex]
         correctAnswer = q.answer
+
         binding?.apply {
             answerEt.setText("")
             mentalCalculation.text = ""
@@ -136,6 +141,10 @@ class MentalCalculationFragment : Fragment(), Hintable {
             binding?.answerEt?.isEnabled = true
             binding?.submitAnswerBtn?.isEnabled = true
             binding?.answerEt?.requestFocus()
+
+            // Show soft keyboard
+            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.showSoftInput(binding?.answerEt, InputMethodManager.SHOW_IMPLICIT)
         }, tokens.size * 1000L + 500)
     }
 
@@ -145,26 +154,36 @@ class MentalCalculationFragment : Fragment(), Hintable {
             Toast.makeText(context, R.string.enter_answer, Toast.LENGTH_SHORT).show()
             return
         }
+
         val userAnswer = input.toIntOrNull()
         if (userAnswer == null) {
             Toast.makeText(context, R.string.wrong_answer, Toast.LENGTH_SHORT).show()
             return
         }
+
         val isCorrect = userAnswer == correctAnswer
         val elapsedSec = (System.currentTimeMillis() - startTime) / 1000.0
         val grade = GradingUtils.getGrade(elapsedSec, questionList[currentQuestionIndex].timeLimit.toDouble(), isCorrect)
 
         if (isCorrect) {
-            if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) tts.speak(getString(R.string.correct_answer))
-            if (questionList[currentQuestionIndex].celebration) MediaPlayer.create(context, R.raw.bell_ring)?.start()
+            if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                tts.speak(getString(R.string.correct_answer))
+            }
+            if (questionList[currentQuestionIndex].celebration) {
+                MediaPlayer.create(context, R.raw.bell_ring)?.start()
+            }
+
             DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                currentQuestionIndex++; loadNextQuestion()
+                currentQuestionIndex++
+                loadNextQuestion()
             }
         } else {
             wrongAttempts++
             if (wrongAttempts >= 3) {
-                if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) tts.speak(getString(R.string.shake_game_over))
-
+                if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                    tts.speak(getString(R.string.shake_game_over))
+                }
+                endGameWithScore()
             } else {
                 DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
                     binding?.answerEt?.setText("")

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.*
+import android.view.accessibility.AccessibilityEvent
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -215,11 +216,24 @@ class NumberLineFragment : Fragment(), Hintable {
         answer = question.answer
 
         val questionBrief = question.expression.take(40)
-        binding?.numberLineQuestion?.text = questionBrief
-        tts?.speak(questionDesc)
+        binding?.numberLineQuestion?.apply {
+            text = questionBrief
+            contentDescription = questionDesc  // full expression for TalkBack
+            importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
 
+            // Announce the updated question immediately if TalkBack is active
+            post {
+                // 1. Move a11y focus to this view
+                this.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+                // 2. Then explicitly announce the full expression
+                this.announceForAccessibility(questionDesc)
+            }
+        }
+
+//        tts?.speak(questionDesc)
         return "${question.expression} = ${question.answer}"
     }
+
 
 
     override fun showHint() {
