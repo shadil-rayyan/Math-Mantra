@@ -131,6 +131,8 @@
     <string name="left">left</string>
     <string name="standing_on">You re standing on %1$s. </string>
     <string name="what_is">What is %1$s %2$s %3$s? </string>
+    <string name="current_position">Current position: %1$d</string>
+
     <string name="units_to_direction">Move %1$s units to the %2$s of Number line.</string>
     <string name="number_line_question">What is 0 + 12?</string>
     <string name="number_line_question_description">Question. What is 0 plus 12? Double tap to repeat the question.</string>

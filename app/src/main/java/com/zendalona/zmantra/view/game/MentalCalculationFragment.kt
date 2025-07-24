@@ -24,6 +24,7 @@ import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
 import kotlinx.coroutines.launch
+import com.zendalona.zmantra.utility.common.*
 
 class MentalCalculationFragment : Fragment(), Hintable {
 
@@ -35,48 +36,74 @@ class MentalCalculationFragment : Fragment(), Hintable {
     private var currentQuestionIndex = 0
     private var correctAnswer = 0
     private var wrongAttempts = 0
+    private var revealIndex = 0
+    private var revealTokens: List<String> = listOf()
+    private var isRevealing = false
     private var startTime: Long = 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentGameMentalCalculationBinding.inflate(inflater, container, false)
         tts = TTSUtility(requireContext())
-
-        val lang = LocaleHelper.getLanguage(requireContext())
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
 
         lifecycleScope.launch {
             questionList = ExcelQuestionLoader.loadQuestionsFromExcel(
                 requireContext(),
-                lang,
+                LocaleHelper.getLanguage(requireContext()),
                 "mental",
-                difficulty.toString()
+                DifficultyPreferences.getDifficulty(requireContext()).toString()
             )
+            if (questionList.isEmpty()) questionList = listOf(GameQuestion("1 + 2", 3))
             loadNextQuestion()
-
-        }
-        if (questionList.isEmpty()) {
-            questionList = listOf(GameQuestion("1 + 2", 3))
         }
 
-
-        binding?.submitAnswerBtn?.setOnClickListener { checkAnswer() }
-        binding?.answerEt?.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                checkAnswer()
-                true
-            } else false
+        binding?.apply {
+            readQuestionBtn.setOnClickListener { onReadQuestionClicked() }
+            submitAnswerBtn.setOnClickListener { checkAnswer() }
+            answerEt.setOnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    checkAnswer()
+                    true
+                } else false
+            }
         }
 
         setHasOptionsMenu(true)
         return binding!!.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    private fun onReadQuestionClicked() {
+        // Interrupt any ongoing reveal
+        if (isRevealing) handler.removeCallbacksAndMessages(null)
+        val question = questionList.getOrNull(currentQuestionIndex) ?: return
+        val expression = question.expression
+
+        if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+            // TalkBack users: announce full question
+            binding?.mentalCalculation?.announceForAccessibility(expression)
+        } else {
+            // Visual reveal for non-TalkBack users
+            revealTokens = expression.split(" ")
+            revealIndex = 0
+            isRevealing = true
+            revealNextToken()
+        }
+    }
+
+    private fun revealNextToken() {
+        if (revealIndex >= revealTokens.size) {
+            isRevealing = false
+            return
+        }
+        val token = revealTokens[revealIndex].replace("/", "÷")
+        binding?.mentalCalculation?.apply {
+            text = token
+            contentDescription = null
+        }
+        revealIndex++
+        handler.postDelayed({
+            binding?.mentalCalculation?.text = ""
+            revealNextToken()
+        }, 1000)
     }
 
     private fun loadNextQuestion() {
@@ -84,106 +111,73 @@ class MentalCalculationFragment : Fragment(), Hintable {
             if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
                 tts.speak(getString(R.string.shake_game_over))
             }
-            endGameWithScore()
             return
         }
-
         wrongAttempts = 0
-        val question = questionList[currentQuestionIndex]
-        correctAnswer = question.answer
+        val q = questionList[currentQuestionIndex]
+        correctAnswer = q.answer
+        binding?.apply {
+            answerEt.setText("")
+            mentalCalculation.text = ""
+            answerEt.isEnabled = false
+            submitAnswerBtn.isEnabled = false
+        }
 
-        binding?.answerEt?.setText("")
-        binding?.mentalCalculation?.text = ""
-        binding?.answerEt?.isEnabled = false
-        binding?.submitAnswerBtn?.isEnabled = false
-
-        val tokens = question.expression.split(" ")
+        val tokens = q.expression.split(" ")
         startTime = System.currentTimeMillis()
 
         if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-            val spokenText = TTSHelper.formatMathText(question.expression)
             handler.postDelayed({
-                tts.speak("Solve $spokenText")
-            }, 1000)
-        }
-
-        revealTokens(tokens, 0)
-    }
-
-    private fun revealTokens(tokens: List<String>, index: Int) {
-        if (index >= tokens.size) {
-            handler.postDelayed({
-                binding?.answerEt?.isEnabled = true
-                binding?.submitAnswerBtn?.isEnabled = true
-                binding?.answerEt?.requestFocus()
-            }, 300)
-            return
-        }
-
-        val token = tokens[index].replace("/", "÷")
-
-        binding?.mentalCalculation?.apply {
-            text = token
-            contentDescription = null
-            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_NONE
+                tts.speak("Solve ${TTSHelper.formatMathText(q.expression)}")
+            }, 500)
         }
 
         handler.postDelayed({
-            binding?.mentalCalculation?.text = ""
-            revealTokens(tokens, index + 1)
-        }, 4000)
+            binding?.answerEt?.isEnabled = true
+            binding?.submitAnswerBtn?.isEnabled = true
+            binding?.answerEt?.requestFocus()
+        }, tokens.size * 1000L + 500)
     }
 
     private fun checkAnswer() {
-        val userInput = binding?.answerEt?.text.toString().trim()
-        if (userInput.isEmpty()) {
-            Toast.makeText(context, "Enter your answer", Toast.LENGTH_SHORT).show()
+        val input = binding?.answerEt?.text.toString().trim()
+        if (input.isEmpty()) {
+            Toast.makeText(context, R.string.enter_answer, Toast.LENGTH_SHORT).show()
             return
         }
+        val userAnswer = input.toIntOrNull()
+        if (userAnswer == null) {
+            Toast.makeText(context, R.string.wrong_answer, Toast.LENGTH_SHORT).show()
+            return
+        }
+        val isCorrect = userAnswer == correctAnswer
+        val elapsedSec = (System.currentTimeMillis() - startTime) / 1000.0
+        val grade = GradingUtils.getGrade(elapsedSec, questionList[currentQuestionIndex].timeLimit.toDouble(), isCorrect)
 
-        try {
-            val userAnswer = userInput.toInt()
-            val isCorrect = userAnswer == correctAnswer
-            val elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000.0
-            val question = questionList[currentQuestionIndex]
-            val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
+        if (isCorrect) {
+            if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) tts.speak(getString(R.string.correct_answer))
+            if (questionList[currentQuestionIndex].celebration) MediaPlayer.create(context, R.raw.bell_ring)?.start()
+            DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
+                currentQuestionIndex++; loadNextQuestion()
+            }
+        } else {
+            wrongAttempts++
+            if (wrongAttempts >= 3) {
+                if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) tts.speak(getString(R.string.shake_game_over))
 
-            if (isCorrect) {
-                if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-                    tts.speak("Correct")
-                }
-                if (question.celebration) {
-                    MediaPlayer.create(context, R.raw.bell_ring)?.start()
-                }
-                DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade) {
-                    currentQuestionIndex++
-                    loadNextQuestion()
-                }
             } else {
-                wrongAttempts++
-                if (wrongAttempts >= 3) {
-                    if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-                        tts.speak(getString(R.string.shake_game_over))
-                    }
-                    endGameWithScore()
-                } else {
-                    DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
-                        binding?.answerEt?.setText("")
-                        binding?.answerEt?.requestFocus()
-                    }
+                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.shake_failure)) {
+                    binding?.answerEt?.setText("")
+                    binding?.answerEt?.requestFocus()
                 }
             }
-        } catch (e: NumberFormatException) {
-            Toast.makeText(context, "Please enter a valid number", Toast.LENGTH_SHORT).show()
         }
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "mental")
+        val hintFragment = HintFragment().apply {
+            arguments = Bundle().apply { putString("mode", "mental") }
         }
-        val hintFragment = HintFragment().apply { arguments = bundle }
-
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)

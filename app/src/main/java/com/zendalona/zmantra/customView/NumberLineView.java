@@ -1,5 +1,7 @@
 package com.zendalona.zmantra.customView;
 
+import static android.provider.Settings.System.getString;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -119,7 +121,8 @@ public class NumberLineView extends View {
 
     private void announcePosition() {
         // Announce for accessibility: only when this view updates
-        announceForAccessibility("Current position: " + currentPosition);
+        String message = getContext().getString(R.string.current_position, currentPosition);
+        announceForAccessibility(message);
     }
 
 

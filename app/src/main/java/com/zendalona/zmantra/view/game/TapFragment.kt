@@ -94,11 +94,11 @@ class TapFragment : Fragment(), Hintable {
         questionStartTime = System.currentTimeMillis()
 
         val instructionText = getString(R.string.tap_target_expression, question.expression)
-        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")}"
+//        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")}"
 
         binding?.tapMeTv?.apply {
             text = instructionText
-            contentDescription = speakInstruction
+            contentDescription = instructionText
             accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
             isFocusable = true
             isFocusableInTouchMode = true
@@ -106,12 +106,12 @@ class TapFragment : Fragment(), Hintable {
             // Request focus and announce the instruction after a short delay to ensure the view is fully loaded
             postDelayed({
                 requestFocus()
-                announceForAccessibility(speakInstruction)
+                announceForAccessibility(instructionText)
             }, 500)
         }
 
         // Use announceForAccessibility for accessibility
-        binding?.tapMeTv?.announceForAccessibility(speakInstruction)
+        binding?.tapMeTv?.announceForAccessibility(instructionText)
     }
 
     private fun onTap() {

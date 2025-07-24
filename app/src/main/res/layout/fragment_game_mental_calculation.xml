@@ -44,6 +44,20 @@
             android:focusableInTouchMode="false"
             android:focusable="false" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/read_question_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="?attr/colorPrimary"
+            android:contentDescription="@string/read_question_description"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:importantForAccessibility="yes"
+            android:text="@string/read_question"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="20sp" />
+
 
         <!-- Answer Input Field -->
         <com.google.android.material.textfield.TextInputLayout

@@ -127,6 +127,7 @@
     <string name="left">ഇടത്</string>
     <string name="standing_on">നിങ്ങൾ %1$s ൽ നിൽക്കുന്നു.</string>
     <string name="what_is">%1$s %2$s %3$s എത്ര?</string>
+    <string name="current_position">നിലവിലെ സ്ഥാനം: %1$d</string>
     <string name="units_to_direction">നമ്പർ ലൈൻ ൽ %1$s യൂണിറ്റ് %2$s നീക്കുക.</string>
     <string name="number_line_question">0 + 12 എത്ര?</string>
     <string name="number_line_question_description">ചോദ്യമാണ്. 0 പ്ലസ് 12 എത്ര? ഡബിൾ ടാപ്പ് ചെയ്ത് ചോദ്യം ആവർത്തിക്കുക.</string>
