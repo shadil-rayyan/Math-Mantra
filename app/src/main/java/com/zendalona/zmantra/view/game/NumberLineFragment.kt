@@ -110,7 +110,16 @@ class NumberLineFragment : Fragment(), Hintable {
             val position = viewModel.currentPosition.value ?: 0
 
             binding?.numberLineView?.updateNumberLine(start, end, position)
-            binding?.currentPositionTv?.text = "$CURRENT_POSITION $position"
+            binding?.currentPositionTv?.apply {
+                text = "$CURRENT_POSITION $position"
+                contentDescription = "$CURRENT_POSITION $position"
+
+                // Force accessibility event
+                post {
+//                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+                    announceForAccessibility("$CURRENT_POSITION $position")
+                }
+            }
 
             // Cancel previous
             answerCheckRunnable?.let { handler.removeCallbacks(it) }
