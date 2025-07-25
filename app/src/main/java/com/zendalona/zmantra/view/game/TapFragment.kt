@@ -1,252 +1,144 @@
 package com.zendalona.zmantra.view.game
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
 import android.view.MotionEvent
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import android.view.View
+import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.model.Hintable
-import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.view.base.BaseGameFragment
 
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.utility.common.*
-import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.view.HintFragment
-import kotlinx.coroutines.launch
-
-class TapFragment : Fragment(), Hintable {
+class TapFragment : BaseGameFragment() {
 
     private var binding: FragmentGameTapBinding? = null
     private val handler = Handler(Looper.getMainLooper())
-    private lateinit var tts: TTSUtility
 
-    private var index = 0
-    private var count = 0
-    private var retryCount = 0
-    private var failCountOnQuestion = 0
-    private var totalFailedQuestions = 0
-    private var questionStartTime: Long = 0
-    private var answerCheckScheduled = false
-
+    private var questionIndex = 0
+    private var tapCount = 0
+    private var failCount = 0
     private var questions: List<GameQuestion> = emptyList()
+    private var questionStartTime = 0L
+    private var answerChecked = false
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-        val lang = LocaleHelper.getLanguage(requireContext())
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        tts = TTSUtility(requireContext())
-
-        lifecycleScope.launch {
-            questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(),
-                lang,
-                "tap",
-                difficulty.toString()
-            )
-            startGame()
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameTapBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
 
         binding?.root?.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                onTap()
-            }
+            if (event.action == MotionEvent.ACTION_DOWN) onTap()
             true
         }
 
         return binding!!.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadGifIfDefined()
     }
 
-    private fun startGame() {
-        if (index >= questions.size) {
-            endGameWithScore()
+    override fun getModeName(): String = "tap"
+
+    override fun onQuestionsLoaded(questions: List<GameQuestion>) {
+        this.questions = questions
+        startQuestion()
+    }
+
+    override fun getGifImageView() = binding?.animatedView
+    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone // must be a .gif in drawable
+
+    private fun startQuestion() {
+        if (questionIndex >= questions.size) {
+            endGame()
             return
         }
 
-        count = 0
-        retryCount = 0
-        failCountOnQuestion = 0
-        answerCheckScheduled = false
-        binding?.tapCount?.text = "0"
-
-        val question = questions[index]
+        val question = questions[questionIndex]
+        tapCount = 0
+        failCount = 0
+        answerChecked = false
         questionStartTime = System.currentTimeMillis()
 
-        val instructionText = getString(R.string.tap_target_expression, question.expression)
-//        val speakInstruction = "Tap ${question.expression.replace("+", " plus ")}"
+        val instruction = getString(R.string.tap_target_expression, question.expression)
+        binding?.tapInstruction?.text = instruction
+        binding?.tapInstruction?.contentDescription = instruction
+        announce(binding?.tapInstruction, instruction)
 
-        binding?.tapMeTv?.apply {
-            text = instructionText
-            contentDescription = instructionText
-            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE
-            isFocusable = true
-            isFocusableInTouchMode = true
-
-            // Request focus and announce the instruction after a short delay to ensure the view is fully loaded
-            postDelayed({
-                requestFocus()
-                announceForAccessibility(instructionText)
-            }, 500)
-        }
-
-        // Use announceForAccessibility for accessibility
-        binding?.tapMeTv?.announceForAccessibility(instructionText)
+        binding?.tapCount?.text = getString(R.string.initial_tap_count)
     }
 
     private fun onTap() {
-        count++
-        binding?.tapCount?.text = count.toString()
+        if (answerChecked || questionIndex >= questions.size) return
 
-        // Update contentDescription for accessibility (TalkBack will announce it)
-        binding?.tapCount?.contentDescription = getString(R.string.tap_count_announcement, count)
+        tapCount++
+        binding?.tapCount?.text = tapCount.toString()
+        announce(binding?.tapCount, tapCount.toString())
 
-        // Vibration feedback (good practice to confirm user action)
-        VibrationUtils.vibrate(requireContext(), 100)
-
-        // Announce the tap count for accessibility using announceForAccessibility
-        binding?.tapCount?.announceForAccessibility(getString(R.string.tap_count_announcement, count))
-
-        val question = questions[index]
-
-        if (count == question.answer && !answerCheckScheduled) {
-            answerCheckScheduled = true
-
-            handler.postDelayed({
-                if (count == question.answer) {
-                    checkAnswer(true)
-                } else if (count > question.answer) {
-                    checkAnswer(false)
-                }
-            }, 3000)
-
-        } else if (count > question.answer && !answerCheckScheduled) {
-            checkAnswer(false)
-        }
-    }
-
-    private fun checkAnswer(isCorrect: Boolean) {
-        val question = questions[index]
+        val question = questions[questionIndex]
+        val correctAnswer = question.answer
         val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-        val grade = GradingUtils.getGrade(elapsedSeconds, question.timeLimit.toDouble(), isCorrect)
+        val timeLimit = question.timeLimit.toDouble() ?: 10.0
 
-        if (isCorrect) {
-            if (question.celebration) {
-                MediaPlayer.create(requireContext(), R.raw.bell_ring)?.apply {
-                    setOnCompletionListener { release() }
-                    start()
-                }
-            }
+        if (tapCount == correctAnswer) {
+            answerChecked = true
+            handleAnswerSubmission(
+                userAnswer = tapCount.toString(),
+                correctAnswer = correctAnswer.toString(),
+                elapsedTime = elapsedSeconds,
+                timeLimit = timeLimit,
+                onCorrect = { goToNextQuestion() },
+                onIncorrect = {},
+                onShowCorrect = {}
+            )
+        } else if (tapCount > correctAnswer) {
+            failCount++
+            answerChecked = true
 
-            DialogUtils.showResultDialog(requireContext(), layoutInflater,tts, grade) {
-                nextQuestion()
-            }
-
-        } else {
-            retryCount++
-            failCountOnQuestion++
-
-            if (failCountOnQuestion >= 6) {
-                totalFailedQuestions++
-                retryCount = 0
-                failCountOnQuestion = 0
-
-                if (totalFailedQuestions >= 3) {
-                    endGameWithScore()
-                } else {
-                    DialogUtils.showNextDialog(requireContext(), layoutInflater,tts, getString(R.string.moving_to_next_question)) {
-                        nextQuestion()
-                    }
-                }
-                return
-            }
-
-            if (retryCount >= 3) {
-                retryCount = 0
-                DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater,tts, question.answer.toString()) {
-                    resetQuestion()
-                }
+            if (failCount >= 3) {
+                handleAnswerSubmission(
+                    userAnswer = "wrong",
+                    correctAnswer = correctAnswer.toString(),
+                    elapsedTime = elapsedSeconds,
+                    timeLimit = timeLimit,
+                    onCorrect = {},
+                    onIncorrect = {},
+                    onShowCorrect = { goToNextQuestion() }
+                )
             } else {
-                DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts,getString(R.string.tap_failure)) {
-                    resetQuestion()
-                }
+                handleAnswerSubmission(
+                    userAnswer = "wrong",
+                    correctAnswer = correctAnswer.toString(),
+                    elapsedTime = elapsedSeconds,
+                    timeLimit = timeLimit,
+                    onCorrect = {},
+                    onIncorrect = {
+                        tapCount = 0
+                        answerChecked = false
+                        binding?.tapCount?.text = getString(R.string.initial_tap_count)
+                        announce(binding?.tapCount, binding?.tapCount?.text.toString())
+                    },
+                    onShowCorrect = {}
+                )
             }
         }
     }
 
-    private fun resetQuestion() {
-        count = 0
-        answerCheckScheduled = false
-        binding?.tapCount?.text = "0"
-
-        val question = questions[index]
-        val speakInstruction = getString(R.string.tap_target_expression, question.expression.replace("+", " plus "))
-
-        // Use announceForAccessibility to make TalkBack announce the instruction
-        binding?.tapMeTv?.apply {
-            contentDescription = speakInstruction // Set the contentDescription for accessibility
-            accessibilityLiveRegion = View.ACCESSIBILITY_LIVE_REGION_POLITE // Make sure it announces on changes
-            requestFocus() // Request focus to ensure accessibility services know which element to read
-            postDelayed({
-                announceForAccessibility(speakInstruction) // Announce the instruction to TalkBack
-            }, 500)
-        }
-    }
-
-    private fun nextQuestion() {
-        index++
-        startGame()
-    }
-
-    override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "tap")
-        }
-        val hintFragment = HintFragment().apply { arguments = bundle }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, hintFragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.disableExploreByTouch(it)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        AccessibilityHelper.getAccessibilityService()?.let {
-            AccessibilityHelper.resetExploreByTouch(it)
-        }
+    private fun goToNextQuestion() {
+        questionIndex++
+        handler.postDelayed({ startQuestion() }, 1200)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding = null
         handler.removeCallbacksAndMessages(null)
+        binding = null
     }
 }

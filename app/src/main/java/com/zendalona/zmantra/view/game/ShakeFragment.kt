@@ -11,13 +11,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat.getSystemService
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameShakeBinding
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.view.base.BaseGameFragment
 import kotlin.math.sqrt
-import kotlin.text.toDoubleOrNull
 
 class ShakeFragment : BaseGameFragment(), SensorEventListener {
 
@@ -29,17 +27,19 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
 
     private var index = 0
     private var count = 0
+    private var wrongAttempts = 0
     private var answerChecked = false
     private var firstShakeTime = 0L
 
     private var isShakingAllowed = true
     private val shakeHandler = Handler(Looper.getMainLooper())
     private val gameHandler = Handler(Looper.getMainLooper())
-    override fun getGifImageView(): ImageView? = binding?.animatedView
-    override fun getGifResource(): Int = R.drawable.game_angle_rotateyourphone
-
 
     private var parsedShakeList: List<GameQuestion> = emptyList()
+
+    override fun getModeName(): String = "shake"
+    override fun getGifImageView(): ImageView? = binding?.animatedView
+    override fun getGifResource(): Int = R.drawable.game_angle_rotateyourphone
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,6 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         sensorManager = requireContext().getSystemService(SensorManager::class.java)
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
         loadGifIfDefined()
-
     }
 
     override fun onResume() {
@@ -76,8 +75,6 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         _binding = null
     }
 
-    override fun getModeName(): String = "shake"
-
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
         parsedShakeList = questions
         startQuestion()
@@ -87,8 +84,8 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         if (parsedShakeList.isEmpty()) return
 
         val question = parsedShakeList[index % parsedShakeList.size]
-
         count = 0
+        wrongAttempts = 0
         answerChecked = false
         firstShakeTime = 0L
 
@@ -122,38 +119,38 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         answerChecked = true
 
         val question = parsedShakeList[index % parsedShakeList.size]
-        val userAnswer = count.toString()
+        val userAnswer = if (forceWrong) "wrong" else count.toString()
         val correctAnswer = question.answer.toString()
 
-        val elapsedSeconds = (System.currentTimeMillis() - firstShakeTime) / 1000.0
-        val timeLimit = question.timeLimit.toDouble() ?: 10.0
+        val elapsedMillis = System.currentTimeMillis() - firstShakeTime
+        val elapsedSeconds = if (elapsedMillis > 0) elapsedMillis / 1000.0 else 0.0
+        val rawLimit = question.timeLimit.toString().toDoubleOrNull()
+        val timeLimit = if (rawLimit == null || rawLimit == 0.0) 10.0 else rawLimit
 
-        // ❗ Temporarily pause shake sensor when result dialog is being shown
         isShakingAllowed = false
 
         handleAnswerSubmission(
-            userAnswer = if (forceWrong) "wrong" else userAnswer,
+            userAnswer = userAnswer,
             correctAnswer = correctAnswer,
             elapsedTime = elapsedSeconds,
             timeLimit = timeLimit,
             onCorrect = {
-                // resume shake detection after dialog
-                gameHandler.postDelayed({ isShakingAllowed = true }, 1000)
                 proceedToNextQuestion()
             },
             onIncorrect = {
+                wrongAttempts++
                 gameHandler.postDelayed({ isShakingAllowed = true }, 1000)
                 resetShake()
             },
             onShowCorrect = {
-                gameHandler.postDelayed({ isShakingAllowed = true }, 1000)
                 proceedToNextQuestion()
             }
         )
+
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
-        if (!isShakingAllowed || event == null || event.sensor.type != Sensor.TYPE_ACCELEROMETER) return
+        if (!isShakingAllowed || event?.sensor?.type != Sensor.TYPE_ACCELEROMETER) return
 
         val x = event.values[0]
         val y = event.values[1]
@@ -193,9 +190,7 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         }
 
         if (count == question.answer && !answerChecked) {
-            gameHandler.postDelayed({
-                checkAnswer()
-            }, 1500)
+            gameHandler.postDelayed({ checkAnswer() }, 1500)
         }
     }
 }

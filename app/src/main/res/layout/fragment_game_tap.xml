@@ -1,76 +1,64 @@
-<FrameLayout
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root_frame"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    tools:context=".view.game.TapFragment"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:importantForAccessibility="yes"
-    android:contentDescription="@string/tap_page_desc">
+    android:contentDescription="@string/tap_page_desc"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Tap Count TextView -->
+        <!-- Tap Count -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tap_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:contentDescription="@string/tap_count_description"
             android:text="@string/initial_tap_count"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="48sp"
-            app:layout_constraintBottom_toTopOf="@+id/tap_me_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/tap_count_description"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/animated_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.1" />
 
-        <!-- ImageView (Rotate Phone Animation) -->
-
-        <!-- Tap Instruction TextView -->
-
+        <!-- GIF View -->
         <ImageView
             android:id="@+id/animated_view"
             android:layout_width="215dp"
             android:layout_height="233dp"
             android:contentDescription="@null"
-            android:focusable="false"
             android:importantForAccessibility="no"
-            android:src="@drawable/game_angle_rotateyourphone"
-            app:layout_constraintBottom_toTopOf="@+id/tap_me_tv"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.489"
+            app:layout_constraintTop_toBottomOf="@+id/tap_count"
+            app:layout_constraintBottom_toTopOf="@+id/tap_instruction"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.668" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Tap Instruction -->
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tap_me_tv"
+            android:id="@+id/tap_instruction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:contentDescription="@string/tap_instruction_description"
             android:text="@string/tap_instruction"
-            android:textAlignment="center"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="28sp"
+            android:textAlignment="center"
+            android:contentDescription="@string/tap_instruction_description"
+            app:layout_constraintTop_toBottomOf="@+id/animated_view"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.85" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/footer_text"
         android:layout_width="wrap_content"
@@ -78,11 +66,10 @@
         android:text="@string/footer"
         android:textColor="?attr/colorOutline"
         android:textSize="12sp"
+        android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="20dp"
-        android:gravity="center"
         android:importantForAccessibility="no"
         android:contentDescription="@null"
-        android:focusableInTouchMode="false"
         android:focusable="false"
-        android:layout_gravity="bottom|center_horizontal" />
+        android:focusableInTouchMode="false" />
 </FrameLayout>
