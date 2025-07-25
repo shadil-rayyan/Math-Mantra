@@ -4,9 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.view.accessibility.AccessibilityManager
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.model.Hintable
@@ -31,6 +33,8 @@ abstract class BaseGameFragment : Fragment(), Hintable {
 
     protected var attemptCount = 0
     protected open val maxAttempts = 3
+    open fun getGifImageView(): ImageView? = null
+    open fun getGifResource(): Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +42,28 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
         tts = TTSUtility(requireContext())
         setHasOptionsMenu(true)
-        loadQuestions()
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadQuestions() // ✅ safe: view exists, lifecycleScope is tied to view
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         tts.shutdown()
+    }
+
+
+    fun loadGifIfDefined() {
+        val imageView = getGifImageView()
+        val gifResId = getGifResource()
+        if (imageView != null && gifResId != null && gifResId != 0) {
+            Glide.with(requireContext())
+                .asGif()
+                .load(gifResId)
+                .into(imageView)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -61,7 +81,8 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     }
 
     protected fun announce(view: View?, message: String) {
-        val am = view?.context?.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+        val am =
+            view?.context?.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
         if (am?.isEnabled == true && am.isTouchExplorationEnabled) {
             view.contentDescription = message
             view.announceForAccessibility(message)
@@ -104,16 +125,34 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     }
 
     protected open fun showRetryDialog(onDismiss: () -> Unit) {
-        DialogUtils.showRetryDialog(requireContext(), layoutInflater, tts, getString(R.string.tap_failure), onDismiss)
+        DialogUtils.showRetryDialog(
+            requireContext(),
+            layoutInflater,
+            tts,
+            getString(R.string.tap_failure),
+            onDismiss
+        )
     }
 
     protected open fun showNextDialog(onDismiss: () -> Unit) {
-        DialogUtils.showNextDialog(requireContext(), layoutInflater, tts, getString(R.string.moving_to_next_question), onDismiss)
+        DialogUtils.showNextDialog(
+            requireContext(),
+            layoutInflater,
+            tts,
+            getString(R.string.moving_to_next_question),
+            onDismiss
+        )
     }
 
 
     protected open fun showCorrectAnswerDialog(answer: String, onDismiss: () -> Unit) {
-        DialogUtils.showCorrectAnswerDialog(requireContext(), layoutInflater, tts, answer, onDismiss)
+        DialogUtils.showCorrectAnswerDialog(
+            requireContext(),
+            layoutInflater,
+            tts,
+            answer,
+            onDismiss
+        )
     }
 
     /**

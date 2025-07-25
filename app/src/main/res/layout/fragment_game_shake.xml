@@ -43,13 +43,13 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:importantForAccessibility="no"
-            android:src="@drawable/game_angle_rotateyourphone"
             app:layout_constraintBottom_toTopOf="@+id/ring_me_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.771" />
+
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/ring_me_tv"
