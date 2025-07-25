@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.zendalona.zmantra.model.GameQuestion
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import net.objecthunter.exp4j.ExpressionBuilder
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.util.*
 import kotlin.random.Random
@@ -16,21 +16,15 @@ object ExcelQuestionLoader {
 
     private const val TAG = "ExcelQuestionLoader"
 
-    // Extract variable names like "a", "b", etc., before * (e.g., a1:9*, b1:9*)
     private fun extractVariables(input: String): List<String> {
         val regex = Regex("""([a-zA-Z])[^*]*\*""")
         val matches = regex.findAll(input)
-        val variables = matches.map { it.groupValues[1] }.distinct().toList()
-        Log.d(TAG, "Extracted variables: $variables from input: $input")
-        return variables
+        return matches.map { it.groupValues[1] }.distinct().toList()
     }
 
-    // Parse operands based on mode (some use words, others use numbers)
     private fun parseInputRange(inputRange: String, mode: String): List<Any> {
-        Log.d(TAG, "Parsing input range: $inputRange")
         val operands = mutableListOf<Any>()
         var current = ""
-
         for (c in inputRange) {
             if (c == '*') {
                 if (current.isNotBlank()) {
@@ -41,213 +35,129 @@ object ExcelQuestionLoader {
                 current += c
             }
         }
-
-        if (current.isNotBlank()) {
-            operands.add(parseSingleOperand(current.trim(), mode))
-        }
-
-        Log.d(TAG, "Parsed operands: $operands")
+        if (current.isNotBlank()) operands.add(parseSingleOperand(current.trim(), mode))
         return operands
     }
 
-    // Parse individual operand string (e.g., a1:9 or aRed,Blue)
     private fun parseSingleOperand(input: String, mode: String): Any {
         return try {
             if (mode in listOf("direction", "drawing")) {
-                val parts = input.drop(1)
-                val options = parts.split(",").map { it.trim() }
-                options.random()
+                input.drop(1).split(",").random().trim()
             } else {
-                val cleanedInput = input.filter { it.isDigit() || it == ',' || it == ':' || it == ';' }
-
-                if (cleanedInput.contains(";")) {
-                    // Split by semicolon
-                    val parts = cleanedInput.split(";").map { it.trim() }
-                    if (parts.size == 2) {
-                        // Left part: parse range or fixed number
-                        val leftValue = if (parts[0].contains(":")) {
-                            val (start, end) = parts[0].split(":").map { it.toInt() }
-                            Random.nextInt(start, end + 1)
-                        } else if (parts[0].contains(",")) {
-                            parts[0].split(",").map { it.toInt() }.random()
-                        } else {
-                            parts[0].toInt()
-                        }
-
-                        // Right part: parse fixed number or random from commas
-                        val rightValue = if (parts[1].contains(",")) {
-                            parts[1].split(",").map { it.toInt() }.random()
-                        } else {
-                            parts[1].toInt()
-                        }
-
-                        leftValue * rightValue
-                    } else {
-                        Log.w(TAG, "Invalid semicolon input (expect 2 parts): $cleanedInput")
-                        0
+                val cleaned = input.filter { it.isDigit() || it == ',' || it == ':' || it == ';' }
+                when {
+                    ";" in cleaned -> {
+                        val (left, right) = cleaned.split(";").map { it.trim() }
+                        val leftVal = parseValue(left)
+                        val rightVal = parseValue(right)
+                        leftVal * rightVal
                     }
-                } else if (cleanedInput.contains(",")) {
-                    cleanedInput.split(",").map { it.toInt() }.random()
-                } else if (cleanedInput.contains(":")) {
-                    val (start, end) = cleanedInput.split(":").map { it.toInt() }
-                    Random.nextInt(start, end + 1)
-                } else {
-                    cleanedInput.toIntOrNull() ?: 0
+                    "," in cleaned -> cleaned.split(",").map { it.toInt() }.random()
+                    ":" in cleaned -> {
+                        val (start, end) = cleaned.split(":").map { it.toInt() }
+                        Random.nextInt(start, end + 1)
+                    }
+                    else -> cleaned.toIntOrNull() ?: 0
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error parsing operand: $input (mode: $mode)", e)
+            Log.e(TAG, "Error parsing operand: $input", e)
             0
         }
     }
 
-    // Replace {a}, {b}, etc. with values
+    private fun parseValue(value: String): Int {
+        return when {
+            "," in value -> value.split(",").map { it.toInt() }.random()
+            ":" in value -> {
+                val (start, end) = value.split(":").map { it.toInt() }
+                Random.nextInt(start, end + 1)
+            }
+            else -> value.toIntOrNull() ?: 0
+        }
+    }
+
     private fun replaceVariables(template: String, variables: List<String>, values: List<Any>): String {
         var updated = template
         for (i in variables.indices) {
             updated = updated.replace("{${variables[i]}}", values[i].toString())
         }
-        Log.d(TAG, "Template: $template → Updated: $updated")
         return updated
     }
 
-    // Evaluate numeric expression (only for numeric modes)
     private fun evaluateEquation(equation: String): Int {
         return try {
-            val result = ExpressionBuilder(equation)
-                .build()
-                .evaluate()
-            Log.d(TAG, "Evaluating: $equation = $result")
-            result.toInt()
+            ExpressionBuilder(equation).build().evaluate().toInt()
         } catch (e: Exception) {
-            Log.e(TAG, "Evaluation failed for: $equation", e)
+            Log.e(TAG, "Failed to evaluate: $equation", e)
             0
         }
     }
 
-    // Main loader function (returns the first question immediately, others load in the background)
+    /** ✅ Called by BaseGameFragment */
     suspend fun loadQuestionsFromExcel(
         context: Context,
         lang: String,
         mode: String,
         difficulty: String
-    ): List<GameQuestion> {
-        val questions = mutableListOf<GameQuestion>()
+    ): List<GameQuestion> = withContext(Dispatchers.IO) {
         val fileName = "questions/${lang.lowercase(Locale.ROOT)}.xlsx"
-        Log.d(TAG, "Loading questions from: $fileName [mode: $mode, difficulty: $difficulty]")
-
         try {
-            context.assets.open(fileName).use { inputStream ->
-                val workbook = WorkbookFactory.create(inputStream)
+            context.assets.open(fileName).use { stream ->
+                val workbook = WorkbookFactory.create(stream)
                 val sheet = workbook.getSheetAt(0)
-
-                // Load the first question immediately (non-blocking)
-                val firstQuestion = loadFirstQuestion(sheet, mode, difficulty)
-                questions.add(firstQuestion)
-
-                // Load the rest of the questions in the background
-                val backgroundQuestions = withContext(Dispatchers.IO) {
-                    loadRemainingQuestions(sheet, mode, difficulty)
-                }
-
-                // Add remaining questions after the background task finishes
-                questions.addAll(backgroundQuestions)
-
+                val questions = loadQuestionsFromSheet(sheet, mode, difficulty)
                 workbook.close()
-                Log.d(TAG, "Loaded total ${questions.size} valid questions")
+                questions
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error loading questions from Excel", e)
+            Log.e(TAG, "Error loading from Excel", e)
+            emptyList()
         }
-
-        return questions
     }
 
-    // Load the first question
-    private fun loadFirstQuestion(sheet: org.apache.poi.ss.usermodel.Sheet, mode: String, difficulty: String): GameQuestion {
-        for (row in sheet) {
-            if (row.rowNum == 0) continue
-            // Add checks for mode and difficulty and return the first matching question
-            val questionTemplate = row.getCell(0)?.toString()
-            val rowModeRaw = row.getCell(1)?.toString()
-            val operandRaw = row.getCell(2)?.toString()
-            val rowDifficultyNum = row.getCell(3)?.toString()
-            val answerExpressionTemplate = row.getCell(4)?.toString()
-            val timeLimitNum = row.getCell(5)?.numericCellValue ?: 20.0
-
-            if (questionTemplate == null || rowModeRaw == null || operandRaw == null ||
-                rowDifficultyNum == null || answerExpressionTemplate == null
-            ) {
-                Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
-                continue
-            }
-
-            val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
-            val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
-            val timeLimit = timeLimitNum.toInt()
-
-            if (rowMode == mode.lowercase(Locale.ROOT) && rowDifficulty == difficulty) {
-                Log.d(TAG, "✅ Matching row found at rowNum=${row.rowNum}")
-                val variables = extractVariables(operandRaw)
-                val operands = parseInputRange(operandRaw, mode)
-
-                if (variables.size != operands.size) {
-                    Log.w(TAG, "Variable and operand count mismatch at row ${row.rowNum}: variables=${variables.size}, operands=${operands.size}")
-                    continue
-                }
-
-                val renderedQuestion = replaceVariables(questionTemplate, variables, operands)
-                val renderedEquation = replaceVariables(answerExpressionTemplate, variables, operands)
-
-                val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedEquation)
-
-                return GameQuestion(renderedQuestion, answer, timeLimit)
-            }
-        }
-        return GameQuestion("No valid question found", 0, 20)
-    }
-
-    // Load remaining questions in the background
-    private fun loadRemainingQuestions(sheet: org.apache.poi.ss.usermodel.Sheet, mode: String, difficulty: String): List<GameQuestion> {
+    /** ✅ Called from splash screen preload cache */
+    fun loadQuestionsFromSheet(
+        sheet: Sheet,
+        mode: String,
+        difficulty: String
+    ): List<GameQuestion> {
         val questions = mutableListOf<GameQuestion>()
         for (row in sheet) {
             if (row.rowNum == 0) continue
-            val questionTemplate = row.getCell(0)?.toString()
-            val rowModeRaw = row.getCell(1)?.toString()
-            val operandRaw = row.getCell(2)?.toString()
-            val rowDifficultyNum = row.getCell(3)?.toString()
-            val answerExpressionTemplate = row.getCell(4)?.toString()
-            val timeLimitNum = row.getCell(5)?.numericCellValue ?: 20.0
 
-            if (questionTemplate == null || rowModeRaw == null || operandRaw == null ||
-                rowDifficultyNum == null || answerExpressionTemplate == null
-            ) {
-                Log.w(TAG, "Row ${row.rowNum} has null/missing required fields. Skipping.")
+            val template = row.getCell(0)?.toString()
+            val rowMode = row.getCell(1)?.toString()?.trim()?.lowercase(Locale.ROOT)
+            val operand = row.getCell(2)?.toString()
+            val diff = row.getCell(3)?.toString()?.toDoubleOrNull()?.toInt()?.toString()
+            val answerTemplate = row.getCell(4)?.toString()
+            val timeLimit = row.getCell(5)?.numericCellValue?.toInt() ?: 20
+
+            if (template == null || rowMode == null || operand == null || diff == null || answerTemplate == null) {
                 continue
             }
 
-            val rowMode = rowModeRaw.trim().lowercase(Locale.ROOT)
-            val rowDifficulty = rowDifficultyNum.toDoubleOrNull()?.toInt()?.toString()
-            val timeLimit = timeLimitNum.toInt()
+            if (rowMode == mode.lowercase(Locale.ROOT) && diff == difficulty) {
+                val variables = extractVariables(operand)
+                val values = parseInputRange(operand, mode)
+                if (variables.size != values.size) continue
 
-            if (rowMode == mode.lowercase(Locale.ROOT) && rowDifficulty == difficulty) {
-                Log.d(TAG, "✅ Matching row found at rowNum=${row.rowNum}")
-                val variables = extractVariables(operandRaw)
-                val operands = parseInputRange(operandRaw, mode)
+                val renderedQ = replaceVariables(template, variables, values)
+                val renderedExpr = replaceVariables(answerTemplate, variables, values)
+                val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedExpr)
 
-                if (variables.size != operands.size) {
-                    Log.w(TAG, "Variable and operand count mismatch at row ${row.rowNum}: variables=${variables.size}, operands=${operands.size}")
-                    continue
-                }
-
-                val renderedQuestion = replaceVariables(questionTemplate, variables, operands)
-                val renderedEquation = replaceVariables(answerExpressionTemplate, variables, operands)
-
-                val answer = if (mode in listOf("direction", "drawing")) 0 else evaluateEquation(renderedEquation)
-
-                questions.add(GameQuestion(renderedQuestion, answer, timeLimit))
+                questions.add(GameQuestion(renderedQ, answer, timeLimit))
             }
         }
         return questions
+    }
+
+    /** ✅ Used once in splash preload */
+    suspend fun loadWorkbook(context: Context, lang: String): Workbook {
+        val fileName = "questions/${lang.lowercase(Locale.ROOT)}.xlsx"
+        return withContext(Dispatchers.IO) {
+            val inputStream = context.assets.open(fileName)
+            WorkbookFactory.create(inputStream)
+        }
     }
 }

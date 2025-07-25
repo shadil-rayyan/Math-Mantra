@@ -8,7 +8,10 @@ import android.view.accessibility.AccessibilityManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-
+import androidx.lifecycle.lifecycleScope
+import com.zendalona.zmantra.utility.excel.QuestionCache
+import com.zendalona.zmantra.utility.settings.LocaleHelper
+import kotlinx.coroutines.launch
 class SplashScreen : AppCompatActivity() {
 
     private val totalSplashTime = 4000L  // 3 seconds
@@ -48,5 +51,11 @@ class SplashScreen : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, totalSplashTime)
+
+        lifecycleScope.launch {
+            val lang = LocaleHelper.getLanguage(this@SplashScreen).ifEmpty { "en" }
+            QuestionCache.preloadAllQuestions(this@SplashScreen, lang)
+        }
+
     }
 }

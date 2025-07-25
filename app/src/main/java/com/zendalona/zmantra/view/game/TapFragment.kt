@@ -17,7 +17,6 @@ class TapFragment : BaseGameFragment() {
 
     private var binding: FragmentGameTapBinding? = null
     private val handler = Handler(Looper.getMainLooper())
-
     private var questionIndex = 0
     private var tapCount = 0
     private var questions: List<GameQuestion> = emptyList()

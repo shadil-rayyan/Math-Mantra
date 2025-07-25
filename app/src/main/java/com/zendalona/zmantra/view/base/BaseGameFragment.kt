@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.*
 import android.view.accessibility.AccessibilityManager
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -17,6 +16,7 @@ import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
 import com.zendalona.zmantra.utility.common.GradingUtils
 import com.zendalona.zmantra.utility.common.TTSUtility
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.utility.excel.QuestionCache
 import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.utility.settings.LocaleHelper
 import com.zendalona.zmantra.view.HintFragment
@@ -43,17 +43,16 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         tts = TTSUtility(requireContext())
         setHasOptionsMenu(true)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadQuestions() // ✅ safe: view exists, lifecycleScope is tied to view
+        loadQuestions()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         tts.shutdown()
     }
-
 
     fun loadGifIfDefined() {
         val imageView = getGifImageView()
@@ -81,8 +80,7 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     }
 
     protected fun announce(view: View?, message: String) {
-        val am =
-            view?.context?.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+        val am = view?.context?.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
         if (am?.isEnabled == true && am.isTouchExplorationEnabled) {
             view.contentDescription = message
             view.announceForAccessibility(message)
@@ -104,9 +102,15 @@ abstract class BaseGameFragment : Fragment(), Hintable {
 
     private fun loadQuestions() {
         viewLifecycleOwner.lifecycleScope.launch {
+            val start = System.currentTimeMillis()
+
             val questions = withContext(Dispatchers.IO) {
                 loadGameQuestions(requireContext(), lang, mode, difficulty)
             }
+
+            val end = System.currentTimeMillis()
+            android.util.Log.d("BaseGameFragment", "Loaded ${questions.size} questions in ${end - start} ms")
+
             onQuestionsLoaded(questions)
         }
     }
@@ -117,6 +121,11 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         mode: String,
         difficulty: String
     ): List<GameQuestion> {
+        // ✅ Try from cache first (fast)
+        val cached = QuestionCache.getQuestions(lang, mode, difficulty)
+        if (cached.isNotEmpty()) return cached
+
+        // ❌ If not found in cache, fallback to Excel (slow)
         return ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, mode, difficulty)
     }
 
@@ -126,39 +135,24 @@ abstract class BaseGameFragment : Fragment(), Hintable {
 
     protected open fun showRetryDialog(onDismiss: () -> Unit) {
         DialogUtils.showRetryDialog(
-            requireContext(),
-            layoutInflater,
-            tts,
-            getString(R.string.tap_failure),
-            onDismiss
+            requireContext(), layoutInflater, tts,
+            getString(R.string.tap_failure), onDismiss
         )
     }
 
     protected open fun showNextDialog(onDismiss: () -> Unit) {
         DialogUtils.showNextDialog(
-            requireContext(),
-            layoutInflater,
-            tts,
-            getString(R.string.moving_to_next_question),
-            onDismiss
+            requireContext(), layoutInflater, tts,
+            getString(R.string.moving_to_next_question), onDismiss
         )
     }
-
 
     protected open fun showCorrectAnswerDialog(answer: String, onDismiss: () -> Unit) {
         DialogUtils.showCorrectAnswerDialog(
-            requireContext(),
-            layoutInflater,
-            tts,
-            answer,
-            onDismiss
+            requireContext(), layoutInflater, tts, answer, onDismiss
         )
     }
 
-    /**
-     * Handles answer submission logic.
-     * Can be called by any fragment extending this class.
-     */
     protected fun handleAnswerSubmission(
         userAnswer: String,
         correctAnswer: String,
@@ -171,28 +165,18 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         if (userAnswer.trim().equals(correctAnswer.trim(), ignoreCase = true)) {
             attemptCount = 0
             val grade = getGrade(elapsedTime, timeLimit)
-            showResultDialog(grade) {
-                onCorrect()
-            }
+            showResultDialog(grade) { onCorrect() }
         } else {
             attemptCount++
-            showRetryDialog {
-                onIncorrect()
-            }
+            showRetryDialog { onIncorrect() }
 
             if (attemptCount >= maxAttempts) {
                 attemptCount = 0
-                showCorrectAnswerDialog(correctAnswer) {
-                    onShowCorrect(correctAnswer)
-                }
+                showCorrectAnswerDialog(correctAnswer) { onShowCorrect(correctAnswer) }
             }
         }
     }
 
-
-    /** Must be implemented to handle loaded questions */
     protected abstract fun onQuestionsLoaded(questions: List<GameQuestion>)
-
-    /** Must be implemented to return mode name like "shake", "tap" etc. */
     protected abstract fun getModeName(): String
 }
