@@ -20,10 +20,10 @@ class TapFragment : BaseGameFragment() {
 
     private var questionIndex = 0
     private var tapCount = 0
-    private var failCount = 0
     private var questions: List<GameQuestion> = emptyList()
     private var questionStartTime = 0L
     private var answerChecked = false
+    private var isCheckingAnswer = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +53,7 @@ class TapFragment : BaseGameFragment() {
     }
 
     override fun getGifImageView() = binding?.animatedView
-    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone // must be a .gif in drawable
+    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone
 
     private fun startQuestion() {
         if (questionIndex >= questions.size) {
@@ -63,8 +63,9 @@ class TapFragment : BaseGameFragment() {
 
         val question = questions[questionIndex]
         tapCount = 0
-        failCount = 0
+        attemptCount = 0
         answerChecked = false
+        isCheckingAnswer = false
         questionStartTime = System.currentTimeMillis()
 
         val instruction = getString(R.string.tap_target_expression, question.expression)
@@ -76,7 +77,7 @@ class TapFragment : BaseGameFragment() {
     }
 
     private fun onTap() {
-        if (answerChecked || questionIndex >= questions.size) return
+        if (answerChecked || isCheckingAnswer || questionIndex >= questions.size) return
 
         tapCount++
         binding?.tapCount?.text = tapCount.toString()
@@ -85,24 +86,29 @@ class TapFragment : BaseGameFragment() {
         val question = questions[questionIndex]
         val correctAnswer = question.answer
         val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-        val timeLimit = question.timeLimit.toDouble() ?: 10.0
+        val rawLimit = question.timeLimit.toString().toDoubleOrNull()
+        val timeLimit = if (rawLimit == null || rawLimit == 0.0) 10.0 else rawLimit
 
         if (tapCount == correctAnswer) {
-            answerChecked = true
-            handleAnswerSubmission(
-                userAnswer = tapCount.toString(),
-                correctAnswer = correctAnswer.toString(),
-                elapsedTime = elapsedSeconds,
-                timeLimit = timeLimit,
-                onCorrect = { goToNextQuestion() },
-                onIncorrect = {},
-                onShowCorrect = {}
-            )
-        } else if (tapCount > correctAnswer) {
-            failCount++
-            answerChecked = true
+            isCheckingAnswer = true
+            handler.postDelayed({
+                isCheckingAnswer = false
+                answerChecked = true
+                handleAnswerSubmission(
+                    userAnswer = tapCount.toString(),
+                    correctAnswer = correctAnswer.toString(),
+                    elapsedTime = elapsedSeconds,
+                    timeLimit = timeLimit,
+                    onCorrect = { goToNextQuestion() },
+                    onIncorrect = {},
+                    onShowCorrect = { goToNextQuestion() }
+                )
+            }, 3000)
 
-            if (failCount >= 3) {
+        } else if (tapCount > correctAnswer) {
+            attemptCount++
+            if (attemptCount >= 3) {
+                answerChecked = true
                 handleAnswerSubmission(
                     userAnswer = "wrong",
                     correctAnswer = correctAnswer.toString(),
@@ -110,23 +116,15 @@ class TapFragment : BaseGameFragment() {
                     timeLimit = timeLimit,
                     onCorrect = {},
                     onIncorrect = {},
-                    onShowCorrect = { goToNextQuestion() }
+                    onShowCorrect = {
+                        goToNextQuestion()
+                    }
                 )
             } else {
-                handleAnswerSubmission(
-                    userAnswer = "wrong",
-                    correctAnswer = correctAnswer.toString(),
-                    elapsedTime = elapsedSeconds,
-                    timeLimit = timeLimit,
-                    onCorrect = {},
-                    onIncorrect = {
-                        tapCount = 0
-                        answerChecked = false
-                        binding?.tapCount?.text = getString(R.string.initial_tap_count)
-                        announce(binding?.tapCount, binding?.tapCount?.text.toString())
-                    },
-                    onShowCorrect = {}
-                )
+                // retry allowed, reset counter and prompt again
+                tapCount = 0
+                binding?.tapCount?.text = getString(R.string.initial_tap_count)
+                announce(binding?.tapCount, binding?.tapCount?.text.toString())
             }
         }
     }
