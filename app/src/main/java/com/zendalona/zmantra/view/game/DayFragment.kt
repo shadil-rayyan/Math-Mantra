@@ -7,39 +7,27 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameDayBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.model.Hintable
-import com.zendalona.zmantra.view.HintFragment
-import com.zendalona.zmantra.utility.common.DialogUtils
-import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
-import com.zendalona.zmantra.utility.common.GradingUtils
-import com.zendalona.zmantra.utility.common.TTSUtility
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.view.base.BaseGameFragment
 import kotlin.random.Random
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
 
-class DayFragment : Fragment(), Hintable {
+class DayFragment : BaseGameFragment() {
 
     private var _binding: FragmentGameDayBinding? = null
     private val binding get() = _binding!!
 
     private val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    private lateinit var buttons: List<Button>
 
     private var correctDay = ""
-    private var attemptCount = 0
-    private var totalWrongQuestions = 0
-
-    private lateinit var ttsUtility: TTSUtility
     private var questionStartTime: Long = 0L
     private val totalTime: Double = 30.0 // seconds
 
-    private var dayQuestions: List<GameQuestion> = emptyList()
+    private var questions: List<GameQuestion> = emptyList()
+
+    override fun getModeName(): String = "day"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
@@ -47,54 +35,38 @@ class DayFragment : Fragment(), Hintable {
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        ttsUtility = TTSUtility(requireContext())
+        super.onViewCreated(view, savedInstanceState)
 
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        val lang = LocaleHelper.getLanguage(context) ?: "en"
-
-        // Load Excel day questions once
-        lifecycleScope.launch {
-            // You can call the suspend function here
-            val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(),
-                lang = "$lang",       // Change to dynamic locale if needed
-                mode = "day",
-                difficulty = "$difficulty"
-            )
-
-            dayQuestions = questions // Update the dayQuestions after loading
-
-            // Once the questions are loaded, generate the first question
-            generateQuestion()
-        }
-
-        val buttons = listOf(
+        buttons = listOf(
             binding.btnMonday, binding.btnTuesday, binding.btnWednesday,
             binding.btnThursday, binding.btnFriday, binding.btnSaturday, binding.btnSunday
         )
 
         buttons.forEach { button ->
             button.setOnClickListener {
-                checkAnswer(button.text.toString(), buttons)
+                checkAnswer(button.text.toString())
             }
         }
     }
 
-    private fun generateQuestion() {
-        if (dayQuestions.isEmpty()) {
+    override fun onQuestionsLoaded(questions: List<GameQuestion>) {
+        this.questions = questions
+        if (questions.isEmpty()) {
             binding.questionText.text = getString(R.string.no_questions_available)
-            return
+        } else {
+            generateQuestion()
         }
+    }
 
-        // Pick a random question
-        val randomQuestion = dayQuestions.random()
-        val operand = randomQuestion.answer // This is the number of days to add/subtract
+    private fun generateQuestion() {
+        val randomQuestion = questions.random()
+        val operand = randomQuestion.answer
 
         val startDayIndex = Random.nextInt(days.size)
         val startDay = days[startDayIndex]
@@ -105,62 +77,37 @@ class DayFragment : Fragment(), Hintable {
         questionStartTime = System.currentTimeMillis()
 
         val startDayLocalized = getString(getDayStringRes(startDay))
-
-        // Use a specific string for this style of question
-        val questionText = getString(
-            R.string.question_day_offset_template,
-            startDayLocalized,
-            operand
-        )
+        val questionText = getString(R.string.question_day_offset_template, startDayLocalized, operand)
 
         binding.questionText.text = questionText
+        announce(binding.questionText, questionText)
         enableAllButtons()
     }
 
-    private fun checkAnswer(selected: String, buttons: List<Button>) {
+    private fun checkAnswer(selected: String) {
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
-
-        // Get the localized version of the correct day (Malayalam)
         val correctDayLocalized = getString(getDayStringRes(correctDay))
 
-        // Compare the button text (which is in Malayalam) with the localized correct day
-        if (selected == correctDayLocalized) {
-            val grade = GradingUtils.getGrade(elapsedTime, totalTime, isCorrect = true)
-            disableAllButtons(buttons)
-
-            DialogUtils.showResultDialog(
-                requireContext(),
-                layoutInflater,
-                ttsUtility,
-                grade
-            ) {
-                generateQuestion()
-            }
-
-        } else {
-            attemptCount++
-            ttsUtility.speak(getString(R.string.wrong_answer))
-
-            if (attemptCount >= 3) {
-                totalWrongQuestions++
-                disableAllButtons(buttons)
-
-                if (totalWrongQuestions >= 3) {
-                    this.endGameWithScore()
-                } else {
-                    val correctDayLocalized = getString(getDayStringRes(correctDay))
-
-                    DialogUtils.showRetryDialog(
-                        requireContext(),
-                        layoutInflater,
-                        ttsUtility,
-                        getString(R.string.wrong_answer_reveal, correctDayLocalized)
-                    ) {
-                        generateQuestion()
-                    }
+        handleAnswerSubmission(
+            userAnswer = selected,
+            correctAnswer = correctDayLocalized,
+            elapsedTime = elapsedTime,
+            timeLimit = totalTime,
+            onCorrect = {
+                disableAllButtons()
+                showNextDialog {
+                    generateQuestion()
+                }
+            },
+            onIncorrect = {},
+            onShowCorrect = {
+                disableAllButtons()
+                showNextDialog {
+                    generateQuestion()
                 }
             }
-        }
+
+        )
     }
 
     private fun getDayStringRes(day: String): Int {
@@ -176,32 +123,11 @@ class DayFragment : Fragment(), Hintable {
         }
     }
 
-    private fun disableAllButtons(buttons: List<Button>) {
+    private fun disableAllButtons() {
         buttons.forEach { it.isEnabled = false }
     }
 
     private fun enableAllButtons() {
-        listOf(
-            binding.btnMonday, binding.btnTuesday, binding.btnWednesday,
-            binding.btnThursday, binding.btnFriday, binding.btnSaturday, binding.btnSunday
-        ).forEach { it.isEnabled = true }
-    }
-
-    override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "day")
-        }
-        val hintFragment = HintFragment().apply { arguments = bundle }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, hintFragment)
-            .addToBackStack(null)
-            .commit()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        ttsUtility.shutdown()
+        buttons.forEach { it.isEnabled = true }
     }
 }
