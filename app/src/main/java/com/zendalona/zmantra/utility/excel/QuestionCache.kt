@@ -13,15 +13,20 @@ object QuestionCache {
     private val cache = mutableMapOf<String, List<GameQuestion>>() // key = "$lang|$mode|$difficulty"
     private const val TAG = "QuestionCache"
 
-    suspend fun preloadAllQuestions(context: Context, lang: String) {
+    suspend fun preloadAllQuestions(context: Context, lang: String) = withContext(Dispatchers.IO) {
+        val startTime = System.currentTimeMillis()
+        Log.d(TAG, "Starting to preload all questions...")
+
         val workbook = ExcelQuestionLoader.loadWorkbook(context, lang)
         val sheet = workbook.getSheetAt(0)
 
-        val supportedModes = listOf("addition", "angle", "currency", "day", "direction", "distance",
+        val supportedModes = listOf(
+            "addition", "angle", "currency", "day", "direction", "distance",
             "division", "drawing", "mental", "mode", "multiplication",
             "numberline", "percentage", "quickplay", "remainder", "shake",
-            "sterio", "story", "subtraction", "tap", "time", "touch")
-        val supportedDifficulties = listOf("1", "2", "3","4","5")
+            "sterio", "story", "subtraction", "tap", "time", "touch"
+        )
+        val supportedDifficulties = listOf("1", "2", "3", "4", "5")
 
         for (mode in supportedModes) {
             for (difficulty in supportedDifficulties) {
@@ -33,8 +38,14 @@ object QuestionCache {
                 }
             }
         }
+
         workbook.close()
+
+        val endTime = System.currentTimeMillis()
+        val duration = endTime - startTime
+        Log.d(TAG, "Finished preloading all questions in $duration ms (${duration / 1000.0} seconds)")
     }
+
 
     fun getQuestions(lang: String, mode: String, difficulty: String): List<GameQuestion> {
         val key = "$lang|$mode|$difficulty"
