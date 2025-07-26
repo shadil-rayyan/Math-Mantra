@@ -17,8 +17,11 @@ object QuestionCache {
         val workbook = ExcelQuestionLoader.loadWorkbook(context, lang)
         val sheet = workbook.getSheetAt(0)
 
-        val supportedModes = listOf("tap", "shake", "direction", "drawing") // adjust to your modes
-        val supportedDifficulties = listOf("1", "2", "3") // adjust based on your app
+        val supportedModes = listOf("addition", "angle", "currency", "day", "direction", "distance",
+            "division", "drawing", "mental", "mode", "multiplication",
+            "numberline", "percentage", "quickplay", "remainder", "shake",
+            "sterio", "story", "subtraction", "tap", "time", "touch")
+        val supportedDifficulties = listOf("1", "2", "3","4","5")
 
         for (mode in supportedModes) {
             for (difficulty in supportedDifficulties) {

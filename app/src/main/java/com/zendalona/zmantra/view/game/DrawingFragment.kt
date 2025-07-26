@@ -1,157 +1,116 @@
 package com.zendalona.zmantra.view.game
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.TextUtils
 import android.view.*
-import android.view.accessibility.AccessibilityManager
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.model.Hintable
+import com.zendalona.zmantra.view.base.BaseGameFragment
 import com.zendalona.zmantra.view.HintFragment
-import com.zendalona.zmantra.utility.common.DialogUtils
-import com.zendalona.zmantra.utility.common.TTSUtility
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences.getDifficulty
-import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
 import com.zendalona.zmantra.customView.DrawingView
-import kotlinx.coroutines.launch
 
-class DrawingFragment : Fragment(), Hintable {
+class DrawingFragment : BaseGameFragment() {
 
-    private var binding: FragmentGameDrawingBinding? = null
+    private var _binding: FragmentGameDrawingBinding? = null
+    private val binding get() = _binding!!
+
     private var drawingView: DrawingView? = null
-    private var accessibilityManager: AccessibilityManager? = null
 
-    private var questions: List<GameQuestion> = emptyList()
+    private var currentQuestion: GameQuestion? = null
     private var currentIndex = 0
-    private var lang = "en"
+    private var questions: List<GameQuestion> = emptyList()
+
+
+    override fun getModeName(): String = "drawing"
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentGameDrawingBinding.inflate(inflater, container, false)
-        val context = requireContext()
+    ): View {
+        _binding = FragmentGameDrawingBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-        accessibilityManager =
-            context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        drawingView = DrawingView(requireContext())
+        binding.drawingContainer.addView(drawingView)
 
-        drawingView = DrawingView(context)
-        binding!!.drawingContainer.addView(drawingView)
-
-        val difficulty = getDifficulty(context).toString()
-        lang = getLanguage(context)
-        if (TextUtils.isEmpty(lang)) lang = "en"
-
-        lifecycleScope.launch {
-            questions =
-                ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, "drawing", difficulty)
-                loadNextShape()
-
-        }
-        setupListeners()
-
-        return binding!!.root
+        return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    private fun setupListeners() {
-        binding!!.resetButton.setOnClickListener {
-            drawingView!!.clearCanvas()
-            announce(getString(R.string.canvas_cleared))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.resetButton.setOnClickListener {
+            drawingView?.clearCanvas()
+            announce(binding.root, getString(R.string.canvas_cleared))
         }
 
-        binding!!.submitButton.setOnClickListener {
-            showResultDialogAndNext()
+        binding.submitButton.setOnClickListener {
+            checkAnswer()
         }
     }
 
-    private fun loadNextShape() {
-        if (currentIndex >= questions.size) {
-            announce(getString(R.string.task_completed))
+    override fun onQuestionsLoaded(questions: List<GameQuestion>) {
+        this.questions = questions
+        if (questions.isEmpty()) {
+            binding.questionText.text = getString(R.string.no_questions_available)
+            binding.submitButton.isEnabled = false
+            binding.resetButton.isEnabled = false
+        } else {
+            currentIndex = 0
+            loadQuestionAt(currentIndex, this.questions)
+        }
+    }
+
+
+    private fun loadQuestionAt(index: Int, questions: List<GameQuestion>) {
+        if (index >= questions.size) {
+            announce(binding.root, getString(R.string.task_completed))
             Handler(Looper.getMainLooper()).postDelayed(
                 { requireActivity().onBackPressedDispatcher.onBackPressed() },
                 3000
             )
             return
         }
+        currentQuestion = questions[index]
 
-        val shape = questions[currentIndex].expression
+        val shape = currentQuestion?.expression ?: ""
         val instruction = getString(R.string.drawing_task, shape)
 
-        binding!!.questionText.apply {
+        binding.questionText.apply {
             text = instruction
             requestFocus()
             contentDescription = instruction
             announceForAccessibility(instruction)
         }
 
-        drawingView!!.clearCanvas()
+        drawingView?.clearCanvas()
+        attemptCount = 0 // reset attempts for new question
     }
 
-    private fun showResultDialogAndNext() {
+    private fun checkAnswer() {
         val message = getString(R.string.moving_to_next_question)
-
-        DialogUtils.showNextDialog(
-            context = requireContext(),
-            inflater = layoutInflater,
-            ttsUtility = TTSUtility(requireContext()),
-            message = message
-        ) {
+        showNextDialog {
             currentIndex++
-            loadNextShape()
+            loadQuestionAt(currentIndex, questions)
         }
-
-        announce(message)
-    }
-
-    private fun announce(message: String?) {
-        if (accessibilityManager?.isEnabled == true) {
-            binding!!.root.announceForAccessibility(message)
-        }
-    }
-
-    private fun showToast(msg: String?) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        drawingView?.onResume()
-    }
-
-    override fun onPause() {
-        drawingView?.onPause()
-        super.onPause()
+        announce(binding.root, message)
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "drawing")
-        }
+        val bundle = Bundle().apply { putString("mode", mode) }
         val hintFragment = HintFragment().apply { arguments = bundle }
 
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)
             .commit()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
     }
 }
