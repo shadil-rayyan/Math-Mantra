@@ -49,8 +49,8 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
             textView.text = spannedText
             val typedValue = TypedValue()
-            val theme = context.theme
-            theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondary, typedValue, true)
+            val theme = context?.theme
+            theme?.resolveAttribute(com.google.android.material.R.attr.colorOnSecondary, typedValue, true)
             textView.setTextColor(typedValue.data)
             textView.textSize = 16f
             textView.setPadding(16)
@@ -60,7 +60,7 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
         binding!!.goBackButton.setOnClickListener {
 
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 

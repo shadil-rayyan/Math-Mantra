@@ -45,7 +45,7 @@ class HintFragment : Fragment() {
         // Set up the "Go Back" button click listener
         binding!!.goBackButton.setOnClickListener {
 
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
         return binding!!.root
