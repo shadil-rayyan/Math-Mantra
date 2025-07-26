@@ -3,272 +3,125 @@ package com.zendalona.zmantra.view.game
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import android.view.accessibility.AccessibilityEvent
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameNumberLineBinding
 import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.model.Hintable
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.utility.common.DialogUtils
-import com.zendalona.zmantra.utility.common.EndScore.endGameWithScore
-import com.zendalona.zmantra.utility.common.GradingUtils
-import com.zendalona.zmantra.utility.common.TTSUtility
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import com.zendalona.zmantra.view.HintFragment
+import com.zendalona.zmantra.view.base.BaseGameFragment
 import com.zendalona.zmantra.viewModel.NumberLineViewModel
-import kotlinx.coroutines.launch
-import java.util.*
 
-private val handler = Handler(Looper.getMainLooper())
-
-class NumberLineFragment : Fragment(), Hintable {
-
-    companion object {
-        private const val TAG = "NumberLineFragment"
-        private const val MAX_WRONG_ATTEMPTS = 3
-    }
+class NumberLineFragment : BaseGameFragment() {
 
     private var binding: FragmentGameNumberLineBinding? = null
     private lateinit var viewModel: NumberLineViewModel
-    private var tts: TTSUtility? = null
 
+    private val handler = Handler(Looper.getMainLooper())
+
+    private var questions: List<GameQuestion> = emptyList()
+    private var currentIndex = 0
     private var answer = 0
     private var questionDesc = ""
-    private var correctAnswerDesc = ""
-    private var questionStartTime: Long = 0L
+    private var questionStartTime: Long = 0
 
+    private var currentPosLabel: String = ""
     private var answerCheckRunnable: Runnable? = null
 
-    private var lastQuestionKey: String? = null
-    private var wrongAttemptsForCurrentQuestion = 0
-    private var correctAnswerDialogCount = 0
-    private var totalWrongAttemptsForCurrentQuestion = 0
-    private var fullyFailedQuestionCount = 0
-
-    private var CURRENT_POSITION: String? = null
-
-    // ✅ Excel-based questions
-    private var excelQuestions: List<GameQuestion> = emptyList()
-    private var currentExcelQuestionIndex = 0
+    override fun getModeName(): String = "numberline"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[NumberLineViewModel::class.java]
-        CURRENT_POSITION = getString(R.string.current_position_label)
-
-        tts = TTSUtility(requireContext()).apply { setSpeechRate(0.8f) }
-
-        val difficulty = DifficultyPreferences.getDifficulty(requireContext())
-        val lang = LocaleHelper.getLanguage(context) ?: "en"
-
-        // ✅ Load Excel questions for mode = numberline, difficulty = 1
-        lifecycleScope.launch {
-            // Load questions asynchronously
-            excelQuestions = ExcelQuestionLoader.loadQuestionsFromExcel(
-                requireContext(),
-                lang = lang,
-                mode = "numberline",
-                difficulty = difficulty.toString()
-            )
-
-
-
-            // Once questions are loaded, proceed with game
-            correctAnswerDesc = askNewQuestion()
-        }
+        currentPosLabel = getString(R.string.current_position_label)
+        tts.setSpeechRate(0.8f)
     }
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentGameNumberLineBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        setupObservers()
         setupUI()
-
+        setupObservers()
         return binding!!.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    override fun onQuestionsLoaded(questions: List<GameQuestion>) {
+        this.questions = if (questions.isEmpty()) listOf(GameQuestion("Move to 3", 3)) else questions
+        askNextQuestion()
+    }
+
+    private fun setupUI() {
+        binding?.apply {
+            numberLineQuestion.setOnClickListener { tts.speak(questionDesc) }
+            btnLeft.setOnClickListener { viewModel.moveLeft() }
+            btnRight.setOnClickListener { viewModel.moveRight() }
+        }
     }
 
     private fun setupObservers() {
-        val updateNumberLineView = {
+        val updateUI = {
             val start = viewModel.lineStart.value ?: -5
             val end = viewModel.lineEnd.value ?: 5
             val position = viewModel.currentPosition.value ?: 0
 
             binding?.numberLineView?.updateNumberLine(start, end, position)
             binding?.currentPositionTv?.apply {
-                text = "$CURRENT_POSITION $position"
-                contentDescription = "$CURRENT_POSITION $position"
-
-                // Force accessibility event
-                post {
-//                    sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
-                    announceForAccessibility("$CURRENT_POSITION $position")
-                }
+                text = "$currentPosLabel $position"
+                contentDescription = "$currentPosLabel $position"
+                post { announceForAccessibility(contentDescription.toString()) }
             }
 
-            // Cancel previous
             answerCheckRunnable?.let { handler.removeCallbacks(it) }
-
-            answerCheckRunnable = Runnable { checkAnswer(start, end, position) }
+            answerCheckRunnable = Runnable { checkAnswer(position) }
             handler.postDelayed(answerCheckRunnable!!, 2000)
         }
 
-        viewModel.lineStart.observe(viewLifecycleOwner) { updateNumberLineView() }
-        viewModel.lineEnd.observe(viewLifecycleOwner) { updateNumberLineView() }
-        viewModel.currentPosition.observe(viewLifecycleOwner) { updateNumberLineView() }
+        viewModel.lineStart.observe(viewLifecycleOwner) { updateUI() }
+        viewModel.lineEnd.observe(viewLifecycleOwner) { updateUI() }
+        viewModel.currentPosition.observe(viewLifecycleOwner) { updateUI() }
     }
 
-    private fun checkAnswer(start: Int, end: Int, position: Int) {
+    private fun checkAnswer(currentPosition: Int) {
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
-        val totalTime = 15.0
-
-        if (position == answer) {
-            val grade = GradingUtils.getGrade(elapsedTime, totalTime, true)
-            context?.let { ctx ->
-                activity?.layoutInflater?.let { inflater ->
-                    DialogUtils.showResultDialog(ctx, inflater, tts!!, grade) {
-                        correctAnswerDesc = askNewQuestion()
-                    }
-                }
+        if (currentPosition == answer) {
+            val grade = getGrade(elapsedTime, 15.0)
+            showResultDialog(grade) {
+                askNextQuestion()
             }
-        } else {
-            Log.d(TAG, "Wrong answer detected, ignoring silently")
         }
+        // else: do nothing, wait for user to correct
     }
 
-    private fun onWrongAttempt(questionKey: String) {
-        if (lastQuestionKey == questionKey) {
-            wrongAttemptsForCurrentQuestion++
-            totalWrongAttemptsForCurrentQuestion++
-        } else {
-            lastQuestionKey = questionKey
-            wrongAttemptsForCurrentQuestion = 1
-            totalWrongAttemptsForCurrentQuestion = 1
-            correctAnswerDialogCount = 0
-        }
-
-        if (wrongAttemptsForCurrentQuestion >= MAX_WRONG_ATTEMPTS) {
-            correctAnswerDialogCount++
-
-            context?.let { ctx ->
-                activity?.layoutInflater?.let { inflater ->
-                    val correctAnswerText = "The correct answer is $answer."
-                    DialogUtils.showCorrectAnswerDialog(ctx, inflater, tts!!, correctAnswerText) {
-                        if (totalWrongAttemptsForCurrentQuestion < 6) {
-                            wrongAttemptsForCurrentQuestion = 0
-                        } else {
-                            fullyFailedQuestionCount++
-                            if (fullyFailedQuestionCount >= 3) {
-                                endGameWithScore()
-                                return@showCorrectAnswerDialog
-                            }
-
-                            wrongAttemptsForCurrentQuestion = 0
-                            totalWrongAttemptsForCurrentQuestion = 0
-                            correctAnswerDialogCount = 0
-                            lastQuestionKey = null
-                            correctAnswerDesc = askNewQuestion()
-                        }
-                    }
-                }
-            }
+    private fun askNextQuestion() {
+        if (currentIndex >= questions.size) {
+            endGame()
             return
         }
 
-        context?.let { ctx ->
-            activity?.layoutInflater?.let { inflater ->
-                DialogUtils.showRetryDialog(ctx, inflater, tts!!, getString(R.string.wrong_answer)) {}
-            }
-        }
-    }
-
-    private fun setupUI() {
-        binding?.numberLineQuestion?.setOnClickListener {
-            tts?.speak(questionDesc)
-        }
-
-        binding?.btnLeft?.setOnClickListener {
-            viewModel.moveLeft()
-        }
-
-        binding?.btnRight?.setOnClickListener {
-            viewModel.moveRight()
-        }
-    }
-
-    private fun askNewQuestion(): String {
-        // End the game if all questions are completed
-        if (currentExcelQuestionIndex >= excelQuestions.size) {
-            endGameWithScore()
-            return ""
-        }
-
-        questionStartTime = System.currentTimeMillis()
-
-        val question = excelQuestions[currentExcelQuestionIndex++]
+        val question = questions[currentIndex++]
         questionDesc = question.expression
         answer = question.answer
+        questionStartTime = System.currentTimeMillis()
 
-        val questionBrief = question.expression.take(40)
         binding?.numberLineQuestion?.apply {
-            text = questionBrief
-            contentDescription = questionDesc  // full expression for TalkBack
+            text = questionDesc.take(40)
+            contentDescription = questionDesc
             importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
-
-            // Announce the updated question immediately if TalkBack is active
             post {
-                // 1. Move a11y focus to this view
-                this.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
-                // 2. Then explicitly announce the full expression
-                this.announceForAccessibility(questionDesc)
+                sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+                announceForAccessibility(questionDesc)
             }
         }
-
-//        tts?.speak(questionDesc)
-        return "${question.expression} = ${question.answer}"
     }
 
-
-
-    override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", "numberline")
-        }
-
-        val hintFragment = HintFragment().apply { arguments = bundle }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, hintFragment)
-            .addToBackStack(null)
-            .commit()
+    override fun onPause() {
+        super.onPause()
+        answerCheckRunnable?.let { handler.removeCallbacks(it) }
+        tts.stop()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        tts?.stop()
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 }
