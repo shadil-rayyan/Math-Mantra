@@ -3,6 +3,7 @@ package com.zendalona.zmantra.view
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,7 +48,10 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
             }
 
             textView.text = spannedText
-            textView.setTextColor(resources.getColor(android.R.color.black, null))
+            val typedValue = TypedValue()
+            val theme = context.theme
+            theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondary, typedValue, true)
+            textView.setTextColor(typedValue.data)
             textView.textSize = 16f
             textView.setPadding(16)
 
