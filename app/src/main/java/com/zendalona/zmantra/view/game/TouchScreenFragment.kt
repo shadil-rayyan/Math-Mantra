@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
+import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTouchScreenBinding
@@ -21,6 +22,8 @@ class TouchScreenFragment : BaseGameFragment() {
     private var questionStartTime = 0L
     private var correctAnswer = 0
     private var questionList: List<GameQuestion> = emptyList()
+    override fun getGifImageView(): ImageView? = binding?.animatedView
+    override fun getGifResource(): Int = R.drawable.game_touchthescreen
 
     private val handler = Handler(Looper.getMainLooper())
 
