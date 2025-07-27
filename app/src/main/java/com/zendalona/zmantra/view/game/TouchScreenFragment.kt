@@ -1,5 +1,7 @@
 package com.zendalona.zmantra.view.game
 
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -36,6 +38,11 @@ class TouchScreenFragment : BaseGameFragment() {
     ): View {
         binding = FragmentGameTouchScreenBinding.inflate(inflater, container, false)
         return binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadGifIfDefined()
     }
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
