@@ -54,7 +54,7 @@ class LandingPageFragment : Fragment() {
 
         binding.quickplay.setOnClickListener {
             Log.d("LandingPageFragment", "Quickplay button clicked")
-            val fragment = QuickPlayFragment.newInstance("quickplay")
+            val fragment = QuickPlayFragment.newInstance("quickplay","quickplay")
             navigationListener?.loadFragment(fragment, FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         }
 

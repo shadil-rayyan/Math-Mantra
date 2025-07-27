@@ -26,55 +26,59 @@ class LearningFragment : Fragment() {
     }
 
     private fun setupCategoryButtons() {
-        // Example category buttons - make sure these IDs exist in fragment_landing.xml
-
         binding.cardTime.setOnClickListener {
-            launchQuickPlay("time")  // Excel mode = "math"
+            launchQuickPlay("time", "quickplay")
         }
 
         binding.cardCurrency.setOnClickListener {
-            launchQuickPlay("currency")
+            launchQuickPlay("currency", "quickplay")
         }
 
         binding.cardDistance.setOnClickListener {
-            launchQuickPlay("distance")
+            launchQuickPlay("distance", "quickplay")
         }
 
         binding.cardAddition.setOnClickListener {
-            launchQuickPlay("addition")
+            launchQuickPlay("addition", "quickplay")
         }
+
         binding.cardSubtraction.setOnClickListener {
-            launchQuickPlay("subtraction")
+            launchQuickPlay("subtraction", "quickplay")
         }
 
         binding.cardMultiplication.setOnClickListener {
-            launchQuickPlay("multiplication")
+            launchQuickPlay("multiplication", "quickplay")
         }
 
         binding.cardDivision.setOnClickListener {
-            launchQuickPlay("division")
+            launchQuickPlay("division", "quickplay")
         }
 
         binding.cardPercentage.setOnClickListener {
-            launchQuickPlay("percentage")
-        }
-        binding.cardRemainder.setOnClickListener {
-            launchQuickPlay("remainder")
-        }
-        binding.cardStory.setOnClickListener {
-            launchQuickPlay("story")
+            launchQuickPlay("percentage", "quickplay")
         }
 
+        binding.cardRemainder.setOnClickListener {
+            launchQuickPlay("remainder", "quickplay")
+        }
+
+        binding.cardStory.setOnClickListener {
+            launchQuickPlay("story", "quickplay")
+        }
     }
 
-    private fun launchQuickPlay(category: String) {
-        val quickPlayFragment = QuickPlayFragment.newInstance(category)
+    private fun launchQuickPlay(category: String, hintMode: String) {
+        val quickPlayFragment = QuickPlayFragment.newInstance(
+            category = category,
+            hintMode = hintMode
+        )
 
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, quickPlayFragment)
             .addToBackStack(null)
             .commit()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
