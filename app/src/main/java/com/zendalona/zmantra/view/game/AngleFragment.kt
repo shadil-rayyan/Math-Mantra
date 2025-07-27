@@ -1,9 +1,12 @@
 package com.zendalona.zmantra.view.game
 
+import android.hardware.Sensor
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.model.GameQuestion
@@ -27,6 +30,8 @@ class AngleFragment : BaseGameFragment() {
     private var angleUpdateRunnable: Runnable? = null
     private var holdRunnable: Runnable? = null
     private var isHolding = false
+//    override fun getGifImageView(): ImageView? = binding?.animatedView
+    override fun getGifResource(): Int = R.drawable.game_angle_rotateyourphone
 
     override fun getModeName(): String = "angle"
 
@@ -51,6 +56,10 @@ class AngleFragment : BaseGameFragment() {
     override fun onStart() {
         super.onStart()
         rotationSensorUtility.registerListener()
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadGifIfDefined()
     }
 
     override fun onStop() {
