@@ -1,6 +1,5 @@
 package com.zendalona.zmantra.view.game
 
-import android.R.attr.mode
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,7 +8,6 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.view.base.BaseGameFragment
-import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.customView.DrawingView
 
 class DrawingFragment : BaseGameFragment() {
@@ -22,7 +20,6 @@ class DrawingFragment : BaseGameFragment() {
     private var currentQuestion: GameQuestion? = null
     private var currentIndex = 0
     private var questions: List<GameQuestion> = emptyList()
-
 
     override fun getModeName(): String = "drawing"
 
@@ -70,7 +67,6 @@ class DrawingFragment : BaseGameFragment() {
         }
     }
 
-
     private fun loadQuestionAt(index: Int, questions: List<GameQuestion>) {
         if (index >= questions.size) {
             announce(binding.root, getString(R.string.task_completed))
@@ -80,8 +76,8 @@ class DrawingFragment : BaseGameFragment() {
             )
             return
         }
-        currentQuestion = questions[index]
 
+        currentQuestion = questions[index]
         val shape = currentQuestion?.expression ?: ""
         val instruction = getString(R.string.drawing_task, shape)
 
@@ -103,15 +99,5 @@ class DrawingFragment : BaseGameFragment() {
             loadQuestionAt(currentIndex, questions)
         }
         announce(binding.root, message)
-    }
-
-    override fun showHint() {
-        val bundle = Bundle().apply { putString("mode", mode) }
-        val hintFragment = HintFragment().apply { arguments = bundle }
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, hintFragment)
-            .addToBackStack(null)
-            .commit()
     }
 }
