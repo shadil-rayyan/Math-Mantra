@@ -29,6 +29,7 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     protected lateinit var tts: TTSUtility
     protected lateinit var lang: String
     protected lateinit var difficulty: String
+    protected open val mode: String by lazy { getModeName() }
 
     protected var attemptCount = 0
     protected open val maxAttempts = 3
@@ -70,12 +71,8 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply {
-            putString("mode", getModeName())
-        }
-        val hintFragment = HintFragment().apply {
-            arguments = bundle
-        }
+        val bundle = Bundle().apply { putString("mode", mode) }
+        val hintFragment = HintFragment().apply { arguments = bundle }
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)
@@ -103,38 +100,41 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         return GradingUtils.getGrade(elapsedTime, limit, true)
     }
 
+    // ✅ NEW: Load with cache and Excel fallback
     private fun loadQuestions() {
         viewLifecycleOwner.lifecycleScope.launch {
             val start = System.currentTimeMillis()
+            val tag = "BaseGameFragment"
+            val gameModeName = mode
 
-            val lang = this@BaseGameFragment.lang
-            val difficulty = this@BaseGameFragment.difficulty
-            val mode = getModeName() // ⏳ lazy mode evaluation
+            // Try cache
+            var questions = QuestionCache.getQuestions(lang, gameModeName, difficulty)
+            if (questions.isNotEmpty()) {
+                android.util.Log.d(tag, "🚀 [$gameModeName-$difficulty] Loaded ${questions.size} from cache")
+            } else {
+                android.util.Log.d(tag, "📥 [$gameModeName-$difficulty] Loading from Excel...")
 
-            val questions = withContext(Dispatchers.IO) {
-                loadGameQuestions(requireContext(), lang, mode, difficulty)
+                questions = withContext(Dispatchers.IO) {
+                    ExcelQuestionLoader.loadQuestionsFromExcel(requireContext(), lang, gameModeName, difficulty)
+                }
+
+                QuestionCache.putQuestions(lang, gameModeName, difficulty, questions)
+                android.util.Log.d(tag, "📦 [$gameModeName-$difficulty] Saved ${questions.size} to cache")
             }
 
             val end = System.currentTimeMillis()
-            android.util.Log.d("BaseGameFragment", "Loaded ${questions.size} questions in ${end - start} ms")
+            android.util.Log.d(tag, "✅ [$gameModeName-$difficulty] Loaded ${questions.size} questions in ${end - start} ms")
+
+            if (questions.isEmpty()) {
+                android.util.Log.e(tag, "❌ [$gameModeName-$difficulty] No questions found!")
+                requireActivity().supportFragmentManager.popBackStack()
+                return@launch
+            }
 
             onQuestionsLoaded(questions)
         }
     }
 
-    protected open suspend fun loadGameQuestions(
-        context: Context,
-        lang: String,
-        mode: String,
-        difficulty: String
-    ): List<GameQuestion> {
-        // ✅ Try from cache first (fast)
-        val cached = QuestionCache.getQuestions(lang, mode, difficulty)
-        if (cached.isNotEmpty()) return cached
-
-        // ❌ If not found in cache, fallback to Excel (slow)
-        return ExcelQuestionLoader.loadQuestionsFromExcel(context, lang, mode, difficulty)
-    }
 
     protected open fun showResultDialog(grade: String, onDismiss: () -> Unit) {
         DialogUtils.showResultDialog(requireContext(), layoutInflater, tts, grade, onDismiss)

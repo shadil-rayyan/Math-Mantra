@@ -11,7 +11,7 @@ import java.util.*
 
 object QuestionCache {
 
-    private val cache = mutableMapOf<String, List<GameQuestion>>() // key = "$lang|$mode|$difficulty"
+    private val cache = mutableMapOf<String, List<GameQuestion>>() // key = "$lang-$mode-$difficulty"
     private const val TAG = "QuestionCache"
 
     suspend fun preloadAllQuestions(context: Context, lang: String) = withContext(Dispatchers.IO) {
@@ -28,7 +28,7 @@ object QuestionCache {
         val sortedDifficulties = listOf(currentDifficulty) + allDifficulties.filter { it != currentDifficulty }
 
         // Dynamically extract all unique modes from the sheet
-        val modeColumnIndex = 0 // Assuming mode is in first column; change if needed
+        val modeColumnIndex = 1 // Assuming mode is in first column; change if needed
         val detectedModes = mutableSetOf<String>()
 
         for (i in 1..sheet.lastRowNum) { // Skip header row
@@ -40,13 +40,25 @@ object QuestionCache {
 
         Log.d(TAG, "Detected modes in sheet: $detectedModes")
 
+        // First load ALL modes for CURRENT difficulty
         for (mode in detectedModes) {
-            for (difficulty in sortedDifficulties) {
-                val key = "$lang|$mode|$difficulty"
+            val key = "$lang-$mode-$currentDifficulty"
+            val questions = ExcelQuestionLoader.loadQuestionsFromSheet(sheet, mode, currentDifficulty)
+            if (questions.isNotEmpty()) {
+                cache[key] = questions
+                Log.d(TAG, "✅ Cached $mode-$currentDifficulty questions (${questions.size})")
+            }
+        }
+
+        // Then load ALL modes for OTHER difficulties
+        val otherDifficulties = allDifficulties.filter { it != currentDifficulty }
+        for (difficulty in otherDifficulties) {
+            for (mode in detectedModes) {
+                val key = "$lang-$mode-$difficulty"
                 val questions = ExcelQuestionLoader.loadQuestionsFromSheet(sheet, mode, difficulty)
                 if (questions.isNotEmpty()) {
                     cache[key] = questions
-                    Log.d(TAG, "Cached $mode-$difficulty questions (${questions.size})")
+                    Log.d(TAG, "✅ Cached $mode-$difficulty questions (${questions.size})")
                 }
             }
         }
@@ -54,13 +66,24 @@ object QuestionCache {
         workbook.close()
 
         val duration = System.currentTimeMillis() - startTime
-        Log.d(TAG, "Finished preloading all questions in $duration ms (${duration / 1000.0} seconds)")
+        Log.d(TAG, "✅ Finished preloading all questions in $duration ms (${duration / 1000.0} seconds)")
     }
 
-
-
     fun getQuestions(lang: String, mode: String, difficulty: String): List<GameQuestion> {
-        val key = "$lang|$mode|$difficulty"
-        return cache[key] ?: emptyList()
+        val key = "$lang-$mode-$difficulty"
+        val result = cache[key]
+        if (result == null) {
+            Log.w(TAG, "⚠️ Cache miss for key: $key")
+        }
+        return result ?: emptyList()
+    }
+
+    fun putQuestions(lang: String, mode: String, difficulty: String, questions: List<GameQuestion>) {
+        val key = "$lang-$mode-$difficulty"
+        cache[key] = questions
+    }
+
+    fun clearCache() {
+        cache.clear()
     }
 }
