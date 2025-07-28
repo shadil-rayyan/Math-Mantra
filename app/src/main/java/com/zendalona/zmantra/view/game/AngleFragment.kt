@@ -1,14 +1,14 @@
 package com.zendalona.zmantra.view.game
 
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.databinding.FragmentGameAngleBinding
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.utility.game.angle.RotationSensorUtility
@@ -16,8 +16,9 @@ import com.zendalona.zmantra.view.base.BaseGameFragment
 
 class AngleFragment : BaseGameFragment() {
 
-    private lateinit var rotationTextView: TextView
-    private lateinit var questionTextView: TextView
+    private var _binding: FragmentGameAngleBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var rotationSensorUtility: RotationSensorUtility
 
     private var targetRotation = 0f
@@ -30,18 +31,18 @@ class AngleFragment : BaseGameFragment() {
     private var angleUpdateRunnable: Runnable? = null
     private var holdRunnable: Runnable? = null
     private var isHolding = false
-//    override fun getGifImageView(): ImageView? = binding?.animatedView
+
     override fun getGifResource(): Int = R.drawable.game_angle_rotateyourphone
 
     override fun getModeName(): String = "angle"
 
+    override fun getGifImageView(): ImageView? = binding.animatedView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val view = inflater.inflate(R.layout.fragment_game_angle, container, false)
-
-        rotationTextView = view.findViewById(R.id.rotation_angle_text)
-        questionTextView = view.findViewById(R.id.angle_question)
+        _binding = FragmentGameAngleBinding.inflate(inflater, container, false)
+        angleUpdateHandler = Handler(Looper.getMainLooper())
 
         rotationSensorUtility = RotationSensorUtility(requireContext(), object : RotationSensorUtility.RotationListener {
             override fun onRotationChanged(azimuth: Float, pitch: Float, roll: Float) {
@@ -49,17 +50,17 @@ class AngleFragment : BaseGameFragment() {
             }
         })
 
-        angleUpdateHandler = Handler(Looper.getMainLooper())
-        return view
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadGifIfDefined()
     }
 
     override fun onStart() {
         super.onStart()
         rotationSensorUtility.registerListener()
-    }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        loadGifIfDefined()
     }
 
     override fun onStop() {
@@ -72,6 +73,7 @@ class AngleFragment : BaseGameFragment() {
         rotationSensorUtility.unregisterListener()
         angleUpdateRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
         holdRunnable?.let { angleUpdateHandler.removeCallbacks(it) }
+        _binding = null
     }
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
@@ -82,7 +84,7 @@ class AngleFragment : BaseGameFragment() {
         isHolding = false
 
         if (questions.isEmpty()) {
-            questionTextView.text = getString(R.string.no_questions_available)
+            binding.angleQuestion.text = getString(R.string.no_questions_available)
         } else {
             showNextQuestion()
         }
@@ -90,7 +92,7 @@ class AngleFragment : BaseGameFragment() {
 
     private fun showNextQuestion() {
         if (currentIndex >= questions.size) {
-            questionTextView.text = getString(R.string.game_finished)
+            binding.angleQuestion.text = getString(R.string.game_finished)
             endGame()
             return
         }
@@ -101,16 +103,16 @@ class AngleFragment : BaseGameFragment() {
         isHolding = false
         baseAzimuth = -1f
 
-        questionTextView.text = question.expression
-        announce(questionTextView, question.expression)
+        binding.angleQuestion.text = question.expression
+        announce(binding.angleQuestion, question.expression)
 
         if (angleUpdateRunnable == null) {
             angleUpdateRunnable = object : Runnable {
                 override fun run() {
                     if (!questionAnswered && isAdded && AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
-                        val spokenAngle = rotationTextView.text.toString()
+                        val spokenAngle = binding.rotationAngleText.text.toString()
                         val announcement = getString(R.string.current_angle_announcement, spokenAngle)
-                        rotationTextView.announceForAccessibility(announcement)
+                        binding.rotationAngleText.announceForAccessibility(announcement)
                         angleUpdateHandler.postDelayed(this, 3000)
                     }
                 }
@@ -127,7 +129,7 @@ class AngleFragment : BaseGameFragment() {
         }
 
         val relativeAzimuth = (azimuth - baseAzimuth + 360) % 360
-        rotationTextView.text = getString(R.string.relative_angle_template, relativeAzimuth.toInt())
+        binding.rotationAngleText.text = getString(R.string.relative_angle_template, relativeAzimuth.toInt())
         validateAngle(relativeAzimuth)
     }
 
@@ -143,8 +145,7 @@ class AngleFragment : BaseGameFragment() {
                     if (isHolding) {
                         questionAnswered = true
                         attemptCount = 0
-
-                        val grade = getGrade(elapsedTime = 1.0, limit = 10.0) // You can calculate actual time if needed
+                        val grade = getGrade(elapsedTime = 1.0, limit = 10.0)
                         showResultDialog(grade) {
                             showNextQuestion()
                         }
@@ -159,5 +160,4 @@ class AngleFragment : BaseGameFragment() {
             }
         }
     }
-
 }
