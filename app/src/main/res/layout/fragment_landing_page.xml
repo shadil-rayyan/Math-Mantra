@@ -16,7 +16,7 @@
         android:id="@+id/logoImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/landing_app_icon"
+        android:src="@drawable/landing_app_icon1"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
