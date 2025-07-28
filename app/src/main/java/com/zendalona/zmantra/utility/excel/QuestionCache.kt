@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.utility.settings.DifficultyPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -17,19 +18,30 @@ object QuestionCache {
         val startTime = System.currentTimeMillis()
         Log.d(TAG, "Starting to preload all questions...")
 
+        val currentDifficulty = DifficultyPreferences.getDifficulty(context).toString()
+        Log.d(TAG, "Detected current difficulty: $currentDifficulty")
+
         val workbook = ExcelQuestionLoader.loadWorkbook(context, lang)
         val sheet = workbook.getSheetAt(0)
 
-        val supportedModes = listOf(
-            "addition", "angle", "currency", "day", "direction", "distance",
-            "division", "drawing", "mental", "mode", "multiplication",
-            "numberline", "percentage", "quickplay", "remainder", "shake",
-            "sterio", "story", "subtraction", "tap", "time", "touch"
-        )
-        val supportedDifficulties = listOf("1", "2", "3", "4", "5")
+        val allDifficulties = listOf("1", "2", "3", "4", "5")
+        val sortedDifficulties = listOf(currentDifficulty) + allDifficulties.filter { it != currentDifficulty }
 
-        for (mode in supportedModes) {
-            for (difficulty in supportedDifficulties) {
+        // Dynamically extract all unique modes from the sheet
+        val modeColumnIndex = 0 // Assuming mode is in first column; change if needed
+        val detectedModes = mutableSetOf<String>()
+
+        for (i in 1..sheet.lastRowNum) { // Skip header row
+            val row = sheet.getRow(i) ?: continue
+            val cell = row.getCell(modeColumnIndex) ?: continue
+            val mode = cell.stringCellValue.trim().lowercase(Locale.ROOT)
+            if (mode.isNotEmpty()) detectedModes.add(mode)
+        }
+
+        Log.d(TAG, "Detected modes in sheet: $detectedModes")
+
+        for (mode in detectedModes) {
+            for (difficulty in sortedDifficulties) {
                 val key = "$lang|$mode|$difficulty"
                 val questions = ExcelQuestionLoader.loadQuestionsFromSheet(sheet, mode, difficulty)
                 if (questions.isNotEmpty()) {
@@ -41,10 +53,10 @@ object QuestionCache {
 
         workbook.close()
 
-        val endTime = System.currentTimeMillis()
-        val duration = endTime - startTime
+        val duration = System.currentTimeMillis() - startTime
         Log.d(TAG, "Finished preloading all questions in $duration ms (${duration / 1000.0} seconds)")
     }
+
 
 
     fun getQuestions(lang: String, mode: String, difficulty: String): List<GameQuestion> {
