@@ -121,7 +121,7 @@ object DialogUtils {
 
         binding.messageTextView.text = finalMessage
 
-//        val previousFocus = (context as? android.app.Activity)?.currentFocus
+        val previousFocus = (context as? android.app.Activity)?.currentFocus
 
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
@@ -133,7 +133,7 @@ object DialogUtils {
         Handler(Looper.getMainLooper()).postDelayed({
             if (dialog.isShowing) {
                 dialog.dismiss()
-//                previousFocus?.sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent.TYPE_VIEW_FOCUSED)
+                previousFocus?.sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent.TYPE_VIEW_FOCUSED)
                 onContinue()
             }
         }, 4000)
