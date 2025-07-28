@@ -29,7 +29,6 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     protected lateinit var tts: TTSUtility
     protected lateinit var lang: String
     protected lateinit var difficulty: String
-    protected open val mode: String by lazy { getModeName() }
 
     protected var attemptCount = 0
     protected open val maxAttempts = 3
@@ -71,8 +70,12 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     }
 
     override fun showHint() {
-        val bundle = Bundle().apply { putString("mode", mode) }
-        val hintFragment = HintFragment().apply { arguments = bundle }
+        val bundle = Bundle().apply {
+            putString("mode", getModeName())
+        }
+        val hintFragment = HintFragment().apply {
+            arguments = bundle
+        }
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, hintFragment)
             .addToBackStack(null)
@@ -103,6 +106,10 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     private fun loadQuestions() {
         viewLifecycleOwner.lifecycleScope.launch {
             val start = System.currentTimeMillis()
+
+            val lang = this@BaseGameFragment.lang
+            val difficulty = this@BaseGameFragment.difficulty
+            val mode = getModeName() // ⏳ lazy mode evaluation
 
             val questions = withContext(Dispatchers.IO) {
                 loadGameQuestions(requireContext(), lang, mode, difficulty)
