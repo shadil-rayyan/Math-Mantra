@@ -91,7 +91,7 @@
     <!-- Sterio Sound-->
     <string name="audio_instruction">ശ്രദ്ധയോടെ കേൾക്കുക, രണ്ടാമത്തേത്  സംഖ്യ ആദ്യ നിന്ന് കുറയ്ക്കുക.</string>
     <string name="audio_instruction_description">നിർദ്ദേശം: ശ്രദ്ധയോടെ കേൾക്കുക. സംഖ്യകൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കു ബട്ടൺ ഉപയോഗിക്കുക.</string>
-    <string name="read_question">ചോദ്യത്തെ വായിക്കുക</string>
+    <string name="read_question">ചോദ്യം</string>
     <string name="read_question_description">സംഖ്യകൾ കേൾക്കാൻ ചോദ്യത്തെ വായിക്കുക ബട്ടൺ ഉപയോഗിക്കുക. ഡബിൾ ടാപ്പ് ചെയ്ത് കേൾക്കാം.</string>
     <string name="enter_answer_hint">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
     <string name="your_answer_here">നിങ്ങളുടെ ഉത്തരം ഇവിടെ</string>
