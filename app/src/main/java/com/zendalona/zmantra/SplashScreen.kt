@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.accessibility.AccessibilityManager
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -53,9 +54,16 @@ class SplashScreen : AppCompatActivity() {
         }, totalSplashTime)
 
         lifecycleScope.launch {
-            val lang = LocaleHelper.getLanguage(this@SplashScreen).ifEmpty { "en" }
-            QuestionCache.preloadAllQuestions(this@SplashScreen, lang)
-        }
+            Log.d("SplashScreen", "Starting preload coroutine...")  // ✅ Log before preload starts
 
+            val lang = LocaleHelper.getLanguage(this@SplashScreen).ifEmpty { "en" }
+            Log.d("SplashScreen", "Detected language: $lang")       // ✅ Log detected language
+
+            QuestionCache.preloadAllQuestions(this@SplashScreen, lang)
+
+            Log.d("SplashScreen", "Preload coroutine finished.")
+
+
+        }
     }
 }
