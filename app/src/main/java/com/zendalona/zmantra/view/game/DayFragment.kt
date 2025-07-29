@@ -32,8 +32,15 @@ class DayFragment : BaseGameFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
+
+        buttons = listOf(
+            binding.btnMonday, binding.btnTuesday, binding.btnWednesday,
+            binding.btnThursday, binding.btnFriday, binding.btnSaturday, binding.btnSunday
+        )
+
         return binding.root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -88,26 +95,51 @@ class DayFragment : BaseGameFragment() {
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
         val correctDayLocalized = getString(getDayStringRes(correctDay))
 
-        handleAnswerSubmission(
-            userAnswer = selected,
-            correctAnswer = correctDayLocalized,
-            elapsedTime = elapsedTime,
-            timeLimit = totalTime,
-            onCorrect = {
-                disableAllButtons()
-                showNextDialog {
-                    generateQuestion()
-                }
-            },
-            onIncorrect = {},
-            onShowCorrect = {
-                disableAllButtons()
-                showNextDialog {
-                    generateQuestion()
-                }
+        if (selected == correctDayLocalized) {
+            handleAnswerSubmission(
+                userAnswer = selected,
+                correctAnswer = correctDayLocalized,
+                elapsedTime = elapsedTime,
+                timeLimit = totalTime,
+                onCorrect = {
+                    disableAllButtons()
+                    showNextDialog {
+                        generateQuestion()
+                    }
+                },
+                onIncorrect = {},
+                onShowCorrect = {}
+            )
+        } else {
+            attemptCount++
+            if (attemptCount >= 3) {
+                handleAnswerSubmission(
+                    userAnswer = selected,
+                    correctAnswer = correctDayLocalized,
+                    elapsedTime = elapsedTime,
+                    timeLimit = totalTime,
+                    onCorrect = {},
+                    onIncorrect = {},
+                    onShowCorrect = {
+                        disableAllButtons()
+                        showNextDialog {
+                            generateQuestion()
+                        }
+                    }
+                )
+            } else {
+                handleAnswerSubmission(
+                    userAnswer = selected,
+                    correctAnswer = correctDayLocalized,
+                    elapsedTime = elapsedTime,
+                    timeLimit = totalTime,
+                    onCorrect = {},
+                    onIncorrect = {},
+                    onShowCorrect = {}
+                )
             }
+        }
 
-        )
     }
 
     private fun getDayStringRes(day: String): Int {
