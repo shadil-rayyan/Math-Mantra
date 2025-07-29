@@ -55,13 +55,43 @@ class HintFragment : Fragment() {
         super.onDestroyView()
         binding = null
     }
+    private fun getThemeColor(attrRes: Int): String {
+        val typedValue = android.util.TypedValue()
+        val theme = requireContext().theme
+        theme.resolveAttribute(attrRes, typedValue, true)
+        val colorInt = typedValue.data
+        return String.format("#%06X", 0xFFFFFF and colorInt)
+    }
+
 
     // Convert hint text to HTML format
     fun convertHintToHtml(hintText: String): String {
         val lines = hintText.split("\n").filter { it.isNotEmpty() }
 
+        val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSecondary)
+        val textColor = getThemeColor(com.google.android.material.R.attr.colorOnSecondary)
+
         val htmlBuilder = StringBuilder()
-        htmlBuilder.append("<html><body style='font-size:18px; font-family: Arial, sans-serif;'>")
+        htmlBuilder.append(
+            """
+        <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <style>
+                body {
+                    background-color: $backgroundColor;
+                    color: $textColor;
+                    font-size: 18px;
+                    font-family: sans-serif;
+                    padding: 16px;
+                }
+                h2 { margin-top: 20px; }
+                ul { padding-left: 20px; }
+            </style>
+        </head>
+        <body>
+        """.trimIndent()
+        )
 
         lines.forEach { line ->
             when {
@@ -86,4 +116,5 @@ class HintFragment : Fragment() {
         htmlBuilder.append("</body></html>")
         return htmlBuilder.toString()
     }
+
 }
