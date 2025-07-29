@@ -60,35 +60,42 @@ class MentalCalculationFragment : BaseGameFragment() {
     }
 
     private fun onReadQuestionClicked() {
-        if (isRevealing) handler.removeCallbacksAndMessages(null)
+        if (isRevealing) return // Prevent re-entry
 
         val question = questions.getOrNull(currentIndex) ?: return
         revealTokens = question.expression.split(" ")
         revealIndex = 0
         isRevealing = true
-        revealNextToken()
+        binding?.readQuestionBtn?.isEnabled = false
+
+        // Show first token immediately
+        showToken(revealTokens[revealIndex])
+        revealIndex++
+
+        handler.postDelayed(::revealNextToken, 1000)
     }
 
     private fun revealNextToken() {
         if (revealIndex >= revealTokens.size) {
             isRevealing = false
+            binding?.readQuestionBtn?.isEnabled = true
             return
         }
 
-        val token = revealTokens[revealIndex].replace("/", "÷")
+        showToken(revealTokens[revealIndex])
+        revealIndex++
+
+        handler.postDelayed(::revealNextToken, 1000)
+    }
+
+    private fun showToken(tokenRaw: String) {
+        val token = tokenRaw.replace("/", "÷")
         binding?.mentalCalculation?.apply {
             text = token
             if (AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
                 announceForAccessibility(token)
             }
         }
-
-        revealIndex++
-
-        handler.postDelayed({
-            binding?.mentalCalculation?.text = ""
-            revealNextToken()
-        }, 1000)
     }
 
     private fun loadNextQuestion() {
@@ -121,10 +128,9 @@ class MentalCalculationFragment : BaseGameFragment() {
             binding?.apply {
                 answerEt.isEnabled = true
                 submitAnswerBtn.isEnabled = true
-                answerEt.requestFocus()
+                // ❌ DO NOT auto-focus or open keyboard here
+                // User will tap manually
             }
-            val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(binding?.answerEt, InputMethodManager.SHOW_IMPLICIT)
         }, tokens.size * 1000L + 500)
     }
 
