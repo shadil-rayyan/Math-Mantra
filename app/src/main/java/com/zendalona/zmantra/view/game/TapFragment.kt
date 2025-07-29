@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
 import com.zendalona.zmantra.model.GameQuestion
@@ -17,12 +16,14 @@ class TapFragment : BaseGameFragment() {
 
     private var binding: FragmentGameTapBinding? = null
     private val handler = Handler(Looper.getMainLooper())
+
     private var questionIndex = 0
     private var tapCount = 0
-    private var questions: List<GameQuestion> = emptyList()
-    private var questionStartTime = 0L
     private var answerChecked = false
     private var isCheckingAnswer = false
+    private var questionStartTime = 0L
+
+    private var questions: List<GameQuestion> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +33,9 @@ class TapFragment : BaseGameFragment() {
         binding = FragmentGameTapBinding.inflate(inflater, container, false)
 
         binding?.root?.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) onTap()
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                onTap()
+            }
             true
         }
 
@@ -46,13 +49,13 @@ class TapFragment : BaseGameFragment() {
 
     override fun getModeName(): String = "tap"
 
+    override fun getGifImageView() = binding?.animatedView
+    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone
+
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
         this.questions = questions
         startQuestion()
     }
-
-    override fun getGifImageView() = binding?.animatedView
-    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone
 
     private fun startQuestion() {
         if (questionIndex >= questions.size) {
@@ -76,54 +79,65 @@ class TapFragment : BaseGameFragment() {
     }
 
     private fun onTap() {
-        if (answerChecked || isCheckingAnswer || questionIndex >= questions.size) return
+        if (answerChecked || questionIndex >= questions.size) return
 
         tapCount++
         binding?.tapCount?.text = tapCount.toString()
         announce(binding?.tapCount, tapCount.toString())
 
+        if (!isCheckingAnswer) {
+            isCheckingAnswer = true
+            handler.postDelayed({ checkAnswer() }, 3000)
+        }
+    }
+
+    private fun checkAnswer() {
+        isCheckingAnswer = false
+        if (questionIndex >= questions.size || answerChecked) return
+
         val question = questions[questionIndex]
         val correctAnswer = question.answer
         val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
-        val rawLimit = question.timeLimit.toString().toDoubleOrNull()
-        val timeLimit = if (rawLimit == null || rawLimit == 0.0) 10.0 else rawLimit
+        val timeLimit = question.timeLimit.toString().toDoubleOrNull()?.takeIf { it > 0 } ?: 10.0
 
         if (tapCount == correctAnswer) {
-            isCheckingAnswer = true
-            handler.postDelayed({
-                isCheckingAnswer = false
+            answerChecked = true
+            handleAnswerSubmission(
+                userAnswer = tapCount.toString(),
+                correctAnswer = correctAnswer.toString(),
+                elapsedTime = elapsedSeconds,
+                timeLimit = timeLimit,
+                onCorrect = { goToNextQuestion() },
+                onIncorrect = {},
+                onShowCorrect = { goToNextQuestion() }
+            )
+        } else {
+            attemptCount++
+            if (attemptCount >= 3) {
                 answerChecked = true
                 handleAnswerSubmission(
                     userAnswer = tapCount.toString(),
                     correctAnswer = correctAnswer.toString(),
                     elapsedTime = elapsedSeconds,
                     timeLimit = timeLimit,
-                    onCorrect = { goToNextQuestion() },
+                    onCorrect = {},
                     onIncorrect = {},
                     onShowCorrect = { goToNextQuestion() }
                 )
-            }, 3000)
-
-        } else if (tapCount > correctAnswer) {
-            attemptCount++
-            if (attemptCount >= 3) {
-                answerChecked = true
+            } else {
                 handleAnswerSubmission(
-                    userAnswer = "wrong",
+                    userAnswer = tapCount.toString(),
                     correctAnswer = correctAnswer.toString(),
                     elapsedTime = elapsedSeconds,
                     timeLimit = timeLimit,
                     onCorrect = {},
-                    onIncorrect = {},
-                    onShowCorrect = {
-                        goToNextQuestion()
-                    }
+                    onIncorrect = {
+                        tapCount = 0
+                        binding?.tapCount?.text = getString(R.string.initial_tap_count)
+                        announce(binding?.tapCount, binding?.tapCount?.text.toString())
+                    },
+                    onShowCorrect = { goToNextQuestion() }
                 )
-            } else {
-                // retry allowed, reset counter and prompt again
-                tapCount = 0
-                binding?.tapCount?.text = getString(R.string.initial_tap_count)
-                announce(binding?.tapCount, binding?.tapCount?.text.toString())
             }
         }
     }
