@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
 import com.zendalona.zmantra.model.HintIconVisibilityController
+import com.zendalona.zmantra.utility.settings.LocaleHelper
+import kotlin.text.ifEmpty
 
 class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
@@ -25,13 +27,14 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentUserguideBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var lang = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
 
-        val rawHtml = getString(R.string.user_guide_text)
 
         val webView = WebView(requireContext()).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -42,7 +45,7 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
             settings.defaultTextEncodingName = "utf-8"
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
             webViewClient = WebViewClient()
-            loadUrl("file:///android_asset/userguide/en.html")
+            loadUrl("file:///android_asset/userguide/$lang.html")
             isFocusable = true
             isFocusableInTouchMode = true
         }
