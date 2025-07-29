@@ -49,6 +49,13 @@ class MentalCalculationFragment : BaseGameFragment() {
                     true
                 } else false
             }
+            binding?.readQuestionBtn?.setOnFocusChangeListener { _, hasFocus ->
+                if (hasFocus) {
+                    binding?.answerEt?.clearFocus()
+                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(binding?.answerEt?.windowToken, 0)
+                }
+            }
         }
 
         return binding!!.root

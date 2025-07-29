@@ -6,13 +6,12 @@ import android.media.AudioManager
 import android.os.*
 import android.speech.tts.TextToSpeech
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.zmantra.model.GameQuestion
 import com.zendalona.zmantra.view.base.BaseGameFragment
-import kotlinx.coroutines.launch
 import java.util.*
 
 class SterioFragment : BaseGameFragment() {
@@ -38,6 +37,13 @@ class SterioFragment : BaseGameFragment() {
         binding?.answerEt?.setOnEditorActionListener { _, _, _ ->
             submitAnswer()
             true
+        }
+        binding?.readQuestionBtn?.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding?.answerEt?.clearFocus()
+                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(binding?.answerEt?.windowToken, 0)
+            }
         }
 
         setAccessibilityDescriptions()
@@ -70,7 +76,7 @@ class SterioFragment : BaseGameFragment() {
         binding?.answerEt?.setText("")
         announce(binding?.answerEt, getString(R.string.new_question_ready))
 
-        // Read automatically
+        // Focus on read button and read aloud after delay
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.readQuestionBtn?.requestFocus()
             readQuestionAloud()
@@ -101,6 +107,9 @@ class SterioFragment : BaseGameFragment() {
     }
 
     private fun readQuestionAloud() {
+        // If question button has focus, hide the keyboard
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isHeadphoneConnected()) {
             Handler(Looper.getMainLooper()).postDelayed({
                 playNumberWithStereo(requireContext(), numA, isRight = false)
