@@ -1,46 +1,68 @@
 <resources>
     <string name="user_guide_text"><![CDATA[
-<b>Maths Manthraa User Guide</b><br/><br/>
+<h1>zMantra – User Guide</h1>
+<p><em>Accessible Math Learning Through Play</em></p>
 
-<b>1. Introduction</b><br/>
-Maths Manthraa is an innovative and inclusive math learning app designed for students of all abilities.<br/>
-With a variety of interactive modes — including touch, motion, and sound-based learning — it makes math engaging and accessible.<br/><br/>
+<h2><a name="toc">Table of Contents</a></h2>
+<ul>
+    <li><a href="#welcome">1. Welcome to zMantra</a></li>
+    <li><a href="#accessibility">2. Accessibility and Interaction</a></li>
+    <li><a href="#mainmenu">3. Main Menu</a></li>
+    <li><a href="#quickplay">4. Quick Play</a></li>
+    <li><a href="#learningmode">5. Learning Mode</a></li>
+    <li><a href="#gamemode">6. Game Mode</a></li>
+    <li><a href="#settings">7. Settings</a></li>
+    <li><a href="#feedback">8. Feedback and Community</a></li>
+    <li><a href="#credits">9. Credits</a></li>
+</ul>
 
-<b>2. How to Use Maths Manthraa?</b><br/>
-Maths Manthraa provides multiple game and learning modes, designed to reinforce core mathematical concepts through fun, interactive exercises.<br/><br/>
+<h2><a name="welcome">1. Welcome to zMantra</a></h2>
+<p>zMantra is an accessible and inclusive math learning game designed for all learners, especially those with visual impairments. Learn and play using modes that suit your style – touch, shake, draw, or explore with hints and feedback!</p>
 
-<b>3. Features Overview</b><br/>
-<b>Game Modes:</b><br/>
-• Quick Play Mode – Instantly starts a random math challenge without navigating menus.<br/>
-• Drum Mode – Tap the screen to match the required count.<br/>
-• Bell Mode – Shake the phone to count bells.<br/>
-• Drawing Mode – Draw basic shapes for spatial awareness.<br/>
-• Directional Mode – Rotate the device to match target directions.<br/>
-• Touch the Screen Mode – Place a specific number of fingers on the screen.<br/>
-• Stereo Sound Mode – Solve math problems using stereo audio cues.<br/>
-• MCQ Mode – Answer multiple-choice math questions.<br/><br/>
+<h2><a name="accessibility">2. Accessibility and Interaction</a></h2>
+<p>We designed zMantra to be screen reader-friendly, gesture-aware, and customizable. Whether you\'re using TalkBack or interacting through gestures, the app adapts to your needs.</p>
 
-<b>Learning Modes:</b><br/>
-• Currency Mode – Learn to manage money with real-life purchase scenarios.<br/>
-• Time Mode – Solve time-related math problems.<br/>
-• Distance Mode – Calculate speed and distance problems.<br/>
-• Core Arithmetic – Basic addition, subtraction, multiplication, and division.<br/>
-• Number Line Mode – Swipe to solve problems on a number line.<br/><br/>
+<h2><a name="mainmenu">3. Main Menu</a></h2>
+<p>The main menu offers quick access to:</p>
+<ul>
+    <li><strong>Quick Play</strong> – Jump into a random challenge</li>
+    <li><strong>Learning Mode</strong> – Choose topics and go at your pace</li>
+    <li><strong>Game Mode</strong> – Compete and test your skills</li>
+    <li><strong>Settings</strong> – Customize accessibility, language, and difficulty</li>
+</ul>
 
-<b>4. Accessibility Features</b><br/>
-• Fully supports TalkBack and custom accessibility gestures.<br/>
-• Text-to-Speech (TTS) guides users through menus and exercises.<br/><br/>
+<h2><a name="quickplay">4. Quick Play</a></h2>
+<p>This mode gives you a random math activity based on your selected difficulty. Great for short, spontaneous practice!</p>
 
-<b>5. Settings</b><br/>
-• Customize sound, speech, and high-contrast mode.<br/>
-• Enable or disable background music and vibrations.<br/><br/>
+<h2><a name="learningmode">5. Learning Mode</a></h2>
+<p>Choose what you want to learn. Each topic includes hints, repetition, and gentle guidance. No pressure, just progress.</p>
 
-<b>6. Quit Option</b><br/>
-• Users are prompted with a confirmation dialog before exiting the app.<br/><br/>
+<h2><a name="gamemode">6. Game Mode</a></h2>
+<p>Challenge yourself with timed questions and limited attempts. Perfect your skills and unlock rewards as you go!</p>
 
-<b>7. Localization</b><br/>
-• Supports multiple languages for a wider reach.<br/><br/>
+<h2><a name="settings">7. Settings</a></h2>
+<p>In the settings screen, you can:</p>
+<ul>
+    <li>Change difficulty level</li>
+    <li>Switch interaction modes (touch, shake, draw, etc.)</li>
+    <li>Enable or disable audio hints</li>
+    <li>Change language or voice feedback options</li>
+</ul>
 
-Enjoy learning with Maths Manthraa!
-    ]]></string>
+<h2><a name="feedback">8. Feedback and Community</a></h2>
+<p>We welcome your feedback! Join our community to share suggestions, report issues, or just say hi.</p>
+
+<h2><a name="credits">9. Credits</a></h2>
+<p>Built with ❤️ by the zMantra team.</p>
+<ul>
+    <li><strong>Design & Development:</strong> Shadil AM</li>
+    <li><strong>Mentors:</strong> [Add names]</li>
+    <li><strong>Translations:</strong> [Add names]</li>
+</ul>
+
+<p><a href="#toc">Back to Table of Contents</a></p>
+]]></string>
+
+    <!-- Optional: for TalkBack -->
+    <string name="user_guide_accessibility_text">zMantra User Guide: Accessible math learning game information with table of contents and instructions.</string>
 </resources>
