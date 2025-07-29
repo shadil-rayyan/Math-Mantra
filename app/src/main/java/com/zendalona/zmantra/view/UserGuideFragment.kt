@@ -34,15 +34,20 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
         val rawHtml = getString(R.string.user_guide_text)
 
         val webView = WebView(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
             settings.javaScriptEnabled = false
             settings.defaultTextEncodingName = "utf-8"
             settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-            webViewClient = WebViewClient() // Prevent opening links externally
-            loadDataWithBaseURL(null, rawHtml, "text/html", "utf-8", null)
+            webViewClient = WebViewClient()
+            loadUrl("file:///android_asset/userguide/en.html")
             isFocusable = true
             isFocusableInTouchMode = true
-            contentDescription = getString(R.string.user_guide_accessibility_text)
         }
+
+
 
         binding.llUserGuideContent.removeAllViews()
         binding.llUserGuideContent.addView(webView)
