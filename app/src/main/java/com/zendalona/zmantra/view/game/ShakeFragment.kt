@@ -88,6 +88,7 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         wrongAttempts = 0
         answerChecked = false
         firstShakeTime = 0L
+        isShakingAllowed = true
 
         val instruction = getString(R.string.shake_target_expression, question.expression)
         binding?.ringMeTv?.text = instruction
@@ -97,19 +98,11 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
     }
 
-    private fun resetShake() {
-        count = 0
-        firstShakeTime = 0L
-        answerChecked = false
-        binding?.ringCount?.text = getString(R.string.shake_count_initial)
-    }
-
     private fun proceedToNextQuestion() {
         index++
         if (index >= parsedShakeList.size) {
             endGame()
         } else {
-            resetShake()
             startQuestion()
         }
     }
@@ -139,14 +132,17 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
             },
             onIncorrect = {
                 wrongAttempts++
-                gameHandler.postDelayed({ isShakingAllowed = true }, 1000)
-                resetShake()
+                count = 0
+                binding?.ringCount?.text = getString(R.string.shake_count_initial)
+                gameHandler.postDelayed({
+                    isShakingAllowed = true
+                    answerChecked = false  // ✅ Allow retry
+                }, 1000)
             },
             onShowCorrect = {
                 proceedToNextQuestion()
             }
         )
-
     }
 
     override fun onSensorChanged(event: SensorEvent?) {
