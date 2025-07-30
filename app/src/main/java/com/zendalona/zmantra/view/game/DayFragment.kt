@@ -103,9 +103,8 @@ class DayFragment : BaseGameFragment() {
                 timeLimit = totalTime,
                 onCorrect = {
                     disableAllButtons()
-                    showNextDialog {
-                        generateQuestion()
-                    }
+                    generateQuestion()
+
                 },
                 onIncorrect = {},
                 onShowCorrect = {}
@@ -122,9 +121,8 @@ class DayFragment : BaseGameFragment() {
                     onIncorrect = {},
                     onShowCorrect = {
                         disableAllButtons()
-                        showNextDialog {
-                            generateQuestion()
-                        }
+                        generateQuestion()
+
                     }
                 )
             } else {
