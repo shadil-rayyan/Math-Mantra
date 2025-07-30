@@ -85,7 +85,7 @@ object DialogUtils {
         onContinue: () -> Unit
     ) {
         showCustomDialog(
-            context, inflater, "Wrong", ttsUtility, onContinue, message, R.drawable.dialog_wrong_anwser_repeted_2, vibrationDuration = 200
+            context, inflater, "Good", ttsUtility, onContinue, message, R.drawable.dialog_good_3, vibrationDuration = 200
         )
     }
 
