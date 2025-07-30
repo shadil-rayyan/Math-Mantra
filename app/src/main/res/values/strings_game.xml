@@ -36,7 +36,7 @@
     <string name="touchscreen_question_expression">%1$s</string>
     <string name="touchscreen_question_format">%1$d + %2$d = ? (Use fingers to answer)</string>
     <string name="touchscreen_fingers_on_screen">Fingers on screen: %1$d</string>
-    <string name="touch_instruction">Touch the screen with %1$d plus %2$s fingers"</string>
+    <string name="touch_instruction">Touch the screen with %1$s plus %2$s fingers.</string>
     <string name="touch_image_description">Illustration of two fingers touching the screen</string>
 
     <!-- Days -->
