@@ -73,7 +73,10 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        shakeHandler.removeCallbacksAndMessages(null)
+        gameHandler.removeCallbacksAndMessages(null)
     }
+
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
         parsedShakeList = questions
@@ -108,7 +111,7 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
     }
 
     private fun checkAnswer(forceWrong: Boolean = false) {
-        if (answerChecked) return
+        if (!isAdded || view == null || answerChecked) return
         answerChecked = true
 
         val question = parsedShakeList[index % parsedShakeList.size]
@@ -128,18 +131,22 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
             elapsedTime = elapsedSeconds,
             timeLimit = timeLimit,
             onCorrect = {
+                if (!isAdded || view == null) return@handleAnswerSubmission
                 proceedToNextQuestion()
             },
             onIncorrect = {
+                if (!isAdded || view == null) return@handleAnswerSubmission
                 wrongAttempts++
                 count = 0
                 binding?.ringCount?.text = getString(R.string.shake_count_initial)
                 gameHandler.postDelayed({
+                    if (!isAdded || view == null) return@postDelayed
                     isShakingAllowed = true
-                    answerChecked = false  // ✅ Allow retry
+                    answerChecked = false
                 }, 1000)
             },
             onShowCorrect = {
+                if (!isAdded || view == null) return@handleAnswerSubmission
                 proceedToNextQuestion()
             }
         )
