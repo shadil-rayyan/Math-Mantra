@@ -50,7 +50,7 @@ class TapFragment : BaseGameFragment() {
     override fun getModeName(): String = "tap"
 
     override fun getGifImageView() = binding?.animatedView
-    override fun getGifResource(): Int? = R.drawable.game_angle_rotateyourphone
+    override fun getGifResource(): Int? = R.drawable.game_touchthescreen
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
         this.questions = questions
