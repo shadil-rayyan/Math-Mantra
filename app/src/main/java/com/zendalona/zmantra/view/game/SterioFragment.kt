@@ -107,23 +107,22 @@ class SterioFragment : BaseGameFragment() {
     }
 
     private fun readQuestionAloud() {
-        // If question button has focus, hide the keyboard
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isHeadphoneConnected()) {
             Handler(Looper.getMainLooper()).postDelayed({
                 playNumberWithStereo(requireContext(), numA, isRight = false)
             }, 0)
 
             Handler(Looper.getMainLooper()).postDelayed({
-                tts.speak(getString(R.string.minus))
+                playTextWithStereo(requireContext(), getString(R.string.minus), isRight = true)
             }, 3000)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 playNumberWithStereo(requireContext(), numB, isRight = true)
             }, 6000)
         } else {
-            tts.speak(getString(R.string.subtract_numbers, numB, numA))
+            // Fallback
+            val fallbackText = getString(R.string.subtract_numbers, numA, numB)
+            ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
         }
     }
 
@@ -136,7 +135,22 @@ class SterioFragment : BaseGameFragment() {
                 }
             }
         } else {
+            ttsStereo?.language = Locale.ENGLISH
             ttsStereo?.speak(getString(R.string.number_is, number), TextToSpeech.QUEUE_FLUSH, null, "stereo")
+        }
+    }
+
+    private fun playTextWithStereo(context: Context, text: String, isRight: Boolean) {
+        if (ttsStereo == null) {
+            ttsStereo = TextToSpeech(context) { status ->
+                if (status == TextToSpeech.SUCCESS) {
+                    ttsStereo?.language = Locale.ENGLISH
+                    ttsStereo?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "stereo_text")
+                }
+            }
+        } else {
+            ttsStereo?.language = Locale.ENGLISH
+            ttsStereo?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "stereo_text")
         }
     }
 
