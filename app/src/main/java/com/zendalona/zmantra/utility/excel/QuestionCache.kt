@@ -13,12 +13,19 @@ object QuestionCache {
     private val cache = mutableMapOf<String, List<GameQuestion>>() // key = "$lang-$mode-$difficulty"
     private const val TAG = "QuestionCache"
 
-    suspend fun preloadCurrentDifficultyModes(context: Context, lang: String) = withContext(Dispatchers.IO) {
+    suspend fun preloadCurrentDifficultyModes(
+        context: Context,
+        lang: String,
+        onProgress: (Int) -> Unit = {} // Optional progress callback
+    ) = withContext(Dispatchers.IO) {
         val currentDifficulty = DifficultyPreferences.getDifficulty(context).toString()
         val workbook = ExcelQuestionLoader.loadWorkbook(context, lang)
         val sheet = workbook.getSheetAt(0)
 
         val detectedModes = extractModes(sheet)
+
+        val total = detectedModes.size
+        var loaded = 0
 
         for (mode in detectedModes) {
             val key = "$lang-$mode-$currentDifficulty"
@@ -27,6 +34,9 @@ object QuestionCache {
                 cache[key] = questions
                 Log.d(TAG, "✅ Cached $mode-$currentDifficulty (${questions.size})")
             }
+            loaded++
+            val progress = (loaded * 100) / total
+            onProgress(progress)
         }
 
         workbook.close()
