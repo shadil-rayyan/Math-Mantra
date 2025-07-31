@@ -120,11 +120,23 @@ class SterioFragment : BaseGameFragment() {
                 playNumberWithStereo(requireContext(), numB, isRight = true)
             }, 6000)
         } else {
-            // Fallback
-            val fallbackText = getString(R.string.subtract_numbers, numA, numB)
-            ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
+            // Fallback: speak using ttsStereo, ensure it's initialized
+            if (ttsStereo == null) {
+                ttsStereo = TextToSpeech(requireContext()) { status ->
+                    if (status == TextToSpeech.SUCCESS) {
+                        ttsStereo?.language = Locale.ENGLISH
+                        val fallbackText = getString(R.string.subtract_numbers, numA, numB)
+                        ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
+                    }
+                }
+            } else {
+                val fallbackText = getString(R.string.subtract_numbers, numA, numB)
+                ttsStereo?.language = Locale.ENGLISH
+                ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
+            }
         }
     }
+
 
     private fun playNumberWithStereo(context: Context, number: Int, isRight: Boolean) {
         if (ttsStereo == null) {
