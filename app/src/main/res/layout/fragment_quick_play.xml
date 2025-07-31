@@ -71,6 +71,7 @@
                 android:textSize="18sp"
                 />
 
+
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -88,4 +89,7 @@
         android:contentDescription="@null"
         android:focusableInTouchMode="false"
         android:focusable="false" />
+    <include layout="@layout/dialog_result" />
+
+
 </FrameLayout>

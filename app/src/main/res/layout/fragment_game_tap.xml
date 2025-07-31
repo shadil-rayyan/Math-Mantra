@@ -72,4 +72,7 @@
         android:contentDescription="@null"
         android:focusable="false"
         android:focusableInTouchMode="false" />
+
+    <include layout="@layout/dialog_result" />
+
 </FrameLayout>

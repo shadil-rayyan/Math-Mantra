@@ -91,4 +91,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <include layout="@layout/dialog_result" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

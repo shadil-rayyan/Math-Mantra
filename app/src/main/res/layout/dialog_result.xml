@@ -6,7 +6,8 @@
     android:background="#80000000"
     android:visibility="gone"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:elevation="100dp">
 
     <LinearLayout
         android:id="@+id/feedbackView"
