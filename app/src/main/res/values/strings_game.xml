@@ -6,7 +6,7 @@
 
     <!-- angle -->
     <string name="rotate_your_phone">Rotate Your Phone</string>
-    <string name="turn_phone_90_degrees">Turn your phone 90 degrees</string>
+    <string name="turn_phone_90_degrees"> %1$s </string>
     <string name="rotation_angle_default">Rotation Angle: 0°</string>
     <!-- shake -->
     <string name="shake_target_expression">Shake %1$s times!</string>

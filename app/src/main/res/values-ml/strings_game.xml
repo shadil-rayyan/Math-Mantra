@@ -2,7 +2,7 @@
 <resources>
     <!-- angle -->
     <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
-    <string name="turn_phone_90_degrees">ഫോൺ 90 ഡിഗ്രി തിരിക്കുക</string>
+    <string name="turn_phone_90_degrees"> %1$s  </string>
     <string name="rotation_angle_default">ഭ്രമണ കോണം: 0°</string>
     <!-- shake -->
     <string name="shake_target_expression">%1$s തവണ ഫോണിനെ കുലുക്കുക!</string>

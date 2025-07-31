@@ -103,8 +103,16 @@ class AngleFragment : BaseGameFragment() {
         isHolding = false
         baseAzimuth = -1f
 
-        binding.angleQuestion.text = question.expression
-        announce(binding.angleQuestion, question.expression)
+        val localizedText = getString(R.string.turn_phone_90_degrees, question.expression)
+
+        binding.angleQuestion.apply {
+            text = localizedText
+            contentDescription = localizedText
+            announceForAccessibility(localizedText)
+        }
+
+
+
 
         if (angleUpdateRunnable == null) {
             angleUpdateRunnable = object : Runnable {
