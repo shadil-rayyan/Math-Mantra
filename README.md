@@ -27,7 +27,7 @@
 
 ## 🚀 Demo
 
-▶️ [Watch the zMantra demo](https://investingwisely.sharepoint.com/:v:/s/Zendalona/EQjENj3kNttJufPgkoaxXX0Br42SkrNCwIAKurNn0m3zSA?e=zHELG9)
+![zMantra Demo](https://raw.githubusercontent.com/shadil-rayyan/Math-Mantra/refactoring/.github/.preview/out.gif)
 
 ---
 
