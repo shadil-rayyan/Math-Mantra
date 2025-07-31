@@ -154,7 +154,7 @@ Here’s what’s planned for future releases:
 
 <div align="center">
 
-> 📘 *"Mathematics is for everyone. With z.Mantra, we make sure it's also reachable."*
+ 📘 *"Mathematics is for everyone. With z.Mantra, we make sure it's also reachable."*
 
 </div>
 
