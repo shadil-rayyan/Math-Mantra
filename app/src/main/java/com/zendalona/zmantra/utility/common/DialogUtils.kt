@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.DialogResultBinding
+import android.view.View
 
 object DialogUtils {
 
@@ -101,41 +102,79 @@ object DialogUtils {
         vibrationDuration: Long = 150,
         speakText: String? = null
     ) {
-        val binding = DialogResultBinding.inflate(inflater)
-        val gradeData = grade?.let { appreciationData[it] } ?: appreciationData["Wrong"]!!
+        val activity = context as? android.app.Activity ?: return
+        val rootView = activity.findViewById<View>(android.R.id.content)
 
-        // Set the message and drawable based on grade or provided values
-        val finalMessage = message ?: context.getString(gradeData.messageRes.random())
-        val finalDrawableRes = drawableRes ?: gradeData.drawableRes.random()
-
-        VibrationUtils.vibrate(context, vibrationDuration)
-        speakText?.let { ttsUtility?.speak(it) }
-
-        Glide.with(context)
-            .asGif()
-            .load(finalDrawableRes)
-            .into(binding.gifImageView.apply {
-                layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
-                layoutParams.height = (context.resources.displayMetrics.heightPixels * 0.4).toInt()
-            })
-
-        binding.messageTextView.text = finalMessage
-
-        val previousFocus = (context as? android.app.Activity)?.currentFocus
-
-        val dialog = AlertDialog.Builder(context)
-            .setView(binding.root)
-            .setCancelable(false)
-            .create()
-
-        dialog.show()
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (dialog.isShowing) {
-                dialog.dismiss()
-                previousFocus?.sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent.TYPE_VIEW_FOCUSED)
-                onContinue()
-            }
-        }, 4000)
+        DialogUtils.showInlineResult(
+            context = context,
+            rootView = rootView,
+            ttsUtility = ttsUtility,
+            grade = grade,
+            message = message,
+            drawableRes = drawableRes,
+            vibrationDuration = vibrationDuration,
+            speakText = speakText,
+            onComplete = onContinue
+        )
     }
+    fun showInlineResult(
+        context: Context,
+        rootView: View,
+        ttsUtility: TTSUtility? = null,
+        grade: String? = null,
+        message: String? = null,
+        drawableRes: Int? = null,
+        vibrationDuration: Long = 150,
+        speakText: String? = null,
+        onComplete: () -> Unit
+    ) {
+        val overlay = rootView.findViewById<ViewGroup?>(R.id.feedbackOverlay)
+        val messageView = rootView.findViewById<android.widget.TextView?>(R.id.messageTextView)
+        val gifView = rootView.findViewById<android.widget.ImageView?>(R.id.gifImageView)
+
+        if (overlay != null && messageView != null && gifView != null) {
+            android.util.Log.d("DialogUtils", "Showing INLINE result")
+            overlay.visibility = android.view.View.VISIBLE
+
+            val dialogData = if (grade != null) appreciationData[grade] else null
+            val selectedMessage = message ?: dialogData?.messageRes?.randomOrNull()?.let { context.getString(it) }
+            val selectedDrawable = drawableRes ?: dialogData?.drawableRes?.randomOrNull()
+
+            messageView.text = selectedMessage.orEmpty()
+            selectedDrawable?.let {
+                Glide.with(context).asGif().load(it).into(gifView)
+            }
+
+            ttsUtility?.speak(speakText ?: selectedMessage.orEmpty())
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                overlay.visibility = android.view.View.GONE
+                onComplete()
+            }, 2500)
+        } else {
+            android.util.Log.d("DialogUtils", "Showing DIALOG result (inline views not present)")
+            val dialogBinding = DialogResultBinding.inflate(LayoutInflater.from(context))
+            dialogBinding.messageTextView.text = message ?: grade
+            drawableRes?.let {
+                Glide.with(context).asGif().load(it).into(dialogBinding.gifImageView)
+            }
+
+            val dialog = AlertDialog.Builder(context)
+                .setView(dialogBinding.root)
+                .setCancelable(false)
+                .create()
+
+            dialog.show()
+
+            ttsUtility?.speak(speakText ?: message ?: grade ?: "")
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                dialog.dismiss()
+                onComplete()
+            }, 2500)
+        }
+    }
+
+
+
 }
