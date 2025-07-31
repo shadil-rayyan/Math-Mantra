@@ -29,7 +29,29 @@
 
 ![zMantra Demo](https://raw.githubusercontent.com/shadil-rayyan/Math-Mantra/refactoring/.github/.preview/out.gif)
 
+
 ---
+
+## 📚 Background & Contributions
+
+There was a lack of **fully accessible math learning apps** for Android that truly catered to the needs of **visually impaired learners**. Many existing apps either lacked TalkBack support or failed to offer inclusive interaction models.
+
+To address this gap, zMantra was developed by taking inspiration from the **GSoC 2024 Math Mantra project**, especially for features like:
+
+* 🔔 **Bell Ring Mode**
+* 🥁 **Drum Mode**
+* 📈 **Number Line Mode**
+
+While these served as initial references, the majority of the app—including the **architecture, UX flows, and implementation**—has been **rewritten in Kotlin** and **refactored** for modern standards. Major additions and improvements include:
+
+* 🚀 **New Modes**: Quick Play, Learning Mode, and Game Mode
+* 🎛️ **Customizable Settings** for accessibility and experience
+* 🧩 **Expanded Gameplay Logic**, accessibility services, and hints system
+
+zMantra is now a **standalone, robust, and modern educational game** built from the ground up with inclusivity as its core.
+
+---
+
 
 ## ✨ Key Features
 
@@ -102,6 +124,17 @@
 
 ---
 
+## 📌 Roadmap
+
+Here’s what’s planned for future releases:
+
+* ✅ **User-defined Questions**: Allow users to import or create their own questions
+* ⌨️ **Custom Keyboard**: Develop a large, accessible keyboard optimized for non-visual input
+* 👥 **Multiplayer Mode**: Enable peer-to-peer or local multiplayer game sessions
+* ✍️ **Drawing Answer Recognition**: Evaluate math answers drawn by the user
+* 🧱 **Tiler Frame Mode**: Introduce a spatial reasoning mode for tactile visual learners
+
+---
 
 
 ## 🧪 Status
