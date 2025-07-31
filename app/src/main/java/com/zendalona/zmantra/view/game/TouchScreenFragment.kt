@@ -74,7 +74,7 @@ class TouchScreenFragment : BaseGameFragment() {
         val parts = question.expression.split("+")
         val part1 = parts.getOrNull(0)?.trim() ?: "?"
         val part2 = parts.getOrNull(1)?.trim() ?: "?"
-        val speakText = getString(R.string.touch_instruction, part1, part2)
+        val speakText = getString(R.string.touch_instruction, (part1.toInt() + part2.toInt()), part1, part2)
 
 
         binding?.angleQuestion?.apply {
