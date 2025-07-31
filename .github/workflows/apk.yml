@@ -1,13 +1,10 @@
-name: Release bundle for internal test with generating release APK
+name: Release bundle with tag, cache, and version bump
 
 on:
-  workflow_dispatch:  # allows manual run via Actions tab
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     env:
@@ -15,33 +12,58 @@ jobs:
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
       SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
       SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-      SERVICE_ACCOUNT_JSON: ${{ secrets.SERVICE_ACCOUNT_JSON }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required for tagging
 
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'adopt'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: Setup Gradle cache
+        uses: gradle/actions/setup-gradle@v3
 
-      - name: Restore playstore.keystore.jks
+      - name: Decode Keystore
         run: echo "$KEYSTORE_FILE" | base64 -d > app/playstore.keystore.jks
 
-      - name: Build release AAB
+      - name: Read and Bump Version
+        id: versioning
+        run: |
+          FILE=version.properties
+          VERSION=$(grep VERSION_NAME $FILE | cut -d '=' -f2)
+          echo "Current version: $VERSION"
+
+          # Bump patch number
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          NEW_PATCH=$((PATCH + 1))
+          NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+
+          echo "VERSION_NAME=$NEW_VERSION" > $FILE
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "Bump version to $NEW_VERSION"
+          git tag v$NEW_VERSION
+          git push origin main --tags
+
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Build AAB
         run: |
           ./gradlew bundleRelease \
             -PSIGNING_KEY_ALIAS="${SIGNING_KEY_ALIAS}" \
             -PKEYSTORE_PASSWORD="${KEYSTORE_PASSWORD}" \
             -PKEYSTORE_FILE=app/playstore.keystore.jks \
             -PSIGNING_KEY_PASSWORD="${SIGNING_KEY_PASSWORD}"
-      
-      - name: Build release APK
+
+      - name: Build APK
         run: |
           ./gradlew assembleRelease \
             -PSIGNING_KEY_ALIAS="${SIGNING_KEY_ALIAS}" \
@@ -49,15 +71,23 @@ jobs:
             -PKEYSTORE_FILE=app/playstore.keystore.jks \
             -PSIGNING_KEY_PASSWORD="${SIGNING_KEY_PASSWORD}"
 
-
-      - name: Upload Release AAB
+      - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-aab
           path: app/build/outputs/bundle/release/*.aab
 
-      - name: Upload Release APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
           path: app/build/outputs/apk/release/*.apk
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.versioning.outputs.version }}
+          name: Release v${{ steps.versioning.outputs.version }}
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
