@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# zMantra – Accessible Math Learning for All
+# z.Mantra – Accessible Math Learning for All
 
 **Empowering inclusive learning through touch, sound, and interaction.**
 
@@ -19,7 +19,7 @@
 
 ## 🎯 Overview
 
-**zMantra** is a fun, inclusive math learning app for Android, thoughtfully designed for both **visually impaired** and **sighted learners**. The app combines **audio-based guidance**, **gesture-based interaction**, and **playful math challenges** to make math education engaging and barrier-free.
+**z.Mantra** is a fun, inclusive math learning app for Android, thoughtfully designed for both **visually impaired** and **sighted learners**. The app combines **audio-based guidance**, **gesture-based interaction**, and **playful math challenges** to make math education engaging and barrier-free.
 
 > **Built with love using Kotlin, accessibility-first design, and real-world pedagogy.**
 
@@ -27,7 +27,7 @@
 
 ## 🚀 Demo
 
-![zMantra Demo](https://raw.githubusercontent.com/shadil-rayyan/Math-Mantra/refactoring/.github/.preview/out.gif)
+![z.Mantra Demo](https://raw.githubusercontent.com/shadil-rayyan/Math-Mantra/refactoring/.github/.preview/out.gif)
 
 
 ---
@@ -36,7 +36,7 @@
 
 There was a lack of **fully accessible math learning apps** for Android that truly catered to the needs of **visually impaired learners**. Many existing apps either lacked TalkBack support or failed to offer inclusive interaction models.
 
-To address this gap, zMantra was developed by taking inspiration from the **GSoC 2024 Math Mantra project**, especially for features like:
+To address this gap, z.Mantra was developed by taking inspiration from the **GSoC 2024 Math Mantra project**, especially for features like:
 
 * 🔔 **Bell Ring Mode**
 * 🥁 **Drum Mode**
@@ -48,7 +48,7 @@ While these served as initial references, the majority of the app—including th
 * 🎛️ **Customizable Settings** for accessibility and experience
 * 🧩 **Expanded Gameplay Logic**, accessibility services, and hints system
 
-zMantra is now a **standalone, robust, and modern educational game** built from the ground up with inclusivity as its core.
+z.Mantra is now a **standalone, robust, and modern educational game** built from the ground up with inclusivity as its core.
 
 ---
 
@@ -149,12 +149,12 @@ Here’s what’s planned for future releases:
 
 * **Design & Development**: Shadil A M
 * **Artwork, Documentation, Testing, Mentors**: \[To be added]
-* **Special thanks** to all the testers, educators, and learners who shaped zMantra.
+* **Special thanks** to all the testers, educators, and learners who shaped z.Mantra.
 ---
 
 <div align="center">
 
-> 📘 *"Mathematics is for everyone. With zMantra, we make sure it's also reachable."*
+> 📘 *"Mathematics is for everyone. With z.Mantra, we make sure it's also reachable."*
 
 </div>
 
