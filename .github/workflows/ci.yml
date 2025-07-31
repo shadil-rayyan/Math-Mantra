@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Perform lint check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Run lint
+        run: ./gradlew lintDebug
+
+      - name: Upload html lint report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint.html
+          path: app/build/reports/lint-results-debug.html
+
+  unit-test:
+    name: Perform Unit Testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit_test_report
+          path: app/build/reports/test/testDebugUnitTest/
