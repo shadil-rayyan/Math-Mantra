@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.debugImplementation
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -96,4 +98,6 @@ dependencies {
 
     // Optional for mocking the navigation component (if you use NavController or a similar component)
     androidTestImplementation("androidx.navigation:navigation-testing:2.5.3") // Navigation testing support
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.13")
+
 }
