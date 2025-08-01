@@ -1,0 +1,88 @@
+site_name: z.Mantra Docs
+site_url: https://yourusername.github.io/Math-Mantra/
+repo_url: https://github.com/shadil-rayyan/Math-Mantra
+repo_name: shadil-rayyan/Math-Mantra
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/favicon.ico
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.annotate
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - header.autohide
+nav:
+  - 🏠 Home: index.md
+
+  - 🚀 Getting Started:
+      - What is zMantra?: intro.md
+      - Installing the App: install.md
+      - Accessibility Overview: accessibility.md
+      - User Guide (For Educators & Learners): userguide.md
+
+  - 🧩 Features:
+      - Core Concepts:
+          - Base Fragment Architecture: features/base-fragment.md
+          - Navigation: features/navigation.md
+          - Dialog System: features/dialogs.md
+          - Accessibility Dialogs: features/a11y-dialogs.md
+          - Hint System: features/hints.md
+          - Localization & Language: features/localization.md
+          - Excel-based Question System: features/excel.md
+      - Configurable Settings:
+          - Music & Audio: features/music.md
+          - Speech Rate & TTS: features/speech.md
+          - Theme & Contrast: features/theme.md
+          - Difficulty Levels: features/difficulty.md
+          - Quit Handling: features/quit.md
+          - TalkBack Announcements: features/talkback.md
+      - UI/UX:
+          - Splash Screen: features/splash.md
+          - Custom Animations & Feedback: features/animations.md
+
+  - 🎮 Game Modes:
+      - Overview of Game Types: modes/index.md
+      - Quick Play & Learning Mode: modes/quick-learning.md
+      - Shake Mode: modes/shake.md
+      - Tap Mode: modes/tap.md
+      - Drawing Mode: modes/drawing.md
+      - Day Calculation: modes/day.md
+      - Number Line: modes/number-line.md
+      - Mental Calculation: modes/mental.md
+      - Angle Mode: modes/angle.md
+      - Compass Navigation: modes/compass.md
+      - Touch Count: modes/touch.md
+
+  - 🧑‍💻 Development:
+      - Architecture Overview: dev/architecture.md
+      - Tech Stack: dev/tech.md
+      - Project Structure: dev/structure.md
+      - Writing Custom Questions: dev/questions.md
+      - Localization Strategy: dev/i18n.md
+
+  - 🔧 CI & GitHub Actions:
+      - Overview of Automation: ci/index.md
+      - APK Build Process: ci/apk-build.md
+      - Lint & Unit Tests: ci/lint-unit.md
+
+  - 🧪 Testing:
+      - Manual Testing Strategy: testing/manual.md
+      - Unit Testing (JUnit, Mockito): testing/unit.md
+      - UI Testing (Espresso): testing/ui.md
+
+  - 📚 Reference:
+      - APIs and Utilities: reference/utilities.md
+      - Accessibility Service API: reference/accessibility-service.md
+      - TalkBack Behavior Reference: reference/talkback.md
+
+  - 🧠 Ideas & Planning:
+      - Future Roadmap (e.g., Multiplayer): ideas/future.md
+      - Rejected Ideas: ideas/rejected.md
+
+  - 🤝 Contribute: contribute.md
+  - ❓ FAQ: faq.md
+  - 🙏 Credits: credits.md
+  - 📜 License: license.md
