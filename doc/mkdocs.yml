@@ -28,7 +28,7 @@ nav:
           - Base Fragment Architecture: features/base-fragment.md
           - Navigation: features/navigation.md
           - Dialog System: features/dialogs.md
-          - Accessibility Dialogs: features/a11y-dialogs.md
+          - Accessibility Dialogs: features/accessbility-dialogs.md
           - Hint System: features/hints.md
           - Localization & Language: features/localization.md
           - Excel-based Question System: features/excel.md
@@ -37,11 +37,11 @@ nav:
           - Speech Rate & TTS: features/speech.md
           - Theme & Contrast: features/theme.md
           - Difficulty Levels: features/difficulty.md
-          - Quit Handling: features/quit.md
+          - Quit Handling: features/MainActivity.md
           - TalkBack Announcements: features/talkback.md
       - UI/UX:
           - Splash Screen: features/splash.md
-          - Custom Animations & Feedback: features/animations.md
+          - Custom Animations & Feedback: features/ZMantra .md
 
   - 🎮 Game Modes:
       - Overview of Game Types: modes/index.md
