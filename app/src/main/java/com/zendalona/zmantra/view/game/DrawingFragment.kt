@@ -6,9 +6,9 @@ import android.os.Looper
 import android.view.*
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.view.base.BaseGameFragment
-import com.zendalona.zmantra.customView.DrawingView
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.core.customView.DrawingView
 
 class DrawingFragment : BaseGameFragment() {
 

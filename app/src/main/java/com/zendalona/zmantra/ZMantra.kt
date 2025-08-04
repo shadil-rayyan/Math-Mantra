@@ -3,7 +3,7 @@ package com.zendalona.zmantra
 import android.app.Application
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 class ZMantra : Application() {
     override fun onCreate() {
         super.onCreate()

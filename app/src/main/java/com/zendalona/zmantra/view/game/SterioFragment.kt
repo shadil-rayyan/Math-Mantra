@@ -10,8 +10,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import java.util.*
 
 class SterioFragment : BaseGameFragment() {

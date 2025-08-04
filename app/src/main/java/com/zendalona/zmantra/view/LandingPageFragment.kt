@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import java.io.File
+import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)

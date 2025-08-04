@@ -5,11 +5,10 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
-import com.zendalona.zmantra.model.HintIconVisibilityController
-import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.zmantra.domain.model.HintIconVisibilityController
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper.getLanguage
 
 class UserGuideFragment : Fragment(), HintIconVisibilityController {
 

@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentHintBinding
-import com.zendalona.zmantra.utility.excel.ExcelHintReader
-import com.zendalona.zmantra.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.zmantra.core.utility.excel.ExcelHintReader
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper.getLanguage
 
 class HintFragment : Fragment() {
     private var binding: FragmentHintBinding? = null

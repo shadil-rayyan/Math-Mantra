@@ -10,15 +10,15 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.model.HintIconVisibilityController
-import com.zendalona.zmantra.model.Hintable
+import com.zendalona.zmantra.domain.model.HintIconVisibilityController
+import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.view.FragmentNavigation
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.view.LandingPageFragment
-import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.utility.PermissionManager
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
+import com.zendalona.zmantra.core.utility.PermissionManager
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 

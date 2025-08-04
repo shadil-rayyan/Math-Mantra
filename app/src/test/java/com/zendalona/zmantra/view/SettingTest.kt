@@ -1,16 +1,14 @@
 package com.zendalona.zmantra.view
 
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.widget.Spinner
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.Enum.Difficulty
+import com.zendalona.zmantra.core.Enum.Difficulty
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito

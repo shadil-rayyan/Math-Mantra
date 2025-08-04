@@ -14,10 +14,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameMentalCalculationBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.utility.common.TTSHelper
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
+import com.zendalona.zmantra.core.utility.common.TTSHelper
+import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class MentalCalculationFragment : BaseGameFragment() {
 

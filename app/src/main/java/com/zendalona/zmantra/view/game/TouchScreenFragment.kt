@@ -1,20 +1,16 @@
 package com.zendalona.zmantra.view.game
 
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
 import android.widget.ImageView
-import androidx.lifecycle.lifecycleScope
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTouchScreenBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.view.base.BaseGameFragment
-import kotlinx.coroutines.launch
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
+import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class TouchScreenFragment : BaseGameFragment() {
 

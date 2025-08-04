@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameShakeBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import kotlin.math.sqrt
 
 class ShakeFragment : BaseGameFragment(), SensorEventListener {

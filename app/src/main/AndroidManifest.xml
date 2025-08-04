@@ -42,7 +42,7 @@
 
         <!-- ♿ Accessibility Service -->
         <service
-            android:name=".utility.accessibility.MathsManthraAccessibilityService"
+            android:name=".core.utility.accessibility.MathsManthraAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:exported="true">
             <intent-filter>

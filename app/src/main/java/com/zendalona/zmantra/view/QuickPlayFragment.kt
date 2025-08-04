@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.view.*
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentQuickPlayBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.view.base.BaseGameFragment
-import com.zendalona.zmantra.utility.common.VibrationUtils
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.core.utility.common.GradingUtils
+import com.zendalona.zmantra.core.utility.common.VibrationUtils
 
 class QuickPlayFragment : BaseGameFragment() {
 
@@ -87,7 +88,7 @@ class QuickPlayFragment : BaseGameFragment() {
             onCorrect = {
                 VibrationUtils.vibrate(requireContext(), 200)
                 val grade = getGrade(elapsedSeconds, currentQuestionTimeLimit.toDouble())
-                totalScore += com.zendalona.zmantra.utility.common.GradingUtils.getPointsForGrade(grade)
+                totalScore += GradingUtils.getPointsForGrade(grade)
                 playSound("correct")
                 loadNextQuestion()
             },
@@ -100,7 +101,7 @@ class QuickPlayFragment : BaseGameFragment() {
 
             onShowCorrect = { correct ->
                 VibrationUtils.vibrate(requireContext(), 600)
-                totalScore += com.zendalona.zmantra.utility.common.GradingUtils.getPointsForGrade("Wrong Answer")
+                totalScore += GradingUtils.getPointsForGrade("Wrong Answer")
                 wrongQuestionsSet.add(currentIndex)
                 if (wrongQuestionsSet.size >= 7) endGame()
                 else loadNextQuestion()

@@ -9,9 +9,9 @@ import android.view.*
 import android.widget.Toast
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.game.compass.CompassUtils
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.utility.game.compass.CompassUtils
+import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class CompassFragment : BaseGameFragment(), SensorEventListener {
 

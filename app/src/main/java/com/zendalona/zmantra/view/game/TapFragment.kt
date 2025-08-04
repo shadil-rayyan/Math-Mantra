@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class TapFragment : BaseGameFragment() {
 

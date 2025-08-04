@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zendalona.zmantra.databinding.FragmentGamePageBinding
-import com.zendalona.zmantra.model.HintIconVisibilityController
+import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 import com.zendalona.zmantra.view.game.AngleFragment
 import com.zendalona.zmantra.view.game.CompassFragment
 import com.zendalona.zmantra.view.game.DayFragment

@@ -37,9 +37,6 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="HintFragmentTest">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="LandingPageFragmentTest">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

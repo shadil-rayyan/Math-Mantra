@@ -29,7 +29,7 @@
             android:layout_marginBottom="10dp" />
 
         <!-- Number Line View -->
-        <com.zendalona.zmantra.customView.NumberLineView
+        <com.zendalona.zmantra.core.customView.NumberLineView
             android:id="@+id/number_line_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"

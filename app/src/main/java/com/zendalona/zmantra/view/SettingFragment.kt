@@ -15,11 +15,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.Enum.Difficulty
-import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
-import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.core.Enum.Difficulty
+import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentSettingsBinding
 

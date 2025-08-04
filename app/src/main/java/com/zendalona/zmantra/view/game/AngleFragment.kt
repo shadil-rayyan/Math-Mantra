@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentGameAngleBinding
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.utility.game.angle.RotationSensorUtility
-import com.zendalona.zmantra.view.base.BaseGameFragment
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
+import com.zendalona.zmantra.core.utility.game.angle.RotationSensorUtility
+import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class AngleFragment : BaseGameFragment() {
 
