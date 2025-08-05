@@ -49,6 +49,9 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.material)
     implementation(libs.fragment)
+    implementation(libs.androidx.preference.ktx)
+
+
 
     // Third-party
     implementation(libs.poi)

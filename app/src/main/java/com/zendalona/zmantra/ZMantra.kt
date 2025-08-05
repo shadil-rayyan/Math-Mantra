@@ -1,7 +1,7 @@
 package com.zendalona.zmantra
 
 import android.app.Application
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 class ZMantra : Application() {
