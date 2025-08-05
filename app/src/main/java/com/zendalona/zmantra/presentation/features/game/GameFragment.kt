@@ -32,7 +32,7 @@ class GameFragment : Fragment() , HintIconVisibilityController {
         if (context is FragmentNavigation) {
             navigationListener = context as FragmentNavigation
         } else {
-            throw RuntimeException(context.toString() + " must implement FragmentNavigation")
+            throw RuntimeException("$context must implement FragmentNavigation")
         }
     }
 
