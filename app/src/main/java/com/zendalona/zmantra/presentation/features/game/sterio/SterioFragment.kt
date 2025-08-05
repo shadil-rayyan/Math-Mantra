@@ -118,7 +118,7 @@ class SterioFragment : BaseGameFragment() {
     }
 
     private fun readQuestionAloud() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isHeadphoneConnected()) {
+        if (true && isHeadphoneConnected()) {
             Handler(Looper.getMainLooper()).postDelayed({
                 playNumberWithStereo(requireContext(), numA, isRight = false)
             }, 0)
