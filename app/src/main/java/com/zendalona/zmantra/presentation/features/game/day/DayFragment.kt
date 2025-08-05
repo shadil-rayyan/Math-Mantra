@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.view.game
+package com.zendalona.zmantra.presentation.features.game.day
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,5 +1,4 @@
-package com.zendalona.zmantra.view.game
-
+package com.zendalona.zmantra.presentation.features.game.tap
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper

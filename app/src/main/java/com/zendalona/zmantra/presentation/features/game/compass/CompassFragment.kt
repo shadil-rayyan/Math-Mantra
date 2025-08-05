@@ -1,5 +1,4 @@
-package com.zendalona.zmantra.view.game
-
+package com.zendalona.zmantra.presentation.features.game.compass
 import android.content.Context
 import android.hardware.*
 import android.os.Bundle

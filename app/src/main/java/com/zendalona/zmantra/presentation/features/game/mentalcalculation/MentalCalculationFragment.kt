@@ -1,5 +1,4 @@
-package com.zendalona.zmantra.view.game
-
+package com.zendalona.zmantra.presentation.features.game.mentalcalculation
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -13,11 +12,11 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentGameMentalCalculationBinding
-import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.core.utility.common.TTSHelper
-import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.databinding.FragmentGameMentalCalculationBinding
+import com.zendalona.zmantra.domain.model.GameQuestion
 
 class MentalCalculationFragment : BaseGameFragment() {
 

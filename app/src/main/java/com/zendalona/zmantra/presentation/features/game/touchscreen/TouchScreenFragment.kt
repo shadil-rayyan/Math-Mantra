@@ -1,5 +1,4 @@
-package com.zendalona.zmantra.view.game
-
+package com.zendalona.zmantra.presentation.features.game.touchscreen
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler

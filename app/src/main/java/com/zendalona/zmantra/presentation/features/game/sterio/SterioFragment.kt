@@ -1,5 +1,4 @@
-package com.zendalona.zmantra.view.game
-
+package com.zendalona.zmantra.presentation.features.game.sterio
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
