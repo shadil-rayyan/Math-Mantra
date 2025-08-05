@@ -1,13 +1,16 @@
 package com.zendalona.zmantra.presentation.features.game.sterio
 
 import android.content.Context
+import android.media.AudioAttributes
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
+import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,16 +20,23 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
+import java.io.File
 import java.util.Locale
 
 class SterioFragment : BaseGameFragment() {
-
     private var binding: FragmentGameSteroBinding? = null
-    private var ttsStereo: TextToSpeech? = null
+
+    // Renamed the variable to avoid the type conflict with the base class
+    private var ttsSynthesizer: TextToSpeech? = null
+
+    private var soundPool: SoundPool? = null
+    private val soundMap = HashMap<String, Int>()
+
+    // Initialized in onViewCreated, but not used in the final code
+    private var isTtsInitialized = false
 
     private var questions: List<GameQuestion> = emptyList()
     private var currentIndex = 0
-
     private var numA = 0
     private var numB = 0
     private var correctAnswer = 0
@@ -40,7 +50,6 @@ class SterioFragment : BaseGameFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGameSteroBinding.inflate(inflater, container, false)
-
         binding?.readQuestionBtn?.setOnClickListener { readQuestionAloud() }
         binding?.submitAnswerBtn?.setOnClickListener { submitAnswer() }
         binding?.answerEt?.setOnEditorActionListener { _, _, _ ->
@@ -55,9 +64,56 @@ class SterioFragment : BaseGameFragment() {
                 imm.hideSoftInputFromWindow(binding?.answerEt?.windowToken, 0)
             }
         }
-
         setAccessibilityDescriptions()
         return binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Initialize the new TextToSpeech instance for synthesis
+        ttsSynthesizer = TextToSpeech(requireContext()) { status ->
+            if (status == TextToSpeech.SUCCESS) {
+                isTtsInitialized = true
+
+                // Get the device's default locale
+                val currentLocale = Locale.getDefault()
+
+                // Check if the TTS engine supports the current locale
+                val result = ttsSynthesizer?.setLanguage(currentLocale)
+
+                // If the locale is not supported, fall back to English
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    ttsSynthesizer?.language = Locale.ENGLISH
+                }
+
+                // This listener tracks when synthesis is done
+                ttsSynthesizer?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+                    override fun onStart(utteranceId: String?) {}
+                    override fun onDone(utteranceId: String?) {
+                        val parts = utteranceId?.split("_")
+                        if (parts != null && parts.size == 2) {
+                            val text = parts[0]
+                            val channel = parts[1]
+                            loadAndPlayAudio(text, channel)
+                        }
+                    }
+                    override fun onError(utteranceId: String?) {
+                        // Log or handle error
+                    }
+                })
+            }
+        }
+
+        // Initialize SoundPool for playing audio with low latency
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+            .build()
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(10)
+            .setAudioAttributes(audioAttributes)
+            .build()
     }
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
@@ -71,22 +127,18 @@ class SterioFragment : BaseGameFragment() {
             endGame()
             return
         }
-
         val question = questions[currentIndex++]
         correctAnswer = question.answer
         questionStartTime = System.currentTimeMillis()
 
-        // Extract numA and numB from expression like "5 - 2"
-        val match = Regex("""(\d+)\s*[-+*/]\s*(\d+)""").find(question.expression)
-        if (match != null && match.groupValues.size == 3) {
+        val match = Regex("""(\d+)\s*([-+*/])\s*(\d+)""").find(question.expression)
+        if (match != null && match.groupValues.size == 4) {
             numA = match.groupValues[1].toInt()
-            numB = match.groupValues[2].toInt()
+            numB = match.groupValues[3].toInt()
         }
-
         binding?.answerEt?.setText("")
         announce(binding?.answerEt, getString(R.string.new_question_ready))
 
-        // Focus on read button and read aloud after delay
         Handler(Looper.getMainLooper()).postDelayed({
             binding?.readQuestionBtn?.requestFocus()
             readQuestionAloud()
@@ -101,11 +153,9 @@ class SterioFragment : BaseGameFragment() {
                 .show()
             return
         }
-
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
         val userAnswer = input.trim()
         val correct = correctAnswer.toString()
-
         handleAnswerSubmission(
             userAnswer = userAnswer,
             correctAnswer = correct,
@@ -118,72 +168,65 @@ class SterioFragment : BaseGameFragment() {
     }
 
     private fun readQuestionAloud() {
-        if (true && isHeadphoneConnected()) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                playNumberWithStereo(requireContext(), numA, isRight = false)
-            }, 0)
+        if (isTtsInitialized && isHeadphoneConnected()) {
+            val opText = when(val match = Regex("""(\d+)\s*([-+*/])\s*(\d+)""").find(questions[currentIndex-1].expression)) {
+                null -> ""
+                else -> match.groupValues[2]
+            }
+
+            synthesizeText(numA.toString(), "left")
 
             Handler(Looper.getMainLooper()).postDelayed({
-                playTextWithStereo(requireContext(), getString(R.string.minus), isRight = true)
+                synthesizeText(opText, "center")
+            }, 1500)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                synthesizeText(numB.toString(), "right")
             }, 3000)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                playNumberWithStereo(requireContext(), numB, isRight = true)
-            }, 6000)
         } else {
-            // Fallback: speak using ttsStereo, ensure it's initialized
-            if (ttsStereo == null) {
-                ttsStereo = TextToSpeech(requireContext()) { status ->
-                    if (status == TextToSpeech.SUCCESS) {
-                        ttsStereo?.language = Locale.ENGLISH
-                        val fallbackText = getString(R.string.subtract_numbers, numA, numB)
-                        ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
-                    }
-                }
-            } else {
-                val fallbackText = getString(R.string.subtract_numbers, numA, numB)
-                ttsStereo?.language = Locale.ENGLISH
-                ttsStereo?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
-            }
+            val fallbackText = getString(R.string.subtract_numbers, numA, numB)
+            ttsSynthesizer?.speak(fallbackText, TextToSpeech.QUEUE_FLUSH, null, "fallback")
         }
     }
 
-
-    private fun playNumberWithStereo(context: Context, number: Int, isRight: Boolean) {
-        if (ttsStereo == null) {
-            ttsStereo = TextToSpeech(context) { status ->
-                if (status == TextToSpeech.SUCCESS) {
-                    ttsStereo?.language = Locale.ENGLISH
-                    ttsStereo?.speak(
-                        getString(R.string.number_is, number),
-                        TextToSpeech.QUEUE_FLUSH,
-                        null,
-                        "stereo"
-                    )
-                }
-            }
-        } else {
-            ttsStereo?.language = Locale.ENGLISH
-            ttsStereo?.speak(
-                getString(R.string.number_is, number),
-                TextToSpeech.QUEUE_FLUSH,
-                null,
-                "stereo"
-            )
-        }
+    private fun synthesizeText(textToSpeak: String, channel: String) {
+        val utteranceId = "${textToSpeak}_$channel"
+        val file = File(requireContext().cacheDir, "$utteranceId.wav")
+        val params = Bundle()
+        ttsSynthesizer?.synthesizeToFile(textToSpeak, params, file, utteranceId)
     }
 
-    private fun playTextWithStereo(context: Context, text: String, isRight: Boolean) {
-        if (ttsStereo == null) {
-            ttsStereo = TextToSpeech(context) { status ->
-                if (status == TextToSpeech.SUCCESS) {
-                    ttsStereo?.language = Locale.ENGLISH
-                    ttsStereo?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "stereo_text")
+    private fun loadAndPlayAudio(text: String, channel: String) {
+        val file = File(requireContext().cacheDir, "${text}_$channel.wav")
+        if (!file.exists()) return
+
+        val soundId = soundPool?.load(file.absolutePath, 1)
+
+        if (soundId != null) {
+            soundMap[text] = soundId
+        }
+
+        soundPool?.setOnLoadCompleteListener { _, _, status ->
+            if (status == 0) {
+                val leftVolume = when (channel) {
+                    "right" -> 0.0f
+                    else -> 1.0f
                 }
+                val rightVolume = when (channel) {
+                    "left" -> 0.0f
+                    else -> 1.0f
+                }
+
+                soundPool?.play(
+                    soundId = soundId,
+                    leftVolume = leftVolume,
+                    rightVolume = rightVolume,
+                    priority = 1,
+                    loop = 0,
+                    rate = 1.0f
+                )
             }
-        } else {
-            ttsStereo?.language = Locale.ENGLISH
-            ttsStereo?.speak(text, TextToSpeech.QUEUE_FLUSH, null, "stereo_text")
         }
     }
 
@@ -209,8 +252,21 @@ class SterioFragment : BaseGameFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        ttsStereo?.shutdown()
-        ttsStereo = null
+        // Release resources to prevent memory leaks
+        ttsSynthesizer?.shutdown()
+        ttsSynthesizer = null
+        soundPool?.release()
+        soundPool = null
         binding = null
     }
+}
+
+private fun SoundPool?.play(
+    soundId: Int?,
+    leftVolume: Float,
+    rightVolume: Float,
+    priority: Int,
+    loop: Int,
+    rate: Float
+) {
 }

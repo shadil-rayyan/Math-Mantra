@@ -33,7 +33,7 @@ import kotlinx.coroutines.withContext
 
 abstract class BaseGameFragment : Fragment(), Hintable {
 
-    protected lateinit var tts: TTSUtility
+    protected open lateinit var tts: TTSUtility
     protected lateinit var lang: String
     protected lateinit var difficulty: String
     protected open val mode: String by lazy { getModeName() }
