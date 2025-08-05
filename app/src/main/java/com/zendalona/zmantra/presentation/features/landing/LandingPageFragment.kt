@@ -2,13 +2,13 @@ package com.zendalona.zmantra.presentation.features.landing
 
 import android.content.Context
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.utility.common.TTSUtility
@@ -16,11 +16,11 @@ import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
 import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
+import com.zendalona.zmantra.presentation.features.game.GameFragment
 import com.zendalona.zmantra.presentation.features.learning.LearningFragment
 import com.zendalona.zmantra.presentation.features.quickplay.QuickPlayFragment
 import com.zendalona.zmantra.presentation.features.setting.SettingFragment
 import com.zendalona.zmantra.presentation.features.userguide.UserGuideFragment
-import com.zendalona.zmantra.presentation.features.game.GameFragment
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)
@@ -45,7 +45,7 @@ class LandingPageFragment : Fragment() {
     ): View {
         Log.d("LandingPageFragment", "onCreateView called")
 
-        val lang = LocaleHelper.getLanguage(context) ?: "en"
+        val lang = LocaleHelper.getLanguage(context)
         val difficulty = DifficultyPreferences.getDifficulty(context)
         Log.d("LandingPageFragment", "Language: $lang, Difficulty: $difficulty")
 
