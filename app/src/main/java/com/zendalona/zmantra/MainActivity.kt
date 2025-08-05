@@ -10,15 +10,15 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
+import com.zendalona.zmantra.core.utility.PermissionManager
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.view.FragmentNavigation
 import com.zendalona.zmantra.view.HintFragment
 import com.zendalona.zmantra.view.LandingPageFragment
-import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.core.utility.PermissionManager
-import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
                 if (fragment is Hintable) {
                     fragment.showHint()
                 } else {
-                    // fallback filepath if fragment doesn't implement Hintable
+
                     val hintFragment = HintFragment().apply {
                         arguments = Bundle().apply {
                             putString("filepath", "en/hint/default.txt")

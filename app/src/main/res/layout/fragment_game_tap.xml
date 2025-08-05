@@ -6,7 +6,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:importantForAccessibility="yes"
-    android:contentDescription="@string/tap_page_desc"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout

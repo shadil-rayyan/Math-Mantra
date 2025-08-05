@@ -17,6 +17,8 @@
 
     <!-- ഹിന്റ് പേജ് -->
     <string name="hint_fallback">എന്തോ തെറ്റ് സംഭവിച്ചു</string>
+    <string name="go_back">തിരികെ പോവുക</string>
+
 
     <!-- ലാൻഡിംഗ് പേജ് -->
     <string name="quick_play">ക്വിക്ക് പ്ലേ</string>

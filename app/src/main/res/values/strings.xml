@@ -15,7 +15,7 @@
 
     <!-- hint page -->
     <string name="hint_fallback">something went wrong</string>
-
+    <string name="go_back">Go back</string>
     <!-- Landing page-->
 
     <string name="quick_play">Quick Play</string>
