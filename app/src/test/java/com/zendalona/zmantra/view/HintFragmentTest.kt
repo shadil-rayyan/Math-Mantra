@@ -2,7 +2,7 @@ import android.R
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
-import com.zendalona.zmantra.view.HintFragment
+import com.zendalona.zmantra.presentation.features.hint.HintFragment
 import com.zendalona.zmantra.core.utility.excel.ExcelHintReader
 import org.junit.Before
 import org.junit.Test

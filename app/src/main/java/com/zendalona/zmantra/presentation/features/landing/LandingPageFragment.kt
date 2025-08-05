@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.landing
 
 import android.content.Context
 import android.os.Bundle
@@ -10,12 +10,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
-import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
+import com.zendalona.zmantra.core.utility.common.TTSUtility
+import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
 import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
+import com.zendalona.zmantra.presentation.features.learning.LearningFragment
+import com.zendalona.zmantra.presentation.features.quickplay.QuickPlayFragment
+import com.zendalona.zmantra.presentation.features.setting.SettingFragment
+import com.zendalona.zmantra.presentation.features.userguide.UserGuideFragment
+import com.zendalona.zmantra.presentation.features.game.GameFragment
 
 interface FragmentNavigation {
     fun loadFragment(fragment: Fragment, transit: Int)

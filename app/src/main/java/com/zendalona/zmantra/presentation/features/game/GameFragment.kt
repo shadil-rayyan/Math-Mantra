@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.game
 
 import android.content.Context
 import android.os.Bundle
@@ -19,9 +19,9 @@ import com.zendalona.zmantra.presentation.features.game.shake.ShakeFragment
 import com.zendalona.zmantra.presentation.features.game.sterio.SterioFragment
 import com.zendalona.zmantra.presentation.features.game.tap.TapFragment
 import com.zendalona.zmantra.presentation.features.game.touchscreen.TouchScreenFragment
+import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
 
-
-class GameFragment : Fragment() ,HintIconVisibilityController {
+class GameFragment : Fragment() , HintIconVisibilityController {
 
     override fun shouldShowHintIcon() = false
     var binding: FragmentGamePageBinding? = null

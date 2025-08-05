@@ -1,14 +1,11 @@
 package com.zendalona.zmantra
 
-import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.platform.app.InstrumentationRegistry
-import com.zendalona.zmantra.view.LandingPageFragment
+import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

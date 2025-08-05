@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.learning
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentLearningmodeBinding
+import com.zendalona.zmantra.presentation.features.quickplay.QuickPlayFragment
 
 class LearningFragment : Fragment() {
 
@@ -68,7 +69,7 @@ class LearningFragment : Fragment() {
     }
 
     private fun launchQuickPlay(category: String, hintMode: String) {
-        val quickPlayFragment = QuickPlayFragment.newInstance(
+        val quickPlayFragment = QuickPlayFragment.Companion.newInstance(
             category = category,
             hintMode = hintMode
         )

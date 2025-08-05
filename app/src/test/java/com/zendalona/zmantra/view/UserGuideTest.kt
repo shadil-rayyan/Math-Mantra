@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.test.core.app.ApplicationProvider
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
+import com.zendalona.zmantra.presentation.features.userguide.UserGuideFragment
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any

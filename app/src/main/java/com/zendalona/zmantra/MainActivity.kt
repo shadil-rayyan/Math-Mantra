@@ -17,9 +17,9 @@ import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
 import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 import com.zendalona.zmantra.domain.model.Hintable
-import com.zendalona.zmantra.view.FragmentNavigation
-import com.zendalona.zmantra.view.HintFragment
-import com.zendalona.zmantra.view.LandingPageFragment
+import com.zendalona.zmantra.presentation.features.hint.HintFragment
+import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
+import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
 
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 

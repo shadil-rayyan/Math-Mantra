@@ -1,14 +1,17 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.quickplay
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentQuickPlayBinding
-import com.zendalona.zmantra.domain.model.GameQuestion
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.utility.common.GradingUtils
 import com.zendalona.zmantra.core.utility.common.VibrationUtils
+import com.zendalona.zmantra.databinding.FragmentQuickPlayBinding
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.presentation.features.hint.HintFragment
 
 class QuickPlayFragment : BaseGameFragment() {
 

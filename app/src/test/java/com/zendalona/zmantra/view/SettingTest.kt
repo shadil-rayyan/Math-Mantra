@@ -19,6 +19,7 @@ import org.robolectric.Robolectric
 import org.robolectric.annotation.Config
 import androidx.test.core.app.ApplicationProvider
 import android.content.Context
+import com.zendalona.zmantra.presentation.features.setting.SettingFragment
 import org.apache.xmlbeans.impl.xb.xmlconfig.ConfigDocument.Config
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.verify

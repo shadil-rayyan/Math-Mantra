@@ -1,8 +1,8 @@
 import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.FragmentTransaction
-import com.zendalona.zmantra.view.GameFragment
-import com.zendalona.zmantra.view.FragmentNavigation
+import com.zendalona.zmantra.presentation.features.game.GameFragment
+import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
 import com.zendalona.zmantra.view.game.*
 import org.junit.Before
 import org.junit.Test

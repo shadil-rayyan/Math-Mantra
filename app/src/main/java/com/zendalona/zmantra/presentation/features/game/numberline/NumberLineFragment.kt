@@ -12,7 +12,6 @@ import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameNumberLineBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.viewModel.NumberLineViewModel
 
 class NumberLineFragment : BaseGameFragment() {
 

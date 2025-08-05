@@ -1,14 +1,16 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.userguide
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.R
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper.getLanguage
 
 class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
@@ -22,7 +24,7 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
         binding = FragmentUserguideBinding.inflate(inflater, container, false)
 
         // Get language setting
-        var language = getLanguage(requireContext())
+        var language = LocaleHelper.getLanguage(requireContext())
         if (TextUtils.isEmpty(language)) language = "en"
 
         // Load HTML from assets based on language
@@ -47,7 +49,7 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
     }
 
     private fun getThemeColor(attrRes: Int): String {
-        val typedValue = android.util.TypedValue()
+        val typedValue = TypedValue()
         val theme = requireContext().theme
         theme.resolveAttribute(attrRes, typedValue, true)
         val colorInt = typedValue.data
@@ -55,8 +57,8 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
     }
 
     private fun convertHtmlToStyledHtml(htmlBody: String): String {
-        val backgroundColor = getThemeColor(com.google.android.material.R.attr.colorSecondary)
-        val textColor = getThemeColor(com.google.android.material.R.attr.colorOnSecondary)
+        val backgroundColor = getThemeColor(R.attr.colorSecondary)
+        val textColor = getThemeColor(R.attr.colorOnSecondary)
 
 
         return """

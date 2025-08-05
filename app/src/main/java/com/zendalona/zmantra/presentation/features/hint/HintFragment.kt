@@ -1,15 +1,16 @@
-package com.zendalona.zmantra.view
+package com.zendalona.zmantra.presentation.features.hint
 
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentHintBinding
 import com.zendalona.zmantra.core.utility.excel.ExcelHintReader
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper.getLanguage
+import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.databinding.FragmentHintBinding
 
 class HintFragment : Fragment() {
     private var binding: FragmentHintBinding? = null
@@ -27,7 +28,7 @@ class HintFragment : Fragment() {
 
         // Get mode and language
         val mode = if (arguments != null) requireArguments().getString("mode", "default") else "default"
-        var language = getLanguage(requireContext())
+        var language = LocaleHelper.getLanguage(requireContext())
         if (TextUtils.isEmpty(language)) language = "en"
 
         // Get the hint from Excel or fallback
@@ -56,7 +57,7 @@ class HintFragment : Fragment() {
         binding = null
     }
     private fun getThemeColor(attrRes: Int): String {
-        val typedValue = android.util.TypedValue()
+        val typedValue = TypedValue()
         val theme = requireContext().theme
         theme.resolveAttribute(attrRes, typedValue, true)
         val colorInt = typedValue.data

@@ -26,7 +26,7 @@ import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
 import com.zendalona.zmantra.core.utility.settings.LocaleHelper
 import com.zendalona.zmantra.domain.model.GameQuestion
 import com.zendalona.zmantra.domain.model.Hintable
-import com.zendalona.zmantra.view.HintFragment
+import com.zendalona.zmantra.presentation.features.hint.HintFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
