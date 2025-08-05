@@ -4,7 +4,7 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper;
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper;
 
 import java.util.LinkedList;
 import java.util.Locale;

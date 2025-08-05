@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.utility.excel.ExcelHintReader
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import com.zendalona.zmantra.databinding.FragmentHintBinding
 
 class HintFragment : Fragment() {

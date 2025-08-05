@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.core.utility.settings
+package com.zendalona.zmantra.presentation.features.setting.util
 
 import android.content.Context
 import android.content.res.Configuration

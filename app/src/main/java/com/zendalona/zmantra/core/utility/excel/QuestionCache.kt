@@ -3,7 +3,7 @@ package com.zendalona.zmantra.core.utility.excel
 import android.content.Context
 import android.util.Log
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
+import com.zendalona.zmantra.presentation.features.setting.util.DifficultyPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.apache.poi.ss.usermodel.Sheet

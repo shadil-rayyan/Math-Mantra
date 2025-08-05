@@ -14,7 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.core.utility.PermissionManager
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.presentation.features.hint.HintFragment

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.zendalona.zmantra.core.utility.excel.QuestionCache
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")

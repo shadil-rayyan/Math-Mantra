@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.R
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 

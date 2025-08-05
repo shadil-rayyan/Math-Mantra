@@ -2,7 +2,7 @@ import android.content.Context
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
-import com.zendalona.zmantra.core.utility.settings.BackgroundMusicPlayer
+import com.zendalona.zmantra.presentation.features.setting.util.BackgroundMusicPlayer
 import com.zendalona.zmantra.core.utility.common.TTSUtility
 import org.junit.Before
 import org.junit.Test

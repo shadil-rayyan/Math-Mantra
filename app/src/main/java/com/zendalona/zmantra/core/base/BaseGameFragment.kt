@@ -22,8 +22,8 @@ import com.zendalona.zmantra.core.utility.common.GradingUtils
 import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.core.utility.excel.ExcelQuestionLoader
 import com.zendalona.zmantra.core.utility.excel.QuestionCache
-import com.zendalona.zmantra.core.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.core.utility.settings.LocaleHelper
+import com.zendalona.zmantra.presentation.features.setting.util.DifficultyPreferences
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import com.zendalona.zmantra.domain.model.GameQuestion
 import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.presentation.features.hint.HintFragment
