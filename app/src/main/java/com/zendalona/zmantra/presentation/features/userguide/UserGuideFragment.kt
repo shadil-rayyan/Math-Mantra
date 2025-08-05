@@ -30,7 +30,7 @@ class UserGuideFragment : Fragment(), HintIconVisibilityController {
         // Load HTML from assets based on language
         val rawHtml = try {
             requireContext().assets.open("userguide/$language.html").bufferedReader().use { it.readText() }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             "<p>Could not load user guide.</p>"
         }
 
