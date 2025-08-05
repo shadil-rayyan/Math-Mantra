@@ -1,7 +1,10 @@
-package com.zendalona.zmantra.core.utility.game.angle
+package com.zendalona.zmantra.presentation.features.game.angle.util
 
 import android.content.Context
-import android.hardware.*
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 
 class RotationSensorUtility(
     context: Context,

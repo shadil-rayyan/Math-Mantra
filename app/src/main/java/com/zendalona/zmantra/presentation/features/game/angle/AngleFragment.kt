@@ -10,7 +10,7 @@ import android.widget.ImageView
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.core.utility.game.angle.RotationSensorUtility
+import com.zendalona.zmantra.presentation.features.game.angle.util.RotationSensorUtility
 import com.zendalona.zmantra.databinding.FragmentGameAngleBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
 

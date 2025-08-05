@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.core.utility.game.compass
+package com.zendalona.zmantra.presentation.features.game.compass.util
 
 import kotlin.math.abs
 

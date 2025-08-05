@@ -14,7 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
-import com.zendalona.zmantra.core.utility.game.compass.CompassUtils
+import com.zendalona.zmantra.presentation.features.game.compass.util.CompassUtils
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
 

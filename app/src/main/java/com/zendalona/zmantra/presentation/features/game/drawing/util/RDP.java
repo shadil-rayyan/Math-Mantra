@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.core.utility.drawing;
+package com.zendalona.zmantra.presentation.features.game.drawing.util;
 
 import java.util.ArrayList;
 import java.util.List;

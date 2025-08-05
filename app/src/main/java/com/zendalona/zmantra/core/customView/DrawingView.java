@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper;
-import com.zendalona.zmantra.core.utility.drawing.RDP;
+import com.zendalona.zmantra.presentation.features.game.drawing.util.RDP;
 
 import java.util.ArrayList;
 import java.util.List;
