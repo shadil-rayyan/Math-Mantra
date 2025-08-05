@@ -16,7 +16,8 @@ class DayFragment : BaseGameFragment() {
     private var _binding: FragmentGameDayBinding? = null
     private val binding get() = _binding!!
 
-    private val days = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    private val days =
+        listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
     private lateinit var buttons: List<Button>
 
     private var correctDay = ""
@@ -27,7 +28,11 @@ class DayFragment : BaseGameFragment() {
 
     override fun getModeName(): String = "day"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
 
         buttons = listOf(
@@ -81,7 +86,8 @@ class DayFragment : BaseGameFragment() {
         questionStartTime = System.currentTimeMillis()
 
         val startDayLocalized = getString(getDayStringRes(startDay))
-        val questionText = getString(R.string.question_day_offset_template, startDayLocalized, operand)
+        val questionText =
+            getString(R.string.question_day_offset_template, startDayLocalized, operand)
 
         binding.questionText.text = questionText
         announce(binding.questionText, questionText)

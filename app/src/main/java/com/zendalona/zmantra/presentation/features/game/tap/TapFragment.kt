@@ -1,4 +1,5 @@
 package com.zendalona.zmantra.presentation.features.game.tap
+
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,9 +8,9 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class TapFragment : BaseGameFragment() {
 

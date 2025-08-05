@@ -1,16 +1,22 @@
 package com.zendalona.zmantra.presentation.features.game.compass
+
 import android.content.Context
-import android.hardware.*
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.core.utility.game.compass.CompassUtils
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.utility.game.compass.CompassUtils
-import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class CompassFragment : BaseGameFragment(), SensorEventListener {
 
@@ -111,7 +117,8 @@ class CompassFragment : BaseGameFragment(), SensorEventListener {
     private fun updateCompassUI(rotationDegrees: Float, actualAzimuth: Float) {
         binding?.compass?.rotation = rotationDegrees
         currentAzimuth = actualAzimuth
-        binding?.degreeText?.text = CompassUtils.getCompassDirection(actualAzimuth, compassDirections)
+        binding?.degreeText?.text =
+            CompassUtils.getCompassDirection(actualAzimuth, compassDirections)
         checkIfHoldingCorrectDirection(actualAzimuth)
     }
 
@@ -141,6 +148,7 @@ class CompassFragment : BaseGameFragment(), SensorEventListener {
                 System.arraycopy(event.values, 0, lastAccelerometer, 0, event.values.size)
                 lastAccelerometerSet = true
             }
+
             Sensor.TYPE_MAGNETIC_FIELD -> {
                 System.arraycopy(event.values, 0, lastMagnetometer, 0, event.values.size)
                 lastMagnetometerSet = true
@@ -148,7 +156,12 @@ class CompassFragment : BaseGameFragment(), SensorEventListener {
         }
 
         if (lastAccelerometerSet && lastMagnetometerSet) {
-            SensorManager.getRotationMatrix(rotationMatrix, null, lastAccelerometer, lastMagnetometer)
+            SensorManager.getRotationMatrix(
+                rotationMatrix,
+                null,
+                lastAccelerometer,
+                lastMagnetometer
+            )
             SensorManager.getOrientation(rotationMatrix, orientation)
 
             val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()

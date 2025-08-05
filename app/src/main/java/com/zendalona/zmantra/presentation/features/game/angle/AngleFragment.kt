@@ -44,11 +44,13 @@ class AngleFragment : BaseGameFragment() {
         _binding = FragmentGameAngleBinding.inflate(inflater, container, false)
         angleUpdateHandler = Handler(Looper.getMainLooper())
 
-        rotationSensorUtility = RotationSensorUtility(requireContext(), object : RotationSensorUtility.RotationListener {
-            override fun onRotationChanged(azimuth: Float, pitch: Float, roll: Float) {
-                handleRotationChange(azimuth)
-            }
-        })
+        rotationSensorUtility = RotationSensorUtility(
+            requireContext(),
+            object : RotationSensorUtility.RotationListener {
+                override fun onRotationChanged(azimuth: Float, pitch: Float, roll: Float) {
+                    handleRotationChange(azimuth)
+                }
+            })
 
         return binding.root
     }
@@ -117,9 +119,13 @@ class AngleFragment : BaseGameFragment() {
         if (angleUpdateRunnable == null) {
             angleUpdateRunnable = object : Runnable {
                 override fun run() {
-                    if (!questionAnswered && isAdded && AccessibilityUtils().isSystemExploreByTouchEnabled(requireContext())) {
+                    if (!questionAnswered && isAdded && AccessibilityUtils().isSystemExploreByTouchEnabled(
+                            requireContext()
+                        )
+                    ) {
                         val spokenAngle = binding.rotationAngleText.text.toString()
-                        val announcement = getString(R.string.current_angle_announcement, spokenAngle)
+                        val announcement =
+                            getString(R.string.current_angle_announcement, spokenAngle)
                         binding.rotationAngleText.announceForAccessibility(announcement)
                         angleUpdateHandler.postDelayed(this, 3000)
                     }
@@ -137,7 +143,8 @@ class AngleFragment : BaseGameFragment() {
         }
 
         val relativeAzimuth = (azimuth - baseAzimuth + 360) % 360
-        binding.rotationAngleText.text = getString(R.string.relative_angle_template, relativeAzimuth.toInt())
+        binding.rotationAngleText.text =
+            getString(R.string.relative_angle_template, relativeAzimuth.toInt())
         validateAngle(relativeAzimuth)
     }
 

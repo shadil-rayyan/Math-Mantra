@@ -9,16 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.zendalona.zmantra.databinding.FragmentGamePageBinding
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
-import com.zendalona.zmantra.view.game.AngleFragment
-import com.zendalona.zmantra.view.game.CompassFragment
-import com.zendalona.zmantra.view.game.DayFragment
-import com.zendalona.zmantra.view.game.DrawingFragment
-import com.zendalona.zmantra.view.game.MentalCalculationFragment
-import com.zendalona.zmantra.view.game.NumberLineFragment
-import com.zendalona.zmantra.view.game.ShakeFragment
-import com.zendalona.zmantra.view.game.SterioFragment
-import com.zendalona.zmantra.view.game.TapFragment
-import com.zendalona.zmantra.view.game.TouchScreenFragment
+import com.zendalona.zmantra.presentation.features.game.angle.AngleFragment
+import com.zendalona.zmantra.presentation.features.game.compass.CompassFragment
+import com.zendalona.zmantra.presentation.features.game.day.DayFragment
+import com.zendalona.zmantra.presentation.features.game.drawing.DrawingFragment
+import com.zendalona.zmantra.presentation.features.game.mentalcalculation.MentalCalculationFragment
+import com.zendalona.zmantra.presentation.features.game.numberline.NumberLineFragment
+import com.zendalona.zmantra.presentation.features.game.shake.ShakeFragment
+import com.zendalona.zmantra.presentation.features.game.sterio.SterioFragment
+import com.zendalona.zmantra.presentation.features.game.tap.TapFragment
+import com.zendalona.zmantra.presentation.features.game.touchscreen.TouchScreenFragment
+
 
 class GameFragment : Fragment() ,HintIconVisibilityController {
 

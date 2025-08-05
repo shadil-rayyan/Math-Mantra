@@ -1,17 +1,23 @@
 package com.zendalona.zmantra.presentation.features.game.sterio
+
 import android.content.Context
 import android.media.AudioDeviceInfo
 import android.media.AudioManager
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.speech.tts.TextToSpeech
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameSteroBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.base.BaseGameFragment
-import java.util.*
+import java.util.Locale
 
 class SterioFragment : BaseGameFragment() {
 
@@ -28,7 +34,11 @@ class SterioFragment : BaseGameFragment() {
 
     override fun getModeName(): String = "sterio"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameSteroBinding.inflate(inflater, container, false)
 
         binding?.readQuestionBtn?.setOnClickListener { readQuestionAloud() }
@@ -40,7 +50,8 @@ class SterioFragment : BaseGameFragment() {
         binding?.readQuestionBtn?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 binding?.answerEt?.clearFocus()
-                val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(binding?.answerEt?.windowToken, 0)
             }
         }
@@ -86,7 +97,8 @@ class SterioFragment : BaseGameFragment() {
         val input = binding?.answerEt?.text.toString()
         if (input.isEmpty()) {
             announce(binding?.answerEt, getString(R.string.enter_answer_before_submitting))
-            Toast.makeText(requireContext(), getString(R.string.enter_answer), Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.enter_answer), Toast.LENGTH_SHORT)
+                .show()
             return
         }
 
@@ -142,12 +154,22 @@ class SterioFragment : BaseGameFragment() {
             ttsStereo = TextToSpeech(context) { status ->
                 if (status == TextToSpeech.SUCCESS) {
                     ttsStereo?.language = Locale.ENGLISH
-                    ttsStereo?.speak(getString(R.string.number_is, number), TextToSpeech.QUEUE_FLUSH, null, "stereo")
+                    ttsStereo?.speak(
+                        getString(R.string.number_is, number),
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "stereo"
+                    )
                 }
             }
         } else {
             ttsStereo?.language = Locale.ENGLISH
-            ttsStereo?.speak(getString(R.string.number_is, number), TextToSpeech.QUEUE_FLUSH, null, "stereo")
+            ttsStereo?.speak(
+                getString(R.string.number_is, number),
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                "stereo"
+            )
         }
     }
 

@@ -39,7 +39,11 @@ class NumberLineFragment : BaseGameFragment() {
         tts.setSpeechRate(0.8f)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameNumberLineBinding.inflate(inflater, container, false)
         setupUI()
         setupObservers()
@@ -47,7 +51,8 @@ class NumberLineFragment : BaseGameFragment() {
     }
 
     override fun onQuestionsLoaded(questions: List<GameQuestion>) {
-        this.questions = if (questions.isEmpty()) listOf(GameQuestion("Move to 3", 3)) else questions
+        this.questions =
+            if (questions.isEmpty()) listOf(GameQuestion("Move to 3", 3)) else questions
         askNextQuestion()
     }
 

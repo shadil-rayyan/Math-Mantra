@@ -1,4 +1,5 @@
 package com.zendalona.zmantra.presentation.features.game.mentalcalculation
+
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -34,7 +35,11 @@ class MentalCalculationFragment : BaseGameFragment() {
 
     override fun getModeName(): String = "mental"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentGameMentalCalculationBinding.inflate(inflater, container, false)
 
         binding?.apply {
@@ -51,7 +56,8 @@ class MentalCalculationFragment : BaseGameFragment() {
             binding?.readQuestionBtn?.setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     binding?.answerEt?.clearFocus()
-                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(binding?.answerEt?.windowToken, 0)
                 }
             }

@@ -1,15 +1,19 @@
 package com.zendalona.zmantra.presentation.features.game.touchscreen
+
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
 import com.zendalona.zmantra.databinding.FragmentGameTouchScreenBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.core.base.BaseGameFragment
 
 class TouchScreenFragment : BaseGameFragment() {
 
@@ -69,7 +73,8 @@ class TouchScreenFragment : BaseGameFragment() {
         val parts = question.expression.split("+")
         val part1 = parts.getOrNull(0)?.trim() ?: "?"
         val part2 = parts.getOrNull(1)?.trim() ?: "?"
-        val speakText = getString(R.string.touch_instruction, (part1.toInt() + part2.toInt()), part1, part2)
+        val speakText =
+            getString(R.string.touch_instruction, (part1.toInt() + part2.toInt()), part1, part2)
 
 
         binding?.angleQuestion?.apply {
