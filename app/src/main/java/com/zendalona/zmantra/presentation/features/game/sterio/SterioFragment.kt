@@ -26,13 +26,10 @@ import java.util.Locale
 class SterioFragment : BaseGameFragment() {
     private var binding: FragmentGameSteroBinding? = null
 
-    // Renamed the variable to avoid the type conflict with the base class
     private var ttsSynthesizer: TextToSpeech? = null
-
     private var soundPool: SoundPool? = null
     private val soundMap = HashMap<String, Int>()
 
-    // Initialized in onViewCreated, but not used in the final code
     private var isTtsInitialized = false
 
     private var questions: List<GameQuestion> = emptyList()
@@ -71,23 +68,15 @@ class SterioFragment : BaseGameFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the new TextToSpeech instance for synthesis
         ttsSynthesizer = TextToSpeech(requireContext()) { status ->
             if (status == TextToSpeech.SUCCESS) {
                 isTtsInitialized = true
-
-                // Get the device's default locale
                 val currentLocale = Locale.getDefault()
-
-                // Check if the TTS engine supports the current locale
                 val result = ttsSynthesizer?.setLanguage(currentLocale)
-
-                // If the locale is not supported, fall back to English
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                     ttsSynthesizer?.language = Locale.ENGLISH
                 }
 
-                // This listener tracks when synthesis is done
                 ttsSynthesizer?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
                     override fun onStart(utteranceId: String?) {}
                     override fun onDone(utteranceId: String?) {
@@ -98,14 +87,11 @@ class SterioFragment : BaseGameFragment() {
                             loadAndPlayAudio(text, channel)
                         }
                     }
-                    override fun onError(utteranceId: String?) {
-                        // Log or handle error
-                    }
+                    override fun onError(utteranceId: String?) {}
                 })
             }
         }
 
-        // Initialize SoundPool for playing audio with low latency
         val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
             .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
@@ -149,8 +135,7 @@ class SterioFragment : BaseGameFragment() {
         val input = binding?.answerEt?.text.toString()
         if (input.isEmpty()) {
             announce(binding?.answerEt, getString(R.string.enter_answer_before_submitting))
-            Toast.makeText(requireContext(), getString(R.string.enter_answer), Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(requireContext(), getString(R.string.enter_answer), Toast.LENGTH_SHORT).show()
             return
         }
         val elapsedTime = (System.currentTimeMillis() - questionStartTime) / 1000.0
@@ -174,6 +159,7 @@ class SterioFragment : BaseGameFragment() {
                 else -> match.groupValues[2]
             }
 
+            // The synthesized audio will be loaded and played by the listener's onDone() method
             synthesizeText(numA.toString(), "left")
 
             Handler(Looper.getMainLooper()).postDelayed({
@@ -219,12 +205,12 @@ class SterioFragment : BaseGameFragment() {
                 }
 
                 soundPool?.play(
-                    soundId = soundId,
-                    leftVolume = leftVolume,
-                    rightVolume = rightVolume,
-                    priority = 1,
-                    loop = 0,
-                    rate = 1.0f
+                    soundId ?: return@setOnLoadCompleteListener,
+                    leftVolume,
+                    rightVolume,
+                    1,
+                    0,
+                    1.0f
                 )
             }
         }
@@ -252,21 +238,10 @@ class SterioFragment : BaseGameFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Release resources to prevent memory leaks
         ttsSynthesizer?.shutdown()
         ttsSynthesizer = null
         soundPool?.release()
         soundPool = null
         binding = null
     }
-}
-
-private fun SoundPool?.play(
-    soundId: Int?,
-    leftVolume: Float,
-    rightVolume: Float,
-    priority: Int,
-    loop: Int,
-    rate: Float
-) {
 }
