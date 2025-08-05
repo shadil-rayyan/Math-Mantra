@@ -3,13 +3,15 @@ package com.zendalona.zmantra.view.game
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.accessibility.AccessibilityEvent
 import androidx.lifecycle.ViewModelProvider
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameNumberLineBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.viewModel.NumberLineViewModel
 
 class NumberLineFragment : BaseGameFragment() {
@@ -39,7 +41,6 @@ class NumberLineFragment : BaseGameFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentGameNumberLineBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         setupUI()
         setupObservers()
         return binding!!.root

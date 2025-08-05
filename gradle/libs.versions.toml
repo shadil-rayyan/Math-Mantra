@@ -1,86 +1,66 @@
 [versions]
-activity = "1.10.1"
+kotlin = "2.0.21"
 agp = "8.9.0"
-androidxJunit = "1.1.5"
-androidxJunitVersion = "1.3.0"
+coreKtx = "1.12.0"
+activity = "1.10.1"
+activityCompose = "1.10.1"
 appcompat = "1.7.0"
 constraintlayout = "2.2.1"
-core = "1.7.0"
-coreKtxVersion = "1.10.1"
-coreTesting = "2.2.0"
-espressoCoreVersion = "3.5.1"
-exp4j = "0.4.8"
 fragment = "1.8.7"
 fragmentTesting = "1.8.8"
-fragmentTestingVersion = "1.5.5"
-glide = "4.15.1"
-kotlin = "2.0.21"
-coreKtx = "1.16.0"
+lifecycleRuntimeKtx = "2.9.0"
+lifecycleRuntimeTesting = "2.9.2"
+material = "1.12.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+androidxJunit = "1.1.5"
+espressoCore = "3.5.1"
+coreTesting = "2.2.0"
+rules = "1.5.0"
+runner = "1.5.2"
+mockitoAndroid = "4.11.0"
 kotlinxCoroutinesTest = "1.7.3"
 leakcanaryAndroid = "2.13"
-lifecycleRuntimeKtx = "2.9.0"
-activityCompose = "1.10.1"
-composeBom = "2024.09.00"
-lifecycleRuntimeKtxVersion = "2.6.1"
-lifecycleRuntimeTesting = "2.9.2"
 lottie = "4.2.2"
-material = "1.12.0"
-mockitoAndroid = "4.11.0"
-navigationTesting = "2.9.3"
+exp4j = "0.4.8"
 poi = "5.2.3"
 poiOoxml = "5.2.3"
-rules = "1.7.0"
-runner = "1.7.0"
+composeBom = "2024.09.00"
 
 [libraries]
-androidx-activity = { module = "androidx.activity:activity", version.ref = "activity" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
-androidx-core = { module = "androidx.test:core", version.ref = "core" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-core-ktx-v1101 = { module = "androidx.core:core-ktx", version.ref = "coreKtxVersion" }
-androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
-androidx-espresso-core-v351 = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCoreVersion" }
-androidx-espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCoreVersion" }
-androidx-fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
-androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
-androidx-fragment-testing-v155 = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTestingVersion" }
-androidx-junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
-androidx-junit-v130 = { module = "androidx.test.ext:junit", version.ref = "androidxJunitVersion" }
-androidx-lifecycle-runtime-ktx-v261 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
-androidx-lifecycle-runtime-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "lifecycleRuntimeTesting" }
-androidx-navigation-testing = { module = "androidx.navigation:navigation-testing", version.ref = "navigationTesting" }
-androidx-rules = { module = "androidx.test:rules", version.ref = "rules" }
-androidx-runner = { module = "androidx.test:runner", version.ref = "runner" }
-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
-exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
-lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+# Core Android
+core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+activity = { module = "androidx.activity:activity", version.ref = "activity" }
+constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
-mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
+
+# Third-party
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+glide = { module = "com.github.bumptech.glide:glide", version = "4.16.0" }
+glide-compiler = { module = "com.github.bumptech.glide:compiler", version = "4.16.0" }
+exp4j = { module = "net.objecthunter:exp4j", version.ref = "exp4j" }
 poi = { module = "org.apache.poi:poi", version.ref = "poi" }
 poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poiOoxml" }
+leakcanary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroid" }
+
+# Testing - Unit
+junit = { module = "junit:junit", version.ref = "junit" }
+core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+
+# Testing - Android Instrumentation
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+espresso-idling-resource = { module = "androidx.test.espresso:espresso-idling-resource", version.ref = "espressoCore" }
+test-rules = { module = "androidx.test:rules", version.ref = "rules" }
+test-runner = { module = "androidx.test:runner", version.ref = "runner" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
+fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "fragmentTesting" }
+lifecycle-runtime-testing = { module = "androidx.lifecycle:lifecycle-runtime-testing", version.ref = "lifecycleRuntimeTesting" }
+navigation-testing = { module = "androidx.navigation:navigation-testing", version = "2.9.3" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-

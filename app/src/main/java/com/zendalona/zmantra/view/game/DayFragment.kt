@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.zendalona.zmantra.R
+import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.databinding.FragmentGameDayBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
-import com.zendalona.zmantra.core.base.BaseGameFragment
 import kotlin.random.Random
 
 class DayFragment : BaseGameFragment() {
@@ -29,7 +29,6 @@ class DayFragment : BaseGameFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentGameDayBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
 
         buttons = listOf(
             binding.btnMonday, binding.btnTuesday, binding.btnWednesday,

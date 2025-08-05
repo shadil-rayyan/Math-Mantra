@@ -3,12 +3,14 @@ package com.zendalona.zmantra.view.game
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
-import com.zendalona.zmantra.domain.model.GameQuestion
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.customView.DrawingView
+import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
+import com.zendalona.zmantra.domain.model.GameQuestion
 
 class DrawingFragment : BaseGameFragment() {
 
@@ -29,7 +31,6 @@ class DrawingFragment : BaseGameFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentGameDrawingBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
 
         drawingView = DrawingView(requireContext())
         binding.drawingContainer.addView(drawingView)

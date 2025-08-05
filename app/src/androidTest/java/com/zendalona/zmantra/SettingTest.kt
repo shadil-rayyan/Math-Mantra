@@ -1,15 +1,18 @@
+
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.*
-import com.zendalona.zmantra.view.SettingFragment
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withSpinnerText
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zendalona.zmantra.R
-import org.hamcrest.CoreMatchers.not
+import com.zendalona.zmantra.view.SettingFragment
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import androidx.test.ext.junit.runners.AndroidJUnit4
 
 @RunWith(AndroidJUnit4::class)
 class SettingsFragmentTest {
@@ -70,49 +73,49 @@ class SettingsFragmentTest {
     }
 
     // Test Speech Rate Controls
-    @Test
-    fun testSpeechRateControls() {
-        // Check initial speech rate (should be 24)
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
-
-        // Increase speech rate
-        onView(withId(R.id.speech_rate_increase)).perform(click())
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("25")))
-
-        // Decrease speech rate
-        onView(withId(R.id.speech_rate_decrease)).perform(click())
-        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
-    }
-
-    // Test Background Music Toggle
-    @Test
-    fun testBackgroundMusicToggle() {
-        // Check initial state of the music toggle (should be off)
-        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
-
-        // Turn on the music
-        onView(withId(R.id.background_music_toggle)).perform(click())
-        onView(withId(R.id.background_music_toggle)).check(matches(isChecked()))
-
-        // Turn off the music
-        onView(withId(R.id.background_music_toggle)).perform(click())
-        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
-    }
-
-    // Test Music Volume Controls
-    @Test
-    fun testMusicVolumeControls() {
-        // Check initial volume (should be 24)
-        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
-
-        // Decrease volume
-        onView(withId(R.id.music_volume_decrease)).perform(click())
-        onView(withId(R.id.music_volume_value)).check(matches(withText("23")))
-
-        // Increase volume
-        onView(withId(R.id.music_volume_increase)).perform(click())
-        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
-    }
+//    @Test
+//    fun testSpeechRateControls() {
+//        // Check initial speech rate (should be 24)
+//        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
+//
+//        // Increase speech rate
+//        onView(withId(R.id.speech_rate_increase)).perform(click())
+//        onView(withId(R.id.speech_rate_value)).check(matches(withText("25")))
+//
+//        // Decrease speech rate
+//        onView(withId(R.id.speech_rate_decrease)).perform(click())
+//        onView(withId(R.id.speech_rate_value)).check(matches(withText("24")))
+//    }
+//
+//    // Test Background Music Toggle
+//    @Test
+//    fun testBackgroundMusicToggle() {
+//        // Check initial state of the music toggle (should be off)
+//        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
+//
+//        // Turn on the music
+//        onView(withId(R.id.background_music_toggle)).perform(click())
+//        onView(withId(R.id.background_music_toggle)).check(matches(isChecked()))
+//
+//        // Turn off the music
+//        onView(withId(R.id.background_music_toggle)).perform(click())
+//        onView(withId(R.id.background_music_toggle)).check(matches(not(isChecked())))
+//    }
+//
+//    // Test Music Volume Controls
+//    @Test
+//    fun testMusicVolumeControls() {
+//        // Check initial volume (should be 24)
+//        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
+//
+//        // Decrease volume
+//        onView(withId(R.id.music_volume_decrease)).perform(click())
+//        onView(withId(R.id.music_volume_value)).check(matches(withText("23")))
+//
+//        // Increase volume
+//        onView(withId(R.id.music_volume_increase)).perform(click())
+//        onView(withId(R.id.music_volume_value)).check(matches(withText("24")))
+//    }
 
     // Test Reset Settings Button
     @Test

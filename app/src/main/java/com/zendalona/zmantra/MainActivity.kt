@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.core.utility.PermissionManager
@@ -84,9 +85,9 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
 
     // This will be called after the dialog is shown, marking the flag
     fun markDialogAsShown() {
-        val editor = prefs.edit()
-        editor.putBoolean("ACCESSIBILITY_DIALOG_SHOWN", true)
-        editor.apply()
+        prefs.edit() {
+            putBoolean("ACCESSIBILITY_DIALOG_SHOWN", true)
+        }
     }
 
     // Handle back button in toolbar
