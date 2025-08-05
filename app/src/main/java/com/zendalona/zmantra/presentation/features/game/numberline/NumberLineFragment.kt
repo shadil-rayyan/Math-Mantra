@@ -71,7 +71,11 @@ class NumberLineFragment : BaseGameFragment() {
 
             binding?.numberLineView?.updateNumberLine(start, end, position)
             binding?.currentPositionTv?.apply {
-                text = "$currentPosLabel $position"
+                text = buildString {
+                    append(currentPosLabel)
+                    append(""" """)
+                    append(position)
+                }
                 contentDescription = "$currentPosLabel $position"
                 post { announceForAccessibility(contentDescription.toString()) }
             }
