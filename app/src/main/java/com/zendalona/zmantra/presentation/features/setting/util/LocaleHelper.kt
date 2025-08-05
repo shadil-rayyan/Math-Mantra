@@ -2,25 +2,29 @@ package com.zendalona.zmantra.presentation.features.setting.util
 
 import android.content.Context
 import android.content.res.Configuration
-import android.os.Build
-import android.preference.PreferenceManager
+import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import java.util.Locale
 
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
+
     @JvmStatic
     fun getLanguage(context: Context?): String {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        return prefs.getString(SELECTED_LANGUAGE, getSystemLanguage(context!!)) ?: getSystemLanguage(context)
+        val prefs = context?.let { PreferenceManager.getDefaultSharedPreferences(it) }
+        val savedLang = prefs?.getString(SELECTED_LANGUAGE, null)
+
+        // Return saved language, otherwise get system language, or default to "en"
+        return savedLang ?: getSystemLanguage(context)
     }
 
-    private fun getSystemLanguage(context: Context): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    private fun getSystemLanguage(context: Context?): String {
+        return if (context != null) {
             context.resources.configuration.locales[0].language
         } else {
-            @Suppress("DEPRECATION")
-            context.resources.configuration.locale.language
+            // Fallback language if context is null
+            "en"
         }
     }
 
@@ -41,12 +45,12 @@ object LocaleHelper {
 
     private fun persistLanguage(context: Context, language: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        prefs.edit().putString(SELECTED_LANGUAGE, language).apply()
+        prefs.edit { putString(SELECTED_LANGUAGE, language) }
     }
 
     private fun clearLanguage(context: Context) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        prefs.edit().remove(SELECTED_LANGUAGE).apply()
+        prefs.edit { remove(SELECTED_LANGUAGE) }
     }
 
     private fun updateResources(context: Context, language: String): Context {
@@ -55,17 +59,8 @@ object LocaleHelper {
 
         val res = context.resources
         val config = Configuration(res.configuration)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            config.setLocale(locale)
-            config.setLayoutDirection(locale)
-            return context.createConfigurationContext(config)
-        } else {
-            @Suppress("DEPRECATION")
-            config.locale = locale
-            @Suppress("DEPRECATION")
-            res.updateConfiguration(config, res.displayMetrics)
-            return context
-        }
+        config.setLocale(locale)
+        config.setLayoutDirection(locale)
+        return context.createConfigurationContext(config)
     }
 }
