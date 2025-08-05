@@ -5,10 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.ImageView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
@@ -44,11 +48,11 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         lang = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
         difficulty = DifficultyPreferences.getDifficulty(requireContext()).toString()
         tts = TTSUtility(requireContext())
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupHintMenu {}
         loadQuestions()
     }
 
@@ -68,10 +72,30 @@ abstract class BaseGameFragment : Fragment(), Hintable {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.top_menu, menu)
-        menu.findItem(R.id.action_hint)?.isVisible = true
+    fun Fragment.setupHintMenu(
+        showHintIcon: Boolean = true,
+        onHintClicked: () -> Unit
+    ) {
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.top_menu, menu)
+                menu.findItem(R.id.action_hint)?.isVisible = showHintIcon
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_hint -> {
+                        onHintClicked()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
+
 
     override fun showHint() {
         val bundle = Bundle().apply { putString("mode", mode) }

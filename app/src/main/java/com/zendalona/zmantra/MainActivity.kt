@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
 
     // This will be called after the dialog is shown, marking the flag
     fun markDialogAsShown() {
-        prefs.edit() {
+        prefs.edit {
             putBoolean("ACCESSIBILITY_DIALOG_SHOWN", true)
         }
     }
