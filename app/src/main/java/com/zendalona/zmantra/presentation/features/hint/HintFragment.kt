@@ -64,7 +64,6 @@ class HintFragment : Fragment() {
         return String.format("#%06X", 0xFFFFFF and colorInt)
     }
 
-
     // Convert hint text to HTML format
     fun convertHintToHtml(hintText: String): String {
         val lines = hintText.split("\n").filter { it.isNotEmpty() }

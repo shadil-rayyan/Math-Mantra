@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.dagger.hilt.android") // Add this
+    kotlin("kapt")
 }
 
 android {
@@ -50,8 +52,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.fragment)
     implementation(libs.androidx.preference.ktx)
-
-
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 
     // Third-party
     implementation(libs.poi)
