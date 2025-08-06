@@ -83,4 +83,5 @@ dependencies {
 
     // Leak detection
     debugImplementation(libs.leakcanary)
+    testImplementation(kotlin("test"))
 }

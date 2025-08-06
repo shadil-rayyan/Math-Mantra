@@ -14,13 +14,15 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.core.utility.PermissionManager
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
 import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.presentation.features.hint.HintFragment
 import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
 import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 
     private lateinit var permissionManager: PermissionManager

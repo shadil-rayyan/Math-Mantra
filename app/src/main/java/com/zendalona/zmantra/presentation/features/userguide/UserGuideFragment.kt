@@ -1,87 +1,66 @@
 package com.zendalona.zmantra.presentation.features.userguide
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.R
-import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import androidx.fragment.app.viewModels
 import com.zendalona.zmantra.databinding.FragmentUserguideBinding
 import com.zendalona.zmantra.domain.model.HintIconVisibilityController
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserGuideFragment : Fragment(), HintIconVisibilityController {
 
     override fun shouldShowHintIcon() = false
 
     private var binding: FragmentUserguideBinding? = null
+    private val viewModel: UserGuideViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentUserguideBinding.inflate(inflater, container, false)
+        return binding!!.root
+    }
 
-        // Get language setting
-        var language = LocaleHelper.getLanguage(requireContext())
-        if (TextUtils.isEmpty(language)) language = "en"
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // Load HTML from assets based on language
-        val rawHtml = try {
-            requireContext().assets.open("userguide/$language.html").bufferedReader().use { it.readText() }
-        } catch (_: Exception) {
-            "<p>Could not load user guide.</p>"
-        }
+        val language = LocaleHelper.getLanguage(requireContext()).ifEmpty { "en" }
+        val themeColors = Pair(
+            getThemeColor(com.google.android.material.R.attr.colorSecondary),
+            getThemeColor(com.google.android.material.R.attr.colorOnSecondary)
+        )
 
-        // Style it using theme colors
-        val styledHtml = convertHtmlToStyledHtml(rawHtml)
+        observeViewModel()
+        viewModel.loadUserGuide(language, themeColors)
 
-        // Display in WebView
-        binding!!.webView.loadDataWithBaseURL(null, styledHtml, "text/html", "UTF-8", null)
-
-        // Set up the back button
         binding!!.goBackButton.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
+    }
 
-        return binding!!.root
+    private fun observeViewModel() {
+        viewModel.uiState.observe(viewLifecycleOwner) { state ->
+            if (state.isError) {
+                binding?.webView?.loadData("<p>Error loading guide</p>", "text/html", "UTF-8")
+            } else {
+                state.styledHtml?.let {
+                    binding?.webView?.loadDataWithBaseURL(null, it, "text/html", "UTF-8", null)
+                }
+            }
+        }
     }
 
     private fun getThemeColor(attrRes: Int): String {
         val typedValue = TypedValue()
-        val theme = requireContext().theme
-        theme.resolveAttribute(attrRes, typedValue, true)
+        requireContext().theme.resolveAttribute(attrRes, typedValue, true)
         val colorInt = typedValue.data
         return String.format("#%06X", 0xFFFFFF and colorInt)
-    }
-
-    private fun convertHtmlToStyledHtml(htmlBody: String): String {
-        val backgroundColor = getThemeColor(R.attr.colorSecondary)
-        val textColor = getThemeColor(R.attr.colorOnSecondary)
-
-
-        return """
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-            <style>
-                body {
-                    background-color: $backgroundColor;
-                    color: $textColor;
-                    font-size: 18px;
-                    font-family: sans-serif;
-                    padding: 16px;
-                }
-                h2 { margin-top: 20px; }
-                a { color: #64B5F6; }
-            </style>
-        </head>
-        <body>
-            $htmlBody
-        </body>
-        </html>
-        """.trimIndent()
     }
 
     override fun onDestroyView() {
