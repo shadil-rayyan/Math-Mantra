@@ -2,9 +2,12 @@ package com.zendalona.zmantra.presentation.features.quickplay
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityEvent
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.utility.common.GradingUtils
@@ -20,6 +23,7 @@ class QuickPlayFragment : BaseGameFragment() {
 
     private val questionList = mutableListOf<GameQuestion>()
     private val wrongQuestionsSet = mutableSetOf<Int>()
+    private var hasBoundQuestion = false
 
     private var currentIndex = -1
     private var totalScore = 0
@@ -35,6 +39,8 @@ class QuickPlayFragment : BaseGameFragment() {
         super.onCreate(savedInstanceState)
         questionCategory = arguments?.getString(ARG_CATEGORY) ?: "default"
         hintMode = arguments?.getString(ARG_HINT_MODE) ?: "default"
+
+
     }
 
     override fun onCreateView(
@@ -47,9 +53,18 @@ class QuickPlayFragment : BaseGameFragment() {
         binding.submitAnswerBtn.setOnClickListener {
             checkAnswer()
         }
+        binding.answerEt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                checkAnswer()
+                true
+            } else {
+                false
+            }
+        }
 
         return binding.root
     }
+
 
     override fun getModeName(): String = questionCategory ?: "default"
 
@@ -57,6 +72,15 @@ class QuickPlayFragment : BaseGameFragment() {
         questionList.clear()
         questionList.addAll(questions)
         loadNextQuestion()
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.questionTv?.let {
+                it.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
+            }
+        }, 300)
     }
 
     private fun loadNextQuestion() {
@@ -73,6 +97,12 @@ class QuickPlayFragment : BaseGameFragment() {
         binding.questionTv.text = gameQuestion.expression
         binding.answerEt.text?.clear()
         totalQuestions = questionList.size
+
+        val questionText = gameQuestion.expression
+        binding.questionTv.text = questionText
+
+        announce(binding.questionTv, questionText) // ✅ CORRECT
+
     }
 
     private fun checkAnswer() {

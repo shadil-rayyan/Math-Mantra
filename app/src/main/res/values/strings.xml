@@ -41,7 +41,7 @@
     <string name="sample_story_question">Arjun has %1$d apples and Mithra has %2$d apples. How many apples do they have?</string>
     <string name="hint_enter_answer">Enter your answer</string>
     <string name="content_submit_button">Submit your answer</string>
-    <string name="content_answer_field">Answer input field</string>
+    <string name="content_answer_field">Answer input field double tap to open</string>
 
     <string name="open_time_mode">Open Time Mode</string>
     <string name="time">Time</string>
