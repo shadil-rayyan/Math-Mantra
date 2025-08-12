@@ -175,7 +175,7 @@ abstract class BaseGameFragment : Fragment(), Hintable {
     protected open fun showRetryDialog(onDismiss: () -> Unit) {
         DialogUtils.showRetryDialog(
             requireContext(), layoutInflater, tts,
-            getString(R.string.tap_failure), onDismiss
+            getString(R.string.wrong_answer), onDismiss
         )
     }
 
