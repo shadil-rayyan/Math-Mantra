@@ -42,7 +42,7 @@
     <string name="sample_story_question">അർജുൻക്ക് %1$d ആപ്പിളുകളും മിത്രയ്ക്ക് %2$d ആപ്പിളുകളും ഉണ്ട്. അവർക്കെല്ലാം എത്ര ആപ്പിളുകൾ ഉണ്ട്?</string>
     <string name="hint_enter_answer">നിങ്ങളുടെ ഉത്തരം നൽകുക</string>
     <string name="content_submit_button">നിങ്ങളുടെ ഉത്തരം സമർപ്പിക്കുക</string>
-    <string name="content_answer_field">ഉത്തരം നൽകാനുള്ള ഫീൽഡ്</string>
+    <string name="content_answer_field">ഉത്തരം നൽകാനുള്ള ഫീൽഡ്, ഇൻപുട്ട് ബോക്സ് തുറക്കാൻ ഇരട്ടത്തപ്പു ചെയ്യുക</string>
 
         <string name="open_time_mode">സമയം മോഡ് തുറക്കുക</string>
         <string name="time">സമയം</string>
