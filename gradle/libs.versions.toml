@@ -1,4 +1,5 @@
 [versions]
+hiltCompiler = "2.52"
 kotlin = "2.0.21"
 agp = "8.9.0"
 coreKtx = "1.12.0"
@@ -35,6 +36,8 @@ appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat"
 activity = { module = "androidx.activity:activity", version.ref = "activity" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
 fragment = { module = "androidx.fragment:fragment", version.ref = "fragment" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltCompiler" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 material = { module = "com.google.android.material:material", version.ref = "material" }
 

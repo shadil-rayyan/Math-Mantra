@@ -52,8 +52,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.fragment)
     implementation(libs.androidx.preference.ktx)
-    implementation("com.google.dagger:hilt-android:2.52")
-    kapt("com.google.dagger:hilt-compiler:2.52")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // Third-party
     implementation(libs.poi)
