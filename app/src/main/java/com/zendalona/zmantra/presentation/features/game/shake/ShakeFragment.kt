@@ -34,6 +34,7 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
     private var isShakingAllowed = true
     private val shakeHandler = Handler(Looper.getMainLooper())
     private val gameHandler = Handler(Looper.getMainLooper())
+    private var isFirstQuestion = true // add this near other vars
 
     private var parsedShakeList: List<GameQuestion> = emptyList()
 
@@ -97,6 +98,11 @@ class ShakeFragment : BaseGameFragment(), SensorEventListener {
         binding?.ringMeTv?.text = instruction
         binding?.ringMeTv?.contentDescription = instruction
         announce(binding?.ringMeTv, instruction)
+
+        if (isFirstQuestion) {
+            binding?.ringMeTv?.requestFocus()
+            isFirstQuestion = false
+        }
 
         binding?.ringCount?.text = getString(R.string.shake_count_initial)
     }
