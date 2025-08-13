@@ -61,8 +61,8 @@ class TouchScreenFragment : BaseGameFragment() {
         val question = questionList[index]
         correctAnswer = question.answer
 
-        // Skip invalid questions
-        if (correctAnswer == 3) {
+        // Skip invalid questions (only skip if below)
+        if (correctAnswer < 3) {
             index++
             startGame()
             return
@@ -70,12 +70,14 @@ class TouchScreenFragment : BaseGameFragment() {
 
         questionStartTime = System.currentTimeMillis()
 
-        val parts = question.expression.split("+")
-        val part1 = parts.getOrNull(0)?.trim() ?: "?"
-        val part2 = parts.getOrNull(1)?.trim() ?: "?"
-        val speakText =
-            getString(R.string.touch_instruction, (part1.toInt() + part2.toInt()), part1, part2)
+        // Take the expression exactly as stored in the question (no parsing)
+        val expressionText = question.expression.trim()
 
+        // Localized format: "Touch the screen with 3+2 fingers" or "Touch the screen with 5+4+1 fingers"
+        val speakText = getString(
+            R.string.touch_instruction,
+            expressionText
+        )
 
         binding?.angleQuestion?.apply {
             text = speakText

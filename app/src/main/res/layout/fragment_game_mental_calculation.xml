@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
+
   >
 
     <LinearLayout
@@ -15,8 +14,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        >
 
         <!-- Instruction Text -->
         <com.google.android.material.textview.MaterialTextView
@@ -27,7 +25,7 @@
             android:layout_margin="10dp"
             android:textColor="?attr/colorOnSecondary"
             android:importantForAccessibility="yes"
-            android:accessibilityLiveRegion="polite" />
+             />
 
         <!-- Math Question -->
         <com.google.android.material.textview.MaterialTextView
