@@ -95,27 +95,47 @@ class TouchScreenFragment : BaseGameFragment() {
     }
 
     private fun setupTouchListener(question: GameQuestion) {
-        binding?.root?.setOnTouchListener { _, event ->
-            val pointerCount = event.pointerCount
+        // Override performClick directly on the FrameLayout root view
+        val rootView = binding?.root?.apply {
+            // Override performClick using a lambda-compatible trick
+            this.isClickable = true // required for performClick to register
+            this.setOnTouchListener { view, event ->
+                val pointerCount = event.pointerCount
 
-            if ((event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) && !inputLocked) {
-                binding?.angleQuestion?.text =
-                    getString(R.string.touchscreen_fingers_on_screen, pointerCount)
+                if ((event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) && !inputLocked) {
+                    binding?.angleQuestion?.text =
+                        getString(R.string.touchscreen_fingers_on_screen, pointerCount)
 
-                if (pointerCount == correctAnswer) {
-                    inputLocked = true
-                    handleCorrectAnswer(question)
+                    if (pointerCount == correctAnswer) {
+                        inputLocked = true
+                        handleCorrectAnswer(question)
+                    }
                 }
-            }
 
-            if (event.action == MotionEvent.ACTION_UP && !inputLocked) {
-                inputLocked = true
-                handleIncorrectAnswer(question)
-            }
+                if (event.action == MotionEvent.ACTION_UP) {
+                    // Accessibility click event
+                    view.performClick()
 
-            true
+                    if (!inputLocked) {
+                        inputLocked = true
+                        handleIncorrectAnswer(question)
+                    }
+                }
+
+                true
+            }
+        }
+
+        // Actually override performClick
+        rootView?.let { view ->
+            view.setOnClickListener {
+                // This method will be called for accessibility clicks
+                // You can log or handle a "click" equivalent here
+            }
         }
     }
+
+
 
     private fun handleCorrectAnswer(question: GameQuestion) {
         val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0

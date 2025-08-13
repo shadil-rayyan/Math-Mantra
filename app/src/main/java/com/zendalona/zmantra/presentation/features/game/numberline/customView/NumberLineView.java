@@ -1,6 +1,4 @@
-package com.zendalona.zmantra.core.customView;
-
-import static android.provider.Settings.System.getString;
+package com.zendalona.zmantra.presentation.features.game.numberline.customView;
 
 import android.content.Context;
 import android.graphics.Canvas;

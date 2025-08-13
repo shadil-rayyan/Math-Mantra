@@ -33,12 +33,19 @@ class TapFragment : BaseGameFragment() {
     ): View {
         binding = FragmentGameTapBinding.inflate(inflater, container, false)
 
-        binding?.root?.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                onTap()
+        // In your Activity or Fragment setup
+        binding?.root?.apply {
+            isClickable = true // make sure the view is recognized as clickable
+            setOnTouchListener { view, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    onTap()
+                } else if (event.action == MotionEvent.ACTION_UP) {
+                    view.performClick() // triggers accessibility click
+                }
+                true
             }
-            true
         }
+
 
         return binding!!.root
     }

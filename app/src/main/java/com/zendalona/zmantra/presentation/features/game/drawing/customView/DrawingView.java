@@ -1,4 +1,4 @@
-package com.zendalona.zmantra.core.customView;
+package com.zendalona.zmantra.presentation.features.game.drawing.customView;
 
 import android.content.Context;
 import android.graphics.Canvas;

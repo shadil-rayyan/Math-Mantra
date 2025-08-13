@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
-import com.zendalona.zmantra.core.customView.DrawingView
 import com.zendalona.zmantra.databinding.FragmentGameDrawingBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.presentation.features.game.drawing.customView.DrawingView
 
 class DrawingFragment : BaseGameFragment() {
 
