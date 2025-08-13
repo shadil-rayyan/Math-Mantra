@@ -139,8 +139,9 @@
     <string name="move_right_description">വലത്തേയ്ക്ക് നീങ്ങുന്ന ബട്ടൺ. നമ്പർ ലൈൻ ൽ ഒരു ഘട്ടം വലത്തേക്ക് നീങ്ങും.</string>
     <string name="use_to_move"><![CDATA[<< നീങ്ങാൻ -/+ ഉപയോഗിക്കുക >>]]></string>
 
-    <string name="question_day_offset_template">If today is %1$s, what day is after %2$d days?</string>
-    <string name="no_questions_available">No questions available. Please check your Excel file.</string>
+    <string name="question_day_offset_template">ഇന്ന് %1$s ആണെങ്കിൽ, %2$d ദിവസങ്ങൾക്ക് ശേഷം ഏതു ദിവസമാണ്?</string>
+    <string name="no_questions_available">ചോദ്യങ്ങൾ ലഭ്യമല്ല. ദയവായി നിങ്ങളുടെ എക്സൽ ഫയൽ പരിശോധിക്കുക.</string>
+
 
 
 </resources>
