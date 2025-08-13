@@ -21,10 +21,11 @@
             android:text="@string/number_line_question"
             android:textAlignment="center"
             android:textSize="36sp"
-            android:focusable="true"
             android:clickable="true"
             android:contentDescription="@string/number_line_question_description"
             android:importantForAccessibility="yes"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textColor="?attr/colorOnSecondary"
             android:layout_marginBottom="10dp" />
 

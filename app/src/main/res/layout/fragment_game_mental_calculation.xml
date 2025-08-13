@@ -40,8 +40,9 @@
             android:textSize="40sp"
             android:importantForAccessibility="no"
             android:contentDescription="@null"
-            android:focusableInTouchMode="false"
-            android:focusable="false" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/read_question_btn"
