@@ -29,9 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Job setup (custom action if needed)
-      - name: Job set up
-        uses: ./.github/actions/job-set-up
+
 
       # 3. Setup Python
       - uses: actions/setup-python@v5
