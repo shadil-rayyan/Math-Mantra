@@ -3,9 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:importantForAccessibility="yes"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +45,8 @@
             android:text="@string/tap_instruction"
             android:textColor="?attr/colorOnSecondary"
             android:textSize="28sp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textAlignment="center"
             android:contentDescription="@string/tap_instruction_description"
             app:layout_constraintTop_toBottomOf="@+id/animated_view"

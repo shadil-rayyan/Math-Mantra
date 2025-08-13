@@ -25,7 +25,7 @@ class TouchScreenFragment : BaseGameFragment() {
     private var questionList: List<GameQuestion> = emptyList()
     override fun getGifImageView(): ImageView? = binding?.animatedView
     override fun getGifResource(): Int = R.drawable.game_touchthescreen
-
+    private var isFirstQuestion = true
     private val handler = Handler(Looper.getMainLooper())
 
     override fun getModeName(): String = "touch"
@@ -82,6 +82,11 @@ class TouchScreenFragment : BaseGameFragment() {
             requestFocus()
             contentDescription = speakText
             announceForAccessibility(speakText)
+        }
+
+        if (isFirstQuestion) {
+            binding?.angleQuestion?.requestFocus()
+            isFirstQuestion = false
         }
 
         setupTouchListener(question)

@@ -23,7 +23,7 @@ class DayFragment : BaseGameFragment() {
     private var correctDay = ""
     private var questionStartTime: Long = 0L
     private val totalTime: Double = 30.0 // seconds
-
+    private var isFirstQuestion = true // add this near other vars
     private var questions: List<GameQuestion> = emptyList()
 
     override fun getModeName(): String = "day"
@@ -92,6 +92,10 @@ class DayFragment : BaseGameFragment() {
         binding.questionText.text = questionText
         announce(binding.questionText, questionText)
         enableAllButtons()
+        if (isFirstQuestion) {
+            binding?.questionText?.requestFocus()
+            isFirstQuestion = false
+        }
     }
 
     private fun checkAnswer(selected: String) {

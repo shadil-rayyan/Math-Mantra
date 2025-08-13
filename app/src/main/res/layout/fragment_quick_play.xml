@@ -38,24 +38,24 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorTertiary"
-                android:layout_marginBottom="16dp"
-                app:boxCornerRadiusTopStart="16dp"
-                app:boxCornerRadiusTopEnd="16dp"
-                app:boxCornerRadiusBottomStart="16dp"
-                app:boxCornerRadiusBottomEnd="16dp"/>
+                android:layout_margin="10dp"
+                android:hint="@string/answer_hint"
+                android:importantForAccessibility="yes"
+                android:labelFor="@id/answer_et"
+                android:textColor="?attr/colorPrimary"
+                app:boxBackgroundColor="?attr/colorSurface"
+                app:boxBackgroundMode="outline">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/answer_et"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:padding="16dp"
-                android:hint="@string/content_answer_field"
-                android:inputType="number"
-                android:textColor="?attr/colorOnSecondary" />
-
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/answer_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:accessibilityLiveRegion="polite"
+                    android:contentDescription="@string/content_answer_field"
+                    android:importantForAccessibility="yes"
+                    android:inputType="number"
+                    android:textColor="?attr/colorOnPrimary" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Submit Button -->
             <com.google.android.material.button.MaterialButton

@@ -10,9 +10,9 @@ import android.widget.ImageView
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
 import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.presentation.features.game.angle.util.RotationSensorUtility
 import com.zendalona.zmantra.databinding.FragmentGameAngleBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.presentation.features.game.angle.util.RotationSensorUtility
 
 class AngleFragment : BaseGameFragment() {
 
@@ -26,7 +26,7 @@ class AngleFragment : BaseGameFragment() {
     private var questionAnswered = false
     private var currentIndex = 0
     private var questions: List<GameQuestion> = emptyList()
-
+    private var isFirstQuestion = true
     private lateinit var angleUpdateHandler: Handler
     private var angleUpdateRunnable: Runnable? = null
     private var holdRunnable: Runnable? = null
@@ -111,6 +111,11 @@ class AngleFragment : BaseGameFragment() {
             text = localizedText
             contentDescription = localizedText
             announceForAccessibility(localizedText)
+        }
+
+        if (isFirstQuestion) {
+            binding?.angleQuestion?.requestFocus()
+            isFirstQuestion = false
         }
 
 

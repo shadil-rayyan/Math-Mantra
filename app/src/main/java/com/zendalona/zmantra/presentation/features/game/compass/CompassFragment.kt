@@ -14,9 +14,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
-import com.zendalona.zmantra.presentation.features.game.compass.util.CompassUtils
 import com.zendalona.zmantra.databinding.FragmentGameCompassBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.presentation.features.game.compass.util.CompassUtils
 
 class CompassFragment : BaseGameFragment(), SensorEventListener {
 
@@ -31,7 +31,7 @@ class CompassFragment : BaseGameFragment(), SensorEventListener {
     private var lastMagnetometerSet = false
     private val rotationMatrix = FloatArray(9)
     private val orientation = FloatArray(3)
-
+    private var isFirstQuestion = true
     private var targetDirection = 0f
     private var questionAnswered = false
     private var questionStartTime: Long = 0L
@@ -109,6 +109,11 @@ class CompassFragment : BaseGameFragment(), SensorEventListener {
         val questionText = getString(R.string.compass_turn_to, q.expression)
         binding?.questionTv?.text = questionText
         announce(binding?.questionTv, questionText)
+
+        if (isFirstQuestion) {
+            binding?.questionTv?.requestFocus()
+            isFirstQuestion = false
+        }
 
         directionAnnounceHandler.removeCallbacks(directionAnnounceRunnable)
         directionAnnounceHandler.postDelayed(directionAnnounceRunnable, 5000)

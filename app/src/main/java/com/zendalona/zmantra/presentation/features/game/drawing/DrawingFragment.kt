@@ -18,7 +18,7 @@ class DrawingFragment : BaseGameFragment() {
     private val binding get() = _binding!!
 
     private var drawingView: DrawingView? = null
-
+    private var isFirstQuestion = true
     private var currentQuestion: GameQuestion? = null
     private var currentIndex = 0
     private var questions: List<GameQuestion> = emptyList()
@@ -87,6 +87,10 @@ class DrawingFragment : BaseGameFragment() {
             requestFocus()
             contentDescription = instruction
             announceForAccessibility(instruction)
+        }
+        if (isFirstQuestion) {
+            binding?.questionText?.requestFocus()
+            isFirstQuestion = false
         }
 
         drawingView?.clearCanvas()

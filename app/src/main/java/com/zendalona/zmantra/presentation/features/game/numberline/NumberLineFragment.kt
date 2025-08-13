@@ -25,7 +25,7 @@ class NumberLineFragment : BaseGameFragment() {
     private var answer = 0
     private var questionDesc = ""
     private var questionStartTime: Long = 0
-
+    private var isFirstQuestion = true
     private var currentPosLabel: String = ""
     private var answerCheckRunnable: Runnable? = null
 
@@ -120,6 +120,11 @@ class NumberLineFragment : BaseGameFragment() {
                 sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED)
                 announceForAccessibility(questionDesc)
             }
+
+        }
+        if (isFirstQuestion) {
+            binding?.numberLineQuestion?.requestFocus()
+            isFirstQuestion = false
         }
     }
 

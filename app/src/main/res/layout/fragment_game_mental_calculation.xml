@@ -7,7 +7,6 @@
     android:background="?attr/colorSurface"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".view.game.MentalCalculationFragment"
   >
 
     <LinearLayout
@@ -61,27 +60,25 @@
 
         <!-- Answer Input Field -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/answer_input_description"
-            app:boxBackgroundMode="outline"
-            android:textColor="?attr/colorPrimary"
-            app:boxBackgroundColor="?attr/colorSurface"
-            android:importantForAccessibility="yes"
+            android:layout_margin="10dp"
             android:hint="@string/answer_hint"
-            android:labelFor="@id/answer_et">
+            android:importantForAccessibility="yes"
+            android:labelFor="@id/answer_et"
+            android:textColor="?attr/colorPrimary"
+            android:contentDescription="@string/content_answer_field"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxBackgroundMode="outline">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/answer_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/answer_hint"
-                android:textColor="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPrimary"
+                android:accessibilityLiveRegion="polite"
                 android:importantForAccessibility="yes"
                 android:inputType="number"
-                android:accessibilityLiveRegion="polite" />
+                android:textColor="?attr/colorOnPrimary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Submit Button -->

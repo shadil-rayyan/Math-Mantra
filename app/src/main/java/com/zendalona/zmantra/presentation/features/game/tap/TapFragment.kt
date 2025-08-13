@@ -22,6 +22,7 @@ class TapFragment : BaseGameFragment() {
     private var answerChecked = false
     private var isCheckingAnswer = false
     private var questionStartTime = 0L
+    private var isFirstQuestion = true // add this near other vars
 
     private var questions: List<GameQuestion> = emptyList()
 
@@ -70,10 +71,16 @@ class TapFragment : BaseGameFragment() {
         isCheckingAnswer = false
         questionStartTime = System.currentTimeMillis()
 
+        if (isFirstQuestion) {
+            binding?.tapInstruction?.requestFocus()
+            isFirstQuestion = false
+        }
+
         val instruction = getString(R.string.tap_target_expression, question.expression)
         binding?.tapInstruction?.text = instruction
         binding?.tapInstruction?.contentDescription = instruction
         announce(binding?.tapInstruction, instruction)
+
 
         binding?.tapCount?.text = getString(R.string.initial_tap_count)
     }
@@ -85,61 +92,81 @@ class TapFragment : BaseGameFragment() {
         binding?.tapCount?.text = tapCount.toString()
         announce(binding?.tapCount, tapCount.toString())
 
-        if (!isCheckingAnswer) {
-            isCheckingAnswer = true
-            handler.postDelayed({ checkAnswer() }, 3000)
+        val question = questions[questionIndex]
+        val correctAnswer = question.answer
+
+        // If user exceeds the correct answer immediately → wrong attempt
+        if (tapCount > correctAnswer) {
+            processWrongAnswer()
+            return
         }
+
+        // If user just reached the correct answer → correct
+        if (tapCount == correctAnswer) {
+            if (!isCheckingAnswer) {
+                isCheckingAnswer = true
+                handler.postDelayed({
+                    checkAnswer(correctNow = true)
+                }, 3000)
+            }
+        }
+
     }
 
-    private fun checkAnswer() {
+    private fun processWrongAnswer() {
         isCheckingAnswer = false
-        if (questionIndex >= questions.size || answerChecked) return
-
+        attemptCount++
         val question = questions[questionIndex]
         val correctAnswer = question.answer
         val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
         val timeLimit = question.timeLimit.toString().toDoubleOrNull()?.takeIf { it > 0 } ?: 10.0
 
-        if (tapCount == correctAnswer) {
+        if (attemptCount >= 3) {
             answerChecked = true
             handleAnswerSubmission(
                 userAnswer = tapCount.toString(),
                 correctAnswer = correctAnswer.toString(),
                 elapsedTime = elapsedSeconds,
                 timeLimit = timeLimit,
-                onCorrect = { goToNextQuestion() },
+                onCorrect = {},
                 onIncorrect = {},
                 onShowCorrect = { goToNextQuestion() }
             )
         } else {
-            attemptCount++
-            if (attemptCount >= 3) {
-                answerChecked = true
-                handleAnswerSubmission(
-                    userAnswer = tapCount.toString(),
-                    correctAnswer = correctAnswer.toString(),
-                    elapsedTime = elapsedSeconds,
-                    timeLimit = timeLimit,
-                    onCorrect = {},
-                    onIncorrect = {},
-                    onShowCorrect = { goToNextQuestion() }
-                )
-            } else {
-                handleAnswerSubmission(
-                    userAnswer = tapCount.toString(),
-                    correctAnswer = correctAnswer.toString(),
-                    elapsedTime = elapsedSeconds,
-                    timeLimit = timeLimit,
-                    onCorrect = {},
-                    onIncorrect = {
-                        tapCount = 0
-                        binding?.tapCount?.text = getString(R.string.initial_tap_count)
-                        announce(binding?.tapCount, binding?.tapCount?.text.toString())
-                    },
-                    onShowCorrect = { goToNextQuestion() }
-                )
-            }
+            handleAnswerSubmission(
+                userAnswer = tapCount.toString(),
+                correctAnswer = correctAnswer.toString(),
+                elapsedTime = elapsedSeconds,
+                timeLimit = timeLimit,
+                onCorrect = {},
+                onIncorrect = {
+                    tapCount = 0
+                    binding?.tapCount?.text = getString(R.string.initial_tap_count)
+                    announce(binding?.tapCount, binding?.tapCount?.text.toString())
+                },
+                onShowCorrect = { goToNextQuestion() }
+            )
         }
+    }
+
+    private fun checkAnswer(correctNow: Boolean) {
+        if (!correctNow) return // only proceed if they reached exactly the correct count
+
+        answerChecked = true
+        val question = questions[questionIndex]
+        val correctAnswer = question.answer
+        val elapsedSeconds = (System.currentTimeMillis() - questionStartTime) / 1000.0
+        val timeLimit = question.timeLimit.toString().toDoubleOrNull()?.takeIf { it > 0 } ?: 10.0
+
+        handleAnswerSubmission(
+            userAnswer = tapCount.toString(),
+            correctAnswer = correctAnswer.toString(),
+            elapsedTime = elapsedSeconds,
+            timeLimit = timeLimit,
+            onCorrect = { goToNextQuestion() },
+            onIncorrect = {},
+            onShowCorrect = { goToNextQuestion() }
+        )
     }
 
     private fun goToNextQuestion() {
