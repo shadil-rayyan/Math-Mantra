@@ -105,4 +105,14 @@ class DrawingFragment : BaseGameFragment() {
         }
         announce(binding.root, message)
     }
+    override fun onResume() {
+        super.onResume()
+        drawingView?.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        drawingView?.onPause()
+    }
+
 }

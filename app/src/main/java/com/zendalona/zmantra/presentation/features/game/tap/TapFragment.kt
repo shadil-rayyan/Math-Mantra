@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.base.BaseGameFragment
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
 import com.zendalona.zmantra.databinding.FragmentGameTapBinding
 import com.zendalona.zmantra.domain.model.GameQuestion
 
@@ -180,6 +181,23 @@ class TapFragment : BaseGameFragment() {
         questionIndex++
         handler.postDelayed({ startQuestion() }, 1200)
     }
+
+    override fun onResume() {
+        super.onResume()
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.disableExploreByTouch(it)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        AccessibilityHelper.getAccessibilityService()?.let {
+            AccessibilityHelper.resetExploreByTouch(it)
+        }
+        handler.removeCallbacksAndMessages(null)
+        tts.stop()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
