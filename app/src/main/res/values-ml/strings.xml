@@ -44,24 +44,36 @@
     <string name="content_submit_button">നിങ്ങളുടെ ഉത്തരം സമർപ്പിക്കുക</string>
     <string name="content_answer_field">ഉത്തരം നൽകാനുള്ള ഫീൽഡ്, ഇൻപുട്ട് ബോക്സ് തുറക്കാൻ ഇരട്ടത്തപ്പു ചെയ്യുക</string>
 
-        <string name="open_time_mode">സമയം മോഡ് തുറക്കുക</string>
-        <string name="time">സമയം</string>
-        <string name="open_currency_activities">നാണയ പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="currency">നാണയം</string>
-        <string name="open_distance_activities">ദൂര പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="distance">ദൂരം</string>
-        <string name="open_addition_activities">ചേരുവ പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="addition">ചേരുവ</string>
-        <string name="open_subtraction_activities">കുറഞ്ഞു പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="subtraction">കുറഞ്ഞു</string>
-        <string name="open_multiplication_activities">ഗുണന പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="multiplication">ഗുണനം</string>
-        <string name="open_division_activities">വിഭജന പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="division">വിഭജന</string>
-        <string name="open_tiler_frame_activities">ടൈലർ ഫ്രെയിം പ്രവർത്തനങ്ങൾ തുറക്കുക</string>
-        <string name="percentage">ശതമാനം</string>
-        <string name="remainder">ശേഷം</string>
-        <string name="story">കഥ</string>
+    <string name="open_time_mode">സമയം മോഡ് തുറക്കുക</string>
+    <string name="time">സമയം മോഡ്</string>
+
+    <string name="open_currency_mode">കറൻസി മോഡ് തുറക്കുക</string>
+    <string name="currency">കറൻസി മോഡ്</string>
+
+    <string name="open_distance_mode">ദൂരം മോഡ് തുറക്കുക</string>
+    <string name="distance">ദൂരം മോഡ്</string>
+
+    <string name="open_addition_mode">കൂട്ടൽ മോഡ് തുറക്കുക</string>
+    <string name="addition">കൂട്ടൽ മോഡ്</string>
+
+    <string name="open_subtraction_mode">കുറവ് മോഡ് തുറക്കുക</string>
+    <string name="subtraction">കുറവ് മോഡ്</string>
+
+    <string name="open_multiplication_mode">ഗുണനം മോഡ് തുറക്കുക</string>
+    <string name="multiplication">ഗുണനം മോഡ്</string>
+
+    <string name="open_division_mode">വിഭജനം മോഡ് തുറക്കുക</string>
+    <string name="division">വിഭജനം മോഡ്</string>
+
+    <string name="open_percentage_mode">ശതമാനം മോഡ് തുറക്കുക</string>
+    <string name="percentage">ശതമാനം മോഡ്</string>
+
+    <string name="open_remainder_mode">ശേഷിപ്പ് മോഡ് തുറക്കുക</string>
+    <string name="remainder">ശേഷിപ്പ് മോഡ്</string>
+
+    <string name="open_story_mode">കഥ മോഡ് തുറക്കുക</string>
+    <string name="story">കഥ മോഡ്</string>
+
 
 
     <!-- ഗെയിം പേജ് -->

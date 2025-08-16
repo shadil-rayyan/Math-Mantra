@@ -44,23 +44,36 @@
     <string name="content_answer_field">Answer input field double tap to open</string>
 
     <string name="open_time_mode">Open Time Mode</string>
-    <string name="time">Time</string>
-    <string name="open_currency_activities">Open Currency Activities</string>
-    <string name="currency">Currency</string>
-    <string name="open_distance_activities">Open Distance Activities</string>
-    <string name="distance">Distance</string>
-    <string name="open_addition_activities">Open Addition Activities</string>
-    <string name="addition">Addition</string>
-    <string name="open_subtraction_activities">Open Subtraction Activities</string>
-    <string name="subtraction">Subtraction</string>
-    <string name="open_multiplication_activities">Open Multiplication Activities</string>
-    <string name="multiplication">Multiplication</string>
-    <string name="open_division_activities">Open Division Activities</string>
-    <string name="division">Division</string>
-    <string name="open_tiler_frame_activities">Open Tiler Frame Activities</string>
-    <string name="percentage">Percentage</string>
-    <string name="remainder">Remainder</string>
-    <string name="story">Story</string>
+    <string name="time">Time Mode</string>
+
+    <string name="open_currency_mode">Open Currency Mode</string>
+    <string name="currency">Currency Mode</string>
+
+    <string name="open_distance_mode">Open Distance Mode</string>
+    <string name="distance">Distance Mode</string>
+
+    <string name="open_addition_mode">Open Addition Mode</string>
+    <string name="addition">Addition Mode</string>
+
+    <string name="open_subtraction_mode">Open Subtraction Mode</string>
+    <string name="subtraction">Subtraction Mode</string>
+
+    <string name="open_multiplication_mode">Open Multiplication Mode</string>
+    <string name="multiplication">Multiplication Mode</string>
+
+    <string name="open_division_mode">Open Division Mode</string>
+    <string name="division">Division Mode</string>
+
+    <string name="open_percentage_mode">Open Percentage Mode</string>
+    <string name="percentage">Percentage Mode</string>
+
+    <string name="open_remainder_mode">Open Remainder Mode</string>
+    <string name="remainder">Remainder Mode</string>
+
+    <string name="open_story_mode">Open Story Mode</string>
+    <string name="story">Story Mode</string>
+
+
 
 
     <!-- game page-->
