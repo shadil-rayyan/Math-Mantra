@@ -25,6 +25,8 @@ class DayFragment : BaseGameFragment() {
     private val totalTime: Double = 30.0 // seconds
     private var isFirstQuestion = true // add this near other vars
     private var questions: List<GameQuestion> = emptyList()
+    private var questionIndex = 0
+
 
     override fun getModeName(): String = "day"
 
@@ -74,14 +76,22 @@ class DayFragment : BaseGameFragment() {
     }
 
     private fun generateQuestion() {
-        val randomQuestion = questions.random()
-        val operand = randomQuestion.answer
+        if (questionIndex >= questions.size) {
+            endGame()
+            return
+        }
 
+        // Pick the current question sequentially
+        val currentQuestion = questions[questionIndex]
+        val operand = currentQuestion.answer
+
+        // Generate start day randomly
         val startDayIndex = Random.nextInt(days.size)
         val startDay = days[startDayIndex]
 
         val correctIndex = (startDayIndex + operand) % 7
         correctDay = days[correctIndex]
+
         attemptCount = 0
         questionStartTime = System.currentTimeMillis()
 
@@ -92,10 +102,14 @@ class DayFragment : BaseGameFragment() {
         binding.questionText.text = questionText
         announce(binding.questionText, questionText)
         enableAllButtons()
+
         if (isFirstQuestion) {
-            binding?.questionText?.requestFocus()
+            binding.questionText.requestFocus()
             isFirstQuestion = false
         }
+
+        // Move to next question for next time
+        questionIndex++
     }
 
     private fun checkAnswer(selected: String) {

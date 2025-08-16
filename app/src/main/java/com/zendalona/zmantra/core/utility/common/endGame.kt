@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.utility.common.DialogUtils
 import com.zendalona.zmantra.core.utility.common.TTSUtility
@@ -48,11 +49,29 @@ object EndScore {
                 val overlay = rootView.findViewById<FrameLayout>(R.id.feedbackOverlay)
                 overlay?.visibility = View.GONE
 
-                // Quit game completely
-                activity.finish() // closes all activities
+                // Go back to previous screen
+                val activity = context as? AppCompatActivity ?: return
+                activity.onBackPressedDispatcher.onBackPressed()
             }
         )
     }
+
+    /**
+     * Force dismiss end game overlay/dialog
+     */
+    fun dismissEndGameResult(context: Context) {
+        val rootView = (context as? Activity)?.findViewById<View>(android.R.id.content)
+        val overlay = rootView?.findViewById<FrameLayout>(R.id.feedbackOverlay)
+
+        if (overlay?.visibility == View.VISIBLE) {
+            overlay.visibility = View.GONE
+        }
+
+        dismissActiveDialog()
+    }
+
+    private fun dismissActiveDialog() {
+        activeDialog?.dismiss()
+        activeDialog = null
+    }
 }
-
-
