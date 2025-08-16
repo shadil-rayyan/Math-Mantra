@@ -13,7 +13,7 @@
     <string name="shake_failure">മറുപടി തെറ്റാണ്! വീണ്ടും ശ്രമിക്കുക!</string>
     <string name="shake_continue">തുടരുക</string>
     <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
-    <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
+    <string name="shake_game_over"> ഗെയിം അവസാനിച്ചു.</string>
     <string name="shake_count_initial">0</string>
     <string name="shake_instruction">ഫോൺ കുലുക്കി തുടങ്ങുക</string>
     <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഫോൺ കുലുക്കാൻ നിർദ്ദേശം</string>

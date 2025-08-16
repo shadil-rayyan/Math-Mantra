@@ -1,45 +1,58 @@
-package com.zendalona.zmantra.core.utility.common
+package com.zendalona.zmantra.utility
 
-import android.app.AlertDialog
-import android.os.Handler
-import android.os.Looper
-import android.view.LayoutInflater
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.widget.FrameLayout
+import androidx.appcompat.app.AlertDialog
 import com.zendalona.zmantra.R
-import com.zendalona.zmantra.databinding.DialogResultBinding
+import com.zendalona.zmantra.core.utility.common.DialogUtils
+import com.zendalona.zmantra.core.utility.common.TTSUtility
+import kotlin.random.Random
 
 object EndScore {
-    fun Fragment.endGameWithScore() {
-        val binding = DialogResultBinding.inflate(LayoutInflater.from(requireContext()))
 
-        // Set a simple "Game Finished" message
-        binding.messageTextView.text = getString(R.string.game_finished)
+    private var activeDialog: AlertDialog? = null
 
-        // Pick a random drawable from game over assets
+    /**
+     * Show end game result using the shared DialogUtils.showInlineResult
+     * Randomly picks a GIF from predefined game-over drawables
+     */
+    fun endGameWithScore(
+        context: Context,
+        message: String,
+        ttsUtility: TTSUtility? = null
+    ) {
+        val activity = context as? Activity ?: return
+        val rootView = activity.findViewById<View>(android.R.id.content)
+
+        // Random game-over GIF
         val gameOverDrawables = listOf(
             R.drawable.dialog_finished_1,
             R.drawable.dialog_finished_2,
             R.drawable.dialog_finished_3
         )
-        val drawable = gameOverDrawables.random()
+        val drawableRes = gameOverDrawables.random()
 
-        Glide.with(requireContext())
-            .asGif()
-            .load(drawable)
-            .into(binding.gifImageView)
+        DialogUtils.showInlineResult(
+            context = context,
+            rootView = rootView,
+            ttsUtility = ttsUtility,
+            grade = null,
+            message = message,
+            drawableRes = drawableRes,
+            vibrationDuration = 200,
+            speakText = message,
+            onComplete = {
+                // Dismiss overlay
+                val overlay = rootView.findViewById<FrameLayout>(R.id.feedbackOverlay)
+                overlay?.visibility = View.GONE
 
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(binding.root)
-            .setCancelable(false)
-            .create()
-
-        dialog.show()
-
-        // Automatically dismiss after 5 seconds and go back
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (dialog.isShowing) dialog.dismiss()
-            parentFragmentManager.popBackStack()
-        }, 5000)
+                // Quit game completely
+                activity.finish() // closes all activities
+            }
+        )
     }
 }
+
+

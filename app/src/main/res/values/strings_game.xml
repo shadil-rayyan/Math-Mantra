@@ -17,7 +17,7 @@
     <string name="shake_failure">Try again!</string>
     <string name="shake_continue">Continue</string>
     <string name="shake_next_question">Next question</string>
-    <string name="shake_game_over">Shake game over.</string>
+    <string name="shake_game_over">game over.</string>
     <string name="shake_count_initial">0</string>
     <string name="shake_instruction">Shake the device to start</string>
     <string name="shake_instruction_description">Instruction to shake the device to start the game</string>

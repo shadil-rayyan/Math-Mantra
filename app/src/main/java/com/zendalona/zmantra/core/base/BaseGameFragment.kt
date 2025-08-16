@@ -17,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.utility.common.DialogUtils
-import com.zendalona.zmantra.core.utility.common.EndScore.endGameWithScore
 import com.zendalona.zmantra.core.utility.common.GradingUtils
 import com.zendalona.zmantra.core.utility.common.TTSUtility
 import com.zendalona.zmantra.core.utility.excel.ExcelQuestionLoader
@@ -27,6 +26,7 @@ import com.zendalona.zmantra.domain.model.Hintable
 import com.zendalona.zmantra.presentation.features.hint.HintFragment
 import com.zendalona.zmantra.presentation.features.setting.util.DifficultyPreferences
 import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import com.zendalona.zmantra.utility.EndScore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -120,8 +120,16 @@ abstract class BaseGameFragment : Fragment(), Hintable {
 
     protected fun endGame() {
         announce(requireView(), getString(R.string.shake_game_over))
-        endGameWithScore()
+
+        EndScore.endGameWithScore(
+            context = requireContext(),
+            message = getString(R.string.shake_game_over),
+            ttsUtility = tts
+
+        )
+
     }
+
 
     protected fun getGrade(elapsedTime: Double, limit: Double): String {
         return GradingUtils.getGrade(elapsedTime, limit, true)
