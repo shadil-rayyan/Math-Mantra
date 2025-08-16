@@ -1,6 +1,7 @@
 package com.zendalona.zmantra.core.utility.accessibility
 
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -16,6 +17,7 @@ import com.zendalona.zmantra.R
 object AccessibilityHelper {
 
     private var accessibilityService: MathsManthraAccessibilityService? = null
+    private var accessibilityDialog: AlertDialog? = null
 
     // Always check and enforce the requirement every time it's called
     fun enforceAccessibilityRequirement(context: Context) {
@@ -29,8 +31,16 @@ object AccessibilityHelper {
             showAccessibilityDialog(context)
         } else {
             Log.d("AccessibilityHelper", "Accessibility requirement satisfied or TalkBack is off.")
+            accessibilityDialog?.dismiss()
+            accessibilityDialog = null
         }
     }
+
+    fun dismissAccessibilityDialog() {
+        accessibilityDialog?.dismiss()
+        accessibilityDialog = null
+    }
+
 
 
 
@@ -47,7 +57,11 @@ object AccessibilityHelper {
             }
             .setNegativeButton(context.getString(R.string.accessibility_cancel_button)) { dialog, _ ->
                 dialog.dismiss()
+                if (context is Activity) {
+                    context.finishAffinity() // closes the app
+                }
             }
+
             .show()
     }
 

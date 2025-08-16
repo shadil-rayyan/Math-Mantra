@@ -1,9 +1,12 @@
 package com.zendalona.zmantra.core.utility.accessibility
 
+import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityManager
@@ -41,6 +44,25 @@ class AccessibilityUtils {
 
             // Check if your custom service is enabled
             return enabledServices.any { it.id == targetServiceId }
+        }
+
+        fun isMyAccessibilityServiceEnabled(context: Context, service: Class<out AccessibilityService>): Boolean {
+            val expectedComponent = ComponentName(context, service)
+            val enabledServicesSetting =
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
+
+            if (enabledServicesSetting.isNullOrEmpty()) return false
+
+            val colonSplitter = TextUtils.SimpleStringSplitter(':')
+            colonSplitter.setString(enabledServicesSetting)
+
+            while (colonSplitter.hasNext()) {
+                val componentName = colonSplitter.next()
+                if (ComponentName.unflattenFromString(componentName) == expectedComponent) {
+                    return true
+                }
+            }
+            return false
         }
 
         // ⚠️ Optional - This is less reliable. You can keep or remove this.
