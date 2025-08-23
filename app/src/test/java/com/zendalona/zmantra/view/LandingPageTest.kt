@@ -1,9 +1,9 @@
 import android.content.Context
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.view.LandingPageFragment
-import com.zendalona.zmantra.utility.settings.BackgroundMusicPlayer
-import com.zendalona.zmantra.utility.common.TTSUtility
+import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
+import com.zendalona.zmantra.presentation.features.setting.util.BackgroundMusicPlayer
+import com.zendalona.zmantra.core.utility.common.TTSUtility
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -12,7 +12,7 @@ import org.mockito.MockitoAnnotations
 import org.junit.Assert.*
 import android.content.SharedPreferences
 import com.zendalona.zmantra.databinding.FragmentLandingPageBinding
-import com.zendalona.zmantra.view.FragmentNavigation
+import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
 
 class LandingPageFragmentTest {
 

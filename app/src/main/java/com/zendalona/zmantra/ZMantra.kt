@@ -1,9 +1,12 @@
 package com.zendalona.zmantra
 
 import android.app.Application
-import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import androidx.preference.PreferenceManager
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
 class ZMantra : Application() {
     override fun onCreate() {
         super.onCreate()

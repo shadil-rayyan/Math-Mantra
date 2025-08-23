@@ -1,5 +1,6 @@
 package com.zendalona.zmantra
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -11,10 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.zendalona.zmantra.utility.excel.QuestionCache
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.excel.QuestionCache
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
 
     private val announceInterval = 1500L

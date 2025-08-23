@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:contentDescription="@string/learning_page_desc">
-
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +27,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardCurrency"
-                android:contentDescription="@string/open_currency_activities">
+                android:contentDescription="@string/open_currency_mode">
 
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
@@ -41,7 +40,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardDistance"
-                android:contentDescription="@string/open_distance_activities">
+                android:contentDescription="@string/open_distance_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/distance"/>
@@ -50,7 +49,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardAddition"
-                android:contentDescription="@string/open_addition_activities">
+                android:contentDescription="@string/open_addition_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/addition"/>
@@ -62,7 +61,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardSubtraction"
-                android:contentDescription="@string/open_subtraction_activities">
+                android:contentDescription="@string/open_subtraction_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/subtraction"
@@ -72,7 +71,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardMultiplication"
-                android:contentDescription="@string/open_multiplication_activities">
+                android:contentDescription="@string/open_multiplication_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/multiplication"/>
@@ -84,7 +83,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardDivision"
-                android:contentDescription="@string/open_division_activities">
+                android:contentDescription="@string/open_division_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/division"
@@ -93,7 +92,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardPercentage"
-                android:contentDescription="@string/open_tiler_frame_activities">
+                android:contentDescription="@string/open_percentage_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/percentage"/>
@@ -105,7 +104,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardRemainder"
-                android:contentDescription="@string/open_tiler_frame_activities">
+                android:contentDescription="@string/open_remainder_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/remainder"/>
@@ -114,7 +113,7 @@
             <com.google.android.material.card.MaterialCardView
                 style="@style/LearningCardStyle"
                 android:id="@+id/cardStory"
-                android:contentDescription="@string/open_tiler_frame_activities">
+                android:contentDescription="@string/open_story_mode">
                 <com.google.android.material.textview.MaterialTextView
                     style="@style/CardText"
                     android:text="@string/story"/>

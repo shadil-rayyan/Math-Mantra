@@ -7,9 +7,8 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="?attr/colorSurface"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:contentDescription="@string/drawing_page_desc">
+
+    >
 
     <!-- Title TextView -->
     <TextView
@@ -21,6 +20,7 @@
         android:textStyle="bold"
         android:textColor="?attr/colorOnSecondary"
         android:contentDescription="@string/draw_instruction"
+
         android:accessibilityLiveRegion="polite"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -89,6 +89,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <include layout="@layout/dialog_result" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

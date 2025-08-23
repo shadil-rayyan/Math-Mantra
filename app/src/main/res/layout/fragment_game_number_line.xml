@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
     tools:context=".view.game.NumberLineFragment"
-    android:contentDescription="@string/number_line_page_desc">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,15 +21,16 @@
             android:text="@string/number_line_question"
             android:textAlignment="center"
             android:textSize="36sp"
-            android:focusable="true"
             android:clickable="true"
             android:contentDescription="@string/number_line_question_description"
             android:importantForAccessibility="yes"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:textColor="?attr/colorOnSecondary"
             android:layout_marginBottom="10dp" />
 
         <!-- Number Line View -->
-        <com.zendalona.zmantra.customView.NumberLineView
+        <com.zendalona.zmantra.presentation.features.game.numberline.customView.NumberLineView
             android:id="@+id/number_line_view"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -112,4 +113,6 @@
         android:focusableInTouchMode="false"
         android:focusable="false"
         android:layout_gravity="bottom|center_horizontal" />
+    <include layout="@layout/dialog_result" />
+
 </FrameLayout>

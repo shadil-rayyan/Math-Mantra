@@ -1,32 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- dialog_result.xml -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/feedbackOverlay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="?android:attr/windowBackground"> <!-- Use system default background -->
+    android:background="#80000000"
+    android:visibility="gone"
+    android:clickable="true"
+    android:focusable="true"
+    android:elevation="100dp">
 
-    <!-- Text Message displayed on top of the GIF -->
-    <TextView
-        android:id="@+id/messageTextView"
+    <LinearLayout
+        android:id="@+id/feedbackView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="24sp"
-        android:textColor="?attr/colorOnSecondary"
-        android:textAlignment="center"
-        android:layout_marginTop="30dp"
-    android:layout_marginBottom="20dp"
-    android:padding="16dp"
-    android:background="?attr/colorSecondary"
-    android:alpha="0.8" /> <!-- Optional transparency for text background -->
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="?attr/colorSecondary"
+        android:alpha="0.95"
+        android:elevation="8dp"
+        android:importantForAccessibility="yes"
+        android:focusable="true"
+        android:contentDescription="">
 
-    <!-- The GIF image will be displayed here -->
-    <ImageView
-        android:id="@+id/gifImageView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-    android:layout_weight="1"
-    android:scaleType="centerCrop" />
+        <TextView
+            android:id="@+id/messageTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textAlignment="center"
+            android:padding="12dp"
+            android:background="@android:color/transparent" />
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/gifImageView"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+</FrameLayout>

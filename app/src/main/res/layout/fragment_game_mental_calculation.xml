@@ -5,10 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorSurface"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    tools:context=".view.game.MentalCalculationFragment"
-    android:contentDescription="@string/mental_page_desc">
+
+  >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +14,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        >
 
         <!-- Instruction Text -->
         <com.google.android.material.textview.MaterialTextView
@@ -28,7 +25,7 @@
             android:layout_margin="10dp"
             android:textColor="?attr/colorOnSecondary"
             android:importantForAccessibility="yes"
-            android:accessibilityLiveRegion="polite" />
+             />
 
         <!-- Math Question -->
         <com.google.android.material.textview.MaterialTextView
@@ -41,8 +38,9 @@
             android:textSize="40sp"
             android:importantForAccessibility="no"
             android:contentDescription="@null"
-            android:focusableInTouchMode="false"
-            android:focusable="false" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/read_question_btn"
@@ -61,27 +59,25 @@
 
         <!-- Answer Input Field -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/answer_input_description"
-            app:boxBackgroundMode="outline"
-            android:textColor="?attr/colorPrimary"
-            app:boxBackgroundColor="?attr/colorSurface"
-            android:importantForAccessibility="yes"
+            android:layout_margin="10dp"
             android:hint="@string/answer_hint"
-            android:labelFor="@id/answer_et">
+            android:importantForAccessibility="yes"
+            android:labelFor="@id/answer_et"
+            android:textColor="?attr/colorPrimary"
+            android:contentDescription="@string/content_answer_field"
+            app:boxBackgroundColor="?attr/colorSurface"
+            app:boxBackgroundMode="outline">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/answer_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/answer_hint"
-                android:textColor="?attr/colorOnPrimary"
-                android:backgroundTint="?attr/colorPrimary"
+                android:accessibilityLiveRegion="polite"
                 android:importantForAccessibility="yes"
                 android:inputType="number"
-                android:accessibilityLiveRegion="polite" />
+                android:textColor="?attr/colorOnPrimary" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Submit Button -->
@@ -113,6 +109,9 @@
         android:focusableInTouchMode="false"
         android:focusable="false"
         android:layout_gravity="bottom|center_horizontal" />
+
+    <include layout="@layout/dialog_result" />
+
 
 
 </FrameLayout>

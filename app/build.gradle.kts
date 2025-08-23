@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.dagger.hilt.android") // Add this
+    kotlin("kapt")
 }
 
 android {
@@ -9,15 +11,12 @@ android {
 
     defaultConfig {
         applicationId = "com.zendalona.zmantra"
-        minSdk = 26
+        minSdk = 30
         targetSdk = 35
         versionCode = 3
-        versionName = "1.0.9 "
-
+        versionName = "1.0.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
-
 
     buildTypes {
         release {
@@ -28,72 +27,61 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     viewBinding {
         enable = true
     }
-
 }
+
 dependencies {
-
-    // Core Android Libraries
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.ktx.v1101)
-    implementation(libs.androidx.lifecycle.runtime.ktx.v261)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
+    // Core
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity)
+    implementation(libs.constraintlayout)
     implementation(libs.material)
-    implementation(libs.androidx.fragment)
+    implementation(libs.fragment)
+    implementation(libs.androidx.preference.ktx)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    // Third-party Libraries
-    implementation("org.apache.poi:poi:5.2.3")
-    implementation("org.apache.poi:poi-ooxml:5.2.3")
+    // Third-party
+    implementation(libs.poi)
+    implementation(libs.poi.ooxml)
     implementation(libs.lottie)
     implementation(libs.glide)
-    annotationProcessor(libs.compiler)
+    annotationProcessor(libs.glide.compiler)
     implementation(libs.exp4j)
 
-    // Testing Dependencies
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1") // Optional
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    // Unit Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.core.testing)
 
     // Android Instrumentation Tests
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("org.mockito:mockito-android:4.11.0")
-    debugImplementation("androidx.fragment:fragment-testing:1.5.7")
+    androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.espresso.idling.resource)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.test.rules)
+    androidTestImplementation(libs.test.runner)
+    androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.lifecycle.runtime.testing)
+    androidTestImplementation(libs.navigation.testing)
 
-    // Espresso UI Testing
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // Espresso core
-    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1") // Optional for handling idle resources
+    // Fragment testing (debug only)
+    debugImplementation(libs.fragment.testing)
 
-    // JUnit4 Support for running tests
-    androidTestImplementation("androidx.test.ext:junit:1.1.5") // JUnit4 for Android
-
-    // Test Runner for Android tests
-    androidTestImplementation("androidx.test:runner:1.5.2") // Test runner for Android tests
-
-    // Fragment Testing APIs
-    debugImplementation("androidx.fragment:fragment-testing:1.5.5") // For fragment-related testing
-
-    // To launch fragments in test
-    debugImplementation("androidx.fragment:fragment-testing:1.5.5") // Fragment testing APIs
-
-    // Lifecycle support for testing lifecycle-related aspects of fragments
-    androidTestImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.5.1") // For lifecycle testing
-
-    // Core Test library for Android
-    androidTestImplementation("androidx.test:core:1.5.0") // Core functionality for AndroidX testing
-
-
-    // Optional for mocking the navigation component (if you use NavController or a similar component)
-    androidTestImplementation("androidx.navigation:navigation-testing:2.5.3") // Navigation testing support
+    // Leak detection
+    debugImplementation(libs.leakcanary)
+    testImplementation(kotlin("test"))
 }

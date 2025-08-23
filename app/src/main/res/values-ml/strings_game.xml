@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- angle -->
-    <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക</string>
+    <string name="rotate_your_phone">നിങ്ങളുടെ ഫോൺ തിരിക്കുക %1$s </string>
     <string name="turn_phone_90_degrees"> %1$s  </string>
     <string name="rotation_angle_default">ഭ്രമണ കോണം: 0°</string>
     <!-- shake -->
@@ -13,7 +13,7 @@
     <string name="shake_failure">മറുപടി തെറ്റാണ്! വീണ്ടും ശ്രമിക്കുക!</string>
     <string name="shake_continue">തുടരുക</string>
     <string name="shake_next_question">അടുത്ത ചോദ്യത്തിലേക്ക്</string>
-    <string name="shake_game_over">കുലുക്കൽ ഗെയിം അവസാനിച്ചു.</string>
+    <string name="shake_game_over"> ഗെയിം അവസാനിച്ചു.</string>
     <string name="shake_count_initial">0</string>
     <string name="shake_instruction">ഫോൺ കുലുക്കി തുടങ്ങുക</string>
     <string name="shake_instruction_description">ഗെയിം തുടങ്ങാൻ ഫോൺ കുലുക്കാൻ നിർദ്ദേശം</string>
@@ -32,7 +32,7 @@
     <string name="touchscreen_question_expression">%1$s</string>
     <string name="touchscreen_question_format">%1$d + %2$d = ? (ഉത്തരം നൽകാൻ വിരലുകൾ ഉപയോഗിക്കുക)</string>
     <string name="touchscreen_fingers_on_screen">സ്ക്രീനിൽ വിരലുകൾ: %1$d</string>
-    <string name="touch_instruction">സസ്ക്രീനിൽ %1$d കൂടാതെ %2$s വിരലുകൾ നീക്കുക</string>
+    <string name="touch_instruction">സ്ക്രീനിൽ %1$s വിരലുകൾ നീക്കുക</string>
     <string name="touch_image_description">സ്ക്രീനിൽ രണ്ട് വിരലുകൾ ടച്ച് ചെയ്യുന്ന ചിത്രം</string>
 
     <!-- Days -->
@@ -139,8 +139,9 @@
     <string name="move_right_description">വലത്തേയ്ക്ക് നീങ്ങുന്ന ബട്ടൺ. നമ്പർ ലൈൻ ൽ ഒരു ഘട്ടം വലത്തേക്ക് നീങ്ങും.</string>
     <string name="use_to_move"><![CDATA[<< നീങ്ങാൻ -/+ ഉപയോഗിക്കുക >>]]></string>
 
-    <string name="question_day_offset_template">If today is %1$s, what day is after %2$d days?</string>
-    <string name="no_questions_available">No questions available. Please check your Excel file.</string>
+    <string name="question_day_offset_template">ഇന്ന് %1$s ആണെങ്കിൽ, %2$d ദിവസങ്ങൾക്ക് ശേഷം ഏതു ദിവസമാണ്?</string>
+    <string name="no_questions_available">ചോദ്യങ്ങൾ ലഭ്യമല്ല. ദയവായി നിങ്ങളുടെ എക്സൽ ഫയൽ പരിശോധിക്കുക.</string>
+
 
 
 </resources>

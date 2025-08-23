@@ -1,3 +1,4 @@
+// MainActivity.kt
 package com.zendalona.zmantra
 
 import android.content.Context
@@ -10,21 +11,24 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
-import com.zendalona.zmantra.model.HintIconVisibilityController
-import com.zendalona.zmantra.model.Hintable
-import com.zendalona.zmantra.view.FragmentNavigation
-import com.zendalona.zmantra.view.HintFragment
-import com.zendalona.zmantra.view.LandingPageFragment
-import com.zendalona.zmantra.utility.accessibility.AccessibilityHelper
-import com.zendalona.zmantra.utility.PermissionManager
-import com.zendalona.zmantra.utility.accessibility.AccessibilityUtils
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.core.utility.PermissionManager
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityHelper
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils
+import com.zendalona.zmantra.core.utility.accessibility.AccessibilityUtils.Companion.isMyAccessibilityServiceEnabled
+import com.zendalona.zmantra.core.utility.accessibility.MathsManthraAccessibilityService
+import com.zendalona.zmantra.domain.model.HintIconVisibilityController
+import com.zendalona.zmantra.domain.model.Hintable
+import com.zendalona.zmantra.presentation.features.hint.HintFragment
+import com.zendalona.zmantra.presentation.features.landing.FragmentNavigation
+import com.zendalona.zmantra.presentation.features.landing.LandingPageFragment
+import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), FragmentNavigation {
 
     private lateinit var permissionManager: PermissionManager
 
-    // SharedPreferences to store whether the accessibility dialog was shown
     private val prefs by lazy {
         getSharedPreferences("AccessibilityPrefs", Context.MODE_PRIVATE)
     }
@@ -41,17 +45,13 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // Enable back arrow depending on stack
         supportFragmentManager.addOnBackStackChangedListener {
             val canGoBack = supportFragmentManager.backStackEntryCount > 0
             supportActionBar?.setDisplayHomeAsUpEnabled(canGoBack)
             supportActionBar?.setDisplayShowHomeEnabled(canGoBack)
-
-            // Set localized content description (for accessibility)
             supportActionBar?.setHomeActionContentDescription(R.string.back_button_label)
         }
 
-        // Initial fragment
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, LandingPageFragment())
@@ -63,33 +63,37 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
             override fun onPermissionGranted() {
                 Log.d("PermissionManager", "Granted!")
             }
-
             override fun onPermissionDenied() {
                 Log.w("PermissionManager", "Denied!")
             }
         })
         permissionManager.requestMicrophonePermission()
+         val TAG = "Accessbiliyt check"
 
-        // Check if the custom accessibility service is enabled
-        val isServiceEnabled = AccessibilityHelper.isMathsManthraAccessibilityServiceEnabled(this)
-        val isTalkBackEnabled = AccessibilityUtils().isSystemExploreByTouchEnabled(this)
+        // ✅ Always use AccessibilityUtils for checks
+        // Short delay because service state may not be immediately updated
+        Handler(Looper.getMainLooper()).postDelayed({
+            val serviceEnabled = isMyAccessibilityServiceEnabled(
+                this,
+                MathsManthraAccessibilityService::class.java
+            )
+            val isTalkBackEnabled = AccessibilityUtils().isSystemExploreByTouchEnabled(this)
 
-        // If the service or TalkBack is not enabled, prompt the user for action
-        if (!isServiceEnabled || !isTalkBackEnabled) {
-            Handler(Looper.getMainLooper()).postDelayed({
+            Log.d(TAG, "Re-check: ServiceEnabled=$serviceEnabled, TalkBack=$isTalkBackEnabled")
+
+            if (!serviceEnabled || !isTalkBackEnabled) {
+                Log.d(TAG, "Triggering enforceAccessibilityRequirement()")
                 AccessibilityHelper.enforceAccessibilityRequirement(this)
-            }, 500)
-        }
+            } else {
+                Log.d(TAG, "All accessibility requirements satisfied ✅")
+                AccessibilityHelper.dismissAccessibilityDialog()
+            }
+        }, 1000) // give system 1s to update service state
+
+
     }
 
-    // This will be called after the dialog is shown, marking the flag
-    fun markDialogAsShown() {
-        val editor = prefs.edit()
-        editor.putBoolean("ACCESSIBILITY_DIALOG_SHOWN", true)
-        editor.apply()
-    }
 
-    // Handle back button in toolbar
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
@@ -102,24 +106,18 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
             .addToBackStack(null)
             .commit()
 
-        invalidateOptionsMenu() // 🔄 Ensures menu updates
+        invalidateOptionsMenu()
     }
 
-    // Inflate toolbar menu
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-
         val showHint = if (fragment is HintIconVisibilityController) {
             fragment.shouldShowHintIcon()
-        } else {
-            true // default fallback if fragment doesn't implement interface
-        }
-
+        } else true
         menu.findItem(R.id.action_hint)?.isVisible = showHint
         return super.onPrepareOptionsMenu(menu)
     }
 
-    // Handle toolbar icon clicks
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_hint -> {
@@ -127,7 +125,6 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
                 if (fragment is Hintable) {
                     fragment.showHint()
                 } else {
-                    // fallback filepath if fragment doesn't implement Hintable
                     val hintFragment = HintFragment().apply {
                         arguments = Bundle().apply {
                             putString("filepath", "en/hint/default.txt")
@@ -142,6 +139,7 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
     }
 
     companion object {
-        const val TRANSIT_FRAGMENT_OPEN = androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
+        const val TRANSIT_FRAGMENT_OPEN =
+            androidx.fragment.app.FragmentTransaction.TRANSIT_FRAGMENT_OPEN
     }
 }

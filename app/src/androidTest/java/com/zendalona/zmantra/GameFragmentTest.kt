@@ -15,7 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import androidx.test.rule.ActivityTestRule
 import androidx.fragment.app.FragmentActivity
-import com.zendalona.zmantra.view.GameFragment
+import com.zendalona.zmantra.presentation.features.game.GameFragment
 import com.zendalona.zmantra.databinding.FragmentGamePageBinding
 import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.IdlingRegistry

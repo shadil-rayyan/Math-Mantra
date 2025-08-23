@@ -2,8 +2,8 @@ import android.R
 import android.content.Context
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
-import com.zendalona.zmantra.view.LearningFragment
-import com.zendalona.zmantra.view.QuickPlayFragment
+import com.zendalona.zmantra.presentation.features.learning.LearningFragment
+import com.zendalona.zmantra.presentation.features.quickplay.QuickPlayFragment
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock

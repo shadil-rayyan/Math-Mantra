@@ -2,18 +2,11 @@ package com.zendalona.zmantra.view
 
 import android.content.Context
 import android.media.MediaPlayer
-import android.os.Bundle
-import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
-import com.zendalona.zmantra.model.GameQuestion
-import com.zendalona.zmantra.utility.common.DialogUtils
-import com.zendalona.zmantra.utility.common.GradingUtils
-import com.zendalona.zmantra.utility.common.TTSHelper
-import com.zendalona.zmantra.utility.common.TTSUtility
-import com.zendalona.zmantra.utility.common.VibrationUtils
-import com.zendalona.zmantra.utility.excel.ExcelQuestionLoader
-import com.zendalona.zmantra.utility.settings.DifficultyPreferences
-import com.zendalona.zmantra.utility.settings.LocaleHelper
+import com.zendalona.zmantra.domain.model.GameQuestion
+import com.zendalona.zmantra.core.utility.common.TTSUtility
+import com.zendalona.zmantra.core.utility.excel.ExcelQuestionLoader
+import com.zendalona.zmantra.presentation.features.quickplay.QuickPlayFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
