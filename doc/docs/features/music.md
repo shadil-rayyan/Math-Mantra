@@ -1,4 +1,4 @@
-📁 docs/settings/background-music.md
+
 
 # Background Music
 

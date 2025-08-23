@@ -1,10 +1,5 @@
-Here’s a single polished **developer documentation page** for your `ExcelQuestionLoader.kt` logic. It’s structured in a clean MkDocs format with clear sections: overview, features, usage, flow diagram, and example input.
 
----
 
-### 📁 `docs/architecture/data/excel-loader.md`
-
-````md
 # 📊 ExcelQuestionLoader
 
 The `ExcelQuestionLoader` is a utility object responsible for dynamically generating questions from Excel spreadsheets at runtime. It supports customizable operands, templated questions, and on-the-fly answer evaluation using algebraic expressions.
@@ -106,9 +101,3 @@ val questions = ExcelQuestionLoader.loadQuestionsFromExcel(
 * Randomized values make question generation feel varied even with static templates.
 * Can be extended in the future to support image-based or audio-based Excel rows.
 
-```
-
----
-
-Let me know if you'd like a second version in Malayalam or if you want this embedded into your existing MkDocs `mkdocs.yml` structure.
-```

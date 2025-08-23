@@ -1,7 +1,4 @@
 
-### 📁 `docs/settings/difficulty.md`
-
-````md
 # 🧠 Difficulty Setting
 
 Users can choose their preferred difficulty level, which directly affects the types of questions they receive in the game.
@@ -59,10 +56,4 @@ pref_difficulty_level
 
 ---
 
-## 🗂 Related Code
 
-* `SettingFragment.kt` → `setupDifficultyRadioButtons()`
-* `utility/settings/DifficultyPreferences.kt`
-* `model/Difficulty.kt` → defines the enum values
-
-```

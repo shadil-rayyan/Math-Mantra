@@ -1,6 +1,3 @@
-Here’s well-structured developer documentation for your `DialogUtils` Kotlin utility class. You can include this in your internal docs or as part of your developer guide:
-
----
 
 ## 🧩 `DialogUtils.kt` – Unified Dialog and Feedback Handler
 
@@ -102,13 +99,7 @@ Defined in `appreciationData`:
 
 ---
 
-## 🧪 Testing Tips
 
-* Use logs like `"DialogUtils", "Showing INLINE result"` to verify which path is used
-* Ensure overlay views are present in fragment layout
-* Test with TalkBack to confirm accessibility announcements
-
----
 
 ## 🚀 Recommendations
 

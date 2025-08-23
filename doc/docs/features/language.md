@@ -1,8 +1,4 @@
 
-
-### 📁 `docs/settings/language.md`
-
-````md
 # 🌐 Language Selection
 
 This app supports multiple languages — users can switch them anytime from the Settings screen.
@@ -82,11 +78,4 @@ private val languageCodeMap = mapOf(
 )
 ```
 
----
-
-## 🗂 Related Code
-
-* `SettingFragment.kt` → `setupLanguageSpinner()`
-* `utility/settings/LocaleHelper.kt`
-* `res/values/strings.xml` → `language_levels` array
 

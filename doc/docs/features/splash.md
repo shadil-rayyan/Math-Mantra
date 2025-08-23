@@ -1,10 +1,4 @@
-Here’s a developer-friendly doc section for your `SplashScreen` logic, ideal for inclusion in your MkDocs developer docs:
 
----
-
-### 📁 `docs/app/splash-screen.md`
-
-````md
 # 🚀 Splash Screen
 
 The splash screen shows a welcome GIF and preloads all required questions before opening the main UI.
@@ -113,17 +107,4 @@ These are used later during in-game audio and vibration feedback.
 
 ---
 
-## 🧠 Pro Tip for Devs
 
-To **simulate slow devices**, use `adb shell am start -S` to repeatedly start the splash and test performance:
-
-```bash
-adb shell am start -n com.zendalona.zmantra/.SplashScreen
-```
-
----
-
-```
-
-Let me know if you'd like a visual flowchart or YAML metadata (`mkdocs.yml`) update.
-```

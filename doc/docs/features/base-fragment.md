@@ -1,5 +1,4 @@
 
----
 
 ## 📄 `BaseGameFragment.kt` Developer Documentation
 
@@ -175,12 +174,4 @@ Override `getGifImageView()` and `getGifResource()` in child fragment to show a 
 
 ---
 
-### ✅ Good Practices
-
-* Override `getModeName()` to avoid cache/hint mismatches.
-* Always handle `onQuestionsLoaded()` properly.
-* Reset `attemptCount` after each question cycle.
-* Use `announce()` and `tts` consistently for accessibility.
-
----
 

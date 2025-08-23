@@ -1,10 +1,6 @@
-Here’s a polished developer documentation page for how **Hint system** works in your app, suitable for your MkDocs-based documentation under `docs/settings/hints.md`.
 
----
 
-### 💡 `docs/settings/hints.md`
 
-````md
 # 💡 Hint System
 
 The Hint System provides users with **contextual assistance** for each game mode — helpful especially for new or visually impaired users.
@@ -121,15 +117,5 @@ override fun showHint() {
     val hintText = ExcelHintReader.getHintFromExcel(requireContext(), "en", "tap")
     DialogUtils.showInlineResult(requireActivity(), "Hint", hintText, R.drawable.hint)
 }
-```
 
----
 
-✅ **Done right, hints make your app more friendly, especially for new and non-sighted users.**
-
-```
-
----
-
-Let me know if you want to include screenshots, a visual diagram, or localized version support for this page.
-```

@@ -1,8 +1,4 @@
 
-
-### 📁 `docs/settings/contrast-theme.md`
-
-````md
 # 🎨 Contrast / Theme Settings
 
 Users can choose between **Light**, **Dark**, or **System Default** themes.  
@@ -54,11 +50,4 @@ This improves accessibility, especially for visually impaired users or those wit
 If the user doesn’t make a selection, the app defaults to the system’s light/dark mode setting.
 
 ---
-
-## 🗂 Related Code
-
-* `SettingFragment.kt` → `setupContrastRadioButtons()`
-* Usage of `AppCompatDelegate` in `ThemeUtils.kt` (if present)
-
-```
 

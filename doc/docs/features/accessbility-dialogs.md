@@ -1,6 +1,3 @@
-Sure — here’s a clear and developer-friendly explanation of **Accessibility Dialog** and the **Custom Accessibility Service** as implemented in your code:
-
----
 
 ## 🧠 **What Is the Accessibility Dialog and Custom Accessibility Service?**
 
@@ -111,15 +108,3 @@ This class handles:
 | Service Enable Check         | Confirms your service is active                     | `AccessibilityHelper.isMathsManthraAccessibilityServiceEnabled()` |
 
 ---
-
-## ✅ End Result
-
-The app provides:
-
-* A **guided setup flow** for users with disabilities
-* Deep integration with **TalkBack/screen reader**
-* Dynamic hints or UI changes based on **accessibility focus**
-
----
-
-Let me know if you want a diagram or need the `AndroidManifest.xml` entries to register the service too.
