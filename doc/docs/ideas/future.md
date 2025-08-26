@@ -1,23 +1,13 @@
 
 # Future Ideas
 
-## Difficulty-based Modes
 
-* Adjust each game mode according to difficulty tiers: **Simple, Easy, Medium, Difficult**.
-* **Announcements**:
 
-  * Simple/Easy → include count announcements.
-  * Medium/Difficult → no announcements (greater challenge).
-
-## Input Actions: Shake, Tap
+## Input Actions: Shake, Tap, Angle, Compass
 
 * Input methods stay consistent across difficulty levels.
 * **Simple/Easy** → announce counts for user guidance.
 * **Medium/Difficult** → silent, no count announcements.
-
-## Challenge Timer
-
-* If the player does not complete the required action within **3 seconds**, the attempt is automatically marked as failed.
 
 ## Post-Story Mode Questions
 
@@ -47,3 +37,6 @@
 Excel sheet question fixing like right now englush excel sheet is ok but tohere need to be fixed 
 hint has to be written for each model 
 add notifciation system to ask user to play if they havenet played in long time
+
+also the custom accessbility dialog has to be turned on when talkback is oon and custom accessbility service is off the user should not be able to play the game without custom accessbility on when talkback is on 
+the roation has a problem when trunign to the side it also has to go a little up or down intially to work 
