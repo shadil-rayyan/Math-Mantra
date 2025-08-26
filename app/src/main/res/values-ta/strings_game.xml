@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mental_description">மன அழுத்தக் கணிதப் பக்கம், கணிதக் கேள்வி மற்றும் பதில் உள்ளீடு</string>
+    <string name="math_question_description">இது ஒரு கணிதக் கேள்வி. 2 சேர்த்து 2 பெருக்க 2 கழித்து 5 எவ்வளவு? கேள்வியை மீண்டும் கேட்க இருமுறைத் தட்டவும்.</string>
+
+    <!-- angle -->
+    <string name="rotate_your_phone">உங்கள் தொலைபேசியை சுழற்றவும் %1$s</string>
+    <string name="turn_phone_90_degrees"> %1$s </string>
+    <string name="rotation_angle_default">சுழற்சி கோணம்: 0°</string>
+
+    <!-- shake -->
+    <string name="shake_target_expression">%1$s முறைகள் அதிரவும்!</string>
+    <string name="shake_count_announcement">அதிர்வு எண்ணிக்கை: %1$d</string>
+    <string name="shake_count_description">தற்போதைய அதிர்வு எண்ணிக்கை, 0 இலிருந்து தொடங்குகிறது</string>
+    <string name="shake_target_instruction">சாதனத்தை %1$d முறைகள் அதிரவும்</string>
+    <string name="shake_success">சிறந்தது!</string>
+    <string name="shake_failure">மீண்டும் முயற்சி செய்!</string>
+    <string name="shake_continue">தொடரவும்</string>
+    <string name="shake_next_question">அடுத்த கேள்வி</string>
+    <string name="shake_game_over">விளையாட்டு முடிந்தது.</string>
+    <string name="shake_count_initial">0</string>
+    <string name="shake_instruction">விளையாட்டு தொடங்க சாதனத்தை அதிரவும்</string>
+    <string name="shake_instruction_description">விளக்கம்: விளையாட்டு தொடங்க சாதனத்தை அதிரவும்</string>
+
+    <!-- Tap -->
+    <string name="tap_target_expression">%1$s முறைகள் தட்டவும்</string>
+    <string name="tap_count_announcement">தட்டிய எண்ணிக்கை: %1$d</string>
+    <string name="tap_failure">தட்டிய எண்ணிக்கை தவறு. மீண்டும் முயற்சி செய்!</string>
+    <string name="tap_game_over">விளையாட்டு முடிந்தது! நீங்கள் 3 முறை முயற்சி செய்தீர்கள்.</string>
+    <string name="tap_next_question">அடுத்த கேள்வி</string>
+    <string name="tap_count_description">தட்டிய எண்ணிக்கை: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">%1$d° முறை தட்டவும்</string>
+    <string name="tap_instruction_description">விளக்கம்: எங்கு வேண்டுமானாலும் தட்டவும் %1$d° எண்ணிக்கையை அதிகரிக்க.</string>
+
+    <!-- touch the screen -->
+    <string name="touchscreen_question_expression">%1$s</string>
+    <string name="touchscreen_question_format">%1$d + %2$d = ? (பதிலுக்குப் பக்கங்களில் விரல்களைப் பயன்படுத்தவும்)</string>
+    <string name="touchscreen_fingers_on_screen">திரையில் விரல்கள்: %1$d</string>
+    <string name="touch_instruction">திரையில் %1$s விரல்களைத் தொட்டு</string>
+    <string name="touch_image_description">இரு விரல்கள் திரையை தொட்டுள்ள படத்தொகுப்பு</string>
+
+    <!-- Days -->
+    <string name="monday">திங்கள்</string>
+    <string name="tuesday">செவ்வாய்</string>
+    <string name="wednesday">புதன்</string>
+    <string name="thursday">வியாழன்</string>
+    <string name="friday">வெள்ளி</string>
+    <string name="saturday">சனி</string>
+    <string name="sunday">ஞாயிறு</string>
+    <string name="question_text_template">இன்று %1$s என்றால், %2$d நாட்களுக்கு பிறகு எது?</string>
+    <string name="wrong_answer_reveal">தவறு! சரியான பதில் %1$s</string>
+
+    <!-- drawing -->
+    <string name="draw_shape">ஒரு வடிவம் வரையவும்</string>
+    <string name="draw_instruction">விளக்கம்: தேவையான வடிவத்தை வரையவும்</string>
+    <string name="drawing_canvas_description">வரைதல் கான்வாஸ். உங்கள் விரல்கள் கொண்டு வடிவத்தை வரையவும்.</string>
+    <string name="canvas_cleared">கான்வாஸ் சுத்தம் செய்யப்பட்டது. மீண்டும் வரைதல் செய்யலாம்.</string>
+    <string name="drawing_task">%1$s வரைந்து காட்டவும்.</string>
+    <string name="reset">மீட்டமை</string>
+    <string name="reset_description">வரைதலை அழித்து மீண்டும் தொடங்கவும்</string>
+    <string name="submit_description">மதிப்பீட்டிற்கு உங்கள் வரைதலை சமர்ப்பிக்கவும்</string>
+
+    <!-- compass -->
+    <string name="turn_to_angle">%1$d° நோக்கி திரும்பவும்</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="turn_to_angle_template">தற்போதைய திசையிலிருந்து %1$d° நோக்கி திரும்பவும்</string>
+    <string name="relative_angle_template">சார்புடைய கோணம்: %1$d°</string>
+    <string name="current_angle_announcement"> %1$s</string>
+    <string name="compass_turn_to">%1$s நோக்கி திரும்பவும்</string>
+    <string name="compass_current_direction">தற்போதைய முகப்பு %1$s</string>
+    <string name="compass_correct">சரி!</string>
+    <string name="compass_correct_msg">நீங்கள் சரியான திசையில் திரும்பியுள்ளீர்கள்!</string>
+    <string name="current_direction_accessibility">தற்போதைய திசை: %1$s</string>
+    <string-array name="compass_directions">
+        <item>வடக்கு</item>
+        <item>வடக்கு-வடகிழக்கு</item>
+        <item>வடகிழக்கு</item>
+        <item>கிழக்கு-வடகிழக்கு</item>
+        <item>கிழக்கு</item>
+        <item>கிழக்கு-தென்கிழக்கு</item>
+        <item>தென்கிழக்கு</item>
+        <item>தென்-தென்கிழக்கு</item>
+        <item>தெற்கு</item>
+        <item>தென்-தென்மேற்கு</item>
+        <item>தென்மேற்கு</item>
+        <item>மேற்கு-தென்மேற்கு</item>
+        <item>மேற்கு</item>
+        <item>மேற்கு-வடமேற்கு</item>
+        <item>வடமேற்கு</item>
+        <item>வடக்கு-வடமேற்கு</item>
+    </string-array>
+
+    <!-- Sterio Sound -->
+    <string name="audio_instruction">கவனமாக கேட்கவும், இரண்டாவது எண்ணை முதலாம் எண்ணிலிருந்து கழிக்கவும்.</string>
+    <string name="audio_instruction_description">விளக்கம்: கவனமாகக் கேளுங்கள். கேள்வியைப் படித்து எண்களை கேட்டு பதிலளிக்கவும்.</string>
+    <string name="read_question">கேள்வி</string>
+    <string name="read_question_description">கேள்வியை மேல் சொல்லும் பொத்தான். இருமுறைத் தட்டவும் கேட்க.</string>
+    <string name="enter_answer_hint">உங்கள் பதிலை உள்ளிடவும்</string>
+    <string name="your_answer_here">உங்கள் பதில் இங்கே</string>
+    <string name="no_stereo_questions">ஸ்டீரியோ கேள்விகள் இல்லை.</string>
+    <string name="all_questions_completed">அனைத்து கேள்விகளும் முடிந்தது!</string>
+    <string name="new_question_ready">ஒரு புதிய கேள்வி தயார். கேட்க "கேள்வியை வாசி" என்பதைத் தட்டவும்.</string>
+    <string name="subtract_numbers">இரண்டாவது எண் %1$d முதல் எண் %2$d க்கு கழிக்கவும்</string>
+    <string name="enter_answer_before_submitting">சமர்ப்பிப்பதற்கு முன் பதிலை உள்ளிடவும்.</string>
+    <string name="enter_answer">தயவு செய்து பதிலை உள்ளிடவும்!</string>
+    <string name="right_answer">சரி பதில்!</string>
+    <string name="number_is">எண் %1$d ஆகும்</string>
+    <string name="wrong_answer">தவறு பதில். மீண்டும் முயற்சி செய்.</string>
+    <string name="read_question_aloud">கேள்வியை உயர்கூறி வாசி.</string>
+    <string name="answer_input_field">பதில் உள்ளீட்டு களம்.</string>
+    <string name="submit_your_answer">உங்கள் பதிலை சமர்ப்பிக்கவும்.</string>
+
+    <!-- Mental calculation -->
+    <string name="calculate_prompt">மதிப்பீடு செய்யவும்:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ?</string>
+    <string name="answer_input_description">உங்கள் பதிலை இங்கே உள்ளிடவும்</string>
+    <string name="answer_hint">உங்கள் பதில் இங்கே</string>
+
+    <!-- number line -->
+    <string name="current_position_label">நீங்கள் இப்போது நிற்கும் எண்:\n</string>
+    <string name="plus">கூட்டு</string>
+    <string name="minus">கழி</string>
+    <string name="right">வலது</string>
+    <string name="left">இடது</string>
+    <string name="standing_on">நீங்கள் %1$s மீது நிற்கிறீர்கள்.</string>
+    <string name="what_is">%1$s %2$s %3$s என்ன?</string>
+    <string name="current_position">தற்போதைய நிலை: %1$d</string>
+    <string name="units_to_direction">%1$s அலகுகளை %2$s எண்ணுக் கோட்டில் நகருங்கள்.</string>
+    <string name="number_line_question">0 + 12 என்ன?</string>
+    <string name="number_line_question_description">கேள்வி: 0 கூட்ட 12 என்ன? கேள்வியை மீண்டும் கேட்க இருமுறை தட்டவும்.</string>
+    <string name="number_line_visual_description">கணக்கு கோடு காட்சி. கீழுள்ள பொத்தான்களை பயன்படுத்தி இடது அல்லது வலது நகருங்கள்.</string>
+    <string name="current_position_description">எண்ணுக் கோட்டில் தற்போதைய நிலை. இடது அல்லது வலது நகருவதற்கு பொத்தான்களைப் பயன்படுத்தவும்.</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">இடது நகரு பொத்தான். எண்ணுக் கோட்டில் ஒரு படி இடது நகர்க.</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">வலது நகரு பொத்தான். எண்ணுக் கோட்டில் ஒரு படி வலது நகர்க.</string>
+    <string name="use_to_move"><![CDATA[<< நகர -/+ பயன்படுத்தவும் >>]]></string>
+    <string name="question_day_offset_template">இன்று %1$s என்றால், %2$d நாட்களுக்கு பிறகு எது?</string>
+    <string name="no_questions_available">கேள்விகள் இல்லை. உங்கள் Excel கோப்பைப் பரிசோதிக்கவும்.</string>
+
+</resources>

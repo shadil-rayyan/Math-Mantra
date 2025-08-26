@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">ज्मन्त्र</string>
+    <string name="app_title">ज्मन्त्र</string>
+    <string name="hint">संकेत</string>
+    <string name="logo_description">एप्लिकेशन प्रतीक</string>
+    <string name="accessibility_dialog_title">सुलभता सेवा सक्रिय करें</string>
+    <string name="accessibility_dialog_message">MathsManthra को सही ढंग से कार्य करने के लिए सुलभता सेवा की आवश्यकता है। कृपया इसे सेटिंग्स में सक्षम करें।</string>
+    <string name="accessibility_enable_button">सक्रिय करें</string>
+    <string name="accessibility_cancel_button">रद्द करें</string>
+    <string name="accessibility_service_description">
+        Maths Mantra सुलभता सेवा स्क्रीन सामग्री का निरीक्षण करके और मौखिक प्रतिक्रिया प्रदान करके बेहतर सीखने का अनुभव देती है।
+    </string>
+    <string name="back_button_label">पिछला बटन</string>
+
+    <string name="hint_fallback">कुछ गलत हुआ</string>
+    <string name="go_back">वापस जाएँ</string>
+
+    <string name="quick_play">त्वरित खेल</string>
+    <string name="learning_mode">अधिगम मोड</string>
+    <string name="game_mode">खेल मोड</string>
+    <string name="userguide">उपयोगकर्ता मार्गदर्शिका</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="quit">बाहर निकलें</string>
+    <string name="footer">Zendalona दृष्टि अतीन्द्रिय</string>
+    <string name="subtitle">प्रत्येक समस्या द्वारा अपनी गणित कौशल को तेज़ करें।</string>
+
+    <string name="quick_play_desc">एक त्वरित गणित चुनौती शुरू करें</string>
+    <string name="learning_mode_desc">अधिगम मोड में प्रवेश करें</string>
+    <string name="game_mode_desc">खेल मोड में प्रवेश करें</string>
+    <string name="userguide_desc">उपयोगकर्ता मार्गदर्शिका खोलें</string>
+    <string name="settings_desc">सेटिंग्स खोलें</string>
+    <string name="quit_desc">एप्लिकेशन से बाहर निकलें</string>
+
+    <string name="sample_story_question">अर्जुन के पास %1$d सेब हैं और मिथ्रा के पास %2$d सेब हैं। उनके पास कुल कितने सेब हैं?</string>
+    <string name="hint_enter_answer">अपना उत्तर दर्ज करें</string>
+    <string name="content_submit_button">अपना उत्तर सबमिट करें</string>
+    <string name="content_answer_field">उत्तर इनपुट फ़ील्ड, खोलने के लिए डबल टैप करें</string>
+
+    <string name="open_time_mode">समय मोड खोलें</string>
+    <string name="time">समय मोड</string>
+
+    <string name="open_currency_mode">मुद्रा मोड खोलें</string>
+    <string name="currency">मुद्रा मोड</string>
+
+    <string name="open_distance_mode">दूरी मोड खोलें</string>
+    <string name="distance">दूरी मोड</string>
+
+    <string name="open_addition_mode">जोड़ मोड खोलें</string>
+    <string name="addition">जोड़ मोड</string>
+
+    <string name="open_subtraction_mode">घटाव मोड खोलें</string>
+    <string name="subtraction">घटाव मोड</string>
+
+    <string name="open_multiplication_mode">गुणा मोड खोलें</string>
+    <string name="multiplication">गुणा मोड</string>
+
+    <string name="open_division_mode">भाग मोड खोलें</string>
+    <string name="division">भाग मोड</string>
+
+    <string name="open_percentage_mode">प्रतिशत मोड खोलें</string>
+    <string name="percentage">प्रतिशत मोड</string>
+
+    <string name="open_remainder_mode">शेष मोड खोलें</string>
+    <string name="remainder">शेष मोड</string>
+
+    <string name="open_story_mode">कहानी मोड खोलें</string>
+    <string name="story">कहानी मोड</string>
+
+    <string name="shake_button">शेक चुनौती</string>
+    <string name="tap_button">टैप चुनौती</string>
+    <string name="day">दिन दौड़</string>
+    <string name="number_line">लाइन जम्पर</string>
+    <string name="mental_calculation">मानसिक स्प्रिंट</string>
+    <string name="angle">कोण मास्टर</string>
+    <string name="stereo_sound">इको एक्सप्लोरर</string>
+    <string name="drawing">स्केच और हल करें</string>
+    <string name="direction">पथ खोजक</string>
+    <string name="touch_the_screen">टच एडवेंचर</string>
+
+    <string name="submit">सबमिट करें</string>
+    <string name="next">अगला</string>
+
+    <string name="correct_answer">सही उत्तर</string>
+    <string name="task_completed">कार्य पूर्ण</string>
+    <string name="appreciation_message">अच्छा प्रयास</string>
+    <string name="continue_button">जारी रखें</string>
+    <string name="continue_text">जारी रखें</string>
+
+    <string name="excellent_1">शानदार कार्य!</string>
+    <string name="excellent_2">आप प्रतिभाशाली हैं!</string>
+    <string name="excellent_3">उत्कृष्ट!</string>
+    <string name="excellent_4">पूर्णतया सही!</string>
+    <string name="excellent_5">आपने इसे सही किया!</string>
+
+    <string name="very_good_1">अच्छा काम!</string>
+    <string name="very_good_2">शाबाश!</string>
+    <string name="very_good_3">आप बेहतर हो रहे हैं!</string>
+    <string name="very_good_4">यह सही है!</string>
+    <string name="very_good_5">प्रभावशाली!</string>
+
+    <string name="good_1">सुंदर कार्य!</string>
+    <string name="good_2">यह अच्छा है!</string>
+    <string name="good_3">ऐसा ही जारी रखें!</string>
+    <string name="good_4">सही उत्तर!</string>
+    <string name="good_5">अच्छा सोच!</string>
+
+    <string name="not_bad_1">बुरा नहीं!</string>
+    <string name="not_bad_2">लगभग सही!</string>
+    <string name="not_bad_3">सुधार करते रहें!</string>
+    <string name="not_bad_4">ठीक है!</string>
+    <string name="not_bad_5">ठीक काम!</string>
+
+    <string name="okay_1">आप सही दिशा में हैं!</string>
+    <string name="okay_2">अच्छा प्रयास!</string>
+    <string name="okay_3">ठीक उत्तर!</string>
+    <string name="okay_4">थोड़ा तेज़ प्रयास करें!</string>
+    <string name="okay_5">ठीक उत्तर!</string>
+
+    <string name="moving_to_next_question">अगले प्रश्न पर जा रहे हैं</string>
+    <string name="game_finished">खेल समाप्त!</string>
+</resources>

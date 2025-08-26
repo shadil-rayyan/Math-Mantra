@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mental_description">شاشة الحساب الذهني، سؤال رياضيات وإدخال</string>
+    <string name="math_question_description">هذا سؤال رياضيات. كم يساوي 2 زائد 2 ضرب 2 ناقص 5؟ اضغط مرتين لتكرار السؤال.</string>
+
+    <!-- angle -->
+    <string name="rotate_your_phone">قم بتدوير هاتفك %1$s</string>
+    <string name="turn_phone_90_degrees"> %1$s </string>
+    <string name="rotation_angle_default">زاوية الدوران: 0°</string>
+
+    <!-- shake -->
+    <string name="shake_target_expression">اهتز %1$s مرات!</string>
+    <string name="shake_count_announcement">عدد الهزات: %1$d</string>
+    <string name="shake_count_description">عدد الهز الحالي، يبدأ من 0</string>
+    <string name="shake_target_instruction">اهتز بالجهاز %1$d مرات</string>
+    <string name="shake_success">أحسنت!</string>
+    <string name="shake_failure">حاول مرة أخرى!</string>
+    <string name="shake_continue">استمر</string>
+    <string name="shake_next_question">السؤال التالي</string>
+    <string name="shake_game_over">انتهت اللعبة.</string>
+    <string name="shake_count_initial">0</string>
+    <string name="shake_instruction">اهتز بالجهاز للبدء</string>
+    <string name="shake_instruction_description">تعليمات: اهتز بالجهاز لبدء اللعبة</string>
+
+    <!-- Tap -->
+    <string name="tap_target_expression">انقر %1$s مرات</string>
+    <string name="tap_count_announcement">عدد النقرات: %1$d</string>
+    <string name="tap_failure">عدد النقرات غير صحيح. حاول مرة أخرى!</string>
+    <string name="tap_game_over">انتهت اللعبة! لقد جربت 3 مرات.</string>
+    <string name="tap_next_question">السؤال التالي</string>
+    <string name="tap_count_description">عدد النقرات: 0</string>
+    <string name="initial_tap_count">0</string>
+    <string name="tap_instruction">انقر %1$d° مرات</string>
+    <string name="tap_instruction_description">تعليمات: انقر في أي مكان لزيادة عدد %1$d°.</string>
+
+    <!-- touch the screen -->
+    <string name="touchscreen_question_expression">%1$s</string>
+    <string name="touchscreen_question_format">%1$d + %2$d = ؟ (استخدم أصابعك للإجابة)</string>
+    <string name="touchscreen_fingers_on_screen">الأصابع على الشاشة: %1$d</string>
+    <string name="touch_instruction">المس الشاشة بـ %1$s أصابع</string>
+    <string name="touch_image_description">رسم توضيحي لأصبعين يلمسان الشاشة</string>
+
+    <!-- Days -->
+    <string name="monday">الاثنين</string>
+    <string name="tuesday">الثلاثاء</string>
+    <string name="wednesday">الأربعاء</string>
+    <string name="thursday">الخميس</string>
+    <string name="friday">الجمعة</string>
+    <string name="saturday">السبت</string>
+    <string name="sunday">الأحد</string>
+    <string name="question_text_template">إذا كان اليوم %1$s، ما هو اليوم بعد %2$d أيام؟</string>
+    <string name="wrong_answer_reveal">خطأ! الإجابة الصحيحة كانت %1$s</string>
+
+    <!-- drawing -->
+    <string name="draw_shape">ارسم شكلاً</string>
+    <string name="draw_instruction">تعليمات: ارسم الشكل المطلوب</string>
+    <string name="drawing_canvas_description">لوحة للرسم. استخدم الإيماءات باللمس لرسم الشكل.</string>
+    <string name="canvas_cleared">تم مسح اللوحة. يمكنك الرسم مرة أخرى.</string>
+    <string name="drawing_task">ارسم %1$s.</string>
+    <string name="reset">إعادة ضبط</string>
+    <string name="reset_description">مسح الرسم والبدء من جديد</string>
+    <string name="submit_description">قدّم الرسم للتقييم</string>
+
+    <!-- compass -->
+    <string name="turn_to_angle">اتجه إلى %1$d°</string>
+    <string name="degree_placeholder">0°</string>
+    <string name="turn_to_angle_template">اتجه إلى %1$d° من اتجاهك الحالي</string>
+    <string name="relative_angle_template">زاوية نسبية: %1$d°</string>
+    <string name="current_angle_announcement"> %1$s</string>
+    <string name="compass_turn_to">اتجه نحو %1$s</string>
+    <string name="compass_current_direction">الاتجاه الحالي %1$s</string>
+    <string name="compass_correct">صحيح!</string>
+    <string name="compass_correct_msg">لقد اتجهت إلى الاتجاه الصحيح!</string>
+    <string name="current_direction_accessibility">الاتجاه الحالي: %1$s</string>
+    <string-array name="compass_directions">
+        <item>الشمال</item>
+        <item>شمال-شمال شرق</item>
+        <item>شمال شرق</item>
+        <item>شرق-شمال شرق</item>
+        <item>الشرق</item>
+        <item>شرق-جنوب شرق</item>
+        <item>جنوب شرق</item>
+        <item>جنوب-جنوب شرق</item>
+        <item>الجنوب</item>
+        <item>جنوب-جنوب غرب</item>
+        <item>جنوب غرب</item>
+        <item>غرب-جنوب غرب</item>
+        <item>الغرب</item>
+        <item>غرب-شمال غرب</item>
+        <item>شمال غرب</item>
+        <item>شمال-شمال غرب</item>
+    </string-array>
+
+    <!-- Sterio Sound -->
+    <string name="audio_instruction">استمع بعناية واطرح الرقم الثاني من الرقم الأول.</string>
+    <string name="audio_instruction_description">تعليمات: استمع بعناية. اقرأ السؤال لسماع الأرقام قبل الحل.</string>
+    <string name="read_question">السؤال</string>
+    <string name="read_question_description">زر لقراءة السؤال رياضياً بصوت عالٍ. اضغط مرتين للاستماع.</string>
+    <string name="enter_answer_hint">أدخل إجابتك</string>
+    <string name="your_answer_here">إجابتك هنا</string>
+    <string name="no_stereo_questions">لا توجد أسئلة ستيريو.</string>
+    <string name="all_questions_completed">تم إتمام جميع الأسئلة!</string>
+    <string name="new_question_ready">سؤال جديد جاهز. اضغط على "اقرأ السؤال" للاستماع.</string>
+    <string name="subtract_numbers">اطرح الرقم الثاني %1$d من الرقم الأول %2$d</string>
+    <string name="enter_answer_before_submitting">يرجى إدخال إجابة قبل الإرسال.</string>
+    <string name="enter_answer">يرجى إدخال إجابة!</string>
+    <string name="right_answer">إجابة صحيحة!</string>
+    <string name="number_is">الرقم هو %1$d</string>
+    <string name="wrong_answer">إجابة خاطئة. حاول مرة أخرى.</string>
+    <string name="read_question_aloud">اقرأ السؤال بصوت عالٍ.</string>
+    <string name="answer_input_field">حقل إدخال الإجابة.</string>
+    <string name="submit_your_answer">قدّم إجابتك.</string>
+
+    <!-- Mental calculation -->
+    <string name="calculate_prompt">احسب قيمة:</string>
+    <string name="sample_math_question">2 + 2 * 2 - 5 = ؟</string>
+    <string name="answer_input_description">أدخل إجابتك هنا</string>
+    <string name="answer_hint">إجابتك هنا</string>
+
+    <!-- number line -->
+    <string name="current_position_label">أنت واقف على الرقم:\n</string>
+    <string name="plus">زائد</string>
+    <string name="minus">ناقص</string>
+    <string name="right">يمين</string>
+    <string name="left">يسار</string>
+    <string name="standing_on">أنت واقف على %1$s.</string>
+    <string name="what_is">ما هو %1$s %2$s %3$s؟</string>
+    <string name="current_position">الموضع الحالي: %1$d</string>
+    <string name="units_to_direction">تحرك %1$s وحدات نحو %2$s على خط الأعداد.</string>
+    <string name="number_line_question">ما هو 0 + 12؟</string>
+    <string name="number_line_question_description">السؤال: ما هو 0 زائد 12؟ اضغط مرتين لتكرار السؤال.</string>
+    <string name="number_line_visual_description">خط الأعداد بصري. استخدم الأزرار أدناه للتحرك يسارًا أو يمينًا.</string>
+    <string name="current_position_description">الموضع الحالي على خط الأعداد. استخدم الأزرار للتحرك يسارًا أو يمينًا.</string>
+    <string name="move_left">-</string>
+    <string name="move_left_description">زر للتحرك لليسار بمقدار خطوة واحدة.</string>
+    <string name="move_right">+</string>
+    <string name="move_right_description">زر للتحرك لليمين بمقدار خطوة واحدة.</string>
+    <string name="use_to_move"><![CDATA[<< استخدم -/+ للتحرك >>]]></string>
+    <string name="question_day_offset_template">إذا كان اليوم %1$s، ما هو اليوم بعد %2$d أيام؟</string>
+    <string name="no_questions_available">لا توجد أسئلة. يرجى التحقق من ملف Excel الخاص بك.</string>
+
+</resources>

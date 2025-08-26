@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">ஜ்மான்ட்ரா</string>
+    <string name="app_title">ஜ்மான்ட்ரா</string>
+    <string name="hint">உதவி</string>
+    <string name="logo_description">ஆப் லோகோ</string>
+    <string name="accessibility_dialog_title">அணுகல் சேவையை இயக்கவும்</string>
+    <string name="accessibility_dialog_message">MathsManthra சரியாக செயல்பட அணுகல் சேவை தேவை. தயவுசெய்து செட்டிங்கில் அதை இயக்கவும்.</string>
+    <string name="accessibility_enable_button">இயக்கு</string>
+    <string name="accessibility_cancel_button">ரத்து செய்</string>
+    <string name="accessibility_service_description">
+        Maths Mantra அணுகல் சேவை திரை உள்ளடக்கத்தை கண்காணித்து குரல் பின்னூட்டத்தை வழங்குவதன் மூலம் சிறந்த கற்றல் அனுபவத்தை வழங்குகிறது.
+    </string>
+    <string name="back_button_label">பின்செல் பொத்தான்</string>
+
+    <string name="hint_fallback">ஏதேனும் தவறு ஏற்பட்டது</string>
+    <string name="go_back">பின்செல்</string>
+
+    <string name="quick_play">வேகமான விளையாட்டு</string>
+    <string name="learning_mode">கற்றல் முறை</string>
+    <string name="game_mode">விளையாட்டு முறை</string>
+    <string name="userguide">பயனர் வழிகாட்டு</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="quit">வெளியேறு</string>
+    <string name="footer">செண்டலோனா பார்வை கண்ணுக்கும் மேலாக</string>
+    <string name="subtitle">ஒவ்வொரு பிரச்சனையையும் எடுத்து உங்கள் கணித திறனை மேம்படுத்துங்கள்.</string>
+
+    <string name="quick_play_desc">ஒரு விரைவு கணித சவால் தொடங்கு</string>
+    <string name="learning_mode_desc">கற்றல் முறையில் நுழையவும்</string>
+    <string name="game_mode_desc">விளையாட்டு முறையில் நுழையவும்</string>
+    <string name="userguide_desc">பயனர் வழிகாட்டியை திற</string>
+    <string name="settings_desc">அமைப்புகளை திற</string>
+    <string name="quit_desc">ஆப்பிளிகேஷனில் இருந்து வெளியேறு</string>
+
+    <string name="sample_story_question">அர்ஜுனிடம் %1$d ஆப்பிள்கள் மற்றும் மித்ராவிற்கு %2$d ஆப்பிள்கள் உள்ளன. அவர்களுக்கு மொத்தம் எவ்வளவு ஆப்பிள்கள் உள்ளன?</string>
+    <string name="hint_enter_answer">உங்கள் பதிலை உள்ளிடவும்</string>
+    <string name="content_submit_button">உங்கள் பதிலை சமர்ப்பிக்கவும்</string>
+    <string name="content_answer_field">பதில் உள்ளீடு புலம், திறக்க இருமுறை தட்டவும்</string>
+
+    <string name="open_time_mode">நேர முறை திற</string>
+    <string name="time">நேர முறை</string>
+
+    <string name="open_currency_mode">நாணய முறை திற</string>
+    <string name="currency">நாணய முறை</string>
+
+    <string name="open_distance_mode">தூரம் முறை திற</string>
+    <string name="distance">தூரம் முறை</string>
+
+    <string name="open_addition_mode">கூட்டல் முறை திற</string>
+    <string name="addition">கூட்டல் முறை</string>
+
+    <string name="open_subtraction_mode">கழித்தல் முறை திற</string>
+    <string name="subtraction">கழித்தல் முறை</string>
+
+    <string name="open_multiplication_mode">பெருக்கல் முறை திற</string>
+    <string name="multiplication">பெருக்கல் முறை</string>
+
+    <string name="open_division_mode">பகுப்பு முறை திற</string>
+    <string name="division">பகுப்பு முறை</string>
+
+    <string name="open_percentage_mode">சதவீத முறை திற</string>
+    <string name="percentage">சதவீத முறை</string>
+
+    <string name="open_remainder_mode">மீதமுள்ள முறை திற</string>
+    <string name="remainder">மீதமுள்ள முறை</string>
+
+    <string name="open_story_mode">கதை முறை திற</string>
+    <string name="story">கதை முறை</string>
+
+    <string name="shake_button">ஏறக்குறைய சவால்</string>
+    <string name="tap_button">தட்டச் சவால்</string>
+    <string name="day">நாள் சவால்</string>
+    <string name="number_line">கோடு குதிப்பு</string>
+    <string name="mental_calculation">மனச்சுட்டி ஓட்டம்</string>
+    <string name="angle">கோணம் நிபுணர்</string>
+    <string name="stereo_sound">ஒலி ஆய்வாளர்</string>
+    <string name="drawing">வடிவமைக்கவும்  தீர்க்கவும்</string>
+    <string name="direction">பாதை கண்டுபிடிப்பவர்</string>
+    <string name="touch_the_screen">தொட்டு அனுபவம்</string>
+
+    <string name="submit">சமர்ப்பிக்கவும்</string>
+    <string name="next">அடுத்தது</string>
+
+    <string name="correct_answer">சரி பதில்</string>
+    <string name="task_completed">பணி முடிந்தது</string>
+    <string name="appreciation_message">சிறந்த முயற்சி</string>
+    <string name="continue_button">தொடரவும்</string>
+    <string name="continue_text">தொடரவும்</string>
+
+    <string name="excellent_1">அற்புதம்!</string>
+    <string name="excellent_2">நீங்கள் அதிபர்!</string>
+    <string name="excellent_3">மிக சிறந்தது!</string>
+    <string name="excellent_4">முழுமையாக சரி!</string>
+    <string name="excellent_5">நீங்கள் அதைச் செய்தீர்கள்!</string>
+
+    <string name="very_good_1">சிறந்த வேலை!</string>
+    <string name="very_good_2">நன்றாக செய்தீர்கள்!</string>
+    <string name="very_good_3">நீங்கள் மேம்பட்டு வருகிறீர்கள்!</string>
+    <string name="very_good_4">அது சரி!</string>
+    <string name="very_good_5">சுவாரஸ்யமாக உள்ளது!</string>
+
+    <string name="good_1">நல்ல வேலை!</string>
+    <string name="good_2">அது நல்லது!</string>
+    <string name="good_3">தொடருங்கள்!</string>
+    <string name="good_4">சரி பதில்!</string>
+    <string name="good_5">நல்ல சிந்தனை!</string>
+
+    <string name="not_bad_1">சரி தான்!</string>
+    <string name="not_bad_2">கிட்டத்தட்ட சரி!</string>
+    <string name="not_bad_3">மேம்படுத்திக் கொள்ளுங்கள்!</string>
+    <string name="not_bad_4">பரவாயில்லை!</string>
+    <string name="not_bad_5">சரி உள்ளது!</string>
+
+    <string name="okay_1">நீங்கள் அருகில் வந்துள்ளீர்கள்!</string>
+    <string name="okay_2">நல்ல முயற்சி!</string>
+    <string name="okay_3">சரி பதில்!</string>
+    <string name="okay_4">விரைவாக முயற்சி செய்க!</string>
+    <string name="okay_5">சரி பதில்!</string>
+
+    <string name="moving_to_next_question">அடுத்த கேள்விக்கு நகர்கிறோம்</string>
+    <string name="game_finished">விளையாட்டு முடிந்தது!</string>
+</resources>
