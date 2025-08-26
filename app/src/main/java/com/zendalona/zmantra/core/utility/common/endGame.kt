@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.utility.common.DialogUtils
 import com.zendalona.zmantra.core.utility.common.TTSUtility
-import kotlin.random.Random
 
 object EndScore {
 
@@ -50,7 +49,7 @@ object EndScore {
                 overlay?.visibility = View.GONE
 
                 // Go back to previous screen
-                val activity = context as? AppCompatActivity ?: return
+                val activity = context as? AppCompatActivity ?: return@showInlineResult
                 activity.onBackPressedDispatcher.onBackPressed()
             }
         )

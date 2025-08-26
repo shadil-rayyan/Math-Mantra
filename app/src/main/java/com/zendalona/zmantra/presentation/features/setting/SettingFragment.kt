@@ -2,7 +2,6 @@ package com.zendalona.zmantra.presentation.features.setting
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,14 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceManager
 import com.google.android.material.appbar.MaterialToolbar
 import com.zendalona.zmantra.R
 import com.zendalona.zmantra.core.Enum.Difficulty
 import com.zendalona.zmantra.core.utility.common.TTSUtility
+import com.zendalona.zmantra.databinding.FragmentSettingsBinding
 import com.zendalona.zmantra.presentation.features.setting.util.BackgroundMusicPlayer
 import com.zendalona.zmantra.presentation.features.setting.util.DifficultyPreferences
 import com.zendalona.zmantra.presentation.features.setting.util.LocaleHelper
-import com.zendalona.zmantra.databinding.FragmentSettingsBinding
 
 class SettingFragment : Fragment() {
 
@@ -36,10 +36,10 @@ class SettingFragment : Fragment() {
         0 to "default",
         1 to "en",     // English
         2 to "ml",     // Malayalam
-//        3 to "hi",     // hindi
-//        4 to "ar",     // Arabic
-//        5 to "sa",     // Sanskrit
-//        6 to "ta"      // tamil
+        3 to "hi",     // hindi
+        4 to "ar",     // Arabic
+        5 to "sa",     // Sanskrit
+        6 to "ta"      // tamil
     )
 
 
