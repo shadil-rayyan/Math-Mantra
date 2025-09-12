@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:contentDescription="Home page -Welcome to Math Manthra Your learning mentor there are 4 option for you quick play,learning mode,game mode,
+userguide,settings and exit button "
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:importantForAccessibility="yes">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp"
+        >
+
+        <!-- Play with friends Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/CreateRoomButton"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            android:focusable="true"
+            android:contentDescription="Game Mode Button. Compete in challenges and improve your score.">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Create Room "
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Play with friends Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/JoinRoomButton"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="?attr/colorSecondary"
+            android:focusable="true"
+            android:contentDescription="Game Mode Button. Compete in challenges and improve your score.">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Join Room "
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+        <!-- Random Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/RandomPlayerButton"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="15dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="?attr/colorSecondary"
+            android:focusable="true"
+            android:contentDescription="User Guide Button.  instructions and tips for using this app.">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Random Match"
+                android:textColor="?attr/colorOnSecondary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </LinearLayout>
+
+</FrameLayout>

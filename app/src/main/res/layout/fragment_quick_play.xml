@@ -54,7 +54,7 @@
                     android:contentDescription="@string/content_answer_field"
                     android:importantForAccessibility="yes"
                     android:inputType="number"
-                    android:textColor="?attr/colorOnPrimary" />
+                    android:textColor="?attr/colorOnSecondary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Submit Button -->
