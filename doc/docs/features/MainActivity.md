@@ -9,7 +9,3 @@
 ## Behavior
 - Back press: shows confirm-exit dialog to prevent accidental quits.
 - Accessibility: announces dialog state when shown/dismissed.
-
-## TODO
-- Document dialog styling and strings.
-- Add screenshots/gif of the quit dialog.

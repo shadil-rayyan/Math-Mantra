@@ -30,7 +30,7 @@ nav:
           - Dialog System: features/dialogs.md
           - Accessibility Dialogs: features/accessbility-dialogs.md
           - Hint System: features/hints.md
-          - Localization & Language: features/localization.md
+          - Language: features/language.md
           - Excel-based Question System: features/excel.md
       - Configurable Settings:
           - Music & Audio: features/music.md

@@ -9,7 +9,3 @@
 ## Behavior
 - Initialized in base fragment lifecycle, stopped on view destroy.
 - Speech rate and language respect user preferences and locale.
-
-## TODO
-- Document how to change speech rate/pitch.
-- Add examples of announcing questions and results.

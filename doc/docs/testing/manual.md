@@ -35,17 +35,5 @@ This document provides a template for recording test cases, execution results, a
 | 2      | TC002   | Accessibility | Check TalkBack reads menu items | High | Accessibility | Enable TalkBack | Navigate through main menu | TalkBack should announce all items clearly | Fail | TalkBack skips one item | Needs fix | [Video Link](https://example.com) | BUG-001 |
 
 ---
-
-## Attaching Excel Sheet
-
-If you prefer to manage test cases in **Excel** (recommended for large projects):  
-
-- Upload the Excel sheet to your repository (e.g., in `docs/testing/Manual_Test_Cases.xlsx`).  
-- Or use Google Sheets and provide a shareable link.  
-
 Example:  
-
-- [📄 Download Manual Test Cases (Excel)](./testing/Manual_Test_Cases.xlsx)  
-- [🔗 Google Sheet Link](https://docs.google.com/spreadsheets/d/your-link-here)  
-
-
+- [📄 Download Manual Test Cases (Excel)](./assets/Manual_Test_Cases.xlsx)  

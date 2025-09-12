@@ -78,11 +78,3 @@ For developers, **supporting TalkBack and accessibility APIs** ensures:
 * Test with **TalkBack enabled** during development.
 
 ---
-
-## 📌 Key Takeaway
-
-**Accessibility is not optional — it’s essential.**
-TalkBack allows **blind and low-vision users** to fully experience Android apps through **spoken feedback, gestures, and haptic cues**.
-
-For zMantra, accessibility is the **core philosophy**, ensuring math learning is **truly inclusive**.
-

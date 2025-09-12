@@ -108,6 +108,3 @@ Defined in `appreciationData`:
 * Use `showCorrectAnswerDialog()` on final failure
 * Use `showNextDialog()` after correct answer
 
----
-
-Let me know if you want this exported to Markdown, HTML, or included in your zMantra MkDocs structure!
