@@ -27,7 +27,7 @@
 
 ## 🚀 Demo
 
-![z.Mantra Demo](https://raw.githubusercontent.com/shadil-rayyan/Math-Mantra/refactoring/.github/.preview/out.gif)
+![](/.github/.preview/out.gif)
 
 
 ---
